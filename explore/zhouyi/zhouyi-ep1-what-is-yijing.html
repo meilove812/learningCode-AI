@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco传统文化讲解：周易是什么">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>周易讲解 · 第一期：周易是什么</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'PingFang SC', 'Noto Serif SC', serif;
+  background: #0a0a0f;
+  color: #e8e0d0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* === Page System === */
+.pages-wrapper { width: 100%; height: 100%; position: relative; }
+.page {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 40px 24px;
+  opacity: 0; transform: translateX(100%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none; overflow: hidden;
+}
+.page.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.page.prev { opacity: 0; transform: translateX(-100%); }
+
+/* === Backgrounds === */
+.bg-cosmos { background: radial-gradient(ellipse at center, #0f0a1e 0%, #060410 70%); }
+.bg-ink { background: radial-gradient(ellipse at 30% 40%, #12121f 0%, #08080d 70%); }
+.bg-dawn { background: linear-gradient(180deg, #0a0820 0%, #1a1545 50%, #0f0d25 100%); }
+.bg-fire { background: radial-gradient(ellipse at 50% 80%, #1a0800 0%, #0a0400 40%, #050200 100%); }
+.bg-sage { background: linear-gradient(160deg, #081020 0%, #0a1830 50%, #060c18 100%); }
+.bg-gold { background: radial-gradient(ellipse at center, #141008 0%, #0a0805 70%); }
+.bg-nature { background: linear-gradient(180deg, #030a08 0%, #081810 50%, #040c08 100%); }
+.bg-final { background: radial-gradient(ellipse at center, #100820 0%, #080412 70%); }
+
+/* === Typography === */
+.title-main {
+  font-size: clamp(2.2em, 8vw, 3.5em);
+  font-weight: 900;
+  background: linear-gradient(135deg, #ffd700, #ff8c00, #ffd700);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-align: center; line-height: 1.3;
+  animation: textGlow 3s ease-in-out infinite;
+}
+@keyframes textGlow {
+  0%,100% { filter: brightness(1) drop-shadow(0 0 8px rgba(255,215,0,0.2)); }
+  50% { filter: brightness(1.2) drop-shadow(0 0 25px rgba(255,215,0,0.5)); }
+}
+.subtitle { font-size: clamp(0.85em, 3.2vw, 1.1em); color: #6a5a4a; margin-top: 12px; text-align: center; letter-spacing: 4px; }
+.page-title {
+  font-size: clamp(1.4em, 5.5vw, 2em); font-weight: 800;
+  color: #ffd700; text-align: center; margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(255,215,0,0.2);
+}
+.page-text {
+  font-size: clamp(0.95em, 3.8vw, 1.15em); line-height: 2;
+  text-align: center; color: #c8bca0; max-width: 560px;
+}
+.page-text .em { color: #ffd700; font-weight: bold; }
+.page-text .red { color: #e74c3c; font-weight: bold; }
+.fact-card {
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15);
+  border-radius: 12px; padding: 14px 18px; margin-top: 18px;
+  max-width: 480px; text-align: left; font-size: 0.88em; line-height: 1.8; color: #a89878;
+}
+.fact-card .label { color: #ffd700; font-weight: bold; margin-bottom: 4px; }
+
+/* === Taiji + Bagua SVG === */
+.taiji-wrapper {
+  width: clamp(220px, 60vw, 320px); height: clamp(220px, 60vw, 320px);
+  margin: 15px auto; position: relative;
+}
+.taiji-svg { width: 100%; height: 100%; animation: rotateTaiji 30s linear infinite; }
+@keyframes rotateTaiji { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.taiji-outer-glow {
+  position: absolute; inset: -15%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,180,0,0.08) 30%, transparent 70%);
+  animation: outerPulse 4s ease-in-out infinite;
+}
+@keyframes outerPulse { 0%,100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.08); opacity: 1; } }
+
+/* Energy ring */
+.energy-ring {
+  position: absolute; inset: -5%; border-radius: 50%;
+  border: 1px solid rgba(255,215,0,0.1);
+  animation: ringPulse 3s ease-in-out infinite;
+}
+.energy-ring:nth-child(2) { inset: -10%; animation-delay: 1s; border-color: rgba(255,180,0,0.06); }
+.energy-ring:nth-child(3) { inset: -15%; animation-delay: 2s; border-color: rgba(255,150,0,0.03); }
+@keyframes ringPulse { 0%,100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.03); opacity: 1; } }
+
+/* === Particles === */
+.particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.particle {
+  position: absolute; border-radius: 50%; opacity: 0;
+  animation: floatUp 7s ease-in-out infinite;
+}
+.particle-gold { background: radial-gradient(circle, #ffd700, transparent); }
+.particle-white { background: radial-gradient(circle, rgba(255,255,255,0.8), transparent); }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(100vh) scale(0.3); }
+  15% { opacity: 0.7; }
+  85% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(0.8); }
+}
+
+/* === Stars === */
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.star {
+  position: absolute; background: #fff; border-radius: 50%;
+  animation: twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.85; transform: scale(1.2); } }
+
+/* === Silhouette Figures === */
+.figure-monk {
+  width: 60px; height: 100px; margin: 10px auto;
+  position: relative;
+}
+.figure-monk svg { width: 100%; height: 100%; }
+
+/* === Realistic Fire === */
+.fire-scene {
+  position: relative; width: 100%; height: 120px; margin-bottom: 15px;
+}
+.candle { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); }
+.candle-body { width: 12px; height: 50px; background: linear-gradient(#8B4513, #654321); border-radius: 2px; margin: 0 auto; }
+.candle-flame {
+  width: 20px; height: 45px; margin: 0 auto;
+  position: relative; transform: translateY(-5px);
+}
+.candle-flame .outer {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 80%, #ff4500 0%, #ff8c00 30%, #ffcc00 60%, transparent 75%);
+  border-radius: 50% 50% 40% 40%; filter: blur(1px);
+  animation: flameOuter 0.4s ease-in-out infinite alternate;
+}
+.candle-flame .inner {
+  position: absolute; left: 25%; right: 25%; bottom: 10%; top: 30%;
+  background: radial-gradient(ellipse at 50% 90%, #fff 0%, #ffffcc 40%, transparent 70%);
+  border-radius: 50% 50% 40% 40%; filter: blur(0.5px);
+  animation: flameInner 0.3s ease-in-out infinite alternate;
+}
+@keyframes flameOuter { 0% { transform: scaleX(1) scaleY(1) rotate(-1deg); } 100% { transform: scaleX(0.85) scaleY(1.08) rotate(1deg); } }
+@keyframes flameInner { 0% { transform: scaleX(1) scaleY(1); } 100% { transform: scaleX(0.9) scaleY(1.05); } }
+.flame-light {
+  position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+  width: 150px; height: 80px;
+  background: radial-gradient(ellipse, rgba(255,150,0,0.15) 0%, transparent 70%);
+  animation: lightFlicker 2s ease-in-out infinite;
+}
+@keyframes lightFlicker { 0%,100% { opacity: 0.7; } 50% { opacity: 1; } }
+
+/* === Mountains (ink style) === */
+.mountain-scene {
+  position: absolute; bottom: 0; left: 0; width: 100%; height: 45%;
+  pointer-events: none;
+}
+.mountain-scene svg { width: 100%; height: 100%; }
+
+/* === Trigram Lines === */
+.trigram-group {
+  display: flex; gap: 25px; justify-content: center; margin: 15px 0; flex-wrap: wrap;
+}
+.trigram-single {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  opacity: 0; animation: fadeInGua 0.6s ease forwards;
+}
+.trigram-single .yao {
+  width: 40px; height: 5px; border-radius: 2px; position: relative;
+}
+.trigram-single .yao-yang {
+  background: linear-gradient(90deg, #c8a000, #ffd700, #c8a000);
+  box-shadow: 0 0 6px rgba(255,215,0,0.4);
+}
+.trigram-single .yao-yin {
+  background: transparent; display: flex; justify-content: space-between;
+}
+.trigram-single .yao-yin::before, .trigram-single .yao-yin::after {
+  content: ''; width: 16px; height: 5px; border-radius: 2px;
+  background: linear-gradient(90deg, #c8a000, #ffd700, #c8a000);
+  box-shadow: 0 0 6px rgba(255,215,0,0.4);
+}
+.trigram-single .gua-name {
+  margin-top: 6px; font-size: 0.8em; color: #ffd700; text-align: center;
+}
+@keyframes fadeInGua { to { opacity: 1; } }
+.trigram-single:nth-child(1) { animation-delay: 0.1s; }
+.trigram-single:nth-child(2) { animation-delay: 0.2s; }
+.trigram-single:nth-child(3) { animation-delay: 0.3s; }
+.trigram-single:nth-child(4) { animation-delay: 0.4s; }
+.trigram-single:nth-child(5) { animation-delay: 0.5s; }
+.trigram-single:nth-child(6) { animation-delay: 0.6s; }
+.trigram-single:nth-child(7) { animation-delay: 0.7s; }
+.trigram-single:nth-child(8) { animation-delay: 0.8s; }
+
+/* === Prison bars === */
+.prison-bars {
+  position: absolute; inset: 0; pointer-events: none;
+  display: flex; justify-content: space-around; padding: 0 10%;
+}
+.prison-bar {
+  width: 4px; height: 100%;
+  background: linear-gradient(180deg, #2a2a2a 0%, #3d3d3d 50%, #2a2a2a 100%);
+  border-radius: 2px; opacity: 0.3;
+}
+
+/* === Chain links === */
+.chains {
+  position: absolute; bottom: 20%; left: 10%;
+  font-size: 1.5em; opacity: 0.3; color: #555;
+  animation: chainSway 4s ease-in-out infinite;
+}
+@keyframes chainSway { 0%,100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+
+/* === Scroll unroll === */
+.scroll-visual {
+  width: clamp(180px, 50vw, 250px); height: auto; margin: 15px auto;
+  position: relative;
+}
+.scroll-visual svg { width: 100%; height: auto; }
+
+/* === Navigation UI === */
+.nav-hint {
+  position: fixed; bottom: 18px; left: 0; right: 0;
+  text-align: center; color: rgba(255,255,255,0.25); font-size: 0.75em;
+  pointer-events: none; transition: opacity 0.5s; z-index: 100;
+}
+.nav-dots {
+  position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 7px; z-index: 100;
+}
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); transition: all 0.3s; cursor: pointer;
+}
+.nav-dot.active { background: #ffd700; box-shadow: 0 0 6px rgba(255,215,0,0.5); transform: scale(1.4); }
+
+.audio-btn {
+  position: fixed; top: 14px; right: 14px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: #ffd700; font-size: 1.1em;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 200; backdrop-filter: blur(10px); transition: all 0.3s;
+}
+.audio-btn:active { transform: scale(0.9); }
+.audio-btn.playing { background: rgba(255,215,0,0.15); box-shadow: 0 0 12px rgba(255,215,0,0.2); }
+
+.page-num { position: fixed; top: 16px; left: 16px; font-size: 0.7em; color: rgba(255,255,255,0.2); z-index: 100; }
+
+/* Animate in */
+.ani { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.page.active .ani { opacity: 1; transform: translateY(0); }
+.page.active .ani:nth-child(2) { transition-delay: 0.15s; }
+.page.active .ani:nth-child(3) { transition-delay: 0.3s; }
+.page.active .ani:nth-child(4) { transition-delay: 0.45s; }
+.page.active .ani:nth-child(5) { transition-delay: 0.6s; }
+.page.active .ani:nth-child(6) { transition-delay: 0.75s; }
+
+/* Voice panel */
+.voice-panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(10,10,15,0.96); backdrop-filter: blur(20px);
+  padding: 20px; border-top: 1px solid rgba(255,215,0,0.15);
+  transform: translateY(100%); transition: transform 0.3s; z-index: 300;
+  border-radius: 18px 18px 0 0;
+}
+.voice-panel.show { transform: translateY(0); }
+.voice-panel label { display: block; color: #7a6a5a; font-size: 0.82em; margin-bottom: 6px; }
+.voice-panel select, .voice-panel input[type="range"] {
+  width: 100%; padding: 10px; border-radius: 8px;
+  border: 1px solid rgba(255,215,0,0.15); background: rgba(255,255,255,0.04);
+  color: #d4c8b0; font-size: 0.95em; margin-bottom: 12px;
+}
+.voice-panel .close-panel { text-align: center; color: #ffd700; cursor: pointer; padding: 8px; }
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
+<div class="page-num" id="pageNum">1 / 10</div>
+<div class="nav-dots" id="navDots"></div>
+<div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
+
+<div class="pages-wrapper" id="pagesWrapper">
+
+  <!-- Page 1: Cover - Full Bagua + Taiji -->
+  <div class="page bg-cosmos active" data-page="0">
+    <div class="particles" id="p0"></div>
+    <div class="taiji-wrapper ani">
+      <div class="taiji-outer-glow"></div>
+      <div class="energy-ring"></div>
+      <div class="energy-ring"></div>
+      <div class="energy-ring"></div>
+      <svg class="taiji-svg" viewBox="0 0 400 400">
+        <defs>
+          <radialGradient id="gYang" cx="50%" cy="30%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="50%" stop-color="#e0e0e0"/>
+            <stop offset="100%" stop-color="#808080"/>
+          </radialGradient>
+          <radialGradient id="gYin" cx="50%" cy="70%">
+            <stop offset="0%" stop-color="#1a1a1a"/>
+            <stop offset="100%" stop-color="#000005"/>
+          </radialGradient>
+          <filter id="glow1"><feGaussianBlur stdDeviation="3"/></filter>
+          <filter id="glow2"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Outer bagua ring -->
+        <circle cx="200" cy="200" r="195" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+        <circle cx="200" cy="200" r="180" fill="none" stroke="rgba(255,215,0,0.12)" stroke-width="0.5"/>
+        <!-- Bagua trigrams around the ring -->
+        <g id="baguaRing" opacity="0.6">
+          <!-- 乾 ☰ top -->
+          <g transform="translate(200,28)"><rect x="-15" y="-2" width="30" height="4" rx="2" fill="#e0e0e0"/><rect x="-15" y="5" width="30" height="4" rx="2" fill="#e0e0e0"/><rect x="-15" y="12" width="30" height="4" rx="2" fill="#e0e0e0"/></g>
+          <!-- 兑 ☱ -->
+          <g transform="translate(322,78)"><rect x="-15" y="-2" width="12" height="4" rx="2" fill="#ffd700"/><rect x="3" y="-2" width="12" height="4" rx="2" fill="#ffd700"/><rect x="-15" y="5" width="30" height="4" rx="2" fill="#ffd700"/><rect x="-15" y="12" width="30" height="4" rx="2" fill="#ffd700"/></g>
+          <!-- 离 ☲ -->
+          <g transform="translate(372,200)"><rect x="-15" y="-2" width="30" height="4" rx="2" fill="#ffd700"/><rect x="-15" y="5" width="12" height="4" rx="2" fill="#ffd700"/><rect x="3" y="5" width="12" height="4" rx="2" fill="#ffd700"/><rect x="-15" y="12" width="30" height="4" rx="2" fill="#ffd700"/></g>
+          <!-- 震 ☳ -->
+          <g transform="translate(322,322)"><rect x="-15" y="-2" width="12" height="4" rx="2" fill="#ffd700"/><rect x="3" y="-2" width="12" height="4" rx="2" fill="#ffd700"/><rect x="-15" y="5" width="12" height="4" rx="2" fill="#ffd700"/><rect x="3" y="5" width="12" height="4" rx="2" fill="#ffd700"/><rect x="-15" y="12" width="30" height="4" rx="2" fill="#ffd700"/></g>
+          <!-- 坤 ☷ bottom -->
+          <g transform="translate(200,372)"><rect x="-15" y="-2" width="12" height="4" rx="2" fill="#ffd700"/><rect x="3" y="-2" width="12" height="4" rx="2" fill="#ffd700"/><rect x="-15" y="5" width="12" height="4" rx="2" fill="#ffd700"/><rect x="3" y="5" width="12" height="4" rx="2" fill="#ffd700"/><rect x="-15" y="12" width="12" height="4" rx="2" fill="#ffd700"/><rect x="3" y="12" width="12" height="4" rx="2" fill="#ffd700"/></g>
+          <!-- 艮 ☶ -->
+          <g transform="translate(78,322)"><rect x="-15" y="-2" width="30" height="4" rx="2" fill="#ffd700"/><rect x="-15" y="5" width="12" height="4" rx="2" fill="#ffd700"/><rect x="3" y="5" width="12" height="4" rx="2" fill="#ffd700"/><rect x="-15" y="12" width="12" height="4" rx="2" fill="#ffd700"/><rect x="3" y="12" width="12" height="4" rx="2" fill="#ffd700"/></g>
+          <!-- 坎 ☵ -->
+          <g transform="translate(28,200)"><rect x="-15" y="-2" width="12" height="4" rx="2" fill="#ffd700"/><rect x="3" y="-2" width="12" height="4" rx="2" fill="#ffd700"/><rect x="-15" y="5" width="30" height="4" rx="2" fill="#ffd700"/><rect x="-15" y="12" width="12" height="4" rx="2" fill="#ffd700"/><rect x="3" y="12" width="12" height="4" rx="2" fill="#ffd700"/></g>
+          <!-- 巽 ☴ -->
+          <g transform="translate(78,78)"><rect x="-15" y="-2" width="30" height="4" rx="2" fill="#ffd700"/><rect x="-15" y="5" width="30" height="4" rx="2" fill="#ffd700"/><rect x="-15" y="12" width="12" height="4" rx="2" fill="#ffd700"/><rect x="3" y="12" width="12" height="4" rx="2" fill="#ffd700"/></g>
+        </g>
+        <!-- Main Taiji -->
+        <circle cx="200" cy="200" r="140" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+        <path d="M200,60 A140,140 0 0,1 200,340 A70,70 0 0,1 200,200 A70,70 0 0,0 200,60 Z" fill="url(#gYang)" filter="url(#glow2)"/>
+        <path d="M200,60 A140,140 0 0,0 200,340 A70,70 0 0,0 200,200 A70,70 0 0,1 200,60 Z" fill="url(#gYin)"/>
+        <!-- Yin-yang eyes -->
+        <circle cx="200" cy="130" r="18" fill="url(#gYin)"/>
+        <circle cx="200" cy="130" r="6" fill="rgba(255,255,255,0.3)"/>
+        <circle cx="200" cy="270" r="18" fill="url(#gYang)" filter="url(#glow2)"/>
+        <circle cx="200" cy="270" r="6" fill="#0a0a15"/>
+        <!-- Outer decorative circle -->
+        <circle cx="200" cy="200" r="155" fill="none" stroke="rgba(255,215,0,0.06)" stroke-width="8"/>
+      </svg>
+    </div>
+    <div class="title-main ani">周易是什么</div>
+    <div class="subtitle ani">第一期 · 万经之首的真面目</div>
+  </div>
+
+  <!-- Page 2: Misconception -->
+  <div class="page bg-ink" data-page="1">
+    <div class="stars" id="s1"></div>
+    <div class="ani" style="margin-bottom:20px;">
+      <svg width="80" height="80" viewBox="0 0 80 80">
+        <circle cx="40" cy="40" r="35" fill="none" stroke="rgba(255,0,0,0.3)" stroke-width="2" stroke-dasharray="4 4">
+          <animateTransform attributeName="transform" type="rotate" values="0 40 40;360 40 40" dur="20s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="40" cy="35" r="20" fill="rgba(128,0,255,0.2)"/>
+        <text x="40" y="52" text-anchor="middle" font-size="28" fill="#a060ff">卜</text>
+        <line x1="15" y1="15" x2="65" y2="65" stroke="#e74c3c" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+      </svg>
+    </div>
+    <div class="page-title ani">很多人以为……</div>
+    <div class="page-text ani">
+      提到<span class="em">周易</span>，<br>
+      大多数人第一反应是：<br><br>
+      <span class="red">"那不是算命的吗？"</span><br><br>
+      街边摆摊、掐指一算、<br>
+      故弄玄虚……
+    </div>
+    <div class="fact-card ani">
+      <div class="label">❌ 这是天大的误解</div>
+      算命只是后人附会的"应用"。<br>
+      周易本身，是中华文明<strong>最古老的哲学体系</strong>。
+    </div>
+  </div>
+
+  <!-- Page 3: Truth -->
+  <div class="page bg-dawn" data-page="2">
+    <div class="particles" id="p2"></div>
+    <div class="ani">
+      <svg width="100" height="120" viewBox="0 0 100 120">
+        <!-- Scroll -->
+        <rect x="20" y="10" width="60" height="100" rx="3" fill="#2a2018" stroke="#8B7355" stroke-width="1.5"/>
+        <rect x="25" y="15" width="50" height="90" fill="#1a1408" opacity="0.6"/>
+        <!-- Text lines -->
+        <line x1="32" y1="30" x2="68" y2="30" stroke="#ffd700" stroke-width="1" opacity="0.6"/>
+        <line x1="32" y1="42" x2="68" y2="42" stroke="#ffd700" stroke-width="1" opacity="0.5"/>
+        <line x1="32" y1="54" x2="60" y2="54" stroke="#ffd700" stroke-width="1" opacity="0.4"/>
+        <line x1="32" y1="66" x2="65" y2="66" stroke="#ffd700" stroke-width="1" opacity="0.5"/>
+        <line x1="32" y1="78" x2="58" y2="78" stroke="#ffd700" stroke-width="1" opacity="0.4"/>
+        <!-- Glow -->
+        <circle cx="50" cy="60" r="40" fill="rgba(255,215,0,0.05)">
+          <animate attributeName="r" values="35;42;35" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <!-- Rollers -->
+        <rect x="15" y="5" width="70" height="8" rx="4" fill="#654321" stroke="#8B7355" stroke-width="0.5"/>
+        <rect x="15" y="107" width="70" height="8" rx="4" fill="#654321" stroke="#8B7355" stroke-width="0.5"/>
+      </svg>
+    </div>
+    <div class="page-title ani">周易的真面目</div>
+    <div class="page-text ani">
+      周易是一部<span class="em">探索万物变化规律</span>的经典。<br><br>
+      它用<span class="em">64个符号</span>（卦），<br>
+      描述天地间一切事物<br>
+      <span class="em">产生、发展、变化</span>的过程。<br><br>
+      被后世尊为<span class="em">"群经之首"</span>。
+    </div>
+  </div>
+
+  <!-- Page 4: Three Sages -->
+  <div class="page bg-sage" data-page="3">
+    <div class="stars" id="s3"></div>
+    <div class="page-title ani">三位圣人</div>
+    <div class="page-text ani" style="margin-bottom:15px;">跨越<span class="em">3000年</span>接力完成</div>
+    <div class="ani" style="display:flex;justify-content:center;gap:clamp(15px,5vw,35px);flex-wrap:nowrap;">
+      <!-- Fuxi -->
+      <div style="text-align:center;">
+        <svg width="60" height="75" viewBox="0 0 60 75">
+          <ellipse cx="30" cy="18" rx="12" ry="14" fill="#2a1a0a" stroke="#8B7355" stroke-width="1"/>
+          <path d="M18,30 Q30,35 42,30 L45,65 Q30,70 15,65 Z" fill="#3a2a1a" stroke="#6B5030" stroke-width="0.8"/>
+          <circle cx="30" cy="8" r="8" fill="none" stroke="#ffd700" stroke-width="0.5" opacity="0.5"/>
+          <path d="M22,15 Q30,12 38,15" fill="none" stroke="#8a7a6a" stroke-width="1"/>
+          <circle cx="26" cy="17" r="1.5" fill="#ffd700" opacity="0.8"/>
+          <circle cx="34" cy="17" r="1.5" fill="#ffd700" opacity="0.8"/>
+        </svg>
+        <div style="color:#ffd700;font-weight:bold;font-size:0.9em;">伏羲</div>
+        <div style="color:#6a5a4a;font-size:0.7em;">画八卦</div>
+      </div>
+      <!-- King Wen -->
+      <div style="text-align:center;">
+        <svg width="60" height="75" viewBox="0 0 60 75">
+          <ellipse cx="30" cy="18" rx="12" ry="14" fill="#1a1a30" stroke="#4a4a8a" stroke-width="1"/>
+          <path d="M18,30 Q30,35 42,30 L44,65 Q30,70 16,65 Z" fill="#1a1a3a" stroke="#4a4a7a" stroke-width="0.8"/>
+          <rect x="20" y="5" width="20" height="6" rx="1" fill="#8B4513" opacity="0.8"/>
+          <circle cx="26" cy="17" r="1.5" fill="#ffd700" opacity="0.7"/>
+          <circle cx="34" cy="17" r="1.5" fill="#ffd700" opacity="0.7"/>
+          <path d="M25,22 Q30,24 35,22" fill="none" stroke="#6a5a4a" stroke-width="0.8"/>
+        </svg>
+        <div style="color:#ffd700;font-weight:bold;font-size:0.9em;">周文王</div>
+        <div style="color:#6a5a4a;font-size:0.7em;">演六十四卦</div>
+      </div>
+      <!-- Confucius -->
+      <div style="text-align:center;">
+        <svg width="60" height="75" viewBox="0 0 60 75">
+          <ellipse cx="30" cy="18" rx="12" ry="14" fill="#1a2a1a" stroke="#4a7a4a" stroke-width="1"/>
+          <path d="M18,30 Q30,35 42,30 L44,65 Q30,70 16,65 Z" fill="#1a2a1a" stroke="#3a5a3a" stroke-width="0.8"/>
+          <path d="M24,23 Q30,26 36,23 L36,30 Q30,28 24,30 Z" fill="#8a7a6a" opacity="0.5"/>
+          <circle cx="26" cy="16" r="1.5" fill="#ffd700" opacity="0.7"/>
+          <circle cx="34" cy="16" r="1.5" fill="#ffd700" opacity="0.7"/>
+          <rect x="22" y="5" width="16" height="5" rx="2" fill="#2a2a2a" opacity="0.7"/>
+        </svg>
+        <div style="color:#ffd700;font-weight:bold;font-size:0.9em;">孔子</div>
+        <div style="color:#6a5a4a;font-size:0.7em;">作十翼</div>
+      </div>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">📌 人类文明史上最漫长的"合著"</div>
+      伏羲（约前5000年）→ 文王（前1100年）→ 孔子（前500年）
+    </div>
+  </div>
+
+  <!-- Page 5: Fuxi observes nature -->
+  <div class="page bg-nature" data-page="4">
+    <div class="mountain-scene">
+      <svg viewBox="0 0 400 180" preserveAspectRatio="none">
+        <path d="M0,180 L0,120 Q50,60 100,90 Q150,40 200,70 Q250,20 300,60 Q350,40 400,80 L400,180 Z" fill="rgba(10,40,20,0.6)"/>
+        <path d="M0,180 L0,140 Q80,100 150,130 Q220,90 300,120 Q360,100 400,130 L400,180 Z" fill="rgba(15,50,25,0.4)"/>
+        <!-- Mist -->
+        <ellipse cx="100" cy="110" rx="60" ry="8" fill="rgba(255,255,255,0.03)">
+          <animate attributeName="cx" values="80;120;80" dur="8s" repeatCount="indefinite"/>
+        </ellipse>
+        <ellipse cx="300" cy="95" rx="50" ry="6" fill="rgba(255,255,255,0.02)">
+          <animate attributeName="cx" values="280;320;280" dur="10s" repeatCount="indefinite"/>
+        </ellipse>
+      </svg>
+    </div>
+    <div class="particles" id="p4"></div>
+    <div class="ani">
+      <svg width="90" height="100" viewBox="0 0 90 100">
+        <!-- Fuxi figure looking up -->
+        <ellipse cx="45" cy="30" rx="14" ry="16" fill="#2a1a0a" stroke="#6B5030" stroke-width="1"/>
+        <circle cx="41" cy="28" r="2" fill="#ffd700" opacity="0.7"/>
+        <circle cx="49" cy="28" r="2" fill="#ffd700" opacity="0.7"/>
+        <path d="M30,44 Q45,50 60,44 L62,90 Q45,95 28,90 Z" fill="#3a2a18" stroke="#5a4020" stroke-width="0.8"/>
+        <!-- Arm raised pointing up -->
+        <path d="M55,50 Q65,35 60,20" fill="none" stroke="#5a4020" stroke-width="3" stroke-linecap="round"/>
+        <!-- Stars above -->
+        <circle cx="65" cy="10" r="2" fill="#ffd700" opacity="0.8">
+          <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="75" cy="18" r="1.5" fill="#ffd700" opacity="0.6">
+          <animate attributeName="opacity" values="0.3;0.9;0.3" dur="2.5s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+    </div>
+    <div class="page-title ani">伏羲画卦</div>
+    <div class="page-text ani">
+      远古时代，伏羲<br>
+      <span class="em">仰观天象，俯察地理</span>，<br>
+      观鸟兽之文，察山川之形。<br><br>
+      他发现万物都可以用<br>
+      <span class="em">阳 ⚊</span> 和 <span class="em">阴 ⚋</span><br>
+      两个符号来表达。<br><br>
+      于是画出了<span class="em">八卦</span>。
+    </div>
+  </div>
+</div>
+
+  <!-- Page 6: Trigrams Detail -->
+  <div class="page bg-cosmos" data-page="5">
+    <div class="page-title ani">八卦：万物的密码</div>
+    <div class="trigram-group ani">
+      <div class="trigram-single"><div class="yao yao-yang"></div><div class="yao yao-yang"></div><div class="yao yao-yang"></div><div class="gua-name">☰ 乾<br><span style="font-size:0.8em;color:#8a7a6a;">天</span></div></div>
+      <div class="trigram-single"><div class="yao yao-yin"></div><div class="yao yao-yin"></div><div class="yao yao-yin"></div><div class="gua-name">☷ 坤<br><span style="font-size:0.8em;color:#8a7a6a;">地</span></div></div>
+      <div class="trigram-single"><div class="yao yao-yin"></div><div class="yao yao-yin"></div><div class="yao yao-yang"></div><div class="gua-name">☳ 震<br><span style="font-size:0.8em;color:#8a7a6a;">雷</span></div></div>
+      <div class="trigram-single"><div class="yao yao-yang"></div><div class="yao yao-yang"></div><div class="yao yao-yin"></div><div class="gua-name">☴ 巽<br><span style="font-size:0.8em;color:#8a7a6a;">风</span></div></div>
+    </div>
+    <div class="trigram-group ani">
+      <div class="trigram-single"><div class="yao yao-yin"></div><div class="yao yao-yang"></div><div class="yao yao-yin"></div><div class="gua-name">☵ 坎<br><span style="font-size:0.8em;color:#8a7a6a;">水</span></div></div>
+      <div class="trigram-single"><div class="yao yao-yang"></div><div class="yao yao-yin"></div><div class="yao yao-yang"></div><div class="gua-name">☲ 离<br><span style="font-size:0.8em;color:#8a7a6a;">火</span></div></div>
+      <div class="trigram-single"><div class="yao yao-yang"></div><div class="yao yao-yin"></div><div class="yao yao-yin"></div><div class="gua-name">☶ 艮<br><span style="font-size:0.8em;color:#8a7a6a;">山</span></div></div>
+      <div class="trigram-single"><div class="yao yao-yin"></div><div class="yao yao-yang"></div><div class="yao yao-yang"></div><div class="gua-name">☱ 兑<br><span style="font-size:0.8em;color:#8a7a6a;">泽</span></div></div>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">💡 读法</div>
+      卦从<strong>下往上</strong>读。三条线叫三爻(yáo)。<br>
+      阳爻(—)代表刚健，阴爻(--)代表柔顺。<br>
+      两两重叠 → 8×8 = <strong>64卦</strong>，描述万物万象。
+    </div>
+  </div>
+
+  <!-- Page 7: King Wen in Prison -->
+  <div class="page bg-fire" data-page="6">
+    <div class="prison-bars">
+      <div class="prison-bar"></div><div class="prison-bar"></div><div class="prison-bar"></div>
+      <div class="prison-bar"></div><div class="prison-bar"></div><div class="prison-bar"></div>
+      <div class="prison-bar"></div><div class="prison-bar"></div>
+    </div>
+    <div class="fire-scene ani">
+      <div class="candle">
+        <div class="candle-flame">
+          <div class="outer"></div>
+          <div class="inner"></div>
+        </div>
+        <div class="candle-body"></div>
+        <div class="flame-light"></div>
+      </div>
+    </div>
+    <div class="page-title ani">文王演易</div>
+    <div class="page-text ani">
+      <span class="em">三千年前</span>，商朝末年。<br><br>
+      周文王被纣王囚禁在<span class="em">羑(yǒu)里</span>，<br>
+      一关就是<span class="em">七年</span>。<br><br>
+      暗无天日的牢狱中，<br>
+      他将八卦两两重叠，<br>
+      推演出<span class="em">六十四卦</span>，<br>
+      写下每一卦的<span class="em">卦辞</span>。
+    </div>
+    <div class="fact-card ani">
+      <div class="label">🔥 困境出智慧</div>
+      司马迁说：「文王拘而演周易」。<br>伟大的作品往往诞生于苦难之中。
+    </div>
+  </div>
+
+  <!-- Page 8: Confucius -->
+  <div class="page bg-sage" data-page="7">
+    <div class="stars" id="s7"></div>
+    <div class="ani">
+      <svg width="100" height="90" viewBox="0 0 100 90">
+        <!-- Bamboo slips (竹简) -->
+        <g transform="translate(10,5)">
+          <rect x="0" y="0" width="6" height="80" rx="1" fill="#4a6030" stroke="#3a5020" stroke-width="0.5" opacity="0.9"/>
+          <rect x="8" y="0" width="6" height="80" rx="1" fill="#4a6030" stroke="#3a5020" stroke-width="0.5" opacity="0.9"/>
+          <rect x="16" y="0" width="6" height="80" rx="1" fill="#4a6030" stroke="#3a5020" stroke-width="0.5" opacity="0.9"/>
+          <rect x="24" y="0" width="6" height="80" rx="1" fill="#4a6030" stroke="#3a5020" stroke-width="0.5" opacity="0.9"/>
+          <rect x="32" y="0" width="6" height="80" rx="1" fill="#4a6030" stroke="#3a5020" stroke-width="0.5" opacity="0.9"/>
+          <rect x="40" y="0" width="6" height="80" rx="1" fill="#4a6030" stroke="#3a5020" stroke-width="0.5" opacity="0.9"/>
+          <rect x="48" y="0" width="6" height="80" rx="1" fill="#4a6030" stroke="#3a5020" stroke-width="0.5" opacity="0.9"/>
+          <rect x="56" y="0" width="6" height="80" rx="1" fill="#4a6030" stroke="#3a5020" stroke-width="0.5" opacity="0.9"/>
+          <rect x="64" y="0" width="6" height="80" rx="1" fill="#4a6030" stroke="#3a5020" stroke-width="0.5" opacity="0.9"/>
+          <rect x="72" y="0" width="6" height="80" rx="1" fill="#4a6030" stroke="#3a5020" stroke-width="0.5" opacity="0.9"/>
+          <!-- Binding rope -->
+          <line x1="0" y1="15" x2="78" y2="15" stroke="#8B5A2B" stroke-width="1.5" opacity="0.7"/>
+          <line x1="0" y1="65" x2="78" y2="65" stroke="#8B5A2B" stroke-width="1.5" opacity="0.7"/>
+          <!-- Broken rope effect -->
+          <line x1="35" y1="14" x2="43" y2="16" stroke="#8B5A2B" stroke-width="1.5" opacity="0.7" stroke-dasharray="2 2">
+            <animate attributeName="stroke-dashoffset" values="0;4" dur="1s" repeatCount="indefinite"/>
+          </line>
+        </g>
+        <!-- Small text characters on slips -->
+        <text x="13" y="35" font-size="4" fill="#ffd700" opacity="0.5">易</text>
+        <text x="21" y="45" font-size="4" fill="#ffd700" opacity="0.4">乾</text>
+        <text x="37" y="35" font-size="4" fill="#ffd700" opacity="0.5">坤</text>
+      </svg>
+    </div>
+    <div class="page-title ani">孔子作传</div>
+    <div class="page-text ani">
+      又过了<span class="em">五百年</span>。<br><br>
+      孔子晚年痴迷周易，<br>
+      读得<span class="em">"韦编三绝"</span>——<br>
+      竹简的牛皮绳翻断了<span class="em">三次</span>！<br><br>
+      他写下<span class="em">十篇解读</span>（《十翼》），<br>
+      让周易从占卜之书<br>
+      升华为<span class="em">哲学巨著</span>。
+    </div>
+  </div>
+
+  <!-- Page 9: Etymology -->
+  <div class="page bg-gold" data-page="8">
+    <div class="particles" id="p8"></div>
+    <div class="ani">
+      <svg width="160" height="80" viewBox="0 0 160 80">
+        <!-- "周" character stylized -->
+        <rect x="10" y="10" width="55" height="60" rx="4" fill="none" stroke="#ffd700" stroke-width="2.5" opacity="0.8"/>
+        <rect x="22" y="22" width="30" height="20" rx="2" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.6"/>
+        <line x1="37" y1="22" x2="37" y2="42" stroke="#ffd700" stroke-width="1.5" opacity="0.6"/>
+        <line x1="22" y1="32" x2="52" y2="32" stroke="#ffd700" stroke-width="1.5" opacity="0.6"/>
+        <line x1="37" y1="45" x2="37" y2="62" stroke="#ffd700" stroke-width="1.5" opacity="0.5"/>
+        <!-- "易" character stylized -->
+        <g transform="translate(85,0)">
+          <path d="M15,15 Q37,10 60,15" fill="none" stroke="#ffd700" stroke-width="2.5" opacity="0.8"/>
+          <line x1="37" y1="15" x2="37" y2="45" stroke="#ffd700" stroke-width="2" opacity="0.7"/>
+          <path d="M20,35 L55,35" fill="none" stroke="#ffd700" stroke-width="2" opacity="0.6"/>
+          <path d="M20,50 Q37,55 55,50" fill="none" stroke="#ffd700" stroke-width="2" opacity="0.7"/>
+          <path d="M25,60 L37,70 L50,60" fill="none" stroke="#ffd700" stroke-width="2" opacity="0.6"/>
+        </g>
+      </svg>
+    </div>
+    <div class="page-title ani">"周" "易" 二字</div>
+    <div class="page-text ani">
+      <span class="em">「周」</span>：<br>
+      ① 周朝（文王所建）<br>
+      ② 周遍（无所不包）<br><br>
+      <span class="em">「易」</span>三义：<br>
+      <span class="em">变易</span> — 万物时刻在变<br>
+      <span class="em">简易</span> — 大道至简<br>
+      <span class="em">不易</span> — 变中有不变的规律
+    </div>
+    <div class="fact-card ani">
+      <div class="label">🧠 一句话核心</div>
+      世界永远在变，但变化本身遵循规律。<br>掌握规律，就能<strong>以不变应万变</strong>。
+    </div>
+  </div>
+
+  <!-- Page 10: Ending -->
+  <div class="page bg-final" data-page="9">
+    <div class="particles" id="p9"></div>
+    <div class="ani">
+      <svg width="80" height="80" viewBox="0 0 80 80">
+        <circle cx="40" cy="40" r="35" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1">
+          <animateTransform attributeName="transform" type="rotate" values="0 40 40;360 40 40" dur="20s" repeatCount="indefinite"/>
+        </circle>
+        <path d="M40,5 A35,35 0 0,1 40,75 A17.5,17.5 0 0,1 40,40 A17.5,17.5 0 0,0 40,5 Z" fill="url(#gYang2)"/>
+        <path d="M40,5 A35,35 0 0,0 40,75 A17.5,17.5 0 0,0 40,40 A17.5,17.5 0 0,1 40,5 Z" fill="#0a0a15"/>
+        <circle cx="40" cy="22.5" r="5" fill="#0a0a15"/>
+        <circle cx="40" cy="57.5" r="5" fill="#ffd700"/>
+        <defs><radialGradient id="gYang2"><stop offset="0%" stop-color="#fff8e0"/><stop offset="100%" stop-color="#b8860b"/></radialGradient></defs>
+      </svg>
+    </div>
+    <div class="page-title ani">小结</div>
+    <div class="page-text ani">
+      本系列从传统文化与思想史角度介绍《周易》，不提供占卜服务。<br><br>
+      它是中华文明<span class="em">最古老的智慧结晶</span>，<br>
+      一套关于<span class="em">变化与规律</span>的思想体系。<br><br>
+      <span style="color:#6a5a4a;font-size:0.9em;">
+      伏羲观天地 → 画八卦<br>
+      文王困羑里 → 演六十四卦<br>
+      孔子读断绳 → 著十翼
+      </span>
+    </div>
+    <div class="ani" style="margin-top:20px;padding:12px 20px;border:1px solid rgba(255,215,0,0.2);border-radius:10px;text-align:center;">
+      <div style="color:#ffd700;font-size:1.1em;font-weight:bold;">下一期预告</div>
+      <div style="color:#8a7a6a;margin-top:5px;">第二期 · 太极与阴阳 ☯️</div>
+    </div>
+    <div class="ani" style="margin-top:15px;color:#4a4a4a;font-size:0.75em;text-align:center;">
+      — 周易讲解 · 第一期 完 —
+    </div>
+  </div>
+
+</div>
+
+<!-- Voice Panel -->
+<div class="voice-panel" id="voicePanel">
+  <label>🗣️ 声音 <select id="voiceSelect"></select></label>
+  <label>🔊 语速: <span id="rateVal">0.9</span>x <input type="range" id="rateRange" min="0.5" max="1.5" step="0.1" value="0.9"></label>
+  <div class="close-panel" onclick="toggleVoicePanel()">✕ 关闭</div>
+</div>
+
+<script>
+// === Navigation ===
+let cur = 0;
+const pages = document.querySelectorAll('.page');
+const total = pages.length;
+let animating = false, speaking = false;
+
+const navDots = document.getElementById('navDots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => go(i);
+  navDots.appendChild(d);
+}
+
+function go(idx) {
+  if (idx < 0 || idx >= total || idx === cur || animating) return;
+  animating = true;
+  window.speechSynthesis.cancel();
+  const old = pages[cur], nw = pages[idx], dir = idx > cur ? 1 : -1;
+  old.classList.remove('active');
+  old.classList.add('prev');
+  if (dir < 0) { old.style.transform = 'translateX(100%)'; old.style.opacity = '0'; }
+  nw.style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+  nw.classList.remove('prev');
+  requestAnimationFrame(() => {
+    nw.classList.add('active');
+    nw.style.transform = '';
+    cur = idx;
+    updateUI();
+    setTimeout(() => {
+      animating = false;
+      old.classList.remove('prev');
+      old.style.transform = ''; old.style.opacity = '';
+      if (speaking) speakPage(cur);
+    }, 650);
+  });
+}
+
+function updateUI() {
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.getElementById('pageNum').textContent = `${cur + 1} / ${total}`;
+  document.getElementById('navHint').style.opacity = '0';
+}
+
+// Touch & click
+let tx = 0, ty = 0, tt = 0;
+document.addEventListener('touchstart', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY; tt = Date.now();
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  const dx = e.changedTouches[0].clientX - tx;
+  const dy = e.changedTouches[0].clientY - ty;
+  const dt = Date.now() - tt;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 500) {
+    dx < 0 ? go(cur + 1) : go(cur - 1); return;
+  }
+  if (dt < 300 && Math.abs(dx) < 15 && Math.abs(dy) < 15) {
+    const x = e.changedTouches[0].clientX;
+    x > window.innerWidth * 0.4 ? go(cur + 1) : go(cur - 1);
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur + 1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1); }
+});
+
+// === TTS ===
+const narrations = [
+  "周易是什么。第一期，万经之首的真面目。",
+  "提到周易，大多数人第一反应是：那不是算命的吗？街边摆摊、掐指一算、故弄玄虚。但这其实是天大的误解。算命只是后人附会的应用，周易本身，是中华文明最古老的哲学体系。",
+  "周易是一部探索万物变化规律的经典。它用64个符号，也就是卦，描述天地间一切事物产生、发展、变化的过程。它被后世尊为群经之首。",
+  "周易不是一个人写的，而是三位圣人跨越近三千年接力完成。伏羲画八卦，周文王演六十四卦，孔子作十翼。这是人类文明史上最漫长的一次合著。",
+  "远古时代，伏羲仰观天象，俯察地理，观鸟兽之文，察山川之形。他发现万物都可以用阳和阴两个最简单的符号来表达。于是画出了八卦。",
+  "八卦代表自然界八种基本力量。乾为天，坤为地，震为雷，巽为风，坎为水，离为火，艮为山，兑为泽。卦从下往上读，三条线叫三爻。两两重叠就产生了六十四卦。",
+  "三千年前，商朝末年。周文王被纣王囚禁在羑里，一关就是七年。在暗无天日的牢狱中，他将八卦两两重叠，推演出六十四卦，并写下每一卦的卦辞。司马迁说：文王拘而演周易。",
+  "又过了五百年。孔子晚年痴迷周易，读得韦编三绝。竹简的牛皮绳翻断了三次！他写下十篇解读，称为十翼，让周易从占卜之书升华为哲学巨著。",
+  "周字有两层含义：一指周朝，文王所建；二指周遍，无所不包。易字有三层含义：变易，万物时刻在变；简易，大道至简；不易，变中有不变的规律。世界永远在变，但变化本身遵循规律。掌握规律，就能以不变应万变。",
+  "小结。本系列从传统文化与思想史角度介绍《周易》，不提供占卜服务。它是中华文明最古老的智慧结晶，一套关于变化与规律的思想体系。伏羲观天地画八卦，文王困羑里演六十四卦，孔子读断绳著十翼。下一期，我们来讲太极与阴阳。"
+];
+
+let voices = [];
+function loadVoices() {
+  voices = window.speechSynthesis.getVoices();
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+  const zh = voices.filter(v => (v.lang.startsWith('zh-CN')||v.lang==='zh')&&!v.lang.startsWith('zh-HK')&&!v.lang.startsWith('zh-TW'));
+  // Sort: Edge Online (Natural) first
+  zh.sort((a, b) => {
+    const aOnline = a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Online') && a.name.includes('Natural') ? 2 : a.name.includes('Microsoft') ? 1 : 0;
+    const bOnline = b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Online') && b.name.includes('Natural') ? 2 : b.name.includes('Microsoft') ? 1 : 0;
+    return bOnline - aOnline;
+  });
+  (zh.length ? zh : voices.slice(0, 8)).forEach(v => {
+    const o = document.createElement('option');
+    o.value = voices.indexOf(v);
+    o.textContent = v.name.replace(/Microsoft |Google |Apple /g, '');
+    sel.appendChild(o);
+  });
+}
+window.speechSynthesis.onvoiceschanged = loadVoices;
+setTimeout(loadVoices, 300);
+document.getElementById('rateRange').addEventListener('input', function() {
+  document.getElementById('rateVal').textContent = this.value;
+});
+
+function speakPage(idx) {
+  window.speechSynthesis.cancel();
+  if (!narrations[idx]) return;
+  const u = new SpeechSynthesisUtterance(narrations[idx]);
+  u.lang = 'zh-CN';
+  u.rate = parseFloat(document.getElementById('rateRange').value);
+  const sv = document.getElementById('voiceSelect');
+  if (sv.value && voices[sv.value]) u.voice = voices[sv.value];
+  u.onend = () => {
+    if (speaking && cur < total - 1) setTimeout(() => go(cur + 1), 1200);
+    else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
+  };
+  window.speechSynthesis.speak(u);
+}
+
+function toggleAudio() {
+  if (speaking) { speaking = false; window.speechSynthesis.cancel(); }
+  else { speaking = true; speakPage(cur); }
+  updateAudioBtn();
+}
+function updateAudioBtn() {
+  const b = document.getElementById('audioBtn');
+  b.textContent = speaking ? '🔊' : '🔇';
+  b.classList.toggle('playing', speaking);
+}
+
+let lpt;
+document.getElementById('audioBtn').addEventListener('touchstart', e => {
+  lpt = setTimeout(() => { toggleVoicePanel(); e.preventDefault(); }, 600);
+}, { passive: false });
+document.getElementById('audioBtn').addEventListener('touchend', () => clearTimeout(lpt));
+function toggleVoicePanel() { document.getElementById('voicePanel').classList.toggle('show'); }
+
+// === Particles & Stars ===
+function mkParticles(id, n = 15) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle ' + (Math.random() > 0.5 ? 'particle-gold' : 'particle-white');
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDelay = Math.random() * 7 + 's';
+    p.style.animationDuration = (5 + Math.random() * 4) + 's';
+    const s = 2 + Math.random() * 4;
+    p.style.width = s + 'px'; p.style.height = s + 'px';
+    c.appendChild(p);
+  }
+}
+function mkStars(id, n = 35) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = Math.random() * 4 + 's';
+    const sz = 1 + Math.random() * 2;
+    s.style.width = sz + 'px'; s.style.height = sz + 'px';
+    c.appendChild(s);
+  }
+}
+
+mkParticles('p0', 20);
+mkParticles('p2', 14);
+mkParticles('p4', 12);
+mkParticles('p8', 16);
+mkParticles('p9', 14);
+mkStars('s1', 40);
+mkStars('s3', 35);
+mkStars('s7', 30);
+
+setTimeout(() => { document.getElementById('navHint').style.opacity = '0'; }, 4500);
+document.addEventListener('dblclick', e => e.preventDefault());
+</script>
+<script src="../../assets/site.js"></script></body>
+</html>

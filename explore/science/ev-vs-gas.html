@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚡🆚⛽ 电动车 vs 油车</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'PingFang SC','Microsoft YaHei',sans-serif;
+  background: #0f0f23;
+  min-height: 100vh;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  color: #dfe6e9;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 15px 10px 10px;
+  background: linear-gradient(180deg, #1e272e, #0f0f23);
+}
+.header h1 { font-size: 1.4em; }
+.header p { font-size: 0.8em; color: #b2bec3; margin-top: 4px; }
+
+/* Toggle */
+.toggle-bar {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  margin: 10px 15px;
+  background: #2d3436;
+  border-radius: 25px;
+  padding: 4px;
+}
+.toggle-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 22px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  background: transparent;
+  color: #b2bec3;
+  transition: all 0.3s;
+}
+.toggle-btn.active-gas { background: linear-gradient(135deg, #e17055, #d63031); color: white; }
+.toggle-btn.active-ev { background: linear-gradient(135deg, #00b894, #0984e3); color: white; }
+
+/* Comparison scene */
+.comp-scene {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #2d3436 0%, #1e272e 100%);
+  border-radius: 15px;
+  margin: 10px 15px;
+  max-width: calc(100% - 30px);
+}
+
+/* Animated car cutaway */
+.car-cutaway {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Gas car internals */
+.gas-view, .ev-view {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s, transform 0.5s;
+}
+.gas-view.hidden, .ev-view.hidden {
+  opacity: 0;
+  transform: scale(0.9);
+  pointer-events: none;
+}
+
+/* Engine animation */
+.engine-block {
+  position: relative;
+  width: 280px;
+  height: 160px;
+}
+.eng-label {
+  position: absolute;
+  font-size: 0.7em;
+  color: #b2bec3;
+  white-space: nowrap;
+}
+
+/* Piston */
+.piston-box {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 50px;
+  height: 80px;
+  background: #636e72;
+  border-radius: 5px;
+  border: 2px solid #b2bec3;
+  overflow: hidden;
+}
+.piston-head {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  height: 20px;
+  background: #e17055;
+  transition: bottom 0.15s;
+}
+.spark {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+
+/* Gears */
+.gear-set {
+  position: absolute;
+  top: 35px;
+  left: 90px;
+}
+.gear {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #fdcb6e;
+  border-radius: 50%;
+  position: relative;
+  display: inline-block;
+}
+.gear::before {
+  content: '';
+  position: absolute;
+  top: -5px; left: 50%;
+  width: 4px; height: 50px;
+  background: #fdcb6e;
+  transform: translateX(-50%);
+}
+.gear.spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Fuel tank */
+.fuel-tank {
+  position: absolute;
+  bottom: 15px;
+  left: 20px;
+  width: 45px;
+  height: 30px;
+  background: #2d3436;
+  border: 2px solid #e17055;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.fuel-level {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 70%;
+  background: linear-gradient(0deg, #e17055, #fdcb6e);
+  transition: height 0.5s;
+}
+
+/* Exhaust */
+.exhaust-pipe {
+  position: absolute;
+  bottom: 30px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.pipe {
+  width: 30px;
+  height: 12px;
+  background: #636e72;
+  border-radius: 3px;
+}
+.smoke-puff {
+  width: 15px;
+  height: 15px;
+  background: rgba(180,180,180,0.5);
+  border-radius: 50%;
+  animation: drift 1.5s ease-out infinite;
+}
+.smoke-puff:nth-child(2) { animation-delay: 0.5s; width: 12px; height: 12px; }
+.smoke-puff:nth-child(3) { animation-delay: 1s; width: 10px; height: 10px; }
+@keyframes drift {
+  0% { transform: translate(0,0) scale(1); opacity: 0.6; }
+  100% { transform: translate(25px,-15px) scale(2); opacity: 0; }
+}
+
+/* Wheel for gas view */
+.wheel-box {
+  position: absolute;
+  bottom: 10px;
+  right: 80px;
+}
+.anim-wheel {
+  width: 35px;
+  height: 35px;
+  border: 4px solid #636e72;
+  border-radius: 50%;
+  background: #2d3436;
+  position: relative;
+}
+.anim-wheel::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 14px; height: 3px;
+  background: #b2bec3;
+  transform-origin: center;
+}
+.anim-wheel.spin { animation: spin 0.8s linear infinite; }
+
+/* Arrow flow */
+.flow-arrow {
+  position: absolute;
+  color: #fdcb6e;
+  font-size: 1.2em;
+  animation: blink 1s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* === EV VIEW === */
+.battery-box {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 60px;
+  height: 35px;
+  background: #2d3436;
+  border: 2px solid #0984e3;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.battery-box::after {
+  content: '';
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 15px;
+  background: #0984e3;
+  border-radius: 0 3px 3px 0;
+}
+.battery-level {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 80%;
+  background: linear-gradient(0deg, #0984e3, #74b9ff);
+  transition: height 0.5s;
+}
+.battery-bolt {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  font-size: 16px;
+  z-index: 2;
+}
+
+/* Motor */
+.motor-box {
+  position: absolute;
+  top: 30px;
+  left: 110px;
+  width: 50px;
+  height: 50px;
+  border: 3px solid #00b894;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.motor-inner {
+  width: 20px;
+  height: 20px;
+  background: #00b894;
+  border-radius: 50%;
+}
+.motor-box.spin { animation: spin 0.6s linear infinite; }
+
+/* Electric sparks */
+.e-spark {
+  position: absolute;
+  font-size: 12px;
+  animation: sparkle 0.8s infinite;
+}
+@keyframes sparkle { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.7)} }
+
+/* No exhaust badge */
+.no-exhaust {
+  position: absolute;
+  bottom: 25px;
+  right: 20px;
+  background: rgba(0,184,148,0.2);
+  border: 1px solid #00b894;
+  border-radius: 10px;
+  padding: 5px 10px;
+  font-size: 0.75em;
+  color: #00b894;
+}
+
+/* === COMPARISON TABLE === */
+.comp-table {
+  margin: 15px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #2d3436;
+}
+.comp-row {
+  display: flex;
+  border-bottom: 1px solid #3d4447;
+  transition: background 0.3s;
+}
+.comp-row:last-child { border-bottom: none; }
+.comp-row.highlight { background: rgba(0,206,201,0.08); }
+.comp-cell {
+  flex: 1;
+  padding: 10px 8px;
+  text-align: center;
+  font-size: 0.82em;
+  line-height: 1.4;
+}
+.comp-cell.label-cell {
+  flex: 0.8;
+  background: rgba(0,0,0,0.2);
+  font-weight: bold;
+  color: #00cec9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.comp-cell.gas-cell { color: #fdcb6e; }
+.comp-cell.ev-cell { color: #74b9ff; }
+.comp-header {
+  background: rgba(0,0,0,0.3);
+  font-weight: bold;
+  font-size: 0.9em;
+}
+.comp-header .gas-cell { color: #e17055; }
+.comp-header .ev-cell { color: #0984e3; }
+
+/* === ENERGY FLOW === */
+.energy-section {
+  margin: 15px;
+  padding: 15px;
+  background: #2d3436;
+  border-radius: 12px;
+}
+.energy-title {
+  font-size: 0.95em;
+  font-weight: bold;
+  color: #00cec9;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.energy-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex-wrap: nowrap;
+  padding: 10px 0;
+  overflow-x: auto;
+}
+.energy-node {
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 6px 6px;
+  text-align: center;
+  font-size: 0.72em;
+  min-width: 48px;
+  flex-shrink: 0;
+  transition: background 0.3s, transform 0.3s;
+}
+.energy-node.active {
+  background: rgba(0,206,201,0.15);
+  transform: scale(1.05);
+}
+.energy-node .e-icon { font-size: 1.2em; display: block; margin-bottom: 2px; }
+.energy-arrow {
+  font-size: 1em;
+  color: #00cec9;
+  flex-shrink: 0;
+  animation: blink 1s infinite;
+}
+
+/* Gas flow */
+.flow-gas .energy-node { border: 1px solid #e17055; }
+.flow-gas .energy-arrow { color: #e17055; }
+.flow-gas .energy-node.active { background: rgba(225,112,85,0.15); }
+
+/* EV flow */
+.flow-ev .energy-node { border: 1px solid #0984e3; }
+.flow-ev .energy-arrow { color: #0984e3; }
+.flow-ev .energy-node.active { background: rgba(9,132,227,0.15); }
+
+/* === FUN FACTS === */
+.facts {
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 30px;
+}
+.fact-card {
+  background: linear-gradient(135deg, #2d3436, #3d4447);
+  border-radius: 12px;
+  padding: 14px;
+  border-left: 4px solid #00cec9;
+}
+.fact-card h4 { color: #00cec9; font-size: 0.9em; margin-bottom: 6px; }
+.fact-card p { font-size: 0.82em; line-height: 1.7; color: #b2bec3; }
+.fact-card .emoji-big { font-size: 1.3em; }
+
+/* Voice */
+.voice-btn {
+  position: fixed; bottom: 18px; right: 18px;
+  width: 46px; height: 46px; border-radius: 50%;
+  background: #6c5ce7; color: white; border: none;
+  font-size: 1.4em; cursor: pointer;
+  box-shadow: 0 4px 12px rgba(108,92,231,0.4);
+  z-index: 100;
+  display: flex; align-items: center; justify-content: center;
+}
+.voice-btn.speaking { background: #d63031; animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="header">
+  <h1>⚡ 电动车 🆚 ⛽ 油车</h1>
+  <p>它们都能跑，但"心脏"完全不一样！</p>
+</div>
+
+<!-- Toggle -->
+<div class="toggle-bar">
+  <button class="toggle-btn active-gas" id="btnGas" onclick="showView('gas')">⛽ 油车</button>
+  <button class="toggle-btn" id="btnEv" onclick="showView('ev')">⚡ 电动车</button>
+</div>
+
+<!-- Animated Cutaway -->
+<div class="comp-scene">
+  <!-- Gas Car View -->
+  <div class="gas-view" id="gasView">
+    <div class="engine-block">
+      <div class="eng-label" style="top:2px;left:20px">发动机 🔥</div>
+      <div class="piston-box">
+        <div class="spark" id="spark1">💥</div>
+        <div class="piston-head" id="ph1"></div>
+      </div>
+      <div class="gear-set">
+        <div class="gear spin" id="gasGear"></div>
+      </div>
+      <div class="flow-arrow" style="top:50px;left:75px">→</div>
+      <div class="eng-label" style="top:80px;left:90px">齿轮⚙️</div>
+      <div class="flow-arrow" style="top:50px;left:140px">→</div>
+      <div class="wheel-box">
+        <div class="anim-wheel spin" id="gasWheel"></div>
+        <div class="eng-label" style="top:38px;left:-5px">车轮🛞</div>
+      </div>
+      <div class="fuel-tank">
+        <div class="fuel-level" id="fuelLevel"></div>
+      </div>
+      <div class="eng-label" style="bottom:0;left:20px">油箱⛽</div>
+      <div class="flow-arrow" style="bottom:25px;left:70px">↑</div>
+      <div class="exhaust-pipe">
+        <div class="pipe"></div>
+        <div class="smoke-puff"></div>
+        <div class="smoke-puff"></div>
+        <div class="smoke-puff"></div>
+      </div>
+      <div class="eng-label" style="bottom:10px;right:15px">尾气💨</div>
+    </div>
+  </div>
+
+  <!-- EV View -->
+  <div class="ev-view hidden" id="evView">
+    <div class="engine-block">
+      <div class="eng-label" style="top:2px;left:15px">电池 🔋</div>
+      <div class="battery-box">
+        <div class="battery-level" id="battLevel"></div>
+        <div class="battery-bolt">⚡</div>
+      </div>
+      <div class="e-spark" style="top:30px;left:85px">⚡</div>
+      <div class="e-spark" style="top:45px;left:90px;animation-delay:0.3s">⚡</div>
+      <div class="flow-arrow" style="top:40px;left:75px;color:#0984e3">→</div>
+      <div class="motor-box spin" id="evMotor">
+        <div class="motor-inner"></div>
+      </div>
+      <div class="eng-label" style="top:82px;left:108px">电机🔄</div>
+      <div class="flow-arrow" style="top:45px;left:165px;color:#00b894">→</div>
+      <div class="wheel-box" style="right:60px">
+        <div class="anim-wheel spin" id="evWheel"></div>
+        <div class="eng-label" style="top:38px;left:-5px">车轮🛞</div>
+      </div>
+      <div class="no-exhaust">🌱 零排放！没有尾气</div>
+      <div class="e-spark" style="top:20px;left:155px;animation-delay:0.6s">✨</div>
+    </div>
+  </div>
+</div>
+
+<!-- Energy Flow Diagrams -->
+<div class="energy-section">
+  <div class="energy-title" id="flowTitle">⛽ 油车的能量旅程</div>
+  <div class="energy-flow flow-gas" id="flowGas">
+    <div class="energy-node active" id="gn1"><span class="e-icon">⛽</span>汽油</div>
+    <span class="energy-arrow">→</span>
+    <div class="energy-node" id="gn2"><span class="e-icon">🔥</span>燃烧</div>
+    <span class="energy-arrow">→</span>
+    <div class="energy-node" id="gn3"><span class="e-icon">🔥</span>热能</div>
+    <span class="energy-arrow">→</span>
+    <div class="energy-node" id="gn4"><span class="e-icon">⚙️</span>动能</div>
+    <span class="energy-arrow">→</span>
+    <div class="energy-node" id="gn5"><span class="e-icon">🛞</span>前进</div>
+  </div>
+  <div class="energy-flow flow-ev" id="flowEv" style="display:none">
+    <div class="energy-node active" id="en1"><span class="e-icon">🔋</span>电池</div>
+    <span class="energy-arrow">→</span>
+    <div class="energy-node" id="en2"><span class="e-icon">⚡</span>电流</div>
+    <span class="energy-arrow">→</span>
+    <div class="energy-node" id="en3"><span class="e-icon">🔄</span>电机转</div>
+    <span class="energy-arrow">→</span>
+    <div class="energy-node" id="en4"><span class="e-icon">🛞</span>前进</div>
+  </div>
+</div>
+
+<!-- Comparison Table -->
+<div class="comp-table">
+  <div class="comp-row comp-header">
+    <div class="comp-cell label-cell">对比项</div>
+    <div class="comp-cell gas-cell">⛽ 油车</div>
+    <div class="comp-cell ev-cell">⚡ 电动车</div>
+  </div>
+  <div class="comp-row highlight"><div class="comp-cell label-cell">❤️心脏</div><div class="comp-cell gas-cell">发动机<br>(烧汽油)</div><div class="comp-cell ev-cell">电机<br>(用电)</div></div>
+  <div class="comp-row"><div class="comp-cell label-cell">⛽食物</div><div class="comp-cell gas-cell">汽油</div><div class="comp-cell ev-cell">电</div></div>
+  <div class="comp-row highlight"><div class="comp-cell label-cell">🔊声音</div><div class="comp-cell gas-cell">轰轰轰<br>很吵🗯️</div><div class="comp-cell ev-cell">嗡～<br>超安静🤫</div></div>
+  <div class="comp-row"><div class="comp-cell label-cell">💨排气</div><div class="comp-cell gas-cell">有尾气<br>不环保😷</div><div class="comp-cell ev-cell">零排放<br>超环保🌱</div></div>
+  <div class="comp-row highlight"><div class="comp-cell label-cell">⚡加速</div><div class="comp-cell gas-cell">慢一点<br>要换挡</div><div class="comp-cell ev-cell">超快！<br>一踩就飞🚀</div></div>
+  <div class="comp-row"><div class="comp-cell label-cell">🔋续航</div><div class="comp-cell gas-cell">加油快<br>跑很远🛣️</div><div class="comp-cell ev-cell">充电慢<br>跑短一些</div></div>
+  <div class="comp-row highlight"><div class="comp-cell label-cell">🧩复杂度</div><div class="comp-cell gas-cell">零件超多<br>2000+个</div><div class="comp-cell ev-cell">很简单<br>只有几十个</div></div>
+</div>
+
+<!-- Fun Facts -->
+<div class="facts">
+  <div class="fact-card">
+    <h4>🤫 电动车为什么这么安静？</h4>
+    <p>油车靠<b>燃烧汽油</b>产生动力（嘭嘭嘭！），当然吵啦！<br>电动车靠<b>电磁力</b>转动电机，就像风扇转一样安静～</p>
+  </div>
+  <div class="fact-card">
+    <h4>🚀 电动车为什么起步更快？</h4>
+    <p>电机一通电就有<b>最大力气</b>，不用慢慢加油换挡<br>就像：电动车是<b>猎豹</b>🐆 油车是<b>火车</b>🚂（慢慢提速）</p>
+  </div>
+  <div class="fact-card">
+    <h4>♻️ 刹车还能充电？</h4>
+    <p>电动车刹车时，电机反过来变成<b>发电机</b>！<br>把运动的能量重新变回电，存进电池里。<br>这叫<b>"能量回收"</b>——太聪明了！♻️</p>
+  </div>
+  <div class="fact-card">
+    <h4>🌍 未来是谁的？</h4>
+    <p>越来越多的车变成电动的，因为：<br>🌱 不污染空气<br>⚡ 电比油便宜<br>🧠 更容易变成自动驾驶<br>未来的车可能还会自己给自己充电呢！☀️</p>
+  </div>
+</div>
+
+<button class="voice-btn" id="voiceBtn" onclick="toggleVoice()">🔊</button>
+
+<script>
+// Edge High-Fidelity TTS: auto-select best voice
+var _edgeTTSVoice = null;
+function _initEdgeVoice() {
+  var voices = speechSynthesis.getVoices();
+  if (!voices.length) return;
+  var zh = voices.filter(function(v) { return /^zh-CN|^zh$|^cmn/i.test(v.lang)&&!/^zh-HK|^zh-TW/i.test(v.lang); });
+  _edgeTTSVoice = zh.find(function(v){ return v.name.indexOf('Xiaoxiao')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Online')>=0 && v.name.indexOf('Natural')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Yunxi')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Microsoft')>=0; })
+    || zh[0] || null;
+}
+_initEdgeVoice();
+if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = function(){ _initEdgeVoice(); };
+
+let currentView = 'gas';
+let flowStep = 0;
+let speaking = false;
+
+// === VIEW TOGGLE ===
+function showView(view) {
+  currentView = view;
+  const gasV = document.getElementById('gasView');
+  const evV = document.getElementById('evView');
+  const btnG = document.getElementById('btnGas');
+  const btnE = document.getElementById('btnEv');
+  const fGas = document.getElementById('flowGas');
+  const fEv = document.getElementById('flowEv');
+  const fTitle = document.getElementById('flowTitle');
+
+  if (view === 'gas') {
+    gasV.classList.remove('hidden');
+    evV.classList.add('hidden');
+    btnG.className = 'toggle-btn active-gas';
+    btnE.className = 'toggle-btn';
+    fGas.style.display = 'flex';
+    fEv.style.display = 'none';
+    fTitle.textContent = '⛽ 油车的能量旅程';
+  } else {
+    evV.classList.remove('hidden');
+    gasV.classList.add('hidden');
+    btnE.className = 'toggle-btn active-ev';
+    btnG.className = 'toggle-btn';
+    fEv.style.display = 'flex';
+    fGas.style.display = 'none';
+    fTitle.textContent = '⚡ 电动车的能量旅程';
+  }
+}
+
+// === FLOW ANIMATION ===
+function animateFlow() {
+  flowStep++;
+  // Gas flow
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById('gn' + i);
+    if (el) el.classList.toggle('active', (flowStep % 5) >= (i - 1));
+  }
+  // EV flow
+  for (let i = 1; i <= 4; i++) {
+    const el = document.getElementById('en' + i);
+    if (el) el.classList.toggle('active', (flowStep % 4) >= (i - 1));
+  }
+}
+setInterval(animateFlow, 600);
+
+// === PISTON ANIMATION ===
+let pistonPhase = 0;
+function animatePiston() {
+  pistonPhase++;
+  const ph = document.getElementById('ph1');
+  const spark = document.getElementById('spark1');
+  const positions = [50, 10, 10, 50]; // intake, compress, power, exhaust
+  const sparkOn = [false, false, true, false];
+  const idx = pistonPhase % 4;
+  if (ph) ph.style.bottom = positions[idx] + 'px';
+  if (spark) spark.style.opacity = sparkOn[idx] ? '1' : '0';
+}
+setInterval(animatePiston, 400);
+
+// === FUEL DRAIN ===
+let fuelPct = 100;
+function drainFuel() {
+  fuelPct -= 0.5;
+  if (fuelPct <= 20) fuelPct = 100;
+  const fl = document.getElementById('fuelLevel');
+  if (fl) fl.style.height = fuelPct + '%';
+  const bl = document.getElementById('battLevel');
+  if (bl) bl.style.height = Math.max(20, fuelPct) + '%';
+}
+setInterval(drainFuel, 200);
+
+// === VOICE ===
+const voiceTexts = [
+  '油车和电动车都能跑，但它们的心脏完全不一样！油车靠发动机烧汽油，电动车靠电机用电。',
+  '油车的工作过程是：汽油进入发动机，火花塞点火，汽油燃烧推动活塞，带动齿轮，最后转动车轮。过程中会产生尾气和噪音。',
+  '电动车就简单多了：电池放电，电流驱动电机旋转，直接带动车轮。没有燃烧，所以超安静，也没有尾气！',
+  '电动车起步特别快，因为电机一通电就有最大力气。油车需要慢慢加油换挡才能提速，像火车一样慢慢来。',
+  '电动车还有一个很聪明的本领叫能量回收：刹车的时候，电机反过来变成发电机，把运动能量重新变回电存起来！'
+];
+let vi = 0;
+function toggleVoice() {
+  const btn = document.getElementById('voiceBtn');
+  if (speaking) { speechSynthesis.cancel(); speaking = false; btn.classList.remove('speaking'); btn.textContent = '🔊'; return; }
+  const u = new SpeechSynthesisUtterance(voiceTexts[vi % voiceTexts.length]);
+  vi++; u.lang = 'zh-CN'; u.rate = 0.8; u.pitch = 1.1;
+  u.onend = () => { speaking = false; btn.classList.remove('speaking'); btn.textContent = '🔊'; };
+  speechSynthesis.speak(u); speaking = true; btn.classList.add('speaking'); btn.textContent = '⏹️';
+}
+</script>
+</body>
+</html>

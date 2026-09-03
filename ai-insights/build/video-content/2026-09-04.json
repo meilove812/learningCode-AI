@@ -1,0 +1,116 @@
+{
+  "page_title": "为什么它总在中途跑偏 | 2026.9.4",
+  "date": "2026年9月4日（周五）",
+  "topic": "它不是不会，是不查",
+  "slides": [
+    {
+      "kind": "cover",
+      "eyebrow": "把一件多步骤的活交给 AI 之后",
+      "title": "为什么它总在中途跑偏",
+      "accent": "不是不会，是不查",
+      "note": "看完你会知道该在哪儿设检查点",
+      "tts": "把一件多步骤的活交给 AI，它常常中途就跑偏了。多数人以为是它能力不够，实测指向另一个原因：它不回头核对。这一期讲清这个区别，也告诉你该在哪儿设检查点。"
+    },
+    {
+      "kind": "fact",
+      "eyebrow": "01 · 一个实测结果",
+      "title": "把它放进一件超长的活里",
+      "metric": "30–75 回合",
+      "body": "有人让它连续走三百多个回合，中途调用数千次工具。手册明确要求每 20 回合核对一次关键进度——工具就在手边，它实际每 30 到 75 回合才查一次。",
+      "tts": "有人让它连续走三百多个回合。手册要求每二十回合核对一次进度，它实际每三十到七十五回合才查一次。"
+    },
+    {
+      "kind": "formula",
+      "eyebrow": "02 · 更要紧的一个数",
+      "title": "自己写下的下一步，自己不执行",
+      "items": [
+        "它写下下一步要做什么",
+        "看十回合内有没有真做",
+        "执行率 48.2% – 65.8%",
+        "作者归因：不是能力缺失"
+      ],
+      "result": "＝ 有明确指示，也会偏离",
+      "tts": "更要紧的是它自己写下的下一步，十个回合内真正执行的只有一半多。"
+    },
+    {
+      "kind": "compare",
+      "eyebrow": "03 · 两种归因，两条路",
+      "title": "归因错了，优化方向就反了",
+      "left": {
+        "label": "判成精度不够",
+        "value": "去换更强的模型",
+        "tone": "dim"
+      },
+      "right": {
+        "label": "看清是执行偏离",
+        "value": "去加核对和回执",
+        "tone": "bright"
+      },
+      "tts": "判成精度不够，你会去换更强的模型；看清是执行偏离，你会去加核对和回执。方向完全不同。"
+    },
+    {
+      "kind": "metrics",
+      "eyebrow": "04 · 今天就能加的四个卡点",
+      "title": "给长流程装上四个卡点",
+      "items": [
+        {
+          "name": "每 N 步核对关键状态",
+          "icon": "🔍"
+        },
+        {
+          "name": "上一步承诺要回执",
+          "icon": "✅"
+        },
+        {
+          "name": "收尾前留预警窗",
+          "icon": "⏳"
+        },
+        {
+          "name": "计划与执行分开记",
+          "icon": "🔄"
+        }
+      ],
+      "tts": "四个卡点今天就能加：定步核对状态，承诺要回执，收尾前留预警窗，计划和执行分开记录。"
+    },
+    {
+      "kind": "conclusion",
+      "eyebrow": "05 · 今日判断",
+      "title": "判断长流程，先看它查不查",
+      "accent": "不是不会，是不查",
+      "note": "被拿走的是执行本身，没被拿走的是决定何时回头核对",
+      "tts": "判断一个长流程靠不靠得住，先看它会不会主动核对状态。被拿走的是执行本身，没被拿走的是决定什么时候回头核对。"
+    },
+    {
+      "kind": "ending",
+      "eyebrow": "",
+      "title": "今日AI洞察",
+      "sources": [
+        {
+          "name": "长程工具调用实测 · arXiv 2609.02459",
+          "url": "https://arxiv.org/abs/2609.02459"
+        }
+      ],
+      "disclaimer": "本内容基于公开研究整理，仅供参考，不构成决策依据。该研究为小样本试点，作者声明不用于模型排名。",
+      "signature": "开心的舵手",
+      "tts": "今天就试一条：让它每十回合回一句进度，和最初目标的差距。本期依据公开研究，样本有限，不做模型比较。",
+      "action": "让它每 10 回合回一句：现在到哪一步、下一步做什么、离最初目标差多少"
+    }
+  ],
+  "thesis": "长流程失败的主因是能力具备下的执行偏离——不主动核对状态、不执行自己刚写下的下一步；判断它可靠不可靠，先看它查不查。",
+  "derivation": "由 sources[1] 直接推出：该长程实测显示，手册要求每 20 回合核对关键进度而代理实际 30–75 回合才查一次，20 次可察觉败局中 7 次在收尾前的预警窗内未做查询，且自述下一步在十回合内的执行率仅 48.2%–65.8%；作者明确将其归为「有指示下的偏离」而非「能力缺失」，本期判断与可用之物均由此归因推出。",
+  "sources": [
+    {
+      "title": "CivBench: A Long-Horizon Benchmark for Tool-Mediated Agents in Civilization VI",
+      "url": "https://arxiv.org/abs/2609.02459",
+      "date": "2026-09-02",
+      "evidence": "手册要求每 20 回合查询胜利进度，代理实际每 30–75 回合才查；20 次可察觉败局中 7 次在终局前 20 回合预警窗内未查询；自述近期承诺十回合内执行率 RAG@10 为 48.2%–65.8%；作者结论为 deviations under instruction rather than absences of capability；23 次有效运行的试点，声明不可用于模型排名。",
+      "quotes": [
+        "despite playbook guidance to query victory progress every 20 turns, agents do so only every 30 to 75 turns, and in 7 of 20 detectable defeats they failed to query within the 20 turn warning window before game end",
+        "Agents also frequently fail to execute near-term commitments stated in their own planning reflections (RAG@10 between 48.2% and 65.8% across models)",
+        "we interpret them as deviations under instruction rather than absences of capability"
+      ]
+    }
+  ],
+  "taken_away": "执行步骤本身——写代码、查资料、逐步跑流程，它比人快也比人不累；没被拿走的是决定何时回头核对、以及盯住目标不漂",
+  "decision": "判断它可靠不可靠，先看它查不查状态，不看单步对错"
+}

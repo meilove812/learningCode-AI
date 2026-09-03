@@ -1,0 +1,1846 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>练一练 · 分类与整理 | 二年级数学 · 分类整理专题</title>
+<style>
+:root {
+  --primary: #FF6B35;
+  --secondary: #004E98;
+  --accent: #F5A623;
+  --success: #4CAF50;
+  --error: #F44336;
+  --bg: #FFF8F0;
+  --card-bg: #FFFFFF;
+  --text: #333333;
+  --text-light: #666666;
+  --border: #E0E0E0;
+  --highlight: #FFE082;
+  --purple: #9C27B0;
+  --pink: #E91E63;
+  --teal: #009688;
+  --blue: #2196F3;
+  --star-gold: #FFD700;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ===== Animated Background ===== */
+.bg-decoration {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 0; overflow: hidden;
+}
+.bg-shape {
+  position: absolute; border-radius: 50%; opacity: 0.06;
+  animation: floatShape 20s ease-in-out infinite;
+}
+.bg-shape:nth-child(1) { width: 300px; height: 300px; background: var(--primary); top: -50px; left: -50px; animation-delay: 0s; }
+.bg-shape:nth-child(2) { width: 200px; height: 200px; background: var(--secondary); top: 40%; right: -30px; animation-delay: -5s; }
+.bg-shape:nth-child(3) { width: 250px; height: 250px; background: var(--accent); bottom: -40px; left: 30%; animation-delay: -10s; }
+.bg-shape:nth-child(4) { width: 180px; height: 180px; background: var(--purple); top: 20%; left: 50%; animation-delay: -15s; }
+
+@keyframes floatShape {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -20px) scale(1.05); }
+  50% { transform: translate(-20px, 30px) scale(0.95); }
+  75% { transform: translate(15px, 15px) scale(1.02); }
+}
+
+/* ===== Header ===== */
+.page-header {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, var(--primary), #FF8A50);
+  color: white; padding: 12px 20px;
+  box-shadow: 0 4px 20px rgba(255,107,53,0.3);
+}
+.breadcrumb {
+  font-size: 12px; opacity: 0.9; margin-bottom: 4px;
+}
+.breadcrumb a { color: white; text-decoration: none; }
+.breadcrumb a:hover { text-decoration: underline; }
+.header-main {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.header-title {
+  font-size: 22px; font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.header-title .emoji { font-size: 28px; margin-right: 8px; }
+
+/* Score display */
+.score-display {
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.2); border-radius: 20px;
+  padding: 6px 16px; font-size: 16px; font-weight: 600;
+  backdrop-filter: blur(10px);
+}
+.score-display .star { font-size: 20px; }
+
+/* ===== TTS Controls ===== */
+.tts-float {
+  position: fixed; bottom: 90px; right: 20px; z-index: 200;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.tts-btn {
+  width: 50px; height: 50px; border-radius: 50%;
+  border: none; font-size: 24px; cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: all 0.3s; display: flex; align-items: center; justify-content: center;
+}
+.tts-btn:hover { transform: scale(1.1); }
+.tts-btn.speak { background: var(--secondary); color: white; }
+.tts-btn.stop { background: var(--error); color: white; }
+
+/* ===== Main Content ===== */
+.main-content {
+  position: relative; z-index: 1;
+  max-width: 800px; margin: 0 auto;
+  padding: 20px 16px 120px;
+}
+
+/* ===== Exercise Card ===== */
+.exercise-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  border: 2px solid transparent;
+  transition: all 0.3s;
+  animation: cardIn 0.6s ease-out both;
+}
+.exercise-card:nth-child(1) { animation-delay: 0.1s; }
+.exercise-card:nth-child(2) { animation-delay: 0.2s; }
+.exercise-card:nth-child(3) { animation-delay: 0.3s; }
+.exercise-card:nth-child(4) { animation-delay: 0.4s; }
+.exercise-card:nth-child(5) { animation-delay: 0.5s; }
+.exercise-card:nth-child(6) { animation-delay: 0.6s; }
+.exercise-card:nth-child(7) { animation-delay: 0.7s; }
+.exercise-card:nth-child(8) { animation-delay: 0.8s; }
+.exercise-card:nth-child(9) { animation-delay: 0.9s; }
+
+.exercise-card.completed {
+  border-color: var(--success);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.exercise-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px; padding-bottom: 12px;
+  border-bottom: 2px dashed var(--border);
+}
+.exercise-num {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 700; color: white;
+  flex-shrink: 0;
+}
+.exercise-num.c1 { background: linear-gradient(135deg, #FF6B35, #FF8A50); }
+.exercise-num.c2 { background: linear-gradient(135deg, #004E98, #1976D2); }
+.exercise-num.c3 { background: linear-gradient(135deg, #4CAF50, #66BB6A); }
+.exercise-num.c4 { background: linear-gradient(135deg, #9C27B0, #BA68C8); }
+.exercise-num.c5 { background: linear-gradient(135deg, #F44336, #EF5350); }
+.exercise-num.c6 { background: linear-gradient(135deg, #009688, #26A69A); }
+.exercise-num.c7 { background: linear-gradient(135deg, #FF9800, #FFB74D); }
+
+.exercise-title {
+  font-size: 18px; font-weight: 700;
+}
+.exercise-title .sub { font-size: 13px; color: var(--text-light); font-weight: 400; display: block; }
+
+.exercise-desc {
+  font-size: 15px; color: var(--text-light); margin-bottom: 16px;
+  background: #FFF3E0; border-radius: 12px; padding: 12px 16px;
+  border-left: 4px solid var(--accent);
+}
+
+/* Speaker icon for reading instructions */
+.speak-icon {
+  cursor: pointer; font-size: 18px; vertical-align: middle;
+  transition: transform 0.2s;
+}
+.speak-icon:hover { transform: scale(1.2); }
+.speak-icon.speaking { animation: pulse 1s infinite; }
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* ===== Exercise 1: Circle Vehicles ===== */
+.vehicle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 12px; margin-bottom: 16px;
+}
+.vehicle-item {
+  aspect-ratio: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: #F5F5F5; border-radius: 16px;
+  cursor: pointer; transition: all 0.3s;
+  border: 3px solid transparent;
+  font-size: 40px; position: relative;
+  user-select: none;
+}
+.vehicle-item:hover { background: #E8F5E9; transform: scale(1.05); }
+.vehicle-item.selected {
+  border-color: var(--primary);
+  background: #FFF3E0;
+  animation: bounceSelect 0.4s ease;
+}
+.vehicle-item .label { font-size: 12px; margin-top: 4px; }
+.vehicle-item .check-mark {
+  position: absolute; top: 4px; right: 4px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--primary); color: white;
+  display: none; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+.vehicle-item.selected .check-mark { display: flex; }
+
+@keyframes bounceSelect {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.15); }
+  60% { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+/* Count input */
+.count-row {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 18px; font-weight: 600;
+  margin-top: 16px;
+}
+.count-input {
+  width: 60px; height: 40px; text-align: center;
+  font-size: 20px; font-weight: 700;
+  border: 2px solid var(--border); border-radius: 10px;
+  outline: none; transition: border-color 0.3s;
+}
+.count-input:focus { border-color: var(--primary); }
+.count-input.correct { border-color: var(--success); background: #E8F5E9; }
+.count-input.wrong { border-color: var(--error); background: #FFEBEE; }
+
+/* ===== Exercise 2: Pictograph ===== */
+.pictograph-container {
+  overflow-x: auto; margin-bottom: 16px;
+}
+.pictograph {
+  display: flex; flex-direction: column; gap: 8px;
+  min-width: 400px;
+}
+.pictograph-row {
+  display: flex; align-items: center; gap: 8px;
+}
+.pictograph-label {
+  width: 80px; text-align: right; font-size: 16px;
+  font-weight: 600; flex-shrink: 0;
+}
+.pictograph-dots {
+  display: flex; gap: 6px;
+}
+.pictograph-dot {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+  animation: dotIn 0.3s ease both;
+}
+.pictograph-dot.c0 { background: #BBDEFB; color: #1565C0; }
+.pictograph-dot.c1 { background: #C8E6C9; color: #2E7D32; }
+.pictograph-dot.c2 { background: #FFE0B2; color: #E65100; }
+.pictograph-dot.c3 { background: #F8BBD0; color: #AD1457; }
+.pictograph-dot.c4 { background: #D1C4E9; color: #4527A0; }
+
+@keyframes dotIn {
+  from { transform: scale(0); } to { transform: scale(1); }
+}
+
+.pictograph-scale {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--text-light);
+  margin-top: 4px; padding-left: 88px;
+}
+
+/* Data table */
+.data-table {
+  width: 100%; border-collapse: collapse;
+  margin: 16px 0; border-radius: 12px; overflow: hidden;
+}
+.data-table th, .data-table td {
+  border: 2px solid var(--border);
+  padding: 10px 12px; text-align: center;
+  font-size: 15px;
+}
+.data-table th {
+  background: var(--secondary); color: white;
+  font-weight: 600;
+}
+.data-table td { background: white; }
+.data-table .table-input {
+  width: 50px; height: 32px; text-align: center;
+  font-size: 16px; font-weight: 700;
+  border: 2px solid var(--border); border-radius: 8px;
+  outline: none;
+}
+.data-table .table-input:focus { border-color: var(--primary); }
+.data-table .table-input.correct { border-color: var(--success); background: #E8F5E9; }
+.data-table .table-input.wrong { border-color: var(--error); background: #FFEBEE; }
+
+/* Multiple choice */
+.mc-options {
+  display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0;
+}
+.mc-option {
+  padding: 8px 20px; border-radius: 20px;
+  border: 2px solid var(--border);
+  background: white; cursor: pointer;
+  font-size: 15px; transition: all 0.3s;
+  user-select: none;
+}
+.mc-option:hover { border-color: var(--blue); background: #E3F2FD; }
+.mc-option.selected { border-color: var(--blue); background: #BBDEFB; color: var(--secondary); font-weight: 600; }
+.mc-option.correct { border-color: var(--success); background: #C8E6C9; }
+.mc-option.wrong { border-color: var(--error); background: #FFCDD2; }
+
+/* ===== Exercise 3: Drag Sort ===== */
+.sort-container { margin: 16px 0; }
+.sort-items {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  padding: 16px; background: #F5F5F5; border-radius: 16px;
+  min-height: 60px; margin-bottom: 16px;
+  border: 2px dashed var(--border);
+}
+.sort-item {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px; background: white;
+  border-radius: 12px; cursor: grab;
+  font-size: 14px; font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: all 0.2s; user-select: none;
+  border: 2px solid transparent;
+}
+.sort-item:active { cursor: grabbing; transform: scale(1.05); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+.sort-item .item-emoji { font-size: 22px; }
+.sort-item.dragging { opacity: 0.5; }
+
+.sort-zones {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.sort-zone {
+  border: 2px dashed var(--border); border-radius: 16px;
+  padding: 12px; min-height: 100px;
+  transition: all 0.3s;
+}
+.sort-zone.drag-over {
+  border-color: var(--primary); background: #FFF3E0;
+}
+.sort-zone-title {
+  text-align: center; font-weight: 600;
+  font-size: 15px; margin-bottom: 8px;
+  padding-bottom: 8px; border-bottom: 1px solid var(--border);
+}
+.sort-zone-items {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  min-height: 50px;
+}
+
+/* ===== Exercise 4: Traffic Signs ===== */
+.signs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 10px; margin-bottom: 16px;
+}
+.sign-item {
+  aspect-ratio: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  border-radius: 12px; cursor: pointer;
+  transition: all 0.3s; border: 3px solid transparent;
+  font-size: 36px; background: #F5F5F5;
+  position: relative; user-select: none;
+}
+.sign-item:hover { transform: scale(1.05); }
+.sign-item.selected-circle { border-color: #F44336; background: #FFEBEE; }
+.sign-item.selected-triangle { border-color: #FF9800; background: #FFF3E0; }
+.sign-item.selected-rect { border-color: #2196F3; background: #E3F2FD; }
+.sign-item .sign-label { font-size: 10px; margin-top: 2px; }
+
+/* Shape classification */
+.shape-legend {
+  display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap;
+}
+.shape-legend-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 500;
+}
+.shape-legend-dot {
+  width: 16px; height: 16px; border-radius: 4px;
+}
+
+/* ===== Exercise 5: Expression Sort ===== */
+.expr-grid {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-bottom: 16px;
+}
+.expr-chip {
+  padding: 10px 16px; background: #F5F5F5;
+  border-radius: 12px; font-size: 16px;
+  font-weight: 600; cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s; user-select: none;
+  font-family: "Courier New", monospace;
+}
+.expr-chip:hover { background: #E8EAF6; }
+.expr-chip.cat-a { border-color: var(--blue); background: #E3F2FD; }
+.expr-chip.cat-b { border-color: var(--primary); background: #FFF3E0; }
+
+.expr-zones {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.expr-zone {
+  border: 2px dashed var(--border); border-radius: 16px;
+  padding: 16px; min-height: 80px; transition: all 0.3s;
+}
+.expr-zone.drag-over { border-color: var(--primary); background: #FFF8E1; }
+.expr-zone-title {
+  text-align: center; font-weight: 600; font-size: 14px;
+  margin-bottom: 10px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.expr-zone-items {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  min-height: 40px;
+}
+
+/* ===== Exercise 6: Open Ended ===== */
+.open-options {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin: 16px 0;
+}
+.open-option {
+  padding: 16px; border-radius: 16px;
+  border: 2px solid var(--border);
+  background: white; cursor: pointer;
+  text-align: center; transition: all 0.3s;
+  user-select: none;
+}
+.open-option:hover { border-color: var(--accent); background: #FFF8E1; }
+.open-option.selected { border-color: var(--teal); background: #E0F2F1; }
+.open-option .opt-emoji { font-size: 32px; display: block; margin-bottom: 6px; }
+.open-option .opt-text { font-size: 14px; font-weight: 500; }
+
+/* ===== Exercise 7: 3D Shapes ===== */
+.shape3d-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 10px; margin-bottom: 16px;
+}
+.shape3d-item {
+  aspect-ratio: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  background: #F5F5F5; border-radius: 16px;
+  cursor: pointer; transition: all 0.3s;
+  border: 3px solid transparent;
+  font-size: 36px; user-select: none;
+}
+.shape3d-item:hover { transform: scale(1.05); }
+.shape3d-item.group-a { border-color: #2196F3; background: #E3F2FD; }
+.shape3d-item.group-b { border-color: #FF9800; background: #FFF3E0; }
+.shape3d-item .s3d-label { font-size: 11px; margin-top: 4px; font-weight: 500; }
+
+/* ===== Growth Portfolio ===== */
+.growth-card {
+  background: linear-gradient(135deg, #FFF8E1, #FFFDE7);
+  border: 2px solid var(--star-gold);
+  text-align: center;
+}
+.growth-title {
+  font-size: 24px; font-weight: 700;
+  color: var(--primary); margin-bottom: 16px;
+}
+.growth-stars {
+  font-size: 48px; margin: 16px 0;
+  animation: starGlow 2s ease-in-out infinite;
+}
+@keyframes starGlow {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(255,215,0,0.3)); }
+  50% { filter: drop-shadow(0 0 12px rgba(255,215,0,0.7)); }
+}
+.growth-score {
+  font-size: 28px; font-weight: 700;
+  color: var(--primary); margin: 8px 0;
+}
+.growth-checklist {
+  text-align: left; max-width: 360px; margin: 20px auto;
+}
+.growth-check-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0; font-size: 15px;
+  transition: all 0.3s;
+}
+.growth-check-item .check-icon {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+}
+.growth-check-item .check-icon.done {
+  background: var(--success); color: white;
+}
+.growth-check-item .check-icon.pending {
+  background: var(--border); color: white;
+}
+.growth-message {
+  font-size: 18px; color: var(--text-light);
+  margin-top: 16px; font-weight: 500;
+}
+
+/* ===== Check Button ===== */
+.check-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 24px; border-radius: 20px;
+  border: none; font-size: 15px; font-weight: 600;
+  cursor: pointer; transition: all 0.3s;
+  margin-top: 12px;
+}
+.check-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+.check-btn:active { transform: translateY(0); }
+.check-btn.primary {
+  background: linear-gradient(135deg, var(--primary), #FF8A50);
+  color: white;
+}
+.check-btn.success {
+  background: linear-gradient(135deg, var(--success), #66BB6A);
+  color: white;
+}
+.check-btn.secondary {
+  background: linear-gradient(135deg, var(--secondary), #1976D2);
+  color: white;
+}
+
+/* Feedback */
+.feedback {
+  margin-top: 12px; padding: 10px 16px;
+  border-radius: 12px; font-size: 15px;
+  font-weight: 500; display: none;
+  animation: feedbackIn 0.4s ease;
+}
+.feedback.show { display: block; }
+.feedback.correct {
+  background: #E8F5E9; color: #2E7D32;
+  border: 1px solid #A5D6A7;
+}
+.feedback.wrong {
+  background: #FFEBEE; color: #C62828;
+  border: 1px solid #EF9A9A;
+}
+.feedback.info {
+  background: #E3F2FD; color: #1565C0;
+  border: 1px solid #90CAF9;
+}
+
+@keyframes feedbackIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Sub-question label ===== */
+.sub-q {
+  font-weight: 600; font-size: 15px;
+  margin: 16px 0 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.sub-q .q-num {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--secondary); color: white;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+}
+
+/* ===== Navigation ===== */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: white; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; z-index: 100;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+}
+.nav-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px; border-radius: 20px;
+  text-decoration: none; font-size: 13px;
+  font-weight: 600; transition: all 0.3s;
+  border: 2px solid var(--border); color: var(--text);
+  background: white;
+}
+.nav-btn:hover { border-color: var(--primary); color: var(--primary); }
+.nav-btn.center { border-color: var(--secondary); color: var(--secondary); }
+
+/* Confetti */
+.confetti-container {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 1000; overflow: hidden;
+}
+.confetti {
+  position: absolute; top: -10px;
+  width: 10px; height: 10px; border-radius: 2px;
+  animation: confettiFall 3s ease-in forwards;
+}
+@keyframes confettiFall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* Toast */
+.toast {
+  position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-20px);
+  background: rgba(0,0,0,0.8); color: white;
+  padding: 10px 24px; border-radius: 20px;
+  font-size: 15px; font-weight: 500;
+  z-index: 500; opacity: 0; transition: all 0.3s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Section divider */
+.section-divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 8px 0 20px; padding: 0 8px;
+}
+.section-divider .line {
+  flex: 1; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+.section-divider .icon { font-size: 20px; }
+
+/* Responsive */
+@media (max-width: 500px) {
+  .exercise-card { padding: 16px; }
+  .vehicle-grid { grid-template-columns: repeat(3, 1fr); }
+  .sort-zones { grid-template-columns: 1fr; }
+  .expr-zones { grid-template-columns: 1fr; }
+  .open-options { grid-template-columns: 1fr; }
+  .header-title { font-size: 18px; }
+  .data-table th, .data-table td { padding: 8px 6px; font-size: 13px; }
+}
+
+/* Hint text */
+.hint-text {
+  font-size: 12px; color: var(--text-light);
+  margin-top: 4px; font-style: italic;
+}
+
+/* Progress indicator */
+.progress-bar {
+  height: 4px; background: rgba(255,255,255,0.3);
+  border-radius: 2px; overflow: hidden;
+  margin-top: 8px;
+}
+.progress-fill {
+  height: 100%; background: white;
+  border-radius: 2px; transition: width 0.5s ease;
+}
+
+.open-first{background:#FFF8E6;border-left:4px solid #E8B93B;border-radius:6px;padding:.55em .75em;margin:.5em 0;font-size:.95em;line-height:1.5}
+.open-first b{color:#B8860B}
+details.open-help{margin:.5em 0;background:#F5F7FA;border-radius:8px;padding:.4em .6em}
+details.open-help>summary{cursor:pointer;font-size:.95em;color:#4A6785;font-weight:600;list-style:none}
+details.open-help>summary::-webkit-details-marker{display:none}
+details.open-help>summary::before{content:"▸ ";}
+details.open-help[open]>summary::before{content:"▾ ";}
+</style>
+<style id="public-local-controls">/* 公开站：语音工具就近放置，不使用固定全站通栏 */
+.bottom-bar,.ttsbar,.voice-fab{position:static!important;inset:auto!important;margin:18px auto!important;transform:none!important}.voice-panel{position:static!important;display:block!important;margin:8px auto!important}body{padding-bottom:0!important}
+</style></head>
+<body>
+
+<div class="bg-decoration">
+  <div class="bg-shape"></div>
+  <div class="bg-shape"></div>
+  <div class="bg-shape"></div>
+  <div class="bg-shape"></div>
+</div>
+
+<!-- Header -->
+<header class="page-header">
+  <div class="breadcrumb">
+    <a href="unit1-index.html">二年级数学 · 分类整理专题</a> &gt;
+    <a href="unit1-index.html">分类与整理专题</a> &gt;
+    练一练
+  </div>
+  <div class="header-main">
+    <div class="header-title"><span class="emoji">✏️</span>练一练</div>
+    <div class="score-display">
+      <span class="star">⭐</span>
+      <span id="totalScore">0</span>分
+    </div>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+  </div>
+</header>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Main -->
+<main class="main-content">
+
+<!-- ==================== Exercise 1 ==================== -->
+<div class="exercise-card" id="ex1">
+  <div class="exercise-header">
+    <div class="exercise-num c1">1</div>
+    <div class="exercise-title">
+      圈出车辆
+      <span class="sub">下面哪些是"车"？点一点把它们圈出来</span>
+    </div>
+    <span class="speak-icon" onclick="speak('下面有很多交通工具，请你找出所有的车，点一下把它们圈出来。')">🔊</span>
+  </div>
+  <div class="exercise-desc">
+    📋 下面有很多交通工具，请点击所有的"车"（在路上跑的车），把它们圈出来！
+  </div>
+  <div class="vehicle-grid" id="vehicleGrid">
+    <!-- JS fills -->
+  </div>
+  <div class="count-row">
+    共有 <input type="number" class="count-input" id="vehicleCount" min="0" max="20" placeholder="?"> 辆车
+    <button class="check-btn primary" onclick="checkEx1()">✅ 检查</button>
+  </div>
+  <div class="feedback" id="fb1"></div>
+</div>
+
+<!-- ==================== Exercise 2 ==================== -->
+<div class="exercise-card" id="ex2">
+  <div class="exercise-header">
+    <div class="exercise-num c2">2</div>
+    <div class="exercise-title">
+      最喜欢的动物调查
+      <span class="sub">看统计图，回答问题</span>
+    </div>
+    <span class="speak-icon" onclick="speak('同学们最喜欢的动物调查结果如下，每个圆圈代表一位同学。请你看图回答问题。')">🔊</span>
+  </div>
+  <div class="exercise-desc">
+    📊 同学们做了"最喜欢的动物"调查，每个 ○ 代表 1 位同学。看图回答问题。
+  </div>
+
+  <!-- Pictograph -->
+  <div class="pictograph-container">
+    <div class="pictograph" id="pictograph">
+      <!-- JS fills -->
+    </div>
+    <div class="pictograph-scale">
+      ○ = 1位同学
+    </div>
+    <p style="background:#FFF8E6;border-left:4px solid #E8B93B;border-radius:6px;padding:.55em .75em;margin:.5em 0;font-size:.92em">📖 <strong>课本第 7 页也有这道题</strong>，图例写的是「每个 ○ 代表 1 名同学」，跟这里一样。不过<strong>课本上的圆圈是竖着一列一列往上排的</strong>，这里是横着排——<strong>道理一个样：横着看哪行最长，竖着看哪列最高，那种动物就最多。</strong></p>
+  </div>
+
+  <!-- Sub Q1 -->
+  <div class="sub-q"><span class="q-num">1</span> 读图填表</div>
+  <table class="data-table">
+    <tr>
+      <th>动物</th>
+      <th>🐢 乌龟</th>
+      <th>🐵 猴子</th>
+      <th>🐱 小猫</th>
+      <th>🐶 小狗</th>
+      <th>🐼 熊猫</th>
+    </tr>
+    <tr>
+      <td><strong>人数</strong></td>
+      <td><input type="number" class="table-input" id="animal0" min="0" max="20" placeholder="?"></td>
+      <td><input type="number" class="table-input" id="animal1" min="0" max="20" placeholder="?"></td>
+      <td><input type="number" class="table-input" id="animal2" min="0" max="20" placeholder="?"></td>
+      <td><input type="number" class="table-input" id="animal3" min="0" max="20" placeholder="?"></td>
+      <td><input type="number" class="table-input" id="animal4" min="0" max="20" placeholder="?"></td>
+    </tr>
+  </table>
+
+  <!-- Sub Q2 -->
+  <div class="sub-q"><span class="q-num">2</span> 哪种动物喜欢的人<strong>最多</strong>？哪种<strong>最少</strong>？</div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:8px 0;">
+    <span>最多：</span>
+    <div class="mc-options" id="mcMost"></div>
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:8px 0;">
+    <span>最少：</span>
+    <div class="mc-options" id="mcLeast"></div>
+  </div>
+
+  <!-- Sub Q3 -->
+  <div class="sub-q"><span class="q-num">3</span> 你还能提出什么数学问题？</div>
+  <div class="open-first">📖 课本第 4 页就是这么问的：<b>「根据分类的结果，你能提出什么数学问题？」</b><br>
+  <b>这一题没有标准答案。</b>先看着上面的表格自己想一个问题，<b>说给爸爸妈妈听</b>——想好了再打开下面对一对。</div>
+  <details class="open-help">
+    <summary>我想好了，看看别人会提什么问题</summary>
+    <div class="mc-options">
+      <div class="mc-option" onclick="selectOpen(this,'ex2q3')">喜欢小狗的比小猫多几人？</div>
+      <div class="mc-option" onclick="selectOpen(this,'ex2q3')">一共调查了多少人？</div>
+      <div class="mc-option" onclick="selectOpen(this,'ex2q3')">喜欢猴子和熊猫的一共多少人？</div>
+    </div>
+    <div class="open-first" style="background:#EEF4FF;border-color:#7BA7D9">💡 跟你想的不一样也没关系——<b>只要能用表格里的数回答，就是好问题。</b></div>
+  </details>
+
+  <button class="check-btn primary" onclick="checkEx2()" style="margin-top:12px;">✅ 检查</button>
+  <div class="feedback" id="fb2"></div>
+</div>
+
+<!-- ==================== Exercise 3 ==================== -->
+<div class="exercise-card" id="ex3">
+  <div class="exercise-header">
+    <div class="exercise-num c3">3</div>
+    <div class="exercise-title">
+      整理书包
+      <span class="sub">把物品分类放好</span>
+    </div>
+    <span class="speak-icon" onclick="speak('书包里的东西乱了！请你把它们分成两类，拖到下面的格子里。')">🔊</span>
+  </div>
+  <div class="exercise-desc">
+    🎒 书包里的东西乱了！请把物品拖到对应的分类区域。
+  </div>
+  <div class="sort-container">
+    <div class="sort-items" id="bagItems">
+      <!-- JS fills -->
+    </div>
+    <div class="sort-zones">
+      <div class="sort-zone" id="zoneBooks" ondrop="dropItem(event,'zoneBooks')" ondragover="dragOver(event)" ondragleave="dragLeave(event)">
+        <div class="sort-zone-title">📚 书本类</div>
+        <div class="sort-zone-items" id="zoneBooksItems"></div>
+      </div>
+      <div class="sort-zone" id="zoneTools" ondrop="dropItem(event,'zoneTools')" ondragover="dragOver(event)" ondragleave="dragLeave(event)">
+        <div class="sort-zone-title">✏️ 文具类</div>
+        <div class="sort-zone-items" id="zoneToolsItems"></div>
+      </div>
+    </div>
+  </div>
+  <button class="check-btn primary" onclick="checkEx3()">✅ 检查</button>
+  <div class="feedback" id="fb3"></div>
+</div>
+
+<!-- ==================== Exercise 4 ==================== -->
+<div class="exercise-card" id="ex4">
+  <div class="exercise-header">
+    <div class="exercise-num c4">4</div>
+    <div class="exercise-title">
+      交通标志分类 🚦
+      <span class="sub">按形状给交通标志分类</span>
+    </div>
+    <span class="speak-icon" onclick="speak('下面有一些交通标志，请按它们的形状分类：圆形、三角形、长方形。点击标志选择分类。')">🔊</span>
+  </div>
+  <div class="exercise-desc">
+    🚦 按形状给交通标志分类，点击标志选择它的形状类别。
+  </div>
+
+  <div class="shape-legend">
+    <div class="shape-legend-item"><div class="shape-legend-dot" style="background:#F44336;"></div> 圆形 🔴</div>
+    <div class="shape-legend-item"><div class="shape-legend-dot" style="background:#FF9800;"></div> 三角形 🔺</div>
+    <div class="shape-legend-item"><div class="shape-legend-dot" style="background:#2196F3;"></div> 长方形 🟦</div>
+  </div>
+  <p class="hint-text">💡 点击一次 = 圆形（红），再点 = 三角形（橙），再点 = 长方形（蓝），再点 = 取消</p>
+
+  <div class="signs-grid" id="signsGrid">
+    <!-- JS fills -->
+  </div>
+
+  <div class="sub-q"><span class="q-num">1</span> 填写数量</div>
+  <table class="data-table">
+    <tr>
+      <th>形状</th><th>🔴 圆形</th><th>🔺 三角形</th><th>🟦 长方形</th>
+    </tr>
+    <tr>
+      <td><strong>个数</strong></td>
+      <td><input type="number" class="table-input" id="signCircle" min="0" max="20" placeholder="?"></td>
+      <td><input type="number" class="table-input" id="signTriangle" min="0" max="20" placeholder="?"></td>
+      <td><input type="number" class="table-input" id="signRect" min="0" max="20" placeholder="?"></td>
+    </tr>
+  </table>
+
+  <div class="sub-q"><span class="q-num">2</span> 还可以怎样分类？</div>
+  <div class="open-first">先自己想一个<b>新的分法</b>，说出来；想好了再打开对一对。</div>
+  <details class="open-help">
+    <summary>我想好了，看看还有哪些分法</summary>
+    <div class="mc-options">
+      <div class="mc-option" onclick="selectOpen(this,'ex4q2')">按颜色分</div>
+      <div class="mc-option" onclick="selectOpen(this,'ex4q2')">按含义分</div>
+      <div class="mc-option" onclick="selectOpen(this,'ex4q2')">按大小分</div>
+    </div>
+  </details>
+
+  <div class="sub-q"><span class="q-num">3</span> 你还能提出什么数学问题？</div>
+  <div class="open-first">📖 课本第 8 页第 4 题也这么问。<b>这一题没有标准答案</b>——
+  看着上面填好的表格自己提一个，<b>说给爸爸妈妈听</b>。<br>
+  💡 能用表格里的数回答的，就是好问题。<br>
+  🚦 课本上还有一问：<b>「你知道它们分别表示什么意思吗？」</b>——出门路上看见了，指给爸爸妈妈说说看。</div>
+
+  <button class="check-btn primary" onclick="checkEx4()" style="margin-top:12px;">✅ 检查</button>
+  <div class="feedback" id="fb4"></div>
+</div>
+
+<!-- ==================== Exercise 5 ==================== -->
+<div class="exercise-card" id="ex5">
+  <div class="exercise-header">
+    <div class="exercise-num c5">5</div>
+    <div class="exercise-title">
+      算式分类 🔢
+      <span class="sub">把算式分成两类</span>
+    </div>
+    <span class="speak-icon" onclick="speak('下面有很多减法算式，请你把它们分成两类。点击算式选择类别：蓝色是减去一位数，橙色是减去两位数。')">🔊</span>
+  </div>
+  <div class="exercise-desc">
+    🔢 把下面的减法算式分成两类。
+  </div>
+  <div class="open-first">📖 课本第 8 页原话是：<b>「将这些算式分成两类，可以怎样分？」</b>——
+  <b>怎么分由你决定，不止一种分法。</b><br>
+  这一关先按其中一种来检查：<b>看减掉的是几</b>。蓝色🔵 = 减去一位数，橙色🟠 = 减去两位数。</div>
+  <details class="open-help">
+    <summary>我本来想按别的分，那算错吗？</summary>
+    <div class="open-first" style="background:#EEF4FF;border-color:#7BA7D9">
+    <b>不算错。</b>这 11 个算式还可以这样分成两类：<br>
+    · <b>要不要退位</b>：30−7、20−5、31−8、10−3、30−22 要退位（<b>5 个</b>）；剩下 6 个不退位<br>
+    · <b>得数是一位数还是两位数</b><br>
+    · <b>被减数是整十还是几十几</b><br>
+    <b>只要同一个标准从头用到尾，分出来就都对。</b>这一关的检查只认「减几」这一种，换个标准请自己在纸上分。</div>
+  </details>
+
+  <div class="expr-grid" id="exprGrid">
+    <!-- JS fills -->
+  </div>
+
+  <div class="sub-q"><span class="q-num">1</span> 分类结果</div>
+  <div class="expr-zones">
+    <div class="expr-zone" style="border-color:#BBDEFB;">
+      <div class="expr-zone-title">🔵 减去一位数</div>
+      <div class="expr-zone-items" id="exprZoneA"></div>
+    </div>
+    <div class="expr-zone" style="border-color:#FFE0B2;">
+      <div class="expr-zone-title">🟠 减去两位数</div>
+      <div class="expr-zone-items" id="exprZoneB"></div>
+    </div>
+  </div>
+
+  <div class="sub-q"><span class="q-num">2</span> 结果还能再分吗？</div>
+  <div class="open-first">📖 课本第 8 页写的是：<b>「上面的分类结果，还可以继续分吗？和同学交流一下吧。」</b><br>
+  先自己想一想，<b>说给爸爸妈妈或同学听</b>；想好了再打开下面对一对。</div>
+  <details class="open-help">
+    <summary>我说完了，看看别人怎么想</summary>
+    <div class="mc-options">
+      <div class="mc-option" onclick="selectOpen(this,'ex5q2')">可以按得数是一位数还是两位数再分</div>
+      <div class="mc-option" onclick="selectOpen(this,'ex5q2')">可以按被减数是几十几再分</div>
+      <div class="mc-option" onclick="selectOpen(this,'ex5q2')">不能再分了</div>
+    </div>
+  </details>
+
+  <button class="check-btn primary" onclick="checkEx5()" style="margin-top:12px;">✅ 检查</button>
+  <div class="feedback" id="fb5"></div>
+</div>
+
+<!-- ==================== Exercise 6 ==================== -->
+<div class="exercise-card" id="ex6">
+  <div class="exercise-header">
+    <div class="exercise-num c6">6</div>
+    <div class="exercise-title">
+      全班分两组
+      <span class="sub">想一想怎么分</span>
+    </div>
+    <span class="speak-icon" onclick="speak('如果把全班同学分成两组，你会怎么分？选一个你觉得最好的分法。')">🔊</span>
+  </div>
+  <div class="exercise-desc">
+    🤔 如果把全班同学分成两组，你会怎么分？选一个或多个你觉得好的分法！
+  </div>
+
+  <div class="open-options" id="groupOptions">
+    <div class="open-option" onclick="toggleGroupOption(this)">
+      <span class="opt-emoji">📏</span>
+      <span class="opt-text">按身高分<br>（高的一组、矮的一组）</span>
+    </div>
+    <div class="open-option" onclick="toggleGroupOption(this)">
+      <span class="opt-emoji">👦👧</span>
+      <span class="opt-text">按性别分<br>（男生一组、女生一组）</span>
+    </div>
+    <div class="open-option" onclick="toggleGroupOption(this)">
+      <span class="opt-emoji">💇</span>
+      <span class="opt-text">按头发长短分<br>（长发一组、短发一组）</span>
+    </div>
+    <div class="open-option" onclick="toggleGroupOption(this)">
+      <span class="opt-emoji">👓</span>
+      <span class="opt-text">按戴不戴眼镜分<br>（戴眼镜和不戴）</span>
+    </div>
+  </div>
+
+  <button class="check-btn primary" onclick="checkEx6()">✅ 我选好了</button>
+  <div class="feedback" id="fb6"></div>
+</div>
+
+<!-- ==================== Exercise 7 ==================== -->
+<div class="exercise-card" id="ex7">
+  <div class="exercise-header">
+    <div class="exercise-num c7">7</div>
+    <div class="exercise-title">
+      立体图形分类
+      <span class="sub">把立体图形分成两类</span>
+    </div>
+    <span class="speak-icon" onclick="speak('下面有很多立体图形，请你把它们分成两类。点击图形选择类别：蓝色是可以滚动的，橙色是不能滚动的。')">🔊</span>
+  </div>
+  <div class="exercise-desc">
+    📐 下面有很多立体图形，请按能不能滚动来分类。<br>
+    💡 点击图形：🔵蓝色 = 能滚动 | 🟠橙色 = 不能滚动
+  </div>
+
+  <div class="shape3d-grid" id="shape3dGrid">
+    <!-- JS fills -->
+  </div>
+
+  <div class="sub-q"><span class="q-num">1</span> 分类结果</div>
+  <table class="data-table">
+    <tr><th>分类</th><th>🔵 能滚动</th><th>🟠 不能滚动</th></tr>
+    <tr>
+      <td><strong>个数</strong></td>
+      <td><input type="number" class="table-input" id="shape3dRoll" min="0" max="20" placeholder="?"></td>
+      <td><input type="number" class="table-input" id="shape3dNoRoll" min="0" max="20" placeholder="?"></td>
+    </tr>
+  </table>
+
+  <div class="sub-q"><span class="q-num">2</span> 还能怎样分？</div>
+  <div class="open-first">📖 课本里也留了一张<b>空表格</b>问「还可以按什么分？」——<b>标准由你自己定。</b><br>
+  先自己想一个<b>新的分法</b>，说出来；想好了再打开下面看看。</div>
+  <details class="open-help">
+    <summary>我想好了，看看还有哪些分法</summary>
+    <div class="mc-options">
+      <div class="mc-option" onclick="selectOpen(this,'ex7q2')">按有没有平面分</div>
+      <div class="mc-option" onclick="selectOpen(this,'ex7q2')">按面的数量分</div>
+      <div class="mc-option" onclick="selectOpen(this,'ex7q2')">按能不能叠高分</div>
+    </div>
+  </details>
+
+  <div class="sub-q"><span class="q-num">3</span> 提出一个数学问题</div>
+  <div class="open-first"><b>先自己提一个</b>，说给爸爸妈妈听；想好了再打开对一对。</div>
+  <details class="open-help">
+    <summary>我提好了，看看别人提了什么</summary>
+    <div class="mc-options">
+      <div class="mc-option" onclick="selectOpen(this,'ex7q3')">能滚动的比不能滚动的多几个？</div>
+      <div class="mc-option" onclick="selectOpen(this,'ex7q3')">一共有多少个立体图形？</div>
+      <div class="mc-option" onclick="selectOpen(this,'ex7q3')">正方体和长方体一共有几个？</div>
+    </div>
+  </details>
+
+  <button class="check-btn primary" onclick="checkEx7()" style="margin-top:12px;">✅ 检查</button>
+  <div class="feedback" id="fb7"></div>
+</div>
+
+<!-- ==================== Growth Portfolio ==================== -->
+<div class="section-divider">
+  <div class="line"></div>
+  <div class="icon">🏆</div>
+  <div class="line"></div>
+</div>
+
+<div class="exercise-card growth-card" id="growthCard">
+  <div class="growth-title">🌟 成长小档案 🌟</div>
+  <div class="open-first" style="text-align:left">📖 <b>课本第 9 页也有「成长小档案」</b>，它只问一句话：<br>
+  <b>「本单元结束了，你想说什么？」</b><br>
+  课本上两个小朋友是这么说的——<br>
+  · 「可以按不同的标准分类。有些分类结果还可以再分。」<br>
+  · 「用图表示分类的结果真清楚啊！」<br>
+  <b>轮到你了：合上课本，说给爸爸妈妈听。</b>说完再看下面。</div>
+  <div class="growth-stars" id="growthStars">☆☆☆☆☆</div>
+  <div class="growth-score">
+    练习记录：<span id="finalScore">0</span> / 100
+  </div>
+  <div style="font-size:.88em;color:#777;margin:-2px 0 8px">（只是这一页的练习记录，<b>不是你的成绩</b>——课本这一页没有打分，它只问你想说什么。）</div>
+  <div class="growth-checklist">
+    <div class="growth-check-item">
+      <span class="check-icon pending" id="gc1">✓</span>
+      <span>可以按不同标准分类</span>
+    </div>
+    <div class="growth-check-item">
+      <span class="check-icon pending" id="gc2">✓</span>
+      <span>用图表示分类结果</span>
+    </div>
+    <div class="growth-check-item">
+      <span class="check-icon pending" id="gc3">✓</span>
+      <span>有些分类结果还可以再分</span>
+    </div>
+    <div class="growth-check-item">
+      <span class="check-icon pending" id="gc4">✓</span>
+      <span>能看统计图回答问题</span>
+    </div>
+    <div class="growth-check-item">
+      <span class="check-icon pending" id="gc5">✓</span>
+      <span>能提出数学问题</span>
+    </div>
+  </div>
+  <div class="growth-message" id="growthMsg">完成所有练习来获得星星吧！⭐</div>
+  <button class="check-btn success" onclick="showGrowth()" style="margin-top:16px;">🎉 查看我的成绩</button>
+</div>
+
+</main>
+
+<!-- Bottom Nav -->
+<nav class="bottom-nav">
+  <a href="unit1-lesson3.html" class="nav-btn">← 上一课</a>
+  <a href="unit1-index.html" class="nav-btn center">📚 课程目录</a>
+  <a href="#" class="nav-btn" onclick="alert('第二单元即将开放！');return false;">第二单元 →</a>
+</nav>
+
+<!-- TTS Float -->
+<div class="tts-float">
+  <button class="tts-btn stop" onclick="stopSpeech()" title="停止朗读" style="display:none;" id="btnStop">⏹</button>
+</div>
+
+<!-- Confetti Container -->
+<div class="confetti-container" id="confettiBox"></div>
+
+<script>
+// ==================== State ====================
+let totalScore = 0;
+const maxScore = 100;
+const exerciseScores = { ex1: 0, ex2: 0, ex3: 0, ex4: 0, ex5: 0, ex6: 0, ex7: 0 };
+const exerciseDone = { ex1: false, ex2: false, ex3: false, ex4: false, ex5: false, ex6: false, ex7: false };
+const openSelections = {};
+
+// ==================== TTS ====================
+let currentUtterance = null;
+let ttsVoice = null;
+
+function initTTS() {
+  if (!('speechSynthesis' in window)) return;
+  const loadVoices = () => {
+    const voices = speechSynthesis.getVoices();
+    // Prefer Microsoft Xiaoxiao Online (Natural)
+    ttsVoice = voices.find(v => v.name.includes('Xiaoxiao') && v.name.includes('Online'))
+      || voices.find(v => /Microsoft Xiaoxiao Online \(Natural\)/i.test(v.name)) || voices.find(v => v.name.includes('Xiaoxiao'))
+      || voices.find(v => v.lang.startsWith('zh') && v.name.includes('Online'))
+      || voices.find(v => v.lang.startsWith('zh'))
+      || null;
+  };
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+function speak(text) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  u.rate = 0.9;
+  u.pitch = 1.1;
+  if (ttsVoice) u.voice = ttsVoice;
+  u.onstart = () => {
+    document.getElementById('btnStop').style.display = 'flex';
+    document.querySelectorAll('.speak-icon').forEach(el => el.classList.remove('speaking'));
+  };
+  u.onend = () => {
+    document.getElementById('btnStop').style.display = 'none';
+  };
+  currentUtterance = u;
+  speechSynthesis.speak(u);
+}
+
+function stopSpeech() {
+  speechSynthesis.cancel();
+  document.getElementById('btnStop').style.display = 'none';
+}
+
+// ==================== Score ====================
+function updateScore() {
+  totalScore = Object.values(exerciseScores).reduce((a, b) => a + b, 0);
+  document.getElementById('totalScore').textContent = totalScore;
+  document.getElementById('finalScore').textContent = totalScore;
+
+  const doneCount = Object.values(exerciseDone).filter(Boolean).length;
+  const pct = (doneCount / 7) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function showFeedback(id, type, msg) {
+  const el = document.getElementById(id);
+  el.className = 'feedback show ' + type;
+  el.innerHTML = msg;
+}
+
+function launchConfetti() {
+  const box = document.getElementById('confettiBox');
+  const colors = ['#FF6B35','#004E98','#4CAF50','#F5A623','#E91E63','#9C27B0','#2196F3','#FFD700'];
+  for (let i = 0; i < 60; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + '%';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.animationDelay = Math.random() * 1.5 + 's';
+    c.style.animationDuration = (2 + Math.random() * 2) + 's';
+    c.style.width = (6 + Math.random() * 8) + 'px';
+    c.style.height = (6 + Math.random() * 8) + 'px';
+    box.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
+  }
+}
+
+function markComplete(exId) {
+  exerciseDone[exId] = true;
+  document.getElementById(exId).classList.add('completed');
+  updateScore();
+}
+
+// Open selection helper
+function selectOpen(el, group) {
+  // Toggle in same group
+  el.classList.toggle('selected');
+  if (!openSelections[group]) openSelections[group] = new Set();
+  const text = el.textContent.trim();
+  if (el.classList.contains('selected')) {
+    openSelections[group].add(text);
+  } else {
+    openSelections[group].delete(text);
+  }
+}
+
+// ==================== Exercise 1: Circle Vehicles ====================
+const vehicles = [
+  { emoji: '🚗', name: '小轿车', isCar: true },
+  { emoji: '⛵', name: '帆船', isCar: false },
+  { emoji: '✈️', name: '飞机', isCar: false },
+  { emoji: '🚛', name: '大卡车', isCar: true },
+  { emoji: '🚲', name: '自行车', isCar: true },
+  { emoji: '🚌', name: '公共汽车', isCar: true },
+  { emoji: '🚢', name: '轮船', isCar: false },
+  { emoji: '🏍️', name: '摩托车', isCar: true },
+  { emoji: '🚁', name: '直升机', isCar: false },
+  { emoji: '🚕', name: '出租车', isCar: true },
+  { emoji: '🚂', name: '火车', isCar: false },
+  { emoji: '🚒', name: '消防车', isCar: true },
+];
+
+function initEx1() {
+  const grid = document.getElementById('vehicleGrid');
+  // Shuffle
+  const shuffled = [...vehicles].sort(() => Math.random() - 0.5);
+  shuffled.forEach((v, i) => {
+    const div = document.createElement('div');
+    div.className = 'vehicle-item';
+    div.dataset.isCar = v.isCar;
+    div.dataset.index = i;
+    div.innerHTML = `${v.emoji}<span class="label">${v.name}</span><div class="check-mark">✓</div>`;
+    div.onclick = () => {
+      div.classList.toggle('selected');
+    };
+    grid.appendChild(div);
+  });
+}
+
+function checkEx1() {
+  if (exerciseDone.ex1) return;
+  const items = document.querySelectorAll('.vehicle-item');
+  let correct = true;
+  items.forEach(item => {
+    const isCar = item.dataset.isCar === 'true';
+    const selected = item.classList.contains('selected');
+    if (isCar !== selected) correct = false;
+  });
+
+  const countInput = document.getElementById('vehicleCount');
+  const correctCount = vehicles.filter(v => v.isCar).length;
+  const userCount = parseInt(countInput.value);
+  const countCorrect = userCount === correctCount;
+  countInput.classList.remove('correct', 'wrong');
+  countInput.classList.add(countCorrect ? 'correct' : 'wrong');
+
+  if (correct && countCorrect) {
+    exerciseScores.ex1 = 15;
+    markComplete('ex1');
+    showFeedback('fb1', 'correct', '🎉 太棒了！你找对了所有的车！共 ' + correctCount + ' 辆车。');
+    speak('太棒了！你找对了所有的车！');
+    showToast('⭐ +15分！');
+  } else {
+    let hint = '';
+    if (!correct) hint += '有些车没找到，或者选错了哦。';
+    if (!countCorrect) hint += ' 数一数，一共有 ' + correctCount + ' 辆车。';
+    showFeedback('fb1', 'wrong', '😅 ' + hint + ' 再试试！');
+    speak(hint + '再试试！');
+  }
+}
+
+// ==================== Exercise 2: Pictograph ====================
+const animalData = [
+  { emoji: '🐢', name: '乌龟', count: 6 },
+  { emoji: '🐵', name: '猴子', count: 8 },
+  { emoji: '🐱', name: '小猫', count: 5 },
+  { emoji: '🐶', name: '小狗', count: 9 },
+  { emoji: '🐼', name: '熊猫', count: 7 },
+];
+
+function initEx2() {
+  const pg = document.getElementById('pictograph');
+  animalData.forEach((a, ai) => {
+    const row = document.createElement('div');
+    row.className = 'pictograph-row';
+    let dots = '';
+    for (let i = 0; i < a.count; i++) {
+      dots += `<div class="pictograph-dot c${ai}" style="animation-delay:${i * 0.08}s">○</div>`;
+    }
+    row.innerHTML = `
+      <div class="pictograph-label">${a.emoji} ${a.name}</div>
+      <div class="pictograph-dots">${dots}</div>
+    `;
+    pg.appendChild(row);
+  });
+
+  // MC options
+  const animals = animalData.map(a => a.emoji + a.name);
+  ['mcMost', 'mcLeast'].forEach(id => {
+    const container = document.getElementById(id);
+    animals.forEach(name => {
+      const opt = document.createElement('div');
+      opt.className = 'mc-option';
+      opt.textContent = name;
+      opt.onclick = () => {
+        container.querySelectorAll('.mc-option').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+      };
+      container.appendChild(opt);
+    });
+  });
+}
+
+function checkEx2() {
+  if (exerciseDone.ex2) return;
+  let score = 0;
+  let allCorrect = true;
+
+  // Check table
+  animalData.forEach((a, i) => {
+    const input = document.getElementById('animal' + i);
+    const val = parseInt(input.value);
+    input.classList.remove('correct', 'wrong');
+    if (val === a.count) {
+      input.classList.add('correct');
+      score += 2;
+    } else {
+      input.classList.add('wrong');
+      allCorrect = false;
+    }
+  });
+
+  // Check most/least
+  const mostEl = document.querySelector('#mcMost .mc-option.selected');
+  const leastEl = document.querySelector('#mcLeast .mc-option.selected');
+  if (mostEl && mostEl.textContent.includes('小狗')) score += 3;
+  else allCorrect = false;
+  if (leastEl && leastEl.textContent.includes('小猫')) score += 2;
+  else allCorrect = false;
+
+  // Open Q3 bonus
+  if (openSelections['ex2q3'] && openSelections['ex2q3'].size > 0) score += 2;
+
+  exerciseScores.ex2 = Math.min(score, 17);
+  if (allCorrect) {
+    markComplete('ex2');
+    showFeedback('fb2', 'correct', '🎉 真聪明！统计图读得很准确！小狗最多(9人)，小猫最少(5人)。');
+    speak('真聪明！统计图读得很准确！');
+    showToast('⭐ +' + exerciseScores.ex2 + '分！');
+  } else {
+    showFeedback('fb2', 'wrong', '😅 有些答案不太对，仔细数一数每行有几个圆圈。');
+    speak('有些答案不太对，仔细数一数每行有几个圆圈。');
+    updateScore();
+  }
+}
+
+// ==================== Exercise 3: Sort School Bag ====================
+const bagItemsData = [
+  { emoji: '📖', name: '语文书', category: 'books' },
+  { emoji: '📗', name: '数学书', category: 'books' },
+  { emoji: '📕', name: '英语书', category: 'books' },
+  { emoji: '📓', name: '练习本', category: 'books' },
+  { emoji: '📒', name: '作业本', category: 'books' },
+  { emoji: '✏️', name: '铅笔', category: 'tools' },
+  { emoji: '🖊️', name: '钢笔', category: 'tools' },
+  { emoji: '📏', name: '尺子', category: 'tools' },
+  { emoji: '🧹', name: '橡皮', category: 'tools' },
+  { emoji: '✂️', name: '剪刀', category: 'tools' },
+];
+
+let draggedItem = null;
+
+function initEx3() {
+  const container = document.getElementById('bagItems');
+  const shuffled = [...bagItemsData].sort(() => Math.random() - 0.5);
+  shuffled.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'sort-item';
+    div.draggable = true;
+    div.dataset.category = item.category;
+    div.dataset.name = item.name;
+    div.id = 'bag-' + i;
+    div.innerHTML = `<span class="item-emoji">${item.emoji}</span>${item.name}`;
+    div.ondragstart = (e) => {
+      draggedItem = div;
+      div.classList.add('dragging');
+      e.dataTransfer.setData('text/plain', div.id);
+    };
+    div.ondragend = () => {
+      div.classList.remove('dragging');
+    };
+    // Touch support
+    div.ontouchstart = (e) => {
+      draggedItem = div;
+      div.classList.add('dragging');
+    };
+    container.appendChild(div);
+  });
+
+  // Touch support for zones
+  ['zoneBooks', 'zoneTools'].forEach(zoneId => {
+    const zone = document.getElementById(zoneId);
+    zone.ontouchend = (e) => {
+      e.preventDefault();
+      if (draggedItem) {
+        const itemsContainer = zone.querySelector('.sort-zone-items');
+        itemsContainer.appendChild(draggedItem);
+        draggedItem.classList.remove('dragging');
+        draggedItem = null;
+      }
+    };
+  });
+}
+
+function dragOver(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('drag-over');
+}
+function dragLeave(e) {
+  e.currentTarget.classList.remove('drag-over');
+}
+function dropItem(e, zoneId) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  const id = e.dataTransfer.getData('text/plain');
+  const el = document.getElementById(id);
+  if (el) {
+    const itemsContainer = document.getElementById(zoneId + 'Items');
+    itemsContainer.appendChild(el);
+  }
+}
+
+function checkEx3() {
+  if (exerciseDone.ex3) return;
+  const booksZone = document.querySelectorAll('#zoneBooksItems .sort-item');
+  const toolsZone = document.querySelectorAll('#zoneToolsItems .sort-item');
+  const remaining = document.querySelectorAll('#bagItems .sort-item');
+
+  if (remaining.length > 0) {
+    showFeedback('fb3', 'wrong', '😅 还有物品没有分类哦，把它们都拖到分类区域里！');
+    speak('还有物品没有分类哦！');
+    return;
+  }
+
+  let correct = true;
+  booksZone.forEach(item => {
+    if (item.dataset.category !== 'books') correct = false;
+  });
+  toolsZone.forEach(item => {
+    if (item.dataset.category !== 'tools') correct = false;
+  });
+
+  if (correct) {
+    exerciseScores.ex3 = 12;
+    markComplete('ex3');
+    showFeedback('fb3', 'correct', '🎉 整理得真整齐！书本归书本，文具归文具！');
+    speak('整理得真整齐！你很会分类！');
+    showToast('⭐ +12分！');
+  } else {
+    showFeedback('fb3', 'wrong', '😅 有些东西放错位置了。书本类是书和本子，文具类是笔、尺子等工具。');
+    speak('有些东西放错位置了，再想想。');
+  }
+}
+
+// ==================== Exercise 4: Traffic Signs ====================
+const signsData = [
+  { emoji: '⛔', name: '禁止通行', shape: 'circle' },
+  { emoji: '🚫', name: '禁止', shape: 'circle' },
+  { emoji: '⚠️', name: '注意危险', shape: 'triangle' },
+  { emoji: '🔺', name: '注意行人', shape: 'triangle' },
+  { emoji: '➡️', name: '向右行驶', shape: 'rect' },
+  { emoji: '🅿️', name: '停车场', shape: 'rect' },
+  { emoji: '🚳', name: '禁止骑车', shape: 'circle' },
+  { emoji: '⬆️', name: '直行', shape: 'rect' },
+  { emoji: '☢️', name: '危险警告', shape: 'triangle' },
+  { emoji: '🔄', name: '环岛', shape: 'circle' },
+  { emoji: '🚸', name: '注意儿童', shape: 'triangle' },
+  { emoji: '↗️', name: '指路标志', shape: 'rect' },
+];
+
+const signStates = {}; // index -> 0=none, 1=circle, 2=triangle, 3=rect
+
+function initEx4() {
+  const grid = document.getElementById('signsGrid');
+  signsData.forEach((s, i) => {
+    signStates[i] = 0;
+    const div = document.createElement('div');
+    div.className = 'sign-item';
+    div.id = 'sign-' + i;
+    div.innerHTML = `${s.emoji}<span class="sign-label">${s.name}</span>`;
+    div.onclick = () => {
+      signStates[i] = (signStates[i] + 1) % 4;
+      div.classList.remove('selected-circle', 'selected-triangle', 'selected-rect');
+      if (signStates[i] === 1) div.classList.add('selected-circle');
+      else if (signStates[i] === 2) div.classList.add('selected-triangle');
+      else if (signStates[i] === 3) div.classList.add('selected-rect');
+    };
+    grid.appendChild(div);
+  });
+}
+
+function checkEx4() {
+  if (exerciseDone.ex4) return;
+  let classifyCorrect = true;
+  const shapeMap = { circle: 1, triangle: 2, rect: 3 };
+
+  signsData.forEach((s, i) => {
+    if (signStates[i] !== shapeMap[s.shape]) classifyCorrect = false;
+  });
+
+  // Check counts
+  const correctCounts = { circle: 0, triangle: 0, rect: 0 };
+  signsData.forEach(s => correctCounts[s.shape]++);
+
+  const cInput = document.getElementById('signCircle');
+  const tInput = document.getElementById('signTriangle');
+  const rInput = document.getElementById('signRect');
+
+  [cInput, tInput, rInput].forEach(el => el.classList.remove('correct', 'wrong'));
+
+  const cOk = parseInt(cInput.value) === correctCounts.circle;
+  const tOk = parseInt(tInput.value) === correctCounts.triangle;
+  const rOk = parseInt(rInput.value) === correctCounts.rect;
+
+  cInput.classList.add(cOk ? 'correct' : 'wrong');
+  tInput.classList.add(tOk ? 'correct' : 'wrong');
+  rInput.classList.add(rOk ? 'correct' : 'wrong');
+
+  const countsCorrect = cOk && tOk && rOk;
+  const hasOpenQ2 = openSelections['ex4q2'] && openSelections['ex4q2'].size > 0;
+
+  let score = 0;
+  if (classifyCorrect) score += 6;
+  if (countsCorrect) score += 4;
+  if (hasOpenQ2) score += 2;
+
+  exerciseScores.ex4 = Math.min(score, 12);
+
+  if (classifyCorrect && countsCorrect) {
+    markComplete('ex4');
+    showFeedback('fb4', 'correct', `🎉 分类正确！圆形${correctCounts.circle}个，三角形${correctCounts.triangle}个，长方形${correctCounts.rect}个。`);
+    speak('分类正确！你对交通标志很了解！');
+    showToast('⭐ +' + exerciseScores.ex4 + '分！');
+  } else {
+    let hint = '';
+    if (!classifyCorrect) hint += '有些标志的形状分错了。';
+    if (!countsCorrect) hint += ` 正确数量：圆形${correctCounts.circle}，三角形${correctCounts.triangle}，长方形${correctCounts.rect}。`;
+    showFeedback('fb4', 'wrong', '😅 ' + hint);
+    speak(hint + '再试试！');
+    updateScore();
+  }
+}
+
+// ==================== Exercise 5: Expression Classification ====================
+const expressions = [
+  { expr: '28−4', sub: 4, result: 24 },
+  { expr: '18−3', sub: 3, result: 15 },
+  { expr: '10−3', sub: 3, result: 7 },
+  { expr: '30−7', sub: 7, result: 23 },
+  { expr: '31−8', sub: 8, result: 23 },
+  { expr: '38−21', sub: 21, result: 17 },
+  { expr: '20−5', sub: 5, result: 15 },
+  { expr: '19−4', sub: 4, result: 15 },
+  { expr: '30−22', sub: 22, result: 8 },
+  { expr: '46−30', sub: 30, result: 16 },
+  { expr: '34−11', sub: 11, result: 23 },
+];
+
+const exprStates = {}; // index -> 0=none, 1=catA(one-digit), 2=catB(two-digit)
+
+function initEx5() {
+  const grid = document.getElementById('exprGrid');
+  expressions.forEach((e, i) => {
+    exprStates[i] = 0;
+    const chip = document.createElement('div');
+    chip.className = 'expr-chip';
+    chip.id = 'expr-' + i;
+    chip.textContent = e.expr;
+    chip.onclick = () => {
+      exprStates[i] = (exprStates[i] + 1) % 3;
+      chip.classList.remove('cat-a', 'cat-b');
+      if (exprStates[i] === 1) chip.classList.add('cat-a');
+      else if (exprStates[i] === 2) chip.classList.add('cat-b');
+      updateExprZones();
+    };
+    grid.appendChild(chip);
+  });
+}
+
+function updateExprZones() {
+  const zA = document.getElementById('exprZoneA');
+  const zB = document.getElementById('exprZoneB');
+  zA.innerHTML = '';
+  zB.innerHTML = '';
+  expressions.forEach((e, i) => {
+    if (exprStates[i] === 1) {
+      zA.innerHTML += `<span style="padding:4px 10px;background:#E3F2FD;border-radius:8px;font-size:14px;font-family:monospace;">${e.expr}</span>`;
+    } else if (exprStates[i] === 2) {
+      zB.innerHTML += `<span style="padding:4px 10px;background:#FFF3E0;border-radius:8px;font-size:14px;font-family:monospace;">${e.expr}</span>`;
+    }
+  });
+}
+
+function checkEx5() {
+  if (exerciseDone.ex5) return;
+  let correct = true;
+  let allClassified = true;
+
+  expressions.forEach((e, i) => {
+    if (exprStates[i] === 0) allClassified = false;
+    const isOneDigit = e.sub < 10;
+    if (isOneDigit && exprStates[i] !== 1) correct = false;
+    if (!isOneDigit && exprStates[i] !== 2) correct = false;
+  });
+
+  if (!allClassified) {
+    showFeedback('fb5', 'wrong', '😅 还有算式没有分类哦，点击每个算式选择类别。');
+    speak('还有算式没有分类哦！');
+    return;
+  }
+
+  const hasOpenQ2 = openSelections['ex5q2'] && openSelections['ex5q2'].size > 0;
+  let score = 0;
+  if (correct) score += 13;
+  if (hasOpenQ2) score += 2;
+
+  exerciseScores.ex5 = Math.min(score, 15);
+
+  if (correct) {
+    markComplete('ex5');
+    const oneDigit = expressions.filter(e => e.sub < 10).length;
+    const twoDigit = expressions.filter(e => e.sub >= 10).length;
+    showFeedback('fb5', 'correct', `🎉 分类正确！减去一位数有${oneDigit}个，减去两位数有${twoDigit}个。`);
+    speak('分类正确！你对算式分类很熟练！');
+    showToast('⭐ +' + exerciseScores.ex5 + '分！');
+  } else {
+    showFeedback('fb5', 'wrong', '😅 有些算式分错了。减去一位数（如4、3、7）放蓝色，减去两位数（如21、22）放橙色。');
+    speak('有些算式分错了，再仔细看看。');
+    updateScore();
+  }
+}
+
+// ==================== Exercise 6: Group Division ====================
+function toggleGroupOption(el) {
+  el.classList.toggle('selected');
+}
+
+function checkEx6() {
+  if (exerciseDone.ex6) return;
+  const selected = document.querySelectorAll('#groupOptions .open-option.selected');
+  if (selected.length === 0) {
+    showFeedback('fb6', 'wrong', '😅 请至少选一个分法！');
+    speak('请至少选一个分法！');
+    return;
+  }
+
+  exerciseScores.ex6 = 10;
+  markComplete('ex6');
+
+  const methods = Array.from(selected).map(el => el.querySelector('.opt-text').textContent.split('\n')[0]).join('、');
+  showFeedback('fb6', 'correct', `🎉 你选了：${methods}。分类的方法有很多种，不同的标准会得到不同的结果！`);
+  speak('很好！分类的方法有很多种，每种方法都可以把同学们分成两组！');
+  showToast('⭐ +10分！');
+}
+
+// ==================== Exercise 7: 3D Shapes ====================
+const shapes3d = [
+  { emoji: '🧊', name: '正方体', canRoll: false },
+  { emoji: '📦', name: '长方体', canRoll: false },
+  { emoji: '🥫', name: '圆柱', canRoll: true },
+  { emoji: '⚽', name: '球', canRoll: true },
+  { emoji: '🔺', name: '圆锥', canRoll: true },
+  { emoji: '📦', name: '长方体', canRoll: false },
+  { emoji: '🧊', name: '正方体', canRoll: false },
+  { emoji: '⚽', name: '球', canRoll: true },
+  { emoji: '🥫', name: '圆柱', canRoll: true },
+  { emoji: '🔻', name: '三棱柱', canRoll: false },
+  { emoji: '🔺', name: '圆锥', canRoll: true },
+  { emoji: '🧊', name: '正方体', canRoll: false },
+];
+
+const shape3dStates = {};
+
+function initEx7() {
+  const grid = document.getElementById('shape3dGrid');
+  shapes3d.forEach((s, i) => {
+    shape3dStates[i] = 0;
+    const div = document.createElement('div');
+    div.className = 'shape3d-item';
+    div.id = 'shape3d-' + i;
+    div.innerHTML = `${s.emoji}<span class="s3d-label">${s.name}</span>`;
+    div.onclick = () => {
+      shape3dStates[i] = (shape3dStates[i] + 1) % 3;
+      div.classList.remove('group-a', 'group-b');
+      if (shape3dStates[i] === 1) div.classList.add('group-a');
+      else if (shape3dStates[i] === 2) div.classList.add('group-b');
+    };
+    grid.appendChild(div);
+  });
+}
+
+function checkEx7() {
+  if (exerciseDone.ex7) return;
+
+  let allClassified = true;
+  let correct = true;
+  shapes3d.forEach((s, i) => {
+    if (shape3dStates[i] === 0) allClassified = false;
+    if (s.canRoll && shape3dStates[i] !== 1) correct = false;
+    if (!s.canRoll && shape3dStates[i] !== 2) correct = false;
+  });
+
+  if (!allClassified) {
+    showFeedback('fb7', 'wrong', '😅 还有图形没有分类，点击每个图形选择类别。');
+    speak('还有图形没有分类哦！');
+    return;
+  }
+
+  // Check counts
+  const correctRoll = shapes3d.filter(s => s.canRoll).length;
+  const correctNoRoll = shapes3d.filter(s => !s.canRoll).length;
+  const rollInput = document.getElementById('shape3dRoll');
+  const noRollInput = document.getElementById('shape3dNoRoll');
+  [rollInput, noRollInput].forEach(el => el.classList.remove('correct', 'wrong'));
+
+  const rollOk = parseInt(rollInput.value) === correctRoll;
+  const noRollOk = parseInt(noRollInput.value) === correctNoRoll;
+  rollInput.classList.add(rollOk ? 'correct' : 'wrong');
+  noRollInput.classList.add(noRollOk ? 'correct' : 'wrong');
+
+  const hasQ2 = openSelections['ex7q2'] && openSelections['ex7q2'].size > 0;
+  const hasQ3 = openSelections['ex7q3'] && openSelections['ex7q3'].size > 0;
+
+  let score = 0;
+  if (correct) score += 10;
+  if (rollOk && noRollOk) score += 4;
+  if (hasQ2) score += 2;
+  if (hasQ3) score += 3;
+  exerciseScores.ex7 = Math.min(score, 19);
+
+  if (correct && rollOk && noRollOk) {
+    markComplete('ex7');
+    showFeedback('fb7', 'correct', `🎉 太棒了！能滚动的有${correctRoll}个（球、圆柱、圆锥），不能滚动的有${correctNoRoll}个（正方体、长方体、三棱柱）。`);
+    speak('太棒了！你对立体图形很了解！');
+    showToast('⭐ +' + exerciseScores.ex7 + '分！');
+  } else {
+    let hint = '';
+    if (!correct) hint += '有些图形分错了。球⚽、圆柱🥫、圆锥🔺能滚动，正方体🧊、长方体📦、三棱柱不能滚动。';
+    if (!rollOk || !noRollOk) hint += ` 能滚动${correctRoll}个，不能滚动${correctNoRoll}个。`;
+    showFeedback('fb7', 'wrong', '😅 ' + hint);
+    speak(hint + '再试试！');
+    updateScore();
+  }
+}
+
+// ==================== Growth Portfolio ====================
+function showGrowth() {
+  updateScore();
+  const score = totalScore;
+  const doneCount = Object.values(exerciseDone).filter(Boolean).length;
+
+  // Stars
+  let stars = 0;
+  if (score >= 20) stars = 1;
+  if (score >= 40) stars = 2;
+  if (score >= 60) stars = 3;
+  if (score >= 80) stars = 4;
+  if (score >= 95) stars = 5;
+
+  const starStr = '⭐'.repeat(stars) + '☆'.repeat(5 - stars);
+  document.getElementById('growthStars').textContent = starStr;
+
+  // Checklist
+  // gc1: different standards (ex4, ex6, ex7)
+  if (exerciseDone.ex4 || exerciseDone.ex6) {
+    document.getElementById('gc1').classList.replace('pending', 'done');
+  }
+  // gc2: pictograph (ex2)
+  if (exerciseDone.ex2) {
+    document.getElementById('gc2').classList.replace('pending', 'done');
+  }
+  // gc3: further classify (ex5, ex7)
+  if (exerciseDone.ex5 || exerciseDone.ex7) {
+    document.getElementById('gc3').classList.replace('pending', 'done');
+  }
+  // gc4: read chart (ex2)
+  if (exerciseDone.ex2) {
+    document.getElementById('gc4').classList.replace('pending', 'done');
+  }
+  // gc5: ask math question (open q)
+  const hasAnyOpen = ['ex2q3','ex7q3'].some(k => openSelections[k] && openSelections[k].size > 0);
+  if (hasAnyOpen) {
+    document.getElementById('gc5').classList.replace('pending', 'done');
+  }
+
+  // Message
+  let msg = '';
+  if (score >= 95) msg = '🏆 太厉害了！你是分类小达人！满分通关！🎉🎉🎉';
+  else if (score >= 80) msg = '🌟 非常棒！你已经掌握了分类的方法！';
+  else if (score >= 60) msg = '👍 不错！再多练习就更好了！';
+  else if (score >= 40) msg = '💪 加油！你已经学会了一些分类方法！';
+  else msg = '📚 继续努力，完成更多练习吧！';
+  document.getElementById('growthMsg').textContent = msg;
+
+  if (score >= 80) {
+    launchConfetti();
+    speak(msg);
+  } else {
+    speak(msg);
+  }
+
+  // Scroll to growth card
+  document.getElementById('growthCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// ==================== Init ====================
+function init() {
+  initTTS();
+  initEx1();
+  initEx2();
+  initEx3();
+  initEx4();
+  initEx5();
+  initEx7();
+  updateScore();
+
+  // Welcome
+  setTimeout(() => {
+    speak('欢迎来到练一练！让我们一起做分类练习吧！');
+  }, 500);
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+  <footer class="footer" lang="zh-CN"><p><strong>版权声明</strong>：本页讲解与配图<strong>均为本页自行编写</strong>，未复制任何教材插图或扫描件；人民教育出版社《数学》二年级上册（2024 年审核）的文字与插图著作权归原出版社及作者所有。</p><p>本页为<strong>家庭自用学习辅助</strong>：不含教材插图、不含扫描件、不用于任何商业用途、不做搜索收录。如权利人认为不妥，请告知即刻下线。</p><p>本页文字与插图均为自绘自拟；<strong>部分练习沿用课本原有题型，个别题目文字与课本原题相近</strong>，均已标注对应页码，仅作家庭自用学习辅助。教材版本已按<strong>课本封面照片核实</strong>：人民教育出版社《数学》二年级上册，封面标注「国家教材委员会专家委员会审核 2024」；第一单元<strong>分类与整理</strong>已按课本<strong>目录页照片</strong>核实，课本自第 1 页起（目录：第二单元「1~6 的表内乘法」自第 10 页起）。例题与情境均为本页自拟，请以课本为准。</p><p>朗读用浏览器语音，建议用 Edge 打开，中文音色最自然。</p></footer>
+</body>
+</html>

@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco传统文化讲解：周易与时">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>周易讲解 · 第十期：周易与时</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'PingFang SC', 'Noto Serif SC', serif;
+  background: #0a0a0f;
+  color: #e8e0d0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.pages-wrapper { width: 100%; height: 100%; position: relative; }
+.page {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 40px 24px;
+  opacity: 0; transform: translateX(100%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none; overflow: hidden;
+}
+.page.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.page.prev { opacity: 0; transform: translateX(-100%); }
+
+/* Backgrounds */
+.bg-void { background: radial-gradient(ellipse at center, #080808 0%, #000 70%); }
+.bg-cosmos { background: radial-gradient(ellipse at center, #0f0a1e 0%, #060410 70%); }
+.bg-dawn { background: linear-gradient(180deg, #0a0820 0%, #1a1545 50%, #0f0d25 100%); }
+.bg-light { background: linear-gradient(135deg, #1a1508 0%, #0f0d05 50%, #080604 100%); }
+.bg-dual { background: linear-gradient(135deg, #0a0a18 0%, #080812 100%); }
+.bg-nature { background: linear-gradient(180deg, #050a10 0%, #0a1520 50%, #050a0f 100%); }
+.bg-flow { background: radial-gradient(ellipse at 50% 60%, #0a1020 0%, #060810 70%); }
+.bg-balance { background: radial-gradient(ellipse at center, #100a18 0%, #080510 70%); }
+.bg-final { background: radial-gradient(ellipse at center, #0f0818 0%, #060410 70%); }
+.bg-time { background: linear-gradient(135deg, #0a0810 0%, #10081a 50%, #080610 100%); }
+
+/* Typography */
+.title-main {
+  font-size: clamp(2.2em, 8vw, 3.5em);
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, #c0c0c0 50%, #ffd700 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-align: center; line-height: 1.3;
+  animation: textGlow 4s ease-in-out infinite;
+}
+@keyframes textGlow {
+  0%,100% { filter: brightness(1) drop-shadow(0 0 8px rgba(255,255,255,0.1)); }
+  50% { filter: brightness(1.15) drop-shadow(0 0 20px rgba(255,215,0,0.3)); }
+}
+.subtitle { font-size: clamp(0.85em, 3.2vw, 1.1em); color: #5a5040; margin-top: 12px; text-align: center; letter-spacing: 4px; }
+.page-title {
+  font-size: clamp(1.4em, 5.5vw, 2em); font-weight: 800;
+  color: #ffd700; text-align: center; margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(255,215,0,0.15);
+}
+.page-text {
+  font-size: clamp(0.95em, 3.8vw, 1.15em); line-height: 2;
+  text-align: center; color: #c8bca0; max-width: 560px;
+}
+.page-text .em { color: #ffd700; font-weight: bold; }
+.page-text .light { color: #f0f0f0; font-weight: bold; }
+.page-text .dark { color: #6a7a8a; }
+.fact-card {
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15);
+  border-radius: 12px; padding: 14px 18px; margin-top: 18px;
+  max-width: 480px; text-align: left; font-size: 0.88em; line-height: 1.8; color: #a89878;
+}
+.fact-card .label { color: #ffd700; font-weight: bold; margin-bottom: 4px; }
+
+/* Animations */
+.ani { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.page.active .ani { opacity: 1; transform: translateY(0); }
+.page.active .ani:nth-child(2) { transition-delay: 0.15s; }
+.page.active .ani:nth-child(3) { transition-delay: 0.3s; }
+.page.active .ani:nth-child(4) { transition-delay: 0.45s; }
+.page.active .ani:nth-child(5) { transition-delay: 0.6s; }
+.page.active .ani:nth-child(6) { transition-delay: 0.75s; }
+
+/* Particles */
+.particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.particle {
+  position: absolute; border-radius: 50%; opacity: 0;
+  animation: floatUp 7s ease-in-out infinite;
+}
+.particle-gold { background: radial-gradient(circle, #ffd700, transparent); }
+.particle-white { background: radial-gradient(circle, rgba(255,255,255,0.8), transparent); }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(100vh) scale(0.3); }
+  15% { opacity: 0.7; } 85% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(0.8); }
+}
+
+/* Stars */
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.star {
+  position: absolute; background: #fff; border-radius: 50%;
+  animation: twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.85; transform: scale(1.2); } }
+
+/* Navigation */
+.nav-hint {
+  position: fixed; bottom: 18px; left: 0; right: 0;
+  text-align: center; color: rgba(255,255,255,0.25); font-size: 0.75em;
+  pointer-events: none; transition: opacity 0.5s; z-index: 100;
+}
+.nav-dots {
+  position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 7px; z-index: 100;
+}
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); transition: all 0.3s; cursor: pointer;
+}
+.nav-dot.active { background: #ffd700; box-shadow: 0 0 6px rgba(255,215,0,0.5); transform: scale(1.4); }
+
+.audio-btn {
+  position: fixed; top: 14px; right: 14px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: #ffd700; font-size: 1.1em;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 200; backdrop-filter: blur(10px); transition: all 0.3s;
+}
+.audio-btn:active { transform: scale(0.9); }
+.audio-btn.playing { background: rgba(255,215,0,0.15); box-shadow: 0 0 12px rgba(255,215,0,0.2); }
+.page-num { position: fixed; top: 16px; left: 16px; font-size: 0.7em; color: rgba(255,255,255,0.2); z-index: 100; }
+
+/* Voice panel */
+.voice-panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(10,10,15,0.96); backdrop-filter: blur(20px);
+  padding: 20px; border-top: 1px solid rgba(255,215,0,0.15);
+  transform: translateY(100%); transition: transform 0.3s; z-index: 300;
+  border-radius: 18px 18px 0 0;
+}
+.voice-panel.show { transform: translateY(0); }
+.voice-panel label { display: block; color: #7a6a5a; font-size: 0.82em; margin-bottom: 6px; }
+.voice-panel select, .voice-panel input[type="range"] {
+  width: 100%; padding: 10px; border-radius: 8px;
+  border: 1px solid rgba(255,215,0,0.15); background: rgba(255,255,255,0.04);
+  color: #d4c8b0; font-size: 0.95em; margin-bottom: 12px;
+}
+.voice-panel .close-panel { text-align: center; color: #ffd700; cursor: pointer; padding: 8px; }
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
+<div class="page-num" id="pageNum">1 / 10</div>
+<div class="nav-dots" id="navDots"></div>
+<div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
+
+<div class="pages-wrapper">
+
+  <!-- Page 1: Cover -->
+  <div class="page bg-cosmos active" data-page="0">
+    <div class="particles" id="p0"></div>
+    <div class="ani" style="margin-bottom:20px;">
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="gGold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffd700"/>
+            <stop offset="100%" stop-color="#b8860b"/>
+          </linearGradient>
+          <radialGradient id="gCenter" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(255,215,0,0.15)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+        <!-- Sundial base -->
+        <ellipse cx="100" cy="140" rx="70" ry="20" fill="none" stroke="rgba(255,215,0,0.2)" stroke-width="1.5"/>
+        <ellipse cx="100" cy="140" rx="55" ry="15" fill="none" stroke="rgba(255,215,0,0.1)" stroke-width="1"/>
+        <!-- Clock face circle -->
+        <circle cx="100" cy="90" r="60" fill="none" stroke="rgba(255,215,0,0.25)" stroke-width="1.5"/>
+        <circle cx="100" cy="90" r="55" fill="url(#gCenter)"/>
+        <!-- Hour marks -->
+        <g opacity="0.5">
+          <line x1="100" y1="33" x2="100" y2="38" stroke="#ffd700" stroke-width="2"/>
+          <line x1="100" y1="142" x2="100" y2="147" stroke="#ffd700" stroke-width="2"/>
+          <line x1="43" y1="90" x2="48" y2="90" stroke="#ffd700" stroke-width="2"/>
+          <line x1="152" y1="90" x2="157" y2="90" stroke="#ffd700" stroke-width="2"/>
+          <line x1="58" y1="48" x2="61" y2="51" stroke="#ffd700" stroke-width="1.5"/>
+          <line x1="142" y1="48" x2="139" y2="51" stroke="#ffd700" stroke-width="1.5"/>
+          <line x1="58" y1="132" x2="61" y2="129" stroke="#ffd700" stroke-width="1.5"/>
+          <line x1="142" y1="132" x2="139" y2="129" stroke="#ffd700" stroke-width="1.5"/>
+        </g>
+        <!-- Clock hands -->
+        <line x1="100" y1="90" x2="100" y2="50" stroke="#ffd700" stroke-width="2.5" stroke-linecap="round">
+          <animateTransform attributeName="transform" type="rotate" values="0 100 90;360 100 90" dur="20s" repeatCount="indefinite"/>
+        </line>
+        <line x1="100" y1="90" x2="120" y2="75" stroke="#c0c0c0" stroke-width="1.5" stroke-linecap="round">
+          <animateTransform attributeName="transform" type="rotate" values="0 100 90;360 100 90" dur="60s" repeatCount="indefinite"/>
+        </line>
+        <!-- Center dot -->
+        <circle cx="100" cy="90" r="4" fill="#ffd700"/>
+        <!-- "時" character -->
+        <text x="100" y="95" text-anchor="middle" dominant-baseline="middle" font-size="18" fill="rgba(255,215,0,0.2)" font-weight="bold">時</text>
+        <!-- Seasonal marks around -->
+        <text x="100" y="25" text-anchor="middle" font-size="9" fill="#ffd700" opacity="0.5">春</text>
+        <text x="165" y="93" text-anchor="middle" font-size="9" fill="#ff6b35" opacity="0.5">夏</text>
+        <text x="100" y="165" text-anchor="middle" font-size="9" fill="#6080c0" opacity="0.5">秋</text>
+        <text x="35" y="93" text-anchor="middle" font-size="9" fill="#8090a0" opacity="0.5">冬</text>
+      </svg>
+    </div>
+    <div class="title-main ani">周易与时</div>
+    <div class="subtitle ani">第十期 · 时机的智慧</div>
+  </div>
+
+  <!-- Page 2: Importance of Shi -->
+  <div class="page bg-void" data-page="1">
+    <div class="stars" id="s1"></div>
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="180" height="120" viewBox="0 0 180 120">
+        <!-- Large "時" character with glow -->
+        <defs>
+          <radialGradient id="gCharGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(255,215,0,0.2)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <filter id="textGlow2">
+            <feGaussianBlur stdDeviation="3" result="glow"/>
+            <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <circle cx="90" cy="55" r="50" fill="url(#gCharGlow)"/>
+        <text x="90" y="65" text-anchor="middle" font-size="50" fill="#ffd700" font-weight="bold" filter="url(#textGlow2)">時</text>
+        <text x="90" y="105" text-anchor="middle" font-size="11" fill="#a89878">周易最重要的概念之一</text>
+      </svg>
+    </div>
+    <div class="page-title ani">"时"的地位</div>
+    <div class="page-text ani">
+      在周易中，<br>
+      <span class="em">"时"</span>是最重要的概念之一。<br><br>
+      孔子读周易，最大的感悟是：<br>
+      <span class="em">「知时」就是最大的智慧。</span><br><br>
+      什么时候该做什么事，<br>
+      什么时候该等待，<br>
+      这就是<span class="em">时</span>的学问。
+    </div>
+    <div class="fact-card ani">
+      <div class="label">📌 周易名言</div>
+      "君子藏器于身，待时而动。"<br>
+      — 《易传·系辞下》
+    </div>
+  </div>
+
+  <!-- Page 3: Meaning of Shi -->
+  <div class="page bg-cosmos" data-page="2">
+    <div class="particles" id="p2"></div>
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="240" height="100" viewBox="0 0 240 100">
+        <!-- Three aspects of "Shi" -->
+        <g>
+          <circle cx="50" cy="40" r="28" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.6"/>
+          <text x="50" y="38" text-anchor="middle" font-size="12" fill="#ffd700" font-weight="bold">时机</text>
+          <text x="50" y="55" text-anchor="middle" font-size="9" fill="#a89878">对的时刻</text>
+        </g>
+        <g>
+          <circle cx="120" cy="40" r="28" fill="none" stroke="#ff6b35" stroke-width="1.5" opacity="0.6"/>
+          <text x="120" y="38" text-anchor="middle" font-size="12" fill="#ff6b35" font-weight="bold">时势</text>
+          <text x="120" y="55" text-anchor="middle" font-size="9" fill="#a89878">大的趋势</text>
+        </g>
+        <g>
+          <circle cx="190" cy="40" r="28" fill="none" stroke="#90c090" stroke-width="1.5" opacity="0.6"/>
+          <text x="190" y="38" text-anchor="middle" font-size="12" fill="#90c090" font-weight="bold">时位</text>
+          <text x="190" y="55" text-anchor="middle" font-size="9" fill="#a89878">你的位置</text>
+        </g>
+        <!-- Connecting line -->
+        <line x1="78" y1="40" x2="92" y2="40" stroke="rgba(255,215,0,0.3)" stroke-width="1" stroke-dasharray="2 2"/>
+        <line x1="148" y1="40" x2="162" y2="40" stroke="rgba(255,215,0,0.3)" stroke-width="1" stroke-dasharray="2 2"/>
+        <text x="120" y="90" text-anchor="middle" font-size="10" fill="#5a5040">三者合一 = 知"时"</text>
+      </svg>
+    </div>
+    <div class="page-title ani">"时"不只是时间</div>
+    <div class="page-text ani">
+      周易的"时"，含义很丰富：<br><br>
+      <span class="em">时机</span> — 做事的最佳时刻<br>
+      <span class="em">时势</span> — 天下大势的走向<br>
+      <span class="em">时位</span> — 你在什么位置<br><br>
+      <span class="dark">不是看钟表的"几点钟"，</span><br>
+      <span class="dark">而是"天时地利人和"的"时"。</span>
+    </div>
+  </div>
+
+  <!-- Page 4: Qian Long Wu Yong / Fei Long Zai Tian -->
+  <div class="page bg-dawn" data-page="3">
+    <div class="stars" id="s3"></div>
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="260" height="130" viewBox="0 0 260 130">
+        <defs>
+          <linearGradient id="gSky" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#1a1545"/>
+            <stop offset="50%" stop-color="#0a0820"/>
+            <stop offset="100%" stop-color="#050510"/>
+          </linearGradient>
+        </defs>
+        <!-- Left: Dragon hiding -->
+        <g>
+          <rect x="10" y="80" width="100" height="40" rx="5" fill="rgba(50,40,20,0.3)" stroke="rgba(100,80,40,0.3)" stroke-width="1"/>
+          <!-- Small dragon curled up -->
+          <text x="60" y="105" text-anchor="middle" font-size="24">🐉</text>
+          <text x="60" y="70" text-anchor="middle" font-size="10" fill="#6a7a8a">潜龙勿用</text>
+          <text x="60" y="55" text-anchor="middle" font-size="8" fill="#4a5a6a">时机未到，潜伏等待</text>
+          <!-- "Wait" symbol -->
+          <circle cx="60" cy="35" r="12" fill="none" stroke="rgba(100,120,180,0.4)" stroke-width="1" stroke-dasharray="3 2">
+            <animate attributeName="stroke-dashoffset" values="0;10" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <text x="60" y="39" text-anchor="middle" font-size="8" fill="#6080c0">等</text>
+        </g>
+        <!-- Right: Dragon flying -->
+        <g>
+          <text x="190" y="55" text-anchor="middle" font-size="28">🐲</text>
+          <!-- Golden clouds -->
+          <ellipse cx="170" cy="65" rx="15" ry="6" fill="rgba(255,215,0,0.1)"/>
+          <ellipse cx="210" cy="60" rx="12" ry="5" fill="rgba(255,215,0,0.08)"/>
+          <!-- Glow -->
+          <circle cx="190" cy="50" r="25" fill="none" stroke="rgba(255,215,0,0.2)" stroke-width="1">
+            <animate attributeName="r" values="22;28;22" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <text x="190" y="90" text-anchor="middle" font-size="10" fill="#ffd700">飞龙在天</text>
+          <text x="190" y="105" text-anchor="middle" font-size="8" fill="#b8860b">正当其时，大展宏图</text>
+          <!-- "Go!" symbol -->
+          <circle cx="190" cy="115" r="10" fill="none" stroke="rgba(255,215,0,0.5)" stroke-width="1.5"/>
+          <text x="190" y="119" text-anchor="middle" font-size="8" fill="#ffd700">行</text>
+        </g>
+        <!-- VS divider -->
+        <line x1="130" y1="30" x2="130" y2="120" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="3 3"/>
+      </svg>
+    </div>
+    <div class="page-title ani">潜龙与飞龙</div>
+    <div class="page-text ani">
+      乾卦里有两句著名的话：<br><br>
+      <span class="dark">「潜龙勿用」</span><br>
+      → 时机未到，<span class="em">不要急着行动</span><br>
+      像龙潜在水底，安静积蓄力量。<br><br>
+      <span class="em">「飞龙在天」</span><br>
+      → 时机到了，<span class="em">大展身手</span>！<br>
+      像龙飞上天空，一切正当其时。
+    </div>
+  </div>
+
+  <!-- Page 5: Shun Shi Er Dong -->
+  <div class="page bg-dual" data-page="4">
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="260" height="110" viewBox="0 0 260 110">
+        <!-- Four seasons cycle -->
+        <defs>
+          <linearGradient id="gSpring" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#90c090"/><stop offset="100%" stop-color="#4a8a4a"/>
+          </linearGradient>
+          <linearGradient id="gSummer" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ff6b35"/><stop offset="100%" stop-color="#cc4400"/>
+          </linearGradient>
+          <linearGradient id="gAutumn" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#b8860b"/>
+          </linearGradient>
+          <linearGradient id="gWinter" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#6080c0"/><stop offset="100%" stop-color="#3a5080"/>
+          </linearGradient>
+        </defs>
+        <!-- Spring -->
+        <g>
+          <circle cx="40" cy="45" r="22" fill="none" stroke="url(#gSpring)" stroke-width="2"/>
+          <text x="40" y="42" text-anchor="middle" font-size="16">🌱</text>
+          <text x="40" y="80" text-anchor="middle" font-size="9" fill="#90c090">春·种</text>
+          <text x="40" y="95" text-anchor="middle" font-size="8" fill="#6a8a6a">该播种了</text>
+        </g>
+        <!-- Arrow -->
+        <path d="M65,45 L80,45" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+        <polygon points="82,42 88,45 82,48" fill="rgba(255,255,255,0.15)"/>
+        <!-- Summer -->
+        <g>
+          <circle cx="105" cy="45" r="22" fill="none" stroke="url(#gSummer)" stroke-width="2"/>
+          <text x="105" y="42" text-anchor="middle" font-size="16">☀️</text>
+          <text x="105" y="80" text-anchor="middle" font-size="9" fill="#ff6b35">夏·长</text>
+          <text x="105" y="95" text-anchor="middle" font-size="8" fill="#cc6a35">该奋斗了</text>
+        </g>
+        <!-- Arrow -->
+        <path d="M130,45 L145,45" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+        <polygon points="147,42 153,45 147,48" fill="rgba(255,255,255,0.15)"/>
+        <!-- Autumn -->
+        <g>
+          <circle cx="170" cy="45" r="22" fill="none" stroke="url(#gAutumn)" stroke-width="2"/>
+          <text x="170" y="42" text-anchor="middle" font-size="16">🍂</text>
+          <text x="170" y="80" text-anchor="middle" font-size="9" fill="#ffd700">秋·收</text>
+          <text x="170" y="95" text-anchor="middle" font-size="8" fill="#b8860b">该收获了</text>
+        </g>
+        <!-- Arrow -->
+        <path d="M195,45 L210,45" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+        <polygon points="212,42 218,45 212,48" fill="rgba(255,255,255,0.15)"/>
+        <!-- Winter -->
+        <g>
+          <circle cx="235" cy="45" r="22" fill="none" stroke="url(#gWinter)" stroke-width="2"/>
+          <text x="235" y="42" text-anchor="middle" font-size="16">❄️</text>
+          <text x="235" y="80" text-anchor="middle" font-size="9" fill="#6080c0">冬·藏</text>
+          <text x="235" y="95" text-anchor="middle" font-size="8" fill="#4a6090">该休息了</text>
+        </g>
+      </svg>
+    </div>
+    <div class="page-title ani">顺时而动</div>
+    <div class="page-text ani">
+      什么时候该做什么事：<br><br>
+      🌱 春天 → <span class="em">播种</span>（开始新事物）<br>
+      ☀️ 夏天 → <span class="em">生长</span>（努力奋斗）<br>
+      🍂 秋天 → <span class="em">收获</span>（享受成果）<br>
+      ❄️ 冬天 → <span class="em">收藏</span>（休息积累）<br><br>
+      <span class="dark">该进则进，该退则退。</span><br>
+      <span class="em">不跟时间对着干。</span>
+    </div>
+  </div>
+
+  <!-- Page 6: Dai Shi Er Dong - Wait for the right time -->
+  <div class="page bg-flow" data-page="5">
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="240" height="120" viewBox="0 0 240 120">
+        <!-- Jiang Taigong fishing -->
+        <g>
+          <!-- Water -->
+          <path d="M10,85 Q60,80 120,85 Q180,90 240,85" fill="none" stroke="rgba(96,128,192,0.3)" stroke-width="1">
+            <animate attributeName="d" values="M10,85 Q60,80 120,85 Q180,90 240,85;M10,85 Q60,90 120,85 Q180,80 240,85;M10,85 Q60,80 120,85 Q180,90 240,85" dur="4s" repeatCount="indefinite"/>
+          </path>
+          <!-- Old man sitting -->
+          <text x="60" y="75" text-anchor="middle" font-size="22">🧓</text>
+          <!-- Fishing rod -->
+          <line x1="75" y1="60" x2="110" y2="45" stroke="#b8860b" stroke-width="1.5"/>
+          <line x1="110" y1="45" x2="110" y2="85" stroke="rgba(255,255,255,0.3)" stroke-width="0.5" stroke-dasharray="2 2"/>
+          <!-- Hook (straight!) -->
+          <circle cx="110" cy="87" r="2" fill="#ffd700" opacity="0.6"/>
+          <text x="80" y="105" text-anchor="middle" font-size="8" fill="#a89878">姜太公钓鱼</text>
+          <text x="80" y="115" text-anchor="middle" font-size="8" fill="#ffd700">80岁遇文王</text>
+        </g>
+        <!-- Zhuge Liang in cottage -->
+        <g>
+          <!-- Cottage -->
+          <path d="M155,50 L180,35 L205,50" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="1.5"/>
+          <rect x="160" y="50" width="40" height="30" fill="rgba(30,25,15,0.5)" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+          <!-- Person inside -->
+          <text x="180" y="73" text-anchor="middle" font-size="16">📖</text>
+          <!-- Waiting dots -->
+          <circle cx="180" cy="28" r="3" fill="#ffd700" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.6;0.1" dur="2s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="190" cy="25" r="2" fill="#ffd700" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.6;0.1" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+          </circle>
+          <circle cx="200" cy="28" r="2.5" fill="#ffd700" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.6;0.1" dur="2s" repeatCount="indefinite" begin="1s"/>
+          </circle>
+          <text x="180" y="100" text-anchor="middle" font-size="8" fill="#a89878">诸葛亮隆中</text>
+          <text x="180" y="110" text-anchor="middle" font-size="8" fill="#ffd700">27岁等刘备</text>
+        </g>
+      </svg>
+    </div>
+    <div class="page-title ani">待时而动</div>
+    <div class="page-text ani">
+      有些人<span class="em">等了很久</span>，<br>
+      等到了属于自己的时机：<br><br>
+      🎣 姜太公钓鱼，<span class="em">80岁</span>遇到文王<br>
+      用直钩钓鱼，愿者上钩。<br><br>
+      📖 诸葛亮隐居隆中，<br>
+      <span class="em">27岁</span>等来刘备三顾茅庐。<br><br>
+      <span class="dark">他们不是无所事事，</span><br>
+      <span class="em">而是一边准备，一边等时机。</span>
+    </div>
+  </div>
+
+  <!-- Page 7: Yu Shi Xie Xing -->
+  <div class="page bg-nature" data-page="6">
+    <div class="stars" id="s6"></div>
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="220" height="110" viewBox="0 0 220 110">
+        <!-- River of time flowing -->
+        <defs>
+          <linearGradient id="gRiver" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#3a5080"/>
+            <stop offset="50%" stop-color="#6080c0"/>
+            <stop offset="100%" stop-color="#90a0d0"/>
+          </linearGradient>
+        </defs>
+        <!-- River -->
+        <path d="M0,60 Q55,45 110,60 Q165,75 220,60" fill="none" stroke="url(#gRiver)" stroke-width="3" opacity="0.6">
+          <animate attributeName="d" values="M0,60 Q55,45 110,60 Q165,75 220,60;M0,60 Q55,75 110,60 Q165,45 220,60;M0,60 Q55,45 110,60 Q165,75 220,60" dur="5s" repeatCount="indefinite"/>
+        </path>
+        <!-- Person on boat moving with river -->
+        <g>
+          <animateTransform attributeName="transform" type="translate" values="-20,0;20,0;-20,0" dur="5s" repeatCount="indefinite"/>
+          <text x="110" y="55" text-anchor="middle" font-size="18">🚣</text>
+        </g>
+        <!-- Arrow showing direction -->
+        <path d="M30,85 L190,85" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="1" stroke-dasharray="4 3">
+          <animate attributeName="stroke-dashoffset" values="7;0" dur="1s" repeatCount="indefinite"/>
+        </path>
+        <polygon points="192,82 200,85 192,88" fill="rgba(255,215,0,0.3)"/>
+        <text x="110" y="100" text-anchor="middle" font-size="9" fill="#a89878">顺流而行，与时代同步</text>
+      </svg>
+    </div>
+    <div class="page-title ani">与时偕行</div>
+    <div class="page-text ani">
+      时代在变化，<br>
+      我们也要<span class="em">跟着变</span>。<br><br>
+      不能因为过去的方法好用，<br>
+      就<span class="dark">一直不肯改变</span>。<br><br>
+      就像划船🚣——<br>
+      <span class="em">顺流而下</span>，轻松前进。<br>
+      <span class="dark">逆流而上</span>，又累又慢。<br><br>
+      <span class="em">跟着时代走，不固执过去。</span>
+    </div>
+  </div>
+
+  <!-- Page 8: Four States of Shi -->
+  <div class="page bg-balance" data-page="7">
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="260" height="120" viewBox="0 0 260 120">
+        <!-- Four states as a timeline -->
+        <!-- Shi Lai -->
+        <g>
+          <circle cx="40" cy="50" r="22" fill="rgba(255,215,0,0.1)" stroke="#ffd700" stroke-width="1.5">
+            <animate attributeName="r" values="20;24;20" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <text x="40" y="47" text-anchor="middle" font-size="11" fill="#ffd700" font-weight="bold">时来</text>
+          <text x="40" y="62" text-anchor="middle" font-size="8" fill="#b8860b">🌅</text>
+          <text x="40" y="90" text-anchor="middle" font-size="8" fill="#a89878">机会来了</text>
+          <text x="40" y="105" text-anchor="middle" font-size="8" fill="#ffd700">抓住！</text>
+        </g>
+        <!-- Arrow -->
+        <path d="M65,50 L80,50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <!-- Shi Zhong -->
+        <g>
+          <circle cx="105" cy="50" r="22" fill="rgba(144,192,144,0.1)" stroke="#90c090" stroke-width="1.5"/>
+          <text x="105" y="47" text-anchor="middle" font-size="11" fill="#90c090" font-weight="bold">时中</text>
+          <text x="105" y="62" text-anchor="middle" font-size="8" fill="#6a9a6a">⚖️</text>
+          <text x="105" y="90" text-anchor="middle" font-size="8" fill="#a89878">恰到好处</text>
+          <text x="105" y="105" text-anchor="middle" font-size="8" fill="#90c090">最佳！</text>
+        </g>
+        <!-- Arrow -->
+        <path d="M130,50 L145,50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <!-- Shi Wang -->
+        <g>
+          <circle cx="170" cy="50" r="22" fill="rgba(100,100,100,0.1)" stroke="#8090a0" stroke-width="1.5"/>
+          <text x="170" y="47" text-anchor="middle" font-size="11" fill="#8090a0" font-weight="bold">时往</text>
+          <text x="170" y="62" text-anchor="middle" font-size="8" fill="#6a7a8a">🌇</text>
+          <text x="170" y="90" text-anchor="middle" font-size="8" fill="#a89878">机会过了</text>
+          <text x="170" y="105" text-anchor="middle" font-size="8" fill="#8090a0">放下</text>
+        </g>
+        <!-- Arrow -->
+        <path d="M195,50 L210,50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <!-- Shi Qiong -->
+        <g>
+          <circle cx="235" cy="50" r="22" fill="rgba(96,128,192,0.1)" stroke="#4a6090" stroke-width="1.5"/>
+          <text x="235" y="47" text-anchor="middle" font-size="11" fill="#4a6090" font-weight="bold">时穷</text>
+          <text x="235" y="62" text-anchor="middle" font-size="8" fill="#3a5070">🌑</text>
+          <text x="235" y="90" text-anchor="middle" font-size="8" fill="#a89878">走到尽头</text>
+          <text x="235" y="105" text-anchor="middle" font-size="8" fill="#4a6090">等转机</text>
+        </g>
+      </svg>
+    </div>
+    <div class="page-title ani">时的四种状态</div>
+    <div class="page-text ani">
+      <span class="em">时来</span> — 机会来了，要抓住！<br>
+      🌅 就像早晨太阳升起。<br><br>
+      <span class="em">时中</span> — 恰到好处，最佳状态<br>
+      ⚖️ 不早不晚，刚刚好。<br><br>
+      <span class="dark">时往</span> — 机会过了，要放下<br>
+      🌇 别追已经落下的太阳。<br><br>
+      <span class="dark">时穷</span> — 走到尽头，等转机<br>
+      🌑 黎明前最黑暗，但太阳会再升起。
+    </div>
+  </div>
+
+  <!-- Page 9: Modern Lessons -->
+  <div class="page bg-time" data-page="8">
+    <div class="particles" id="p8"></div>
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="240" height="120" viewBox="0 0 240 120">
+        <!-- Three dragon stages -->
+        <!-- Qian Long -->
+        <g>
+          <rect x="10" y="60" width="60" height="35" rx="5" fill="rgba(30,25,40,0.4)" stroke="rgba(96,128,192,0.3)" stroke-width="1"/>
+          <text x="40" y="82" text-anchor="middle" font-size="16">📚</text>
+          <text x="40" y="50" text-anchor="middle" font-size="9" fill="#6080c0">潜龙</text>
+          <text x="40" y="108" text-anchor="middle" font-size="8" fill="#a89878">考试前</text>
+          <text x="40" y="118" text-anchor="middle" font-size="8" fill="#6080c0">认真准备</text>
+        </g>
+        <!-- Yue Long -->
+        <g>
+          <circle cx="120" cy="55" r="28" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="1.5">
+            <animate attributeName="r" values="26;30;26" dur="2.5s" repeatCount="indefinite"/>
+          </circle>
+          <text x="120" y="60" text-anchor="middle" font-size="20">🏆</text>
+          <text x="120" y="35" text-anchor="middle" font-size="9" fill="#ffd700">跃龙</text>
+          <text x="120" y="100" text-anchor="middle" font-size="8" fill="#a89878">机会来了</text>
+          <text x="120" y="112" text-anchor="middle" font-size="8" fill="#ffd700">全力以赴</text>
+        </g>
+        <!-- Kang Long -->
+        <g>
+          <text x="200" y="60" text-anchor="middle" font-size="18">🙏</text>
+          <path d="M180,70 Q200,80 220,70" fill="none" stroke="rgba(144,192,144,0.3)" stroke-width="1"/>
+          <text x="200" y="40" text-anchor="middle" font-size="9" fill="#90c090">亢龙</text>
+          <text x="200" y="100" text-anchor="middle" font-size="8" fill="#a89878">成功时</text>
+          <text x="200" y="112" text-anchor="middle" font-size="8" fill="#90c090">保持谦逊</text>
+        </g>
+        <!-- Arrows -->
+        <path d="M73,72 L90,65" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="1" stroke-dasharray="3 2"/>
+        <polygon points="91,62 96,66 90,68" fill="rgba(255,215,0,0.3)"/>
+        <path d="M150,60 L172,58" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="1" stroke-dasharray="3 2"/>
+        <polygon points="174,55 179,58 174,61" fill="rgba(255,215,0,0.3)"/>
+      </svg>
+    </div>
+    <div class="page-title ani">现代生活中的"时"</div>
+    <div class="page-text ani">
+      📚 <span class="dark">考试前</span> = <span class="em">潜龙</span><br>
+      安静准备，积蓄力量。<br><br>
+      🏆 <span class="em">机会来了</span> = <span class="em">跃龙</span><br>
+      全力以赴，把握当下！<br><br>
+      🙏 <span class="em">成功时</span> = <span class="dark">亢龙</span><br>
+      保持谦逊，不要骄傲。<br>
+      因为"亢龙有悔"——<br>
+      <span class="dark">飞得太高会摔下来。</span>
+    </div>
+  </div>
+
+  <!-- Page 10: Summary -->
+  <div class="page bg-final" data-page="9">
+    <div class="particles" id="p9"></div>
+    <div class="ani" style="margin-bottom:10px;">
+      <svg width="100" height="80" viewBox="0 0 100 80">
+        <!-- Simple clock with golden hand -->
+        <circle cx="50" cy="40" r="30" fill="none" stroke="rgba(255,215,0,0.25)" stroke-width="1.5"/>
+        <line x1="50" y1="40" x2="50" y2="18" stroke="#ffd700" stroke-width="2" stroke-linecap="round">
+          <animateTransform attributeName="transform" type="rotate" values="0 50 40;360 50 40" dur="12s" repeatCount="indefinite"/>
+        </line>
+        <circle cx="50" cy="40" r="3" fill="#ffd700"/>
+        <text x="50" y="72" text-anchor="middle" font-size="9" fill="#a89878">知时者，智也</text>
+      </svg>
+    </div>
+    <div class="page-title ani">小结</div>
+    <div class="page-text ani">
+      <span class="em">时</span> = 时机 + 时势 + 时位<br><br>
+      <span class="em">顺时而动</span> — 跟着节奏走<br>
+      <span class="em">待时而动</span> — 耐心等时机<br>
+      <span class="em">与时偕行</span> — 跟上时代变化<br><br>
+      <span class="dark">时来要抓住，时往要放下。</span><br><br>
+      <span class="em">懂得"时"，就是最大的智慧。</span>
+    </div>
+    <div class="ani" style="margin-top:20px;padding:12px 20px;border:1px solid rgba(255,215,0,0.15);border-radius:10px;text-align:center;">
+      <div style="color:#ffd700;font-size:1em;font-weight:bold;">下一期预告</div>
+      <div style="color:#6a5a4a;margin-top:5px;">第十一期 · 周易与生活</div>
+    </div>
+    <div class="ani" style="margin-top:12px;color:#3a3a3a;font-size:0.72em;">— 周易讲解 · 第十期 完 —</div>
+  </div>
+
+</div>
+
+<!-- Voice Panel -->
+<div class="voice-panel" id="voicePanel">
+  <label>🗣️ 声音 <select id="voiceSelect"></select></label>
+  <label>🔊 语速: <span id="rateVal">0.9</span>x <input type="range" id="rateRange" min="0.5" max="1.5" step="0.1" value="0.9"></label>
+  <div class="close-panel" onclick="toggleVoicePanel()">✕ 关闭</div>
+</div>
+
+<script>
+let cur = 0;
+const pages = document.querySelectorAll('.page');
+const total = pages.length;
+let animating = false, speaking = false;
+
+const navDots = document.getElementById('navDots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => go(i);
+  navDots.appendChild(d);
+}
+
+function go(idx) {
+  if (idx < 0 || idx >= total || idx === cur || animating) return;
+  animating = true;
+  window.speechSynthesis.cancel();
+  const old = pages[cur], nw = pages[idx], dir = idx > cur ? 1 : -1;
+  old.classList.remove('active'); old.classList.add('prev');
+  if (dir < 0) { old.style.transform = 'translateX(100%)'; old.style.opacity = '0'; }
+  nw.style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+  nw.classList.remove('prev');
+  requestAnimationFrame(() => {
+    nw.classList.add('active'); nw.style.transform = '';
+    cur = idx; updateUI();
+    setTimeout(() => {
+      animating = false;
+      old.classList.remove('prev'); old.style.transform = ''; old.style.opacity = '';
+      if (speaking) speakPage(cur);
+    }, 650);
+  });
+}
+
+function updateUI() {
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.getElementById('pageNum').textContent = `${cur + 1} / ${total}`;
+  document.getElementById('navHint').style.opacity = '0';
+}
+
+let tx = 0, ty = 0, tt = 0;
+document.addEventListener('touchstart', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY; tt = Date.now();
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty, dt = Date.now() - tt;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 500) { dx < 0 ? go(cur+1) : go(cur-1); return; }
+  if (dt < 300 && Math.abs(dx) < 15 && Math.abs(dy) < 15) {
+    e.changedTouches[0].clientX > window.innerWidth * 0.4 ? go(cur+1) : go(cur-1);
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur+1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur-1); }
+});
+
+// TTS
+const narrations = [
+  "周易与时。第十期，时机的智慧。",
+  "在周易中，时是最重要的概念之一。孔子读周易，最大的感悟是：知时就是最大的智慧。什么时候该做什么事，什么时候该等待，这就是时的学问。周易说：君子藏器于身，待时而动。",
+  "周易的时，含义很丰富。时机，是做事的最佳时刻。时势，是天下大势的走向。时位，是你在什么位置。不是看钟表的几点钟，而是天时地利人和的时。",
+  "乾卦里有两句著名的话。潜龙勿用，意思是时机未到，不要急着行动，像龙潜在水底，安静积蓄力量。飞龙在天，意思是时机到了，大展身手！像龙飞上天空，一切正当其时。",
+  "顺时而动，就是跟着节奏走。春天播种，开始新事物。夏天生长，努力奋斗。秋天收获，享受成果。冬天收藏，休息积累。该进则进，该退则退，不跟时间对着干。",
+  "待时而动，就是耐心等待属于自己的时机。姜太公钓鱼，80岁遇到文王，用直钩钓鱼，愿者上钩。诸葛亮隐居隆中，27岁等来刘备三顾茅庐。他们不是无所事事，而是一边准备，一边等时机。",
+  "与时偕行，就是跟着时代一起走。时代在变化，我们也要跟着变。不能因为过去的方法好用，就一直不肯改变。就像划船，顺流而下，轻松前进；逆流而上，又累又慢。跟着时代走，不固执过去。",
+  "时有四种状态。时来，机会来了，要赶快抓住。时中，恰到好处，这是最佳状态。时往，机会过了，要学会放下。时穷，走到尽头，但黎明前最黑暗，太阳一定会再升起。",
+  "在现代生活中也是一样。考试前就是潜龙阶段，要安静准备，积蓄力量。机会来了就是跃龙，要全力以赴，把握当下。成功的时候要想到亢龙有悔，保持谦逊，不要骄傲，因为飞得太高会摔下来。",
+  "小结。时等于时机加时势加时位。顺时而动，跟着节奏走。待时而动，耐心等时机。与时偕行，跟上时代变化。时来要抓住，时往要放下。懂得时，就是最大的智慧。下一期，我们来讲周易与生活。"
+];
+
+let voices = [];
+function loadVoices() {
+  voices = window.speechSynthesis.getVoices();
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+  const zh = voices.filter(v => (v.lang.startsWith('zh-CN')||v.lang==='zh')&&!v.lang.startsWith('zh-HK')&&!v.lang.startsWith('zh-TW'));
+  // Sort: Edge Online (Natural) first
+  zh.sort((a, b) => {
+    const aOnline = a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Online') && a.name.includes('Natural') ? 2 : a.name.includes('Microsoft') ? 1 : 0;
+    const bOnline = b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Online') && b.name.includes('Natural') ? 2 : b.name.includes('Microsoft') ? 1 : 0;
+    return bOnline - aOnline;
+  });
+  (zh.length ? zh : voices.slice(0, 8)).forEach(v => {
+    const o = document.createElement('option');
+    o.value = voices.indexOf(v);
+    o.textContent = v.name.replace(/Microsoft |Google |Apple /g, '');
+    sel.appendChild(o);
+  });
+}
+window.speechSynthesis.onvoiceschanged = loadVoices;
+setTimeout(loadVoices, 300);
+document.getElementById('rateRange').addEventListener('input', function() {
+  document.getElementById('rateVal').textContent = this.value;
+});
+
+function speakPage(idx) {
+  window.speechSynthesis.cancel();
+  if (!narrations[idx]) return;
+  const u = new SpeechSynthesisUtterance(narrations[idx]);
+  u.lang = 'zh-CN'; u.rate = parseFloat(document.getElementById('rateRange').value);
+  const sv = document.getElementById('voiceSelect');
+  if (sv.value && voices[sv.value]) u.voice = voices[sv.value];
+  u.onend = () => {
+    if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
+    else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
+  };
+  window.speechSynthesis.speak(u);
+}
+
+function toggleAudio() {
+  if (speaking) { speaking = false; window.speechSynthesis.cancel(); }
+  else { speaking = true; speakPage(cur); }
+  updateAudioBtn();
+}
+function updateAudioBtn() {
+  const b = document.getElementById('audioBtn');
+  b.textContent = speaking ? '🔊' : '🔇';
+  b.classList.toggle('playing', speaking);
+}
+
+let lpt;
+document.getElementById('audioBtn').addEventListener('touchstart', e => {
+  lpt = setTimeout(() => { toggleVoicePanel(); e.preventDefault(); }, 600);
+}, { passive: false });
+document.getElementById('audioBtn').addEventListener('touchend', () => clearTimeout(lpt));
+function toggleVoicePanel() { document.getElementById('voicePanel').classList.toggle('show'); }
+
+// Particles & Stars
+function mkParticles(id, n=15) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle ' + (Math.random() > 0.5 ? 'particle-gold' : 'particle-white');
+    p.style.left = Math.random()*100+'%';
+    p.style.animationDelay = Math.random()*7+'s';
+    p.style.animationDuration = (5+Math.random()*4)+'s';
+    const s = 2+Math.random()*4; p.style.width = s+'px'; p.style.height = s+'px';
+    c.appendChild(p);
+  }
+}
+function mkStars(id, n=35) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = Math.random()*4+'s';
+    const sz = 1+Math.random()*2; s.style.width = sz+'px'; s.style.height = sz+'px';
+    c.appendChild(s);
+  }
+}
+
+mkParticles('p0', 18); mkParticles('p2', 14); mkParticles('p8', 16); mkParticles('p9', 12);
+mkStars('s1', 30); mkStars('s3', 35); mkStars('s6', 30);
+
+setTimeout(() => { document.getElementById('navHint').style.opacity = '0'; }, 4500);
+document.addEventListener('dblclick', e => e.preventDefault());
+</script>
+<script src="../../assets/site.js"></script></body>
+</html>

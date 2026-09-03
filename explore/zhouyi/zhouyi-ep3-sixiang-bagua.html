@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco传统文化讲解：四象与八卦">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>周易讲解 · 第三期：四象与八卦</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'PingFang SC', 'Noto Serif SC', serif;
+  background: #0a0a0f;
+  color: #e8e0d0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.pages-wrapper { width: 100%; height: 100%; position: relative; }
+.page {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 40px 24px;
+  opacity: 0; transform: translateX(100%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none; overflow: hidden;
+}
+.page.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.page.prev { opacity: 0; transform: translateX(-100%); }
+
+/* Backgrounds */
+.bg-void { background: radial-gradient(ellipse at center, #080808 0%, #000 70%); }
+.bg-cosmos { background: radial-gradient(ellipse at center, #0f0a1e 0%, #060410 70%); }
+.bg-dawn { background: linear-gradient(180deg, #0a0820 0%, #1a1545 50%, #0f0d25 100%); }
+.bg-light { background: linear-gradient(135deg, #1a1508 0%, #0f0d05 50%, #080604 100%); }
+.bg-dual { background: linear-gradient(135deg, #0a0a18 0%, #080812 100%); }
+.bg-nature { background: linear-gradient(180deg, #050a10 0%, #0a1520 50%, #050a0f 100%); }
+.bg-flow { background: radial-gradient(ellipse at 50% 60%, #0a1020 0%, #060810 70%); }
+.bg-balance { background: radial-gradient(ellipse at center, #100a18 0%, #080510 70%); }
+.bg-final { background: radial-gradient(ellipse at center, #0f0818 0%, #060410 70%); }
+.bg-earth { background: linear-gradient(180deg, #0a0f08 0%, #101a0a 50%, #080f06 100%); }
+
+/* Typography */
+.title-main {
+  font-size: clamp(2.2em, 8vw, 3.5em);
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, #c0c0c0 50%, #ffd700 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-align: center; line-height: 1.3;
+  animation: textGlow 4s ease-in-out infinite;
+}
+@keyframes textGlow {
+  0%,100% { filter: brightness(1) drop-shadow(0 0 8px rgba(255,255,255,0.1)); }
+  50% { filter: brightness(1.15) drop-shadow(0 0 20px rgba(255,215,0,0.3)); }
+}
+.subtitle { font-size: clamp(0.85em, 3.2vw, 1.1em); color: #5a5040; margin-top: 12px; text-align: center; letter-spacing: 4px; }
+.page-title {
+  font-size: clamp(1.4em, 5.5vw, 2em); font-weight: 800;
+  color: #ffd700; text-align: center; margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(255,215,0,0.15);
+}
+.page-text {
+  font-size: clamp(0.95em, 3.8vw, 1.15em); line-height: 2;
+  text-align: center; color: #c8bca0; max-width: 560px;
+}
+.page-text .em { color: #ffd700; font-weight: bold; }
+.page-text .light { color: #f0f0f0; font-weight: bold; }
+.page-text .dark { color: #6a7a8a; }
+.fact-card {
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15);
+  border-radius: 12px; padding: 14px 18px; margin-top: 18px;
+  max-width: 480px; text-align: left; font-size: 0.88em; line-height: 1.8; color: #a89878;
+}
+.fact-card .label { color: #ffd700; font-weight: bold; margin-bottom: 4px; }
+
+/* Animations */
+.ani { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.page.active .ani { opacity: 1; transform: translateY(0); }
+.page.active .ani:nth-child(2) { transition-delay: 0.15s; }
+.page.active .ani:nth-child(3) { transition-delay: 0.3s; }
+.page.active .ani:nth-child(4) { transition-delay: 0.45s; }
+.page.active .ani:nth-child(5) { transition-delay: 0.6s; }
+.page.active .ani:nth-child(6) { transition-delay: 0.75s; }
+
+/* Particles */
+.particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.particle {
+  position: absolute; border-radius: 50%; opacity: 0;
+  animation: floatUp 7s ease-in-out infinite;
+}
+.particle-gold { background: radial-gradient(circle, #ffd700, transparent); }
+.particle-white { background: radial-gradient(circle, rgba(255,255,255,0.8), transparent); }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(100vh) scale(0.3); }
+  15% { opacity: 0.7; } 85% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(0.8); }
+}
+
+/* Stars */
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.star {
+  position: absolute; background: #fff; border-radius: 50%;
+  animation: twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.85; transform: scale(1.2); } }
+
+/* Trigram grid */
+.trigram-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+  margin: 15px 0; max-width: 400px;
+}
+.trigram-card {
+  background: rgba(255,215,0,0.05); border: 1px solid rgba(255,215,0,0.12);
+  border-radius: 10px; padding: 10px 6px; text-align: center;
+}
+.trigram-card .symbol { font-size: 1.6em; margin-bottom: 4px; }
+.trigram-card .name { font-size: 0.82em; color: #ffd700; }
+.trigram-card .meaning { font-size: 0.7em; color: #8a7a6a; margin-top: 2px; }
+
+/* Four images grid */
+.four-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin: 15px 0; max-width: 360px;
+}
+.four-card {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px; padding: 12px; text-align: center;
+}
+.four-card .label { font-size: 0.78em; color: #5a5a5a; margin-bottom: 4px; }
+.four-card .main { font-size: 1.3em; color: #ffd700; font-weight: bold; }
+.four-card .desc { font-size: 0.75em; color: #8a7a6a; margin-top: 4px; }
+
+/* Nature correspondence */
+.nature-row {
+  display: flex; align-items: center; gap: 10px; margin: 6px 0;
+  padding: 6px 12px; border-radius: 8px;
+  background: rgba(255,255,255,0.02);
+}
+.nature-row .icon { font-size: 1.3em; }
+.nature-row .text { font-size: 0.88em; color: #c8bca0; }
+.nature-row .text .em { color: #ffd700; }
+
+/* Navigation */
+.nav-hint {
+  position: fixed; bottom: 18px; left: 0; right: 0;
+  text-align: center; color: rgba(255,255,255,0.25); font-size: 0.75em;
+  pointer-events: none; transition: opacity 0.5s; z-index: 100;
+}
+.nav-dots {
+  position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 7px; z-index: 100;
+}
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); transition: all 0.3s; cursor: pointer;
+}
+.nav-dot.active { background: #ffd700; box-shadow: 0 0 6px rgba(255,215,0,0.5); transform: scale(1.4); }
+
+.audio-btn {
+  position: fixed; top: 14px; right: 14px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: #ffd700; font-size: 1.1em;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 200; backdrop-filter: blur(10px); transition: all 0.3s;
+}
+.audio-btn:active { transform: scale(0.9); }
+.audio-btn.playing { background: rgba(255,215,0,0.15); box-shadow: 0 0 12px rgba(255,215,0,0.2); }
+.page-num { position: fixed; top: 16px; left: 16px; font-size: 0.7em; color: rgba(255,255,255,0.2); z-index: 100; }
+
+/* Voice panel */
+.voice-panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(10,10,15,0.96); backdrop-filter: blur(20px);
+  padding: 20px; border-top: 1px solid rgba(255,215,0,0.15);
+  transform: translateY(100%); transition: transform 0.3s; z-index: 300;
+  border-radius: 18px 18px 0 0;
+}
+.voice-panel.show { transform: translateY(0); }
+.voice-panel label { display: block; color: #7a6a5a; font-size: 0.82em; margin-bottom: 6px; }
+.voice-panel select, .voice-panel input[type="range"] {
+  width: 100%; padding: 10px; border-radius: 8px;
+  border: 1px solid rgba(255,215,0,0.15); background: rgba(255,255,255,0.04);
+  color: #d4c8b0; font-size: 0.95em; margin-bottom: 12px;
+}
+.voice-panel .close-panel { text-align: center; color: #ffd700; cursor: pointer; padding: 8px; }
+
+/* Mnemonics style */
+.mnemonic-box {
+  background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.2);
+  border-radius: 12px; padding: 16px 20px; margin: 15px 0;
+  max-width: 440px; text-align: center;
+  font-size: clamp(0.9em, 3.5vw, 1.05em); line-height: 2.2; color: #ffd700;
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
+<div class="page-num" id="pageNum">1 / 10</div>
+<div class="nav-dots" id="navDots"></div>
+<div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
+
+<div class="pages-wrapper">
+
+  <!-- Page 1: Cover -->
+  <div class="page bg-cosmos active" data-page="0">
+    <div class="particles" id="p0"></div>
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="220" height="220" viewBox="0 0 440 440">
+        <defs>
+          <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(255,215,0,0.08)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <filter id="glow"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <circle cx="220" cy="220" r="200" fill="url(#bgGlow)"/>
+        <circle cx="220" cy="220" r="190" fill="none" stroke="rgba(255,215,0,0.15)" stroke-width="1.5">
+          <animateTransform attributeName="transform" type="rotate" values="0 220 220;360 220 220" dur="60s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="220" cy="220" r="175" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="4 6"/>
+        <!-- Eight trigrams arranged in circle -->
+        <g filter="url(#glow)">
+          <!-- Qian ☰ top -->
+          <g transform="translate(220,50)">
+            <rect x="-18" y="-2" width="36" height="5" rx="2" fill="#ffd700"/>
+            <rect x="-18" y="-11" width="36" height="5" rx="2" fill="#ffd700"/>
+            <rect x="-18" y="-20" width="36" height="5" rx="2" fill="#ffd700"/>
+          </g>
+          <!-- Xun ☴ top-right -->
+          <g transform="translate(340,100)">
+            <rect x="-18" y="-2" width="36" height="5" rx="2" fill="#a0c0ff"/>
+            <rect x="-18" y="-11" width="36" height="5" rx="2" fill="#a0c0ff"/>
+            <rect x="-18" y="-20" width="15" height="5" rx="2" fill="#a0c0ff"/>
+            <rect x="3" y="-20" width="15" height="5" rx="2" fill="#a0c0ff"/>
+          </g>
+          <!-- Kan ☵ right -->
+          <g transform="translate(380,220)">
+            <rect x="-18" y="-2" width="15" height="5" rx="2" fill="#4080ff"/>
+            <rect x="3" y="-2" width="15" height="5" rx="2" fill="#4080ff"/>
+            <rect x="-18" y="-11" width="36" height="5" rx="2" fill="#4080ff"/>
+            <rect x="-18" y="-20" width="15" height="5" rx="2" fill="#4080ff"/>
+            <rect x="3" y="-20" width="15" height="5" rx="2" fill="#4080ff"/>
+          </g>
+          <!-- Gen ☶ bottom-right -->
+          <g transform="translate(340,340)">
+            <rect x="-18" y="-2" width="15" height="5" rx="2" fill="#8b6914"/>
+            <rect x="3" y="-2" width="15" height="5" rx="2" fill="#8b6914"/>
+            <rect x="-18" y="-11" width="15" height="5" rx="2" fill="#8b6914"/>
+            <rect x="3" y="-11" width="15" height="5" rx="2" fill="#8b6914"/>
+            <rect x="-18" y="-20" width="36" height="5" rx="2" fill="#8b6914"/>
+          </g>
+          <!-- Kun ☷ bottom -->
+          <g transform="translate(220,390)">
+            <rect x="-18" y="-2" width="15" height="5" rx="2" fill="#6a5a8a"/>
+            <rect x="3" y="-2" width="15" height="5" rx="2" fill="#6a5a8a"/>
+            <rect x="-18" y="-11" width="15" height="5" rx="2" fill="#6a5a8a"/>
+            <rect x="3" y="-11" width="15" height="5" rx="2" fill="#6a5a8a"/>
+            <rect x="-18" y="-20" width="15" height="5" rx="2" fill="#6a5a8a"/>
+            <rect x="3" y="-20" width="15" height="5" rx="2" fill="#6a5a8a"/>
+          </g>
+          <!-- Zhen ☳ bottom-left -->
+          <g transform="translate(100,340)">
+            <rect x="-18" y="-2" width="15" height="5" rx="2" fill="#40c040"/>
+            <rect x="3" y="-2" width="15" height="5" rx="2" fill="#40c040"/>
+            <rect x="-18" y="-11" width="15" height="5" rx="2" fill="#40c040"/>
+            <rect x="3" y="-11" width="15" height="5" rx="2" fill="#40c040"/>
+            <rect x="-18" y="-20" width="36" height="5" rx="2" fill="#40c040"/>
+          </g>
+          <!-- Li ☲ left -->
+          <g transform="translate(60,220)">
+            <rect x="-18" y="-2" width="36" height="5" rx="2" fill="#ff6040"/>
+            <rect x="-18" y="-11" width="15" height="5" rx="2" fill="#ff6040"/>
+            <rect x="3" y="-11" width="15" height="5" rx="2" fill="#ff6040"/>
+            <rect x="-18" y="-20" width="36" height="5" rx="2" fill="#ff6040"/>
+          </g>
+          <!-- Dui ☱ top-left -->
+          <g transform="translate(100,100)">
+            <rect x="-18" y="-2" width="15" height="5" rx="2" fill="#c0c0ff"/>
+            <rect x="3" y="-2" width="15" height="5" rx="2" fill="#c0c0ff"/>
+            <rect x="-18" y="-11" width="36" height="5" rx="2" fill="#c0c0ff"/>
+            <rect x="-18" y="-20" width="36" height="5" rx="2" fill="#c0c0ff"/>
+          </g>
+        </g>
+        <!-- Taiji center -->
+        <circle cx="220" cy="220" r="45" fill="#080808" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+        <path d="M220,175 A45,45 0 0,1 220,265 A22.5,22.5 0 0,1 220,220 A22.5,22.5 0 0,0 220,175 Z" fill="rgba(255,215,0,0.6)">
+          <animateTransform attributeName="transform" type="rotate" values="0 220 220;360 220 220" dur="20s" repeatCount="indefinite"/>
+        </path>
+        <path d="M220,175 A45,45 0 0,0 220,265 A22.5,22.5 0 0,0 220,220 A22.5,22.5 0 0,1 220,175 Z" fill="rgba(10,10,20,0.9)">
+          <animateTransform attributeName="transform" type="rotate" values="0 220 220;360 220 220" dur="20s" repeatCount="indefinite"/>
+        </path>
+        <circle cx="220" cy="197.5" r="6" fill="rgba(10,10,20,0.8)">
+          <animateTransform attributeName="transform" type="rotate" values="0 220 220;360 220 220" dur="20s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="220" cy="242.5" r="6" fill="rgba(255,215,0,0.6)">
+          <animateTransform attributeName="transform" type="rotate" values="0 220 220;360 220 220" dur="20s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+    </div>
+    <div class="title-main ani">四象与八卦</div>
+    <div class="subtitle ani">第三期 · 从二到八的推演</div>
+  </div>
+
+  <!-- Page 2: Review -->
+  <div class="page bg-void" data-page="1">
+    <div class="stars" id="s1"></div>
+    <div class="ani">
+      <svg width="240" height="100" viewBox="0 0 240 100">
+        <!-- Taiji splits into Yin Yang -->
+        <circle cx="50" cy="50" r="30" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="1.5"/>
+        <path d="M50,20 A30,30 0 0,1 50,80 A15,15 0 0,1 50,50 A15,15 0 0,0 50,20 Z" fill="rgba(255,215,0,0.5)"/>
+        <path d="M50,20 A30,30 0 0,0 50,80 A15,15 0 0,0 50,50 A15,15 0 0,1 50,20 Z" fill="rgba(10,10,20,0.8)"/>
+        <text x="50" y="92" text-anchor="middle" font-size="9" fill="#5a5a5a">太极</text>
+        <!-- Arrow -->
+        <path d="M88,50 L112,50" fill="none" stroke="#ffd700" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6">
+          <animate attributeName="stroke-dashoffset" values="6;0" dur="1s" repeatCount="indefinite"/>
+        </path>
+        <polygon points="115,45 125,50 115,55" fill="#ffd700" opacity="0.6"/>
+        <!-- Yang line -->
+        <rect x="145" y="35" width="40" height="8" rx="3" fill="#ffd700" opacity="0.8"/>
+        <text x="165" y="62" text-anchor="middle" font-size="9" fill="#ffd700">阳 ⚊</text>
+        <!-- Yin line -->
+        <rect x="195" y="35" width="16" height="8" rx="3" fill="#6080c0" opacity="0.8"/>
+        <rect x="219" y="35" width="16" height="8" rx="3" fill="#6080c0" opacity="0.8"/>
+        <text x="215" y="62" text-anchor="middle" font-size="9" fill="#6080c0">阴 ⚋</text>
+      </svg>
+    </div>
+    <div class="page-title ani">回顾：太极生两仪</div>
+    <div class="page-text ani">
+      上一期我们学到：<br>
+      <span class="em">太极</span>一动，分出<span class="em">阴阳两仪</span>。<br><br>
+      阳用一条<span class="em">完整的线</span> ⚊ 表示<br>
+      阴用一条<span class="dark">断开的线</span> ⚋ 表示<br><br>
+      但是，分化没有停止。<br>
+      阴阳还会<span class="em">继续分裂</span>！<br><br>
+      <span class="dark">两仪 → 接下来会变成什么？</span>
+    </div>
+  </div>
+
+  <!-- Page 3: Four Images Born -->
+  <div class="page bg-dawn" data-page="2">
+    <div class="particles" id="p2"></div>
+    <div class="ani">
+      <svg width="280" height="160" viewBox="0 0 280 160">
+        <defs>
+          <linearGradient id="gYang" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#ffaa00"/>
+          </linearGradient>
+        </defs>
+        <!-- Level 1: Yin Yang -->
+        <rect x="115" y="10" width="50" height="7" rx="3" fill="#ffd700" opacity="0.5"/>
+        <text x="140" y="30" text-anchor="middle" font-size="8" fill="#5a5a5a">阳</text>
+        <!-- Arrows down -->
+        <line x1="125" y1="35" x2="70" y2="55" stroke="#ffd700" stroke-width="1" opacity="0.4" stroke-dasharray="2 2"/>
+        <line x1="155" y1="35" x2="210" y2="55" stroke="#ffd700" stroke-width="1" opacity="0.4" stroke-dasharray="2 2"/>
+        <!-- Level 2: Four images -->
+        <!-- Taiyang (yang+yang) -->
+        <g transform="translate(45,60)">
+          <rect x="0" y="0" width="36" height="6" rx="2" fill="#ffd700"/>
+          <rect x="0" y="10" width="36" height="6" rx="2" fill="#ffd700"/>
+          <text x="18" y="30" text-anchor="middle" font-size="9" fill="#ffd700">太阳</text>
+        </g>
+        <!-- Shaoyin (yang+yin) -->
+        <g transform="translate(110,60)">
+          <rect x="0" y="0" width="15" height="6" rx="2" fill="#6080c0"/>
+          <rect x="21" y="0" width="15" height="6" rx="2" fill="#6080c0"/>
+          <rect x="0" y="10" width="36" height="6" rx="2" fill="#ffd700"/>
+          <text x="18" y="30" text-anchor="middle" font-size="9" fill="#8090c0">少阴</text>
+        </g>
+        <!-- Shaoyang (yin+yang) -->
+        <g transform="translate(175,60)">
+          <rect x="0" y="0" width="36" height="6" rx="2" fill="#ffd700"/>
+          <rect x="0" y="10" width="15" height="6" rx="2" fill="#6080c0"/>
+          <rect x="21" y="10" width="15" height="6" rx="2" fill="#6080c0"/>
+          <text x="18" y="30" text-anchor="middle" font-size="9" fill="#a0b860">少阳</text>
+        </g>
+        <!-- Taiyin (yin+yin) -->
+        <g transform="translate(240,60)">
+          <rect x="0" y="0" width="15" height="6" rx="2" fill="#6080c0"/>
+          <rect x="21" y="0" width="15" height="6" rx="2" fill="#6080c0"/>
+          <rect x="0" y="10" width="15" height="6" rx="2" fill="#6080c0"/>
+          <rect x="21" y="10" width="15" height="6" rx="2" fill="#6080c0"/>
+          <text x="18" y="30" text-anchor="middle" font-size="9" fill="#6a6aaa">太阴</text>
+        </g>
+        <!-- Bottom label -->
+        <text x="140" y="120" text-anchor="middle" font-size="10" fill="rgba(255,215,0,0.6)">阴阳各自再分阴阳 → 四象</text>
+        <!-- Bracket -->
+        <path d="M45,105 Q140,130 275,105" fill="none" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+      </svg>
+    </div>
+    <div class="page-title ani">四象诞生</div>
+    <div class="page-text ani">
+      阴和阳，<span class="em">各自再分出阴和阳</span>：<br><br>
+      阳 + 阳 = <span class="em">太阳</span>（老阳）⚊⚊<br>
+      阳 + 阴 = <span class="dark">少阴</span> ⚊⚋<br>
+      阴 + 阳 = <span class="em">少阳</span> ⚋⚊<br>
+      阴 + 阴 = <span class="dark">太阴</span>（老阴）⚋⚋<br><br>
+      <span class="dark">2 × 2 = 4，四象就这样诞生了！</span>
+    </div>
+  </div>
+
+  <!-- Page 4: Four Images Correspondence -->
+  <div class="page bg-dual" data-page="3">
+    <div class="page-title ani">四象对应万物</div>
+    <div class="four-grid ani">
+      <div class="four-card">
+        <div class="label">太阳 ⚊⚊</div>
+        <div class="main">☀️ 夏</div>
+        <div class="desc">南方 · 壮年 · 最旺</div>
+      </div>
+      <div class="four-card">
+        <div class="label">少阳 ⚋⚊</div>
+        <div class="main">🌱 春</div>
+        <div class="desc">东方 · 少年 · 生长</div>
+      </div>
+      <div class="four-card">
+        <div class="label">少阴 ⚊⚋</div>
+        <div class="main">🍂 秋</div>
+        <div class="desc">西方 · 中年 · 收敛</div>
+      </div>
+      <div class="four-card">
+        <div class="label">太阴 ⚋⚋</div>
+        <div class="main">❄️ 冬</div>
+        <div class="desc">北方 · 老年 · 收藏</div>
+      </div>
+    </div>
+    <div class="page-text ani">
+      四象不只是符号，<br>
+      它对应着<span class="em">自然的四种状态</span>：<br><br>
+      <span class="em">春生、夏长、秋收、冬藏</span><br><br>
+      <span class="dark">从生到死，从起到落，<br>万物都在四象中循环。</span>
+    </div>
+  </div>
+
+  <!-- Page 5: Four Images Generate Eight Trigrams -->
+  <div class="page bg-cosmos" data-page="4">
+    <div class="particles" id="p4"></div>
+    <div class="ani">
+      <svg width="280" height="150" viewBox="0 0 280 150">
+        <!-- Four images at top -->
+        <g transform="translate(30,10)">
+          <rect x="0" y="0" width="24" height="5" rx="2" fill="#ffd700" opacity="0.7"/>
+          <rect x="0" y="8" width="24" height="5" rx="2" fill="#ffd700" opacity="0.7"/>
+          <text x="12" y="24" text-anchor="middle" font-size="7" fill="#5a5a5a">太阳</text>
+        </g>
+        <g transform="translate(90,10)">
+          <rect x="0" y="0" width="10" height="5" rx="2" fill="#6080c0" opacity="0.7"/>
+          <rect x="14" y="0" width="10" height="5" rx="2" fill="#6080c0" opacity="0.7"/>
+          <rect x="0" y="8" width="24" height="5" rx="2" fill="#ffd700" opacity="0.7"/>
+          <text x="12" y="24" text-anchor="middle" font-size="7" fill="#5a5a5a">少阴</text>
+        </g>
+        <g transform="translate(160,10)">
+          <rect x="0" y="0" width="24" height="5" rx="2" fill="#ffd700" opacity="0.7"/>
+          <rect x="0" y="8" width="10" height="5" rx="2" fill="#6080c0" opacity="0.7"/>
+          <rect x="14" y="8" width="10" height="5" rx="2" fill="#6080c0" opacity="0.7"/>
+          <text x="12" y="24" text-anchor="middle" font-size="7" fill="#5a5a5a">少阳</text>
+        </g>
+        <g transform="translate(230,10)">
+          <rect x="0" y="0" width="10" height="5" rx="2" fill="#6080c0" opacity="0.7"/>
+          <rect x="14" y="0" width="10" height="5" rx="2" fill="#6080c0" opacity="0.7"/>
+          <rect x="0" y="8" width="10" height="5" rx="2" fill="#6080c0" opacity="0.7"/>
+          <rect x="14" y="8" width="10" height="5" rx="2" fill="#6080c0" opacity="0.7"/>
+          <text x="12" y="24" text-anchor="middle" font-size="7" fill="#5a5a5a">太阴</text>
+        </g>
+        <!-- Arrows -->
+        <line x1="42" y1="38" x2="30" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+        <line x1="42" y1="38" x2="65" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+        <line x1="102" y1="38" x2="95" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+        <line x1="102" y1="38" x2="130" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+        <line x1="172" y1="38" x2="160" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+        <line x1="172" y1="38" x2="195" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+        <line x1="242" y1="38" x2="225" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+        <line x1="242" y1="38" x2="258" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+        <!-- Eight trigrams -->
+        <g transform="translate(18,58)">
+          <rect x="0" y="0" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="7" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="14" width="24" height="4" rx="2" fill="#ffd700"/>
+          <text x="12" y="30" text-anchor="middle" font-size="7" fill="#ffd700">乾☰</text>
+        </g>
+        <g transform="translate(53,58)">
+          <rect x="0" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="7" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="14" width="24" height="4" rx="2" fill="#ffd700"/>
+          <text x="12" y="30" text-anchor="middle" font-size="7" fill="#c0c0ff">兑☱</text>
+        </g>
+        <g transform="translate(88,58)">
+          <rect x="0" y="0" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="14" width="24" height="4" rx="2" fill="#ffd700"/>
+          <text x="12" y="30" text-anchor="middle" font-size="7" fill="#ff6040">离☲</text>
+        </g>
+        <g transform="translate(123,58)">
+          <rect x="0" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="14" width="24" height="4" rx="2" fill="#ffd700"/>
+          <text x="12" y="30" text-anchor="middle" font-size="7" fill="#40c040">震☳</text>
+        </g>
+        <g transform="translate(158,58)">
+          <rect x="0" y="0" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="7" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="14" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="14" width="10" height="4" rx="2" fill="#6080c0"/>
+          <text x="12" y="30" text-anchor="middle" font-size="7" fill="#a0c0ff">巽☴</text>
+        </g>
+        <g transform="translate(193,58)">
+          <rect x="0" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="7" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="14" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="14" width="10" height="4" rx="2" fill="#6080c0"/>
+          <text x="12" y="30" text-anchor="middle" font-size="7" fill="#4080ff">坎☵</text>
+        </g>
+        <g transform="translate(228,58)">
+          <rect x="0" y="0" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="14" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="14" width="10" height="4" rx="2" fill="#6080c0"/>
+          <text x="12" y="30" text-anchor="middle" font-size="7" fill="#8b6914">艮☶</text>
+        </g>
+        <g transform="translate(256,58)">
+          <rect x="0" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="14" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="14" width="10" height="4" rx="2" fill="#6080c0"/>
+          <text x="12" y="30" text-anchor="middle" font-size="7" fill="#6a5a8a">坤☷</text>
+        </g>
+        <!-- Bottom text -->
+        <text x="140" y="125" text-anchor="middle" font-size="9" fill="rgba(255,215,0,0.5)">四象 × 阴阳 = 八卦</text>
+        <text x="140" y="140" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.3)">4 × 2 = 8</text>
+      </svg>
+    </div>
+    <div class="page-title ani">四象生八卦</div>
+    <div class="page-text ani">
+      四象<span class="em">再各分阴阳</span>，<br>
+      在两爻上面<span class="em">再加一爻</span>：<br><br>
+      两爻 → 三爻<br>
+      四个符号 → <span class="em">八个符号</span><br><br>
+      这就是<span class="em">八卦</span>的由来！<br>
+      每个卦由<span class="em">三条线</span>（三爻）组成。<br><br>
+      <span class="dark">2³ = 8，三次阴阳选择，八种可能。</span>
+    </div>
+  </div>
+
+  <!-- Page 6: Eight Trigram Names -->
+  <div class="page bg-light" data-page="5">
+    <div class="stars" id="s5"></div>
+    <div class="page-title ani">八卦的名字</div>
+    <div class="trigram-grid ani">
+      <div class="trigram-card">
+        <div class="symbol">☰</div>
+        <div class="name">乾 qián</div>
+        <div class="meaning">三条阳</div>
+      </div>
+      <div class="trigram-card">
+        <div class="symbol">☷</div>
+        <div class="name">坤 kūn</div>
+        <div class="meaning">三条阴</div>
+      </div>
+      <div class="trigram-card">
+        <div class="symbol">☳</div>
+        <div class="name">震 zhèn</div>
+        <div class="meaning">下阳上阴</div>
+      </div>
+      <div class="trigram-card">
+        <div class="symbol">☴</div>
+        <div class="name">巽 xùn</div>
+        <div class="meaning">下阴上阳</div>
+      </div>
+      <div class="trigram-card">
+        <div class="symbol">☵</div>
+        <div class="name">坎 kǎn</div>
+        <div class="meaning">中间阳</div>
+      </div>
+      <div class="trigram-card">
+        <div class="symbol">☲</div>
+        <div class="name">离 lí</div>
+        <div class="meaning">中间阴</div>
+      </div>
+      <div class="trigram-card">
+        <div class="symbol">☶</div>
+        <div class="name">艮 gèn</div>
+        <div class="meaning">上阳下阴</div>
+      </div>
+      <div class="trigram-card">
+        <div class="symbol">☱</div>
+        <div class="name">兑 duì</div>
+        <div class="meaning">上阴下阳</div>
+      </div>
+    </div>
+    <div class="page-text ani">
+      <span class="dark">八个卦，八个名字，<br>每个都有独特的意思。</span>
+    </div>
+  </div>
+
+  <!-- Page 7: Eight Trigrams and Nature -->
+  <div class="page bg-nature" data-page="6">
+    <div class="stars" id="s6"></div>
+    <div class="page-title ani">八卦对应自然</div>
+    <div class="ani" style="max-width:380px;width:100%;">
+      <div class="nature-row"><div class="icon">☰</div><div class="text"><span class="em">乾</span> = ☁️ <span class="em">天</span> — 最刚健，覆盖万物</div></div>
+      <div class="nature-row"><div class="icon">☷</div><div class="text"><span class="em">坤</span> = 🌍 <span class="em">地</span> — 最柔顺，承载万物</div></div>
+      <div class="nature-row"><div class="icon">☳</div><div class="text"><span class="em">震</span> = ⚡ <span class="em">雷</span> — 从地下冲出来</div></div>
+      <div class="nature-row"><div class="icon">☴</div><div class="text"><span class="em">巽</span> = 🌬️ <span class="em">风</span> — 无孔不入</div></div>
+      <div class="nature-row"><div class="icon">☵</div><div class="text"><span class="em">坎</span> = 💧 <span class="em">水</span> — 往低处流，有危险</div></div>
+      <div class="nature-row"><div class="icon">☲</div><div class="text"><span class="em">离</span> = 🔥 <span class="em">火</span> — 附着燃烧，明亮</div></div>
+      <div class="nature-row"><div class="icon">☶</div><div class="text"><span class="em">艮</span> = ⛰️ <span class="em">山</span> — 稳固不动</div></div>
+      <div class="nature-row"><div class="icon">☱</div><div class="text"><span class="em">兑</span> = 🏊 <span class="em">泽</span> — 水聚成湖，喜悦</div></div>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">🧠 记住</div>
+      八卦 = 古人把大自然分成八类！<br>
+      天、地、雷、风、水、火、山、泽。
+    </div>
+  </div>
+
+  <!-- Page 8: Fuxi Observes Nature -->
+  <div class="page bg-earth" data-page="7">
+    <div class="particles" id="p7"></div>
+    <div class="ani">
+      <svg width="200" height="130" viewBox="0 0 200 130">
+        <!-- Sky with stars -->
+        <rect x="0" y="0" width="200" height="50" fill="rgba(10,10,30,0.5)" rx="8"/>
+        <circle cx="30" cy="20" r="2" fill="#fff" opacity="0.6"/>
+        <circle cx="70" cy="15" r="1.5" fill="#fff" opacity="0.5"/>
+        <circle cx="120" cy="25" r="2" fill="#fff" opacity="0.7"/>
+        <circle cx="160" cy="12" r="1.5" fill="#fff" opacity="0.4"/>
+        <text x="100" y="42" text-anchor="middle" font-size="8" fill="rgba(255,215,0,0.6)">仰观天文 ↑</text>
+        <!-- Ground -->
+        <rect x="0" y="80" width="200" height="50" fill="rgba(20,30,10,0.5)" rx="8"/>
+        <text x="100" y="98" text-anchor="middle" font-size="8" fill="rgba(100,180,100,0.6)">俯察地理 ↓</text>
+        <!-- Fuxi figure (simple) -->
+        <circle cx="100" cy="65" r="12" fill="none" stroke="rgba(255,215,0,0.4)" stroke-width="1.5"/>
+        <line x1="100" y1="77" x2="100" y2="95" stroke="rgba(255,215,0,0.3)" stroke-width="1.5"/>
+        <line x1="85" y1="85" x2="115" y2="85" stroke="rgba(255,215,0,0.3)" stroke-width="1.5"/>
+        <!-- Arrows -->
+        <path d="M100,53 L100,35" stroke="#ffd700" stroke-width="0.8" opacity="0.5" marker-end="url(#arrowG)"/>
+        <path d="M80,70 L50,70" stroke="#ffd700" stroke-width="0.8" opacity="0.5"/>
+        <path d="M120,70 L150,70" stroke="#ffd700" stroke-width="0.8" opacity="0.5"/>
+        <!-- Side labels -->
+        <text x="40" y="74" text-anchor="middle" font-size="7" fill="rgba(255,215,0,0.5)">近取诸身</text>
+        <text x="160" y="74" text-anchor="middle" font-size="7" fill="rgba(255,215,0,0.5)">远取诸物</text>
+      </svg>
+    </div>
+    <div class="page-title ani">伏羲画八卦</div>
+    <div class="page-text ani">
+      传说<span class="em">伏羲</span>是第一个画八卦的人。<br><br>
+      他怎么想到的呢？<br><br>
+      <span class="em">「仰则观象于天，<br>
+      俯则观法于地，<br>
+      观鸟兽之文与地之宜，<br>
+      近取诸身，远取诸物。」</span><br><br>
+      <span class="dark">抬头看天上的星辰日月，<br>
+      低头看地上的山川河流，<br>
+      看动物的花纹，看自己的身体。</span>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">💡 简单说</div>
+      伏羲通过<strong>观察大自然</strong>，<br>
+      把复杂的世界总结成八个简单符号。
+    </div>
+  </div>
+
+  <!-- Page 9: Mnemonic -->
+  <div class="page bg-flow" data-page="8">
+    <div class="stars" id="s8"></div>
+    <div class="page-title ani">八卦记忆口诀</div>
+    <div class="mnemonic-box ani">
+      乾三连 ☰ 坤六断 ☷<br>
+      震仰盂 ☳ 艮覆碗 ☶<br>
+      离中虚 ☲ 坎中满 ☵<br>
+      兑上缺 ☱ 巽下断 ☴
+    </div>
+    <div class="page-text ani" style="text-align:left;max-width:420px;">
+      <span class="em">乾三连</span> — 三条完整的线<br>
+      <span class="em">坤六断</span> — 六段断开的线<br>
+      <span class="em">震仰盂</span> — 像朝上的碗（仰着）<br>
+      <span class="em">艮覆碗</span> — 像翻过来的碗<br>
+      <span class="em">离中虚</span> — 中间是空的（断线）<br>
+      <span class="em">坎中满</span> — 中间是满的（实线）<br>
+      <span class="em">兑上缺</span> — 最上面缺了口<br>
+      <span class="em">巽下断</span> — 最下面断开了
+    </div>
+  </div>
+
+  <!-- Page 10: Summary -->
+  <div class="page bg-final" data-page="9">
+    <div class="particles" id="p9"></div>
+    <div class="ani">
+      <svg width="70" height="70" viewBox="0 0 70 70">
+        <circle cx="35" cy="35" r="30" fill="none" stroke="rgba(255,215,0,0.2)" stroke-width="1">
+          <animateTransform attributeName="transform" type="rotate" values="0 35 35;360 35 35" dur="20s" repeatCount="indefinite"/>
+        </circle>
+        <!-- Simplified bagua rotation -->
+        <g>
+          <animateTransform attributeName="transform" type="rotate" values="0 35 35;360 35 35" dur="25s" repeatCount="indefinite"/>
+          <rect x="28" y="5" width="14" height="3" rx="1" fill="#ffd700" opacity="0.7"/>
+          <rect x="28" y="62" width="5" height="3" rx="1" fill="#6a5a8a" opacity="0.7"/>
+          <rect x="37" y="62" width="5" height="3" rx="1" fill="#6a5a8a" opacity="0.7"/>
+          <rect x="5" y="33" width="3" height="3" rx="1" fill="#ff6040" opacity="0.7"/>
+          <rect x="62" y="33" width="3" height="3" rx="1" fill="#4080ff" opacity="0.7"/>
+        </g>
+      </svg>
+    </div>
+    <div class="page-title ani">小结</div>
+    <div class="page-text ani">
+      <span class="em">太极</span> → <span class="em">两仪</span> → <span class="em">四象</span> → <span class="em">八卦</span><br>
+      1 → 2 → 4 → 8<br><br>
+      每一步都是<span class="em">「一分为二」</span>。<br><br>
+      四象 = 春夏秋冬的循环<br>
+      八卦 = 天地雷风水火山泽<br><br>
+      <span class="dark">古人用最简单的线条，<br>
+      表达了最复杂的世界。</span>
+    </div>
+    <div class="ani" style="margin-top:20px;padding:12px 20px;border:1px solid rgba(255,215,0,0.15);border-radius:10px;text-align:center;">
+      <div style="color:#ffd700;font-size:1em;font-weight:bold;">下一期预告</div>
+      <div style="color:#6a5a4a;margin-top:5px;">第四期 · 八卦详解 — 天地雷风水火山泽</div>
+    </div>
+    <div class="ani" style="margin-top:12px;color:#3a3a3a;font-size:0.72em;">— 周易讲解 · 第三期 完 —</div>
+  </div>
+
+</div>
+
+<!-- Voice Panel -->
+<div class="voice-panel" id="voicePanel">
+  <label>🗣️ 声音 <select id="voiceSelect"></select></label>
+  <label>🔊 语速: <span id="rateVal">0.9</span>x <input type="range" id="rateRange" min="0.5" max="1.5" step="0.1" value="0.9"></label>
+  <div class="close-panel" onclick="toggleVoicePanel()">✕ 关闭</div>
+</div>
+
+<script>
+let cur = 0;
+const pages = document.querySelectorAll('.page');
+const total = pages.length;
+let animating = false, speaking = false;
+
+const navDots = document.getElementById('navDots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => go(i);
+  navDots.appendChild(d);
+}
+
+function go(idx) {
+  if (idx < 0 || idx >= total || idx === cur || animating) return;
+  animating = true;
+  window.speechSynthesis.cancel();
+  const old = pages[cur], nw = pages[idx], dir = idx > cur ? 1 : -1;
+  old.classList.remove('active'); old.classList.add('prev');
+  if (dir < 0) { old.style.transform = 'translateX(100%)'; old.style.opacity = '0'; }
+  nw.style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+  nw.classList.remove('prev');
+  requestAnimationFrame(() => {
+    nw.classList.add('active'); nw.style.transform = '';
+    cur = idx; updateUI();
+    setTimeout(() => {
+      animating = false;
+      old.classList.remove('prev'); old.style.transform = ''; old.style.opacity = '';
+      if (speaking) speakPage(cur);
+    }, 650);
+  });
+}
+
+function updateUI() {
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.getElementById('pageNum').textContent = `${cur + 1} / ${total}`;
+  document.getElementById('navHint').style.opacity = '0';
+}
+
+let tx = 0, ty = 0, tt = 0;
+document.addEventListener('touchstart', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY; tt = Date.now();
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty, dt = Date.now() - tt;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 500) { dx < 0 ? go(cur+1) : go(cur-1); return; }
+  if (dt < 300 && Math.abs(dx) < 15 && Math.abs(dy) < 15) {
+    e.changedTouches[0].clientX > window.innerWidth * 0.4 ? go(cur+1) : go(cur-1);
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur+1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur-1); }
+});
+
+// TTS
+const narrations = [
+  "四象与八卦。第三期，从二到八的推演。",
+  "上一期我们学到，太极一动，分出阴阳两仪。阳用一条完整的线表示，阴用一条断开的线表示。但是，分化没有停止，阴阳还会继续分裂！两仪接下来会变成什么呢？",
+  "阴和阳，各自再分出阴和阳。阳加阳等于太阳，也叫老阳。阳加阴等于少阴。阴加阳等于少阳。阴加阴等于太阴，也叫老阴。二乘以二等于四，四象就这样诞生了！",
+  "四象不只是符号，它对应着自然的四种状态。太阳对应夏天、南方、壮年，是最旺盛的。少阳对应春天、东方、少年，是生长的阶段。少阴对应秋天、西方、中年，开始收敛。太阴对应冬天、北方、老年，万物收藏。春生、夏长、秋收、冬藏，万物都在四象中循环。",
+  "四象再各分阴阳，在两爻上面再加一爻。两爻变三爻，四个符号变成八个符号。这就是八卦的由来！每个卦由三条线组成，叫做三爻。二的三次方等于八，三次阴阳选择，产生八种可能。",
+  "八卦有八个名字。乾，三条阳线。坤，三条阴线。震，下面是阳上面是阴。巽，下面是阴上面是阳。坎，中间一条阳线。离，中间一条阴线。艮，上面是阳下面是阴。兑，上面缺一口。",
+  "八卦对应自然界的八种现象。乾代表天，最刚健，覆盖万物。坤代表地，最柔顺，承载万物。震代表雷，从地下冲出来。巽代表风，无孔不入。坎代表水，往低处流，有危险。离代表火，附着燃烧，明亮。艮代表山，稳固不动。兑代表泽，水聚成湖，带来喜悦。八卦就是古人把大自然分成八类！",
+  "传说伏羲是第一个画八卦的人。他怎么想到的呢？古书上说：仰则观象于天，俯则观法于地，观鸟兽之文与地之宜，近取诸身，远取诸物。意思是，他抬头看天上的星辰日月，低头看地上的山川河流，看动物的花纹，看自己的身体。伏羲通过观察大自然，把复杂的世界总结成八个简单符号。",
+  "记住八卦有个口诀。乾三连，三条完整的线。坤六断，六段断开的线。震仰盂，像朝上的碗。艮覆碗，像翻过来的碗。离中虚，中间是空的。坎中满，中间是满的。兑上缺，最上面缺了口。巽下断，最下面断开了。多念几遍就记住了！",
+  "小结。太极生两仪，两仪生四象，四象生八卦。从一到二到四到八，每一步都是一分为二。四象代表春夏秋冬的循环，八卦代表天地雷风水火山泽。古人用最简单的线条，表达了最复杂的世界。下一期，我们来详细讲解每一卦的含义。"
+];
+
+let voices = [];
+function loadVoices() {
+  voices = window.speechSynthesis.getVoices();
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+  const zh = voices.filter(v => (v.lang.startsWith('zh-CN')||v.lang==='zh')&&!v.lang.startsWith('zh-HK')&&!v.lang.startsWith('zh-TW'));
+  // Sort: Edge Online (Natural) first
+  zh.sort((a, b) => {
+    const aOnline = a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Online') && a.name.includes('Natural') ? 2 : a.name.includes('Microsoft') ? 1 : 0;
+    const bOnline = b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Online') && b.name.includes('Natural') ? 2 : b.name.includes('Microsoft') ? 1 : 0;
+    return bOnline - aOnline;
+  });
+  (zh.length ? zh : voices.slice(0, 8)).forEach(v => {
+    const o = document.createElement('option');
+    o.value = voices.indexOf(v);
+    o.textContent = v.name.replace(/Microsoft |Google |Apple /g, '');
+    sel.appendChild(o);
+  });
+}
+window.speechSynthesis.onvoiceschanged = loadVoices;
+setTimeout(loadVoices, 300);
+document.getElementById('rateRange').addEventListener('input', function() {
+  document.getElementById('rateVal').textContent = this.value;
+});
+
+function speakPage(idx) {
+  window.speechSynthesis.cancel();
+  if (!narrations[idx]) return;
+  const u = new SpeechSynthesisUtterance(narrations[idx]);
+  u.lang = 'zh-CN'; u.rate = parseFloat(document.getElementById('rateRange').value);
+  const sv = document.getElementById('voiceSelect');
+  if (sv.value && voices[sv.value]) u.voice = voices[sv.value];
+  u.onend = () => {
+    if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
+    else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
+  };
+  window.speechSynthesis.speak(u);
+}
+
+function toggleAudio() {
+  if (speaking) { speaking = false; window.speechSynthesis.cancel(); }
+  else { speaking = true; speakPage(cur); }
+  updateAudioBtn();
+}
+function updateAudioBtn() {
+  const b = document.getElementById('audioBtn');
+  b.textContent = speaking ? '🔊' : '🔇';
+  b.classList.toggle('playing', speaking);
+}
+
+let lpt;
+document.getElementById('audioBtn').addEventListener('touchstart', e => {
+  lpt = setTimeout(() => { toggleVoicePanel(); e.preventDefault(); }, 600);
+}, { passive: false });
+document.getElementById('audioBtn').addEventListener('touchend', () => clearTimeout(lpt));
+function toggleVoicePanel() { document.getElementById('voicePanel').classList.toggle('show'); }
+
+// Particles & Stars
+function mkParticles(id, n=15) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle ' + (Math.random() > 0.5 ? 'particle-gold' : 'particle-white');
+    p.style.left = Math.random()*100+'%';
+    p.style.animationDelay = Math.random()*7+'s';
+    p.style.animationDuration = (5+Math.random()*4)+'s';
+    const s = 2+Math.random()*4; p.style.width = s+'px'; p.style.height = s+'px';
+    c.appendChild(p);
+  }
+}
+function mkStars(id, n=35) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = Math.random()*4+'s';
+    const sz = 1+Math.random()*2; s.style.width = sz+'px'; s.style.height = sz+'px';
+    c.appendChild(s);
+  }
+}
+
+mkParticles('p0', 18); mkParticles('p2', 14); mkParticles('p4', 16); mkParticles('p7', 12); mkParticles('p9', 12);
+mkStars('s1', 30); mkStars('s5', 35); mkStars('s6', 30); mkStars('s8', 25);
+
+setTimeout(() => { document.getElementById('navHint').style.opacity = '0'; }, 4500);
+document.addEventListener('dblclick', e => e.preventDefault());
+</script>
+<script src="../../assets/site.js"></script></body>
+</html>

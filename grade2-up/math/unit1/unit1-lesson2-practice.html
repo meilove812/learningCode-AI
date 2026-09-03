@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>做游戏分组 · 练习 | 二年级数学上册</title>
+<style>
+:root {
+  --primary: #FF6B6B;
+  --secondary: #4ECDC4;
+  --accent: #FFE66D;
+  --bg: #FFF8F0;
+  --text: #2D3436;
+  --success: #00B894;
+  --error: #E74C3C;
+  --card: #FFFFFF;
+  --shadow: 0 4px 15px rgba(0,0,0,0.08);
+  --radius: 18px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Top bar */
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, var(--secondary), #45B7AA);
+  color: #fff;
+  padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 2px 10px rgba(78,205,196,0.3);
+}
+.top-bar .title { font-size: 1.1em; font-weight: 700; }
+.top-bar .progress {
+  background: rgba(255,255,255,0.3);
+  border-radius: 20px; padding: 4px 14px;
+  font-size: 0.85em; font-weight: 600;
+}
+.top-bar .sound-btn {
+  background: rgba(255,255,255,0.25);
+  border: none; border-radius: 50%; width: 36px; height: 36px;
+  font-size: 1.2em; cursor: pointer; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Steps */
+.step {
+  display: none;
+  padding: 20px 16px 130px;
+  animation: fadeSlideIn 0.5s ease;
+}
+.step.active { display: block; }
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-title {
+  font-size: 1.4em; font-weight: 800;
+  text-align: center; margin: 10px 0 14px;
+  color: var(--secondary);
+}
+
+/* Exercise card */
+.exercise-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin: 14px 0;
+  box-shadow: var(--shadow);
+}
+.exercise-card .q-label {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--primary), #FF8E53);
+  color: #fff; border-radius: 20px;
+  padding: 4px 14px; font-size: 0.9em; font-weight: 700;
+  margin-bottom: 10px;
+}
+.exercise-card .q-text {
+  font-size: 1.05em; line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+/* Items display */
+.items-display {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 10px; margin: 12px 0;
+  padding: 14px;
+  background: #F8F9FA;
+  border-radius: 14px;
+}
+.item-card {
+  width: 58px; height: 68px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  font-size: 2em;
+  border-radius: 12px;
+  background: var(--card);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: all 0.3s;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+.item-card.selected-a {
+  border-color: #FF9FF3;
+  background: rgba(255,159,243,0.15);
+}
+.item-card.selected-b {
+  border-color: #54A0FF;
+  background: rgba(84,160,255,0.15);
+}
+.item-card .item-name {
+  font-size: 0.35em; font-weight: 600; margin-top: 2px;
+}
+
+/* Fill table */
+.fill-table {
+  width: 100%; border-collapse: collapse;
+  margin: 12px 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.fill-table th, .fill-table td {
+  padding: 10px 6px;
+  text-align: center;
+  font-size: 1em;
+}
+.fill-table th {
+  background: linear-gradient(135deg, var(--secondary), #45B7AA);
+  color: #fff; font-weight: 700;
+}
+.fill-table td {
+  background: var(--card);
+  border-bottom: 1px solid #f0f0f0;
+}
+.fill-table input {
+  width: 52px; height: 40px;
+  border: 2px solid #E0E0E0;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 1.2em; font-weight: 700;
+  background: #FAFAFA;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.3s;
+  -webkit-appearance: none;
+}
+.fill-table input:focus {
+  border-color: var(--secondary);
+  background: #fff;
+}
+.fill-table input.correct {
+  border-color: var(--success);
+  background: #E8F8F5;
+  color: var(--success);
+}
+.fill-table input.wrong {
+  border-color: var(--error);
+  background: #FDEDEC;
+  color: var(--error);
+}
+
+/* Word problem */
+.word-problem {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin: 12px 0;
+  box-shadow: var(--shadow);
+}
+.word-problem .problem-text {
+  font-size: 1.05em; line-height: 1.7;
+  margin-bottom: 10px;
+}
+.word-problem .answer-row {
+  display: flex; align-items: center; gap: 8px;
+  margin: 8px 0;
+  font-size: 1.05em; font-weight: 600;
+}
+.word-problem input {
+  width: 60px; height: 40px;
+  border: 2px solid #E0E0E0;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 1.2em; font-weight: 700;
+  background: #FAFAFA;
+  color: var(--text);
+  outline: none;
+  -webkit-appearance: none;
+}
+.word-problem input:focus { border-color: var(--secondary); background: #fff; }
+.word-problem input.correct {
+  border-color: var(--success); background: #E8F8F5; color: var(--success);
+}
+.word-problem input.wrong {
+  border-color: var(--error); background: #FDEDEC; color: var(--error);
+}
+
+/* Yes/No choice */
+.choice-row {
+  display: flex; gap: 12px; justify-content: center; margin: 12px 0;
+}
+.choice-btn {
+  padding: 10px 28px;
+  border: 2px solid #E0E0E0;
+  border-radius: 30px;
+  background: var(--card);
+  font-size: 1.1em; font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.choice-btn:active { transform: scale(0.95); }
+.choice-btn.selected {
+  border-color: var(--secondary);
+  background: rgba(78,205,196,0.1);
+  color: var(--secondary);
+}
+.choice-btn.correct-choice {
+  border-color: var(--success) !important;
+  background: #E8F8F5 !important;
+  color: var(--success) !important;
+}
+.choice-btn.wrong-choice {
+  border-color: var(--error) !important;
+  background: #FDEDEC !important;
+  color: var(--error) !important;
+}
+
+/* Submit button */
+.submit-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.1em; font-weight: 700;
+  cursor: pointer;
+  margin-top: 16px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary), #FF8E53);
+  box-shadow: 0 3px 12px rgba(255,107,107,0.3);
+  transition: all 0.2s;
+}
+.submit-btn:active { transform: scale(0.97); }
+.submit-btn:disabled {
+  opacity: 0.5; cursor: not-allowed;
+}
+
+/* Feedback */
+.feedback {
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: 700;
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 14px;
+  display: none;
+}
+.feedback.show { display: block; animation: bounceIn 0.5s ease; }
+.feedback.correct-fb {
+  background: #E8F8F5; color: var(--success);
+}
+.feedback.wrong-fb {
+  background: #FDEDEC; color: var(--error);
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Answer card (final) */
+.answer-card {
+  background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+  border-radius: var(--radius);
+  padding: 24px 18px;
+  margin: 16px 0;
+  color: #fff;
+  text-align: center;
+}
+.answer-card h2 { font-size: 1.4em; margin-bottom: 14px; }
+.score-display {
+  font-size: 3em; font-weight: 900;
+  margin: 10px 0;
+}
+.stars-display {
+  font-size: 2.2em;
+  margin: 8px 0;
+}
+.answer-detail {
+  background: rgba(255,255,255,0.15);
+  border-radius: 14px;
+  padding: 14px;
+  margin: 12px 0;
+  text-align: left;
+}
+.answer-detail .row {
+  display: flex; justify-content: space-between;
+  padding: 6px 0;
+  font-size: 1em;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.answer-detail .row:last-child { border: none; }
+.answer-detail .status { font-weight: 700; }
+
+/* Nav bar */
+.nav-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(255,248,240,0.95);
+  backdrop-filter: blur(10px);
+  padding: 12px 16px;
+  display: flex; gap: 10px;
+  justify-content: center;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+  z-index: 100;
+}
+.nav-btn {
+  padding: 12px 28px;
+  border: none; border-radius: 30px;
+  font-size: 1.05em; font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+  text-decoration: none;
+}
+.nav-btn:active { transform: scale(0.95); }
+.nav-btn.back {
+  background: #E8E8E8; color: var(--text);
+}
+.nav-btn.next-ex {
+  background: linear-gradient(135deg, var(--secondary), #45B7AA);
+  color: #fff;
+  box-shadow: 0 3px 12px rgba(78,205,196,0.3);
+}
+.nav-btn.next-lesson {
+  background: linear-gradient(135deg, var(--primary), #FF8E53);
+  color: #fff;
+}
+.nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Drag items (for exercise 2) */
+.drag-zone {
+  display: flex; flex-direction: column; gap: 10px;
+  margin: 12px 0;
+}
+.drop-area {
+  min-height: 70px;
+  border: 2px dashed #ccc;
+  border-radius: 14px;
+  padding: 10px;
+  background: #FAFAFA;
+  display: flex; flex-wrap: wrap; gap: 8px;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s;
+}
+.drop-area.active { border-color: var(--secondary); background: #E8F8F5; }
+.drop-area .zone-label {
+  width: 100%; text-align: center;
+  font-weight: 700; font-size: 0.95em;
+  color: #888; margin-bottom: 4px;
+}
+
+/* Category select buttons */
+.category-select {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  justify-content: center; margin: 10px 0;
+}
+.cat-btn {
+  padding: 8px 16px;
+  border: 2px solid #E0E0E0;
+  border-radius: 20px;
+  background: var(--card);
+  font-size: 0.95em; font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.cat-btn.active {
+  border-color: var(--secondary);
+  background: rgba(78,205,196,0.15);
+  color: var(--secondary);
+}
+
+/* Teacher bubble (practice) */
+.teacher-bubble {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin: 12px 0;
+  box-shadow: var(--shadow);
+  position: relative;
+  border-left: 5px solid var(--secondary);
+  font-size: 1em;
+  line-height: 1.6;
+}
+.teacher-bubble::before {
+  content: '👩‍🏫';
+  position: absolute; top: -12px; left: -8px;
+  font-size: 1.4em;
+}
+.teacher-bubble .speak-btn {
+  position: absolute; top: 8px; right: 8px;
+  background: var(--secondary); border: none;
+  border-radius: 50%; width: 30px; height: 30px;
+  font-size: 0.9em; cursor: pointer; color: #fff;
+}
+.teacher-bubble .speak-btn.speaking {
+  animation: pulse 1s infinite;
+}
+@keyframes pulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* Responsive */
+@media (max-width: 360px) {
+  .item-card { width: 50px; height: 60px; font-size: 1.7em; }
+  .step-title { font-size: 1.2em; }
+}
+</style>
+<style id="public-local-controls">/* 公开站：语音工具就近放置，不使用固定全站通栏 */
+.bottom-bar,.ttsbar,.voice-fab{position:static!important;inset:auto!important;margin:18px auto!important;transform:none!important}.voice-panel{position:static!important;display:block!important;margin:8px auto!important}body{padding-bottom:0!important}
+</style></head>
+<body>
+
+<div class="top-bar">
+  <button class="sound-btn" id="soundToggle" onclick="toggleSound()">🔊</button>
+  <span class="title">做游戏分组 · 练习</span>
+  <span class="progress" id="progressLabel">第1题 / 共3题</span>
+</div>
+
+<!-- Exercise 1: 衣服分类 -->
+<div class="step active" id="step1">
+  <h2 class="step-title">👕 第1题：衣服分类</h2>
+  <div class="teacher-bubble">
+    <button class="speak-btn" onclick="speakText('看看这些衣服！有上衣，有裤子，还有裙子。请你数一数，把它们分一分，填到表格里吧！')">🔊</button>
+    看看这些衣服！有上衣，有裤子，还有裙子。请你数一数，把它们分一分，填到表格里吧！
+  </div>
+
+  <div class="exercise-card exercise-q" data-q="1">
+    <div class="q-label">分一分，填一填</div>
+    <div class="items-display">
+      <div class="item-card"><span>👕</span><span class="item-name">上衣</span></div>
+      <div class="item-card"><span>👖</span><span class="item-name">裤子</span></div>
+      <div class="item-card"><span>👗</span><span class="item-name">裙子</span></div>
+      <div class="item-card"><span>👕</span><span class="item-name">上衣</span></div>
+      <div class="item-card"><span>👕</span><span class="item-name">上衣</span></div>
+      <div class="item-card"><span>👖</span><span class="item-name">裤子</span></div>
+      <div class="item-card"><span>👗</span><span class="item-name">裙子</span></div>
+      <div class="item-card"><span>👕</span><span class="item-name">上衣</span></div>
+      <div class="item-card"><span>👖</span><span class="item-name">裤子</span></div>
+    </div>
+
+    <table class="fill-table">
+      <tr><th></th><th>👕 上衣</th><th>👖👗 裤子/裙子</th><th>合计</th></tr>
+      <tr>
+        <td style="font-weight:700;">数量</td>
+        <td><input type="number" id="q1a" min="0" max="20" inputmode="numeric" placeholder="?"></td>
+        <td><input type="number" id="q1b" min="0" max="20" inputmode="numeric" placeholder="?"></td>
+        <td><input type="number" id="q1c" min="0" max="20" inputmode="numeric" placeholder="?"></td>
+      </tr>
+    </table>
+
+    <button class="submit-btn" onclick="checkExercise1()">✅ 检查答案</button>
+    <div class="feedback" id="fb1"></div>
+  </div>
+</div>
+
+<!-- Exercise 2: 动物分类 -->
+<div class="step" id="step2">
+  <h2 class="step-title">🐠 第2题：动物分类</h2>
+  <div class="teacher-bubble">
+    <button class="speak-btn" onclick="speakText('这里有好多小动物！有的在水里游，有的在天上飞。请你把它们分成两组，然后填好表格。仔细看看每个动物哦！')">🔊</button>
+    这里有好多小动物！有的在水里游，有的在天上飞。请你把它们分成两组，然后填好表格！
+  </div>
+
+  <div class="exercise-card exercise-q" data-q="2">
+    <div class="q-label">把动物分成两组</div>
+    <div class="q-text">点一下动物，选择它属于哪一组：</div>
+
+    <div class="category-select">
+      <button class="cat-btn active" id="catWater" onclick="selectCat('water')">🌊 水里的</button>
+      <button class="cat-btn" id="catSky" onclick="selectCat('sky')">🌤 天上飞的</button>
+    </div>
+
+    <div class="items-display" id="animalGrid">
+      <div class="item-card" data-animal="fish" data-correct="water" onclick="toggleAnimal(this)">
+        <span>🐟</span><span class="item-name">鱼</span>
+      </div>
+      <div class="item-card" data-animal="butterfly" data-correct="sky" onclick="toggleAnimal(this)">
+        <span>🦋</span><span class="item-name">蝴蝶</span>
+      </div>
+      <div class="item-card" data-animal="turtle" data-correct="water" onclick="toggleAnimal(this)">
+        <span>🐢</span><span class="item-name">海龟</span>
+      </div>
+      <div class="item-card" data-animal="dolphin" data-correct="water" onclick="toggleAnimal(this)">
+        <span>🐬</span><span class="item-name">海豚</span>
+      </div>
+      <div class="item-card" data-animal="shark" data-correct="water" onclick="toggleAnimal(this)">
+        <span>🦈</span><span class="item-name">鲨鱼</span>
+      </div>
+      <div class="item-card" data-animal="eagle" data-correct="sky" onclick="toggleAnimal(this)">
+        <span>🦅</span><span class="item-name">鹰</span>
+      </div>
+      <div class="item-card" data-animal="owl" data-correct="sky" onclick="toggleAnimal(this)">
+        <span>🦉</span><span class="item-name">猫头鹰</span>
+      </div>
+      <div class="item-card" data-animal="bird" data-correct="sky" onclick="toggleAnimal(this)">
+        <span>🐦</span><span class="item-name">小鸟</span>
+      </div>
+    </div>
+
+    <div style="margin:10px 0; font-size:0.9em; color:#888; text-align:center;">
+      先选分组（🌊 或 🌤），再点动物
+    </div>
+
+    <table class="fill-table">
+      <tr><th></th><th>🌊 水里的</th><th>🌤 天上飞的</th><th>合计</th></tr>
+      <tr>
+        <td style="font-weight:700;">数量</td>
+        <td><input type="number" id="q2a" min="0" max="20" inputmode="numeric" placeholder="?"></td>
+        <td><input type="number" id="q2b" min="0" max="20" inputmode="numeric" placeholder="?"></td>
+        <td><input type="number" id="q2c" min="0" max="20" inputmode="numeric" placeholder="?"></td>
+      </tr>
+    </table>
+
+    <button class="submit-btn" onclick="checkExercise2()">✅ 检查答案</button>
+    <div class="feedback" id="fb2"></div>
+  </div>
+</div>
+
+<!-- Exercise 3: 总数验证 -->
+<div class="step" id="step3">
+  <h2 class="step-title">🔢 第3题：总数验证</h2>
+  <div class="teacher-bubble">
+    <button class="speak-btn" onclick="speakText('小明班上的同学分了两次组。第一次按男女分，第二次按喜欢的运动分。算一算，两次分出来的总数一样吗？')">🔊</button>
+    小明班上的同学分了两次组。算一算，两次分出来的总数一样吗？
+  </div>
+
+  <div class="exercise-card exercise-q" data-q="3">
+    <div class="q-label">算一算</div>
+
+    <div class="word-problem">
+      <div class="problem-text">
+        📌 <strong>第一种分法（按男女）：</strong><br>
+        男生 <strong>18</strong> 人，女生 <strong>16</strong> 人<br>
+        一共多少人？
+      </div>
+      <div class="answer-row">
+        18 + 16 =
+        <input type="number" id="q3a" min="0" max="100" inputmode="numeric" placeholder="?">
+        人
+      </div>
+    </div>
+
+    <div class="word-problem" style="margin-top:14px;">
+      <div class="problem-text">
+        📌 <strong>第二种分法（按运动）：</strong><br>
+        足球 <strong>12</strong> 人，篮球 <strong>10</strong> 人，跳绳 <strong>12</strong> 人<br>
+        一共多少人？
+      </div>
+      <div class="answer-row">
+        12 + 10 + 12 =
+        <input type="number" id="q3b" min="0" max="100" inputmode="numeric" placeholder="?">
+        人
+      </div>
+    </div>
+
+    <div class="word-problem" style="margin-top:14px;">
+      <div class="problem-text">
+        🤔 <strong>两种分法的总数一样吗？</strong>
+      </div>
+      <div class="choice-row">
+        <button class="choice-btn" id="q3yes" onclick="selectChoice('yes')">✅ 一样</button>
+        <button class="choice-btn" id="q3no" onclick="selectChoice('no')">❌ 不一样</button>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="checkExercise3()">✅ 检查答案</button>
+    <div class="feedback" id="fb3"></div>
+  </div>
+</div>
+
+<!-- Final: Answer Card -->
+<div class="step" id="step4">
+  <h2 class="step-title">🏆 我的答题卡</h2>
+
+  <div class="answer-card" id="answerCard">
+    <h2>📋 答题报告</h2>
+    <div class="score-display" id="scoreDisplay">-/-</div>
+    <div style="font-size:1.1em; margin-bottom:8px;">正确率</div>
+    <div class="stars-display" id="starsDisplay"></div>
+
+    <div class="answer-detail" id="answerDetail">
+      <!-- Filled by JS -->
+    </div>
+
+    <div style="margin-top:14px; font-size:1.1em;" id="encourageText"></div>
+  </div>
+
+  <div class="teacher-bubble" id="finalBubble">
+    <button class="speak-btn" onclick="speakFinalWords()">🔊</button>
+    <span id="finalWords"></span>
+  </div>
+</div>
+
+<!-- Nav bar -->
+<div class="nav-bar">
+  <a class="nav-btn back" id="backBtn" href="unit1-lesson2-teach.html" style="text-decoration:none;">
+    ← 回看讲解
+  </a>
+  <button class="nav-btn next-ex" id="nextBtn" onclick="nextStep()">
+    下一题 →
+  </button>
+  <a class="nav-btn next-lesson" id="nextLessonBtn" href="unit1-lesson3-teach.html" style="display:none; text-decoration:none;">
+    下一课 →
+  </a>
+</div>
+
+<script>
+// State
+let currentStep = 1;
+const totalExercises = 3;
+let soundOn = true;
+let voices = [];
+let selectedCat = 'water';
+let animalAssignments = {};
+let selectedChoice = null;
+
+// Results tracking
+const results = {
+  1: { submitted: false, correct: false, details: '' },
+  2: { submitted: false, correct: false, details: '' },
+  3: { submitted: false, correct: false, details: '' }
+};
+
+// Voice
+function loadVoices() { voices = speechSynthesis.getVoices(); }
+speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+
+function getVoice() {
+  if (!voices.length) voices = speechSynthesis.getVoices();
+  let v = voices.find(v => v.name.includes('Xiaoxiao') && v.name.includes('Online'));
+  if (!v) v = voices.find(v => /Microsoft Xiaoxiao Online \(Natural\)/i.test(v.name)) || voices.find(v => v.name.includes('Xiaoxiao'));
+  if (!v) v = voices.find(v => v.lang.startsWith('zh') && v.name.includes('Online'));
+  if (!v) v = voices.find(v => v.lang.startsWith('zh'));
+  return v;
+}
+
+function stopSpeech() {
+  speechSynthesis.cancel();
+  document.querySelectorAll('.speak-btn.speaking').forEach(b => b.classList.remove('speaking'));
+}
+
+function speakText(text, btn) {
+  stopSpeech();
+  if (!soundOn) return;
+  const utter = new SpeechSynthesisUtterance(text);
+  const voice = getVoice();
+  if (voice) utter.voice = voice;
+  utter.lang = 'zh-CN';
+  utter.rate = 0.9;
+  utter.pitch = 1.1;
+  if (btn) {
+    btn.classList.add('speaking');
+    utter.onend = () => btn.classList.remove('speaking');
+    utter.onerror = () => btn.classList.remove('speaking');
+  }
+  speechSynthesis.speak(utter);
+}
+
+function speakFinalWords() {
+  const text = document.getElementById('finalWords').textContent;
+  const btn = document.querySelector('#finalBubble .speak-btn');
+  speakText(text, btn);
+}
+
+function toggleSound() {
+  soundOn = !soundOn;
+  document.getElementById('soundToggle').textContent = soundOn ? '🔊' : '🔇';
+  if (!soundOn) stopSpeech();
+}
+
+// Navigation
+function showStep(n) {
+  stopSpeech();
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+
+  if (n <= totalExercises) {
+    document.getElementById('progressLabel').textContent = `第${n}题 / 共${totalExercises}题`;
+    document.getElementById('nextBtn').style.display = 'flex';
+    document.getElementById('nextLessonBtn').style.display = 'none';
+    document.getElementById('nextBtn').textContent = n < totalExercises ? '下一题 →' : '查看成绩 🏆';
+  } else {
+    document.getElementById('progressLabel').textContent = '答题报告';
+    document.getElementById('nextBtn').style.display = 'none';
+    document.getElementById('nextLessonBtn').style.display = 'flex';
+    buildAnswerCard();
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextStep() {
+  // Ensure current exercise is submitted before advancing
+  if (currentStep <= totalExercises && !results[currentStep].submitted) {
+    // Auto-check current exercise
+    if (currentStep === 1) checkExercise1();
+    else if (currentStep === 2) checkExercise2();
+    else if (currentStep === 3) checkExercise3();
+    // Give a moment for feedback, then advance
+    setTimeout(() => {
+      currentStep++;
+      showStep(currentStep);
+    }, 800);
+    return;
+  }
+  if (currentStep <= totalExercises + 1) {
+    currentStep++;
+    showStep(currentStep);
+  }
+}
+
+// Exercise 1: Clothes
+function checkExercise1() {
+  const a = parseInt(document.getElementById('q1a').value);
+  const b = parseInt(document.getElementById('q1b').value);
+  const c = parseInt(document.getElementById('q1c').value);
+
+  const correctA = 4, correctB = 5, correctC = 9;
+  let allCorrect = true;
+  let details = [];
+
+  const inputA = document.getElementById('q1a');
+  const inputB = document.getElementById('q1b');
+  const inputC = document.getElementById('q1c');
+
+  if (a === correctA) {
+    inputA.classList.add('correct'); inputA.classList.remove('wrong');
+    details.push('上衣=4 ✅');
+  } else {
+    inputA.classList.add('wrong'); inputA.classList.remove('correct');
+    allCorrect = false;
+    details.push(`上衣: 你答${isNaN(a)?'未填':a}, 正确${correctA} ❌`);
+  }
+
+  if (b === correctB) {
+    inputB.classList.add('correct'); inputB.classList.remove('wrong');
+    details.push('裤子/裙子=5 ✅');
+  } else {
+    inputB.classList.add('wrong'); inputB.classList.remove('correct');
+    allCorrect = false;
+    details.push(`裤子/裙子: 你答${isNaN(b)?'未填':b}, 正确${correctB} ❌`);
+  }
+
+  if (c === correctC) {
+    inputC.classList.add('correct'); inputC.classList.remove('wrong');
+    details.push('合计=9 ✅');
+  } else {
+    inputC.classList.add('wrong'); inputC.classList.remove('correct');
+    allCorrect = false;
+    details.push(`合计: 你答${isNaN(c)?'未填':c}, 正确${correctC} ❌`);
+  }
+
+  const fb = document.getElementById('fb1');
+  fb.classList.add('show');
+  if (allCorrect) {
+    fb.className = 'feedback show correct-fb';
+    fb.textContent = '🎉 全对！上衣4件 + 裤子/裙子5件 = 9件！';
+    if (soundOn) speakText('太棒了！全对了！上衣4件加上裤子裙子5件，一共9件衣服！');
+  } else {
+    fb.className = 'feedback show wrong-fb';
+    fb.textContent = '😅 再想想！数一数：上衣👕有4件，裤子👖3条+裙子👗2条=5件';
+    if (soundOn) speakText('再仔细数数哦！上衣有4件，裤子3条加上裙子2条是5件。');
+  }
+
+  results[1] = { submitted: true, correct: allCorrect, details: details.join('; ') };
+}
+
+// Exercise 2: Animals
+function selectCat(cat) {
+  selectedCat = cat;
+  document.getElementById('catWater').classList.toggle('active', cat === 'water');
+  document.getElementById('catSky').classList.toggle('active', cat === 'sky');
+}
+
+function toggleAnimal(el) {
+  const animal = el.dataset.animal;
+  const currentCat = animalAssignments[animal];
+
+  if (currentCat === selectedCat) {
+    // Deselect
+    delete animalAssignments[animal];
+    el.classList.remove('selected-a', 'selected-b');
+  } else {
+    animalAssignments[animal] = selectedCat;
+    el.classList.remove('selected-a', 'selected-b');
+    el.classList.add(selectedCat === 'water' ? 'selected-a' : 'selected-b');
+  }
+}
+
+function checkExercise2() {
+  const a = parseInt(document.getElementById('q2a').value);
+  const b = parseInt(document.getElementById('q2b').value);
+  const c = parseInt(document.getElementById('q2c').value);
+
+  const correctA = 4, correctB = 4, correctC = 8;
+
+  // Check classification
+  const animals = document.querySelectorAll('#animalGrid .item-card');
+  let classifyCorrect = 0;
+  animals.forEach(el => {
+    const name = el.dataset.animal;
+    const correctGroup = el.dataset.correct;
+    const assigned = animalAssignments[name];
+    if (assigned === correctGroup) classifyCorrect++;
+  });
+
+  let allCorrect = true;
+  let details = [];
+
+  const inputA = document.getElementById('q2a');
+  const inputB = document.getElementById('q2b');
+  const inputC = document.getElementById('q2c');
+
+  if (a === correctA) {
+    inputA.classList.add('correct'); inputA.classList.remove('wrong');
+    details.push('水里的=4 ✅');
+  } else {
+    inputA.classList.add('wrong'); inputA.classList.remove('correct');
+    allCorrect = false;
+    details.push(`水里的: 你答${isNaN(a)?'未填':a}, 正确${correctA} ❌`);
+  }
+
+  if (b === correctB) {
+    inputB.classList.add('correct'); inputB.classList.remove('wrong');
+    details.push('天上飞的=4 ✅');
+  } else {
+    inputB.classList.add('wrong'); inputB.classList.remove('correct');
+    allCorrect = false;
+    details.push(`天上飞的: 你答${isNaN(b)?'未填':b}, 正确${correctB} ❌`);
+  }
+
+  if (c === correctC) {
+    inputC.classList.add('correct'); inputC.classList.remove('wrong');
+    details.push('合计=8 ✅');
+  } else {
+    inputC.classList.add('wrong'); inputC.classList.remove('correct');
+    allCorrect = false;
+    details.push(`合计: 你答${isNaN(c)?'未填':c}, 正确${correctC} ❌`);
+  }
+
+  // Bonus: classify feedback
+  if (classifyCorrect < 8) {
+    details.push(`分类: ${classifyCorrect}/8`);
+  }
+
+  const fb = document.getElementById('fb2');
+  fb.classList.add('show');
+  if (allCorrect) {
+    fb.className = 'feedback show correct-fb';
+    fb.textContent = '🎉 太厉害了！水里4只 + 天上飞4只 = 8只动物！';
+    if (soundOn) speakText('太厉害了！水里的有4只，天上飞的也有4只，一共8只小动物！');
+  } else {
+    fb.className = 'feedback show wrong-fb';
+    fb.textContent = '😅 水里的：🐟🐢🐬🦈 = 4只，天上飞的：🦋🦅🦉🐦 = 4只';
+    if (soundOn) speakText('再想想哦！鱼、海龟、海豚、鲨鱼是水里的，蝴蝶、鹰、猫头鹰、小鸟是天上飞的。');
+  }
+
+  results[2] = { submitted: true, correct: allCorrect, details: details.join('; ') };
+}
+
+// Exercise 3: Verification
+function selectChoice(choice) {
+  selectedChoice = choice;
+  document.getElementById('q3yes').classList.toggle('selected', choice === 'yes');
+  document.getElementById('q3no').classList.toggle('selected', choice === 'no');
+}
+
+function checkExercise3() {
+  const a = parseInt(document.getElementById('q3a').value);
+  const b = parseInt(document.getElementById('q3b').value);
+
+  const correctA = 34, correctB = 34;
+  let allCorrect = true;
+  let details = [];
+
+  const inputA = document.getElementById('q3a');
+  const inputB = document.getElementById('q3b');
+
+  if (a === correctA) {
+    inputA.classList.add('correct'); inputA.classList.remove('wrong');
+    details.push('18+16=34 ✅');
+  } else {
+    inputA.classList.add('wrong'); inputA.classList.remove('correct');
+    allCorrect = false;
+    details.push(`第一题: 你答${isNaN(a)?'未填':a}, 正确34 ❌`);
+  }
+
+  if (b === correctB) {
+    inputB.classList.add('correct'); inputB.classList.remove('wrong');
+    details.push('12+10+12=34 ✅');
+  } else {
+    inputB.classList.add('wrong'); inputB.classList.remove('correct');
+    allCorrect = false;
+    details.push(`第二题: 你答${isNaN(b)?'未填':b}, 正确34 ❌`);
+  }
+
+  // Check choice
+  if (selectedChoice === 'yes') {
+    document.getElementById('q3yes').classList.add('correct-choice');
+    document.getElementById('q3no').classList.remove('wrong-choice');
+    details.push('一样 ✅');
+  } else if (selectedChoice === 'no') {
+    document.getElementById('q3no').classList.add('wrong-choice');
+    document.getElementById('q3yes').classList.add('correct-choice');
+    allCorrect = false;
+    details.push('选了不一样 ❌，正确答案是一样');
+  } else {
+    allCorrect = false;
+    details.push('未选择 ❌');
+  }
+
+  const fb = document.getElementById('fb3');
+  fb.classList.add('show');
+  if (allCorrect) {
+    fb.className = 'feedback show correct-fb';
+    fb.textContent = '🎉 完美！两种分法总数都是34人！分法不同，总数不变！';
+    if (soundOn) speakText('完美！18加16等于34，12加10加12也等于34。两种分法总数都是34人！不管怎么分，总数不变！');
+  } else {
+    fb.className = 'feedback show wrong-fb';
+    fb.textContent = '😅 18+16=34，12+10+12=34，两个都是34，总数一样！';
+    if (soundOn) speakText('再算算哦！18加16等于34，12加10加12也等于34。它们是一样的！');
+  }
+
+  results[3] = { submitted: true, correct: allCorrect, details: details.join('; ') };
+}
+
+// Build final answer card
+function buildAnswerCard() {
+  let correctCount = 0;
+  const total = totalExercises;
+
+  Object.values(results).forEach(r => { if (r.correct) correctCount++; });
+
+  const pct = Math.round(correctCount / total * 100);
+  document.getElementById('scoreDisplay').textContent = `${correctCount}/${total}`;
+
+  // Stars
+  let stars = '';
+  for (let i = 0; i < total; i++) {
+    stars += i < correctCount ? '⭐' : '☆';
+  }
+  document.getElementById('starsDisplay').textContent = stars;
+
+  // Details
+  const detailDiv = document.getElementById('answerDetail');
+  const exercises = [
+    { name: '第1题 衣服分类', key: 1 },
+    { name: '第2题 动物分类', key: 2 },
+    { name: '第3题 总数验证', key: 3 }
+  ];
+
+  detailDiv.innerHTML = exercises.map(ex => {
+    const r = results[ex.key];
+    const status = r.correct ? '<span style="color:#A5FFA5;">✅ 正确</span>' : '<span style="color:#FFA5A5;">❌ 错误</span>';
+    return `<div class="row"><span>${ex.name}</span><span class="status">${status}</span></div>`;
+  }).join('');
+
+  // Encourage
+  const encourageEl = document.getElementById('encourageText');
+  let finalWords = '';
+  if (correctCount === total) {
+    encourageEl.textContent = '🌟 太厉害了！全对！你是分类小达人！';
+    finalWords = '哇，全部答对了！你真是太厉害了！分类小达人就是你！记住哦，不管用什么标准分类，总数永远不变！下节课见！';
+  } else if (correctCount >= 2) {
+    encourageEl.textContent = '👏 很棒！再练习一下就能全对了！';
+    finalWords = '已经很棒了！大部分都对了。记住分类的秘密，不管怎么分，总数不变！再练习一下，下次一定全对！';
+  } else {
+    encourageEl.textContent = '💪 没关系，多练习就会进步！可以回去再看看讲解哦！';
+    finalWords = '没关系，学习就是一步一步来的。你可以回去再看看讲解，然后再试一次。老师相信你一定能学会的！加油！';
+  }
+
+  document.getElementById('finalWords').textContent = finalWords;
+
+  if (soundOn) {
+    setTimeout(() => speakText(finalWords), 500);
+  }
+}
+
+// Init
+showStep(1);
+</script>
+  <footer class="footer" lang="zh-CN"><p><strong>版权声明</strong>：本页讲解与配图<strong>均为本页自行编写</strong>，未复制任何教材插图或扫描件；人民教育出版社《数学》二年级上册（2024 年审核）的文字与插图著作权归原出版社及作者所有。</p><p>本页为<strong>家庭自用学习辅助</strong>：不含教材插图、不含扫描件、不用于任何商业用途、不做搜索收录。如权利人认为不妥，请告知即刻下线。</p><p>本页文字与插图均为自绘自拟；<strong>部分练习沿用课本原有题型，个别题目文字与课本原题相近</strong>，均已标注对应页码，仅作家庭自用学习辅助。教材版本已按<strong>课本封面照片核实</strong>：人民教育出版社《数学》二年级上册，封面标注「国家教材委员会专家委员会审核 2024」；第一单元<strong>分类与整理</strong>已按课本<strong>目录页照片</strong>核实，课本自第 1 页起（目录：第二单元「1~6 的表内乘法」自第 10 页起）。例题与情境均为本页自拟，请以课本为准。</p><p>朗读用浏览器语音，建议用 Edge 打开，中文音色最自然。</p></footer>
+</body>
+</html>

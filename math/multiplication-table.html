@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✨ 乘法口诀表 ✨</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 16px;
+  overflow-x: hidden;
+}
+.header {
+  text-align: center;
+  padding: 20px 0;
+  color: white;
+}
+.header h1 {
+  font-size: 2em;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  margin-bottom: 8px;
+}
+.header p {
+  font-size: 1.1em;
+  opacity: 0.9;
+}
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 16px 0;
+}
+.controls button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+.controls button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+.btn-mode { background: #ff6b6b; color: white; }
+.btn-mode.active { background: #ee5a24; }
+.btn-quiz { background: #feca57; color: #2d3436; }
+.btn-play { background: #00d2d3; color: white; }
+.btn-reset { background: #a29bfe; color: white; }
+.voice-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+.voice-bar select, .voice-bar input {
+  padding: 6px 10px;
+  border-radius: 15px;
+  border: 2px solid rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.9);
+  font-size: 0.9em;
+}
+.voice-bar label { color: white; font-size: 0.9em; }
+
+/* Grid Mode */
+.grid-container {
+  max-width: 900px;
+  margin: 20px auto;
+  background: rgba(255,255,255,0.95);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+}
+.cell {
+  background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+  border-radius: 12px;
+  padding: 12px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+.cell:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+.cell:active {
+  transform: scale(0.95);
+}
+.cell.highlight {
+  background: linear-gradient(145deg, #ffeaa7, #fdcb6e);
+  animation: pulse 0.5s;
+}
+.cell .formula {
+  font-size: 1em;
+  font-weight: bold;
+  color: #2d3436;
+}
+.cell .result {
+  font-size: 1.4em;
+  font-weight: 900;
+  color: #6c5ce7;
+  margin-top: 4px;
+}
+.cell .emoji-burst {
+  position: absolute;
+  font-size: 1.5em;
+  animation: float-up 1s forwards;
+  pointer-events: none;
+}
+@keyframes float-up {
+  0% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -40px) scale(1.5); }
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+/* Row Filter */
+.row-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.row-filter button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid #6c5ce7;
+  background: white;
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #6c5ce7;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.row-filter button.active {
+  background: #6c5ce7;
+  color: white;
+  transform: scale(1.1);
+}
+.row-filter button:hover {
+  background: #a29bfe;
+  color: white;
+}
+
+/* Quiz Mode */
+.quiz-container {
+  max-width: 500px;
+  margin: 20px auto;
+  background: rgba(255,255,255,0.95);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+  text-align: center;
+  display: none;
+}
+.quiz-question {
+  font-size: 2.5em;
+  font-weight: 900;
+  color: #2d3436;
+  margin: 20px 0;
+}
+.quiz-input {
+  font-size: 2em;
+  width: 120px;
+  text-align: center;
+  border: 3px solid #dfe6e9;
+  border-radius: 15px;
+  padding: 10px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.quiz-input:focus {
+  border-color: #6c5ce7;
+}
+.quiz-feedback {
+  font-size: 1.5em;
+  margin-top: 20px;
+  min-height: 50px;
+}
+.quiz-score {
+  margin-top: 15px;
+  font-size: 1.2em;
+  color: #636e72;
+}
+.quiz-submit {
+  margin-top: 15px;
+  padding: 12px 30px;
+  background: #6c5ce7;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.quiz-submit:hover {
+  background: #5f3dc4;
+  transform: translateY(-2px);
+}
+.streak-display {
+  margin-top: 10px;
+  font-size: 1.1em;
+}
+.streak-fire { animation: shake 0.5s; }
+@keyframes shake {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+/* Stars reward */
+.stars-container {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 999;
+}
+.star {
+  position: absolute;
+  font-size: 2em;
+  animation: star-fall 1.5s forwards;
+}
+@keyframes star-fall {
+  0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+  100% { opacity: 0; transform: translateY(100vh) rotate(720deg) scale(0.3); }
+}
+
+/* Progress */
+.progress-bar {
+  max-width: 500px;
+  margin: 10px auto;
+  height: 8px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 4px;
+  overflow: hidden;
+  display: none;
+}
+.progress-fill {
+  height: 100%;
+  background: #00d2d3;
+  border-radius: 4px;
+  transition: width 0.5s;
+  width: 0%;
+}
+
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.5em; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 6px; }
+  .cell { padding: 10px 6px; }
+  .cell .formula { font-size: 0.85em; }
+  .cell .result { font-size: 1.2em; }
+  .quiz-question { font-size: 2em; }
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../index.html">首页</a><a href="../grade1-down/index.html">一年级</a><a href="../grade2-up/index.html">二年级</a><a href="../explore/science/index.html">科普</a><a href="../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="stars-container" id="starsContainer"></div>
+
+<div class="header">
+  <h1>✨ 乘法口诀表 ✨</h1>
+  <p>点击卡片听朗读 🔊 | 答题闯关赢⭐</p>
+</div>
+
+<div class="controls">
+  <button class="btn-mode active" id="btnGrid" onclick="showMode('grid')">📋 口诀表</button>
+  <button class="btn-quiz" id="btnQuiz" onclick="showMode('quiz')">🎯 闯关答题</button>
+  <button class="btn-play" onclick="playAll()">▶️ 连续播放</button>
+  <button class="btn-reset" onclick="resetQuiz()">🔄 重新开始</button>
+</div>
+
+<div class="voice-bar">
+  <label>🎤 声音:</label>
+  <select id="voiceSelect"></select>
+  <label>⚡ 语速:</label>
+  <input type="range" id="rateSlider" min="0.5" max="1.5" step="0.1" value="0.9">
+</div>
+
+<div class="progress-bar" id="progressBar">
+  <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<!-- Grid Mode -->
+<div class="grid-container" id="gridContainer">
+  <div class="row-filter" id="rowFilter"></div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- Quiz Mode -->
+<div class="quiz-container" id="quizContainer">
+  <div class="quiz-question" id="quizQuestion">1 × 1 = ?</div>
+  <input type="number" class="quiz-input" id="quizInput" placeholder="?" autocomplete="off">
+  <br>
+  <button class="quiz-submit" onclick="checkAnswer()">✅ 提交</button>
+  <div class="quiz-feedback" id="quizFeedback"></div>
+  <div class="quiz-score" id="quizScore"></div>
+  <div class="streak-display" id="streakDisplay"></div>
+</div>
+
+<script>
+// ===== Data =====
+const formulas = [];
+for (let i = 1; i <= 9; i++) {
+  for (let j = 1; j <= i; j++) {
+    formulas.push({ a: j, b: i, result: j * i, text: `${j}×${i}=${j*i}` });
+  }
+}
+
+// ===== Voice =====
+const cnPref = ['Microsoft Xiaoxiao','Microsoft Yunxi','Microsoft Xiaoxiao Online (Natural)','Microsoft Yunxi Online (Natural)','Online (Natural)','Tingting','Google 普通话','Enhanced','Premium','Natural'];
+let voices = [];
+let selectedVoice = null;
+
+function scoreV(v) {
+  for (let i = 0; i < cnPref.length; i++)
+    if (v.name.includes(cnPref[i])) return cnPref.length - i + 100;
+  let s = 0;
+  if (/zh-CN|^zh$|cmn/i.test(v.lang)&&!/zh-HK|zh-TW/i.test(v.lang)) s += 30;
+  if (/enhanced|premium|natural/i.test(v.name)) s += 50;
+  if (/compact/i.test(v.name)) s -= 20;
+  return s;
+}
+
+function loadVoices() {
+  voices = speechSynthesis.getVoices().filter(v => /zh-CN|^zh$|cmn/i.test(v.lang)&&!/zh-HK|zh-TW/i.test(v.lang));
+  if (voices.length === 0) voices = speechSynthesis.getVoices();
+  voices.sort((a, b) => scoreV(b) - scoreV(a));
+  
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+  voices.forEach((v, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = v.name.substring(0, 25);
+    sel.appendChild(opt);
+  });
+  selectedVoice = voices[0] || null;
+  sel.onchange = () => { selectedVoice = voices[sel.value]; };
+}
+speechSynthesis.onvoiceschanged = loadVoices;
+setTimeout(loadVoices, 500);
+
+function speak(text, cb) {
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.voice = selectedVoice;
+  u.lang = 'zh-CN';
+  u.rate = parseFloat(document.getElementById('rateSlider').value);
+  if (cb) u.onend = cb;
+  speechSynthesis.speak(u);
+}
+
+// ===== Grid =====
+let activeRows = new Set([1,2,3,4,5,6,7,8,9]);
+
+function buildFilter() {
+  const container = document.getElementById('rowFilter');
+  container.innerHTML = '<button class="active" onclick="toggleAll()">全</button>';
+  for (let i = 1; i <= 9; i++) {
+    const btn = document.createElement('button');
+    btn.textContent = i;
+    btn.className = activeRows.has(i) ? 'active' : '';
+    btn.onclick = () => toggleRow(i, btn);
+    container.appendChild(btn);
+  }
+}
+
+function toggleRow(n, btn) {
+  if (activeRows.has(n)) activeRows.delete(n); else activeRows.add(n);
+  btn.classList.toggle('active');
+  renderGrid();
+}
+
+function toggleAll() {
+  if (activeRows.size === 9) {
+    activeRows.clear();
+  } else {
+    activeRows = new Set([1,2,3,4,5,6,7,8,9]);
+  }
+  buildFilter();
+  renderGrid();
+}
+
+function renderGrid() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  const filtered = formulas.filter(f => activeRows.has(f.b));
+  filtered.forEach((f, idx) => {
+    const cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.innerHTML = `<div class="formula">${f.a} × ${f.b}</div><div class="result">= ${f.result}</div>`;
+    cell.onclick = () => {
+      cell.classList.add('highlight');
+      setTimeout(() => cell.classList.remove('highlight'), 500);
+      burstEmoji(cell);
+      speak(`${f.a}乘${f.b}等于${f.result}`);
+    };
+    grid.appendChild(cell);
+  });
+}
+
+const emojis = ['⭐','🌟','✨','💫','🎉','🎊','🌈','🦄','🐱','🐶','🍭','🍬','🎨','🚀','💎'];
+function burstEmoji(cell) {
+  const e = document.createElement('span');
+  e.className = 'emoji-burst';
+  e.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+  e.style.left = Math.random() * 80 + 10 + '%';
+  e.style.top = '20%';
+  cell.appendChild(e);
+  setTimeout(() => e.remove(), 1000);
+}
+
+// ===== Play All =====
+let playing = false;
+function playAll() {
+  if (playing) { speechSynthesis.cancel(); playing = false; return; }
+  playing = true;
+  const filtered = formulas.filter(f => activeRows.has(f.b));
+  const bar = document.getElementById('progressBar');
+  const fill = document.getElementById('progressFill');
+  bar.style.display = 'block';
+  let i = 0;
+  function next() {
+    if (i >= filtered.length || !playing) {
+      playing = false;
+      bar.style.display = 'none';
+      fill.style.width = '0%';
+      return;
+    }
+    const f = filtered[i];
+    fill.style.width = ((i + 1) / filtered.length * 100) + '%';
+    // Highlight grid cell
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(c => c.classList.remove('highlight'));
+    if (cells[i]) cells[i].classList.add('highlight');
+    speak(`${f.a}乘${f.b}等于${f.result}`, () => { i++; setTimeout(next, 300); });
+  }
+  next();
+}
+
+// ===== Quiz Mode =====
+let quizPool = [];
+let currentQ = null;
+let score = 0;
+let total = 0;
+let streak = 0;
+let maxStreak = 0;
+
+function showMode(mode) {
+  document.getElementById('gridContainer').style.display = mode === 'grid' ? 'block' : 'none';
+  document.getElementById('quizContainer').style.display = mode === 'quiz' ? 'block' : 'none';
+  document.getElementById('btnGrid').classList.toggle('active', mode === 'grid');
+  document.getElementById('btnQuiz').classList.toggle('active', mode === 'quiz');
+  if (mode === 'quiz') nextQuestion();
+}
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function nextQuestion() {
+  if (quizPool.length === 0) {
+    quizPool = shuffleArray([...formulas.filter(f => activeRows.has(f.b))]);
+  }
+  currentQ = quizPool.pop();
+  document.getElementById('quizQuestion').textContent = `${currentQ.a} × ${currentQ.b} = ?`;
+  document.getElementById('quizInput').value = '';
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('quizInput').focus();
+  speak(`${currentQ.a}乘${currentQ.b}等于几？`);
+}
+
+function checkAnswer() {
+  const input = document.getElementById('quizInput');
+  const answer = parseInt(input.value);
+  const feedback = document.getElementById('quizFeedback');
+  
+  if (isNaN(answer)) {
+    feedback.textContent = '🤔 请输入一个数字哦~';
+    return;
+  }
+  
+  total++;
+  if (answer === currentQ.result) {
+    score++;
+    streak++;
+    if (streak > maxStreak) maxStreak = streak;
+    const cheers = ['🎉 太棒了！', '✨ 厉害！', '🌟 完美！', '🚀 天才！', '💎 超级棒！', '🦄 了不起！'];
+    feedback.textContent = cheers[Math.floor(Math.random() * cheers.length)];
+    speak('答对了！' + (streak >= 3 ? `连续${streak}题正确！` : ''));
+    if (streak >= 5) showStars();
+    setTimeout(nextQuestion, 1500);
+  } else {
+    streak = 0;
+    feedback.textContent = `❌ 正确答案是 ${currentQ.result}`;
+    speak(`${currentQ.a}乘${currentQ.b}等于${currentQ.result}，再记一下`);
+    // Re-add to pool for retry
+    quizPool.unshift(currentQ);
+    setTimeout(nextQuestion, 2500);
+  }
+  
+  updateScore();
+}
+
+function updateScore() {
+  document.getElementById('quizScore').textContent = `得分: ${score}/${total} | 正确率: ${total ? Math.round(score/total*100) : 0}%`;
+  let streakText = streak >= 3 ? `🔥 连续答对 ${streak} 题！` : streak >= 1 ? `✅ 连续 ${streak} 题` : '';
+  if (maxStreak >= 5) streakText += ` | 最高连击: ${maxStreak} 🏆`;
+  const el = document.getElementById('streakDisplay');
+  el.textContent = streakText;
+  if (streak >= 3) { el.classList.add('streak-fire'); setTimeout(() => el.classList.remove('streak-fire'), 500); }
+}
+
+function resetQuiz() {
+  score = 0; total = 0; streak = 0; maxStreak = 0;
+  quizPool = [];
+  updateScore();
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('streakDisplay').textContent = '';
+  if (document.getElementById('quizContainer').style.display !== 'none') nextQuestion();
+}
+
+// Stars animation
+function showStars() {
+  const container = document.getElementById('starsContainer');
+  const symbols = ['⭐','🌟','✨','💫','🎉','🎊','🌈'];
+  for (let i = 0; i < 15; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = -50 + 'px';
+    star.style.animationDelay = Math.random() * 0.5 + 's';
+    container.appendChild(star);
+    setTimeout(() => star.remove(), 2000);
+  }
+}
+
+// Enter key for quiz
+document.getElementById('quizInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkAnswer();
+});
+
+// Init
+buildFilter();
+renderGrid();
+</script>
+</body>
+</html>

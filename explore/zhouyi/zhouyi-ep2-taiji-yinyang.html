@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco传统文化讲解：太极与阴阳">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>周易讲解 · 第二期：太极与阴阳</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'PingFang SC', 'Noto Serif SC', serif;
+  background: #0a0a0f;
+  color: #e8e0d0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.pages-wrapper { width: 100%; height: 100%; position: relative; }
+.page {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 40px 24px;
+  opacity: 0; transform: translateX(100%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none; overflow: hidden;
+}
+.page.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.page.prev { opacity: 0; transform: translateX(-100%); }
+
+/* Backgrounds */
+.bg-void { background: radial-gradient(ellipse at center, #080808 0%, #000 70%); }
+.bg-cosmos { background: radial-gradient(ellipse at center, #0f0a1e 0%, #060410 70%); }
+.bg-dawn { background: linear-gradient(180deg, #0a0820 0%, #1a1545 50%, #0f0d25 100%); }
+.bg-light { background: linear-gradient(135deg, #1a1508 0%, #0f0d05 50%, #080604 100%); }
+.bg-dual { background: linear-gradient(135deg, #0a0a18 0%, #080812 100%); }
+.bg-nature { background: linear-gradient(180deg, #050a10 0%, #0a1520 50%, #050a0f 100%); }
+.bg-flow { background: radial-gradient(ellipse at 50% 60%, #0a1020 0%, #060810 70%); }
+.bg-balance { background: radial-gradient(ellipse at center, #100a18 0%, #080510 70%); }
+.bg-final { background: radial-gradient(ellipse at center, #0f0818 0%, #060410 70%); }
+
+/* Typography */
+.title-main {
+  font-size: clamp(2.2em, 8vw, 3.5em);
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, #c0c0c0 50%, #ffd700 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-align: center; line-height: 1.3;
+  animation: textGlow 4s ease-in-out infinite;
+}
+@keyframes textGlow {
+  0%,100% { filter: brightness(1) drop-shadow(0 0 8px rgba(255,255,255,0.1)); }
+  50% { filter: brightness(1.15) drop-shadow(0 0 20px rgba(255,215,0,0.3)); }
+}
+.subtitle { font-size: clamp(0.85em, 3.2vw, 1.1em); color: #5a5040; margin-top: 12px; text-align: center; letter-spacing: 4px; }
+.page-title {
+  font-size: clamp(1.4em, 5.5vw, 2em); font-weight: 800;
+  color: #ffd700; text-align: center; margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(255,215,0,0.15);
+}
+.page-text {
+  font-size: clamp(0.95em, 3.8vw, 1.15em); line-height: 2;
+  text-align: center; color: #c8bca0; max-width: 560px;
+}
+.page-text .em { color: #ffd700; font-weight: bold; }
+.page-text .light { color: #f0f0f0; font-weight: bold; }
+.page-text .dark { color: #6a7a8a; }
+.fact-card {
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15);
+  border-radius: 12px; padding: 14px 18px; margin-top: 18px;
+  max-width: 480px; text-align: left; font-size: 0.88em; line-height: 1.8; color: #a89878;
+}
+.fact-card .label { color: #ffd700; font-weight: bold; margin-bottom: 4px; }
+
+/* Animations */
+.ani { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.page.active .ani { opacity: 1; transform: translateY(0); }
+.page.active .ani:nth-child(2) { transition-delay: 0.15s; }
+.page.active .ani:nth-child(3) { transition-delay: 0.3s; }
+.page.active .ani:nth-child(4) { transition-delay: 0.45s; }
+.page.active .ani:nth-child(5) { transition-delay: 0.6s; }
+.page.active .ani:nth-child(6) { transition-delay: 0.75s; }
+
+/* Particles */
+.particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.particle {
+  position: absolute; border-radius: 50%; opacity: 0;
+  animation: floatUp 7s ease-in-out infinite;
+}
+.particle-gold { background: radial-gradient(circle, #ffd700, transparent); }
+.particle-white { background: radial-gradient(circle, rgba(255,255,255,0.8), transparent); }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(100vh) scale(0.3); }
+  15% { opacity: 0.7; } 85% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(0.8); }
+}
+
+/* Stars */
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.star {
+  position: absolute; background: #fff; border-radius: 50%;
+  animation: twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.85; transform: scale(1.2); } }
+
+/* Wuji circle animation */
+.wuji-container {
+  width: clamp(160px, 45vw, 220px); height: clamp(160px, 45vw, 220px);
+  margin: 15px auto; position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.wuji-circle {
+  width: 80%; height: 80%; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.08);
+  animation: wujiPulse 5s ease-in-out infinite;
+  position: relative;
+}
+.wuji-circle::after {
+  content: ''; position: absolute; inset: 20%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+}
+@keyframes wujiPulse {
+  0%,100% { transform: scale(1); border-color: rgba(255,255,255,0.05); }
+  50% { transform: scale(1.05); border-color: rgba(255,255,255,0.15); }
+}
+
+/* Taiji animation - detailed */
+.taiji-wrap {
+  width: clamp(200px, 55vw, 300px); height: clamp(200px, 55vw, 300px);
+  margin: 15px auto; position: relative;
+}
+.taiji-spin { width: 100%; height: 100%; animation: spin 25s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.taiji-glow {
+  position: absolute; inset: -12%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,215,0,0.06) 30%, transparent 70%);
+  animation: glowPulse 4s ease-in-out infinite;
+}
+@keyframes glowPulse { 0%,100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 1; } }
+
+/* Yin-Yang split visual */
+.split-visual {
+  display: flex; align-items: center; gap: 15px; margin: 15px 0;
+}
+.split-side {
+  width: clamp(80px, 22vw, 110px); height: clamp(80px, 22vw, 110px);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: clamp(1.8em, 5vw, 2.5em); position: relative;
+}
+.split-yang {
+  background: radial-gradient(circle at 40% 40%, #fff8e0 0%, #ffd700 50%, #b8860b 100%);
+  box-shadow: 0 0 30px rgba(255,215,0,0.3);
+}
+.split-yin {
+  background: radial-gradient(circle at 60% 60%, #2a2a3e 0%, #0a0a15 70%);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 20px rgba(0,0,50,0.5);
+}
+.split-vs { color: #4a4a4a; font-size: 1.5em; font-weight: 300; }
+
+/* Nature pairs */
+.nature-grid {
+  display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px 12px;
+  align-items: center; margin: 15px 0; max-width: 400px;
+}
+.nature-item {
+  padding: 8px 12px; border-radius: 8px; text-align: center; font-size: 0.9em;
+}
+.nature-yang { background: rgba(255,215,0,0.1); color: #ffd700; border: 1px solid rgba(255,215,0,0.2); }
+.nature-yin { background: rgba(100,120,180,0.1); color: #8090c0; border: 1px solid rgba(100,120,180,0.2); }
+.nature-mid { color: #4a4a4a; font-size: 0.8em; }
+
+/* Wave animation for flow */
+.wave-container {
+  width: 100%; max-width: 300px; height: 60px; margin: 15px auto; position: relative; overflow: hidden;
+}
+.wave-line {
+  position: absolute; top: 50%; left: 0; width: 200%; height: 2px;
+  animation: waveFlow 4s linear infinite;
+}
+.wave-line svg { width: 100%; height: 60px; margin-top: -30px; }
+@keyframes waveFlow { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* Balance scale */
+.balance-visual {
+  width: clamp(180px, 50vw, 250px); height: 100px; margin: 15px auto; position: relative;
+}
+
+/* Navigation */
+.nav-hint {
+  position: fixed; bottom: 18px; left: 0; right: 0;
+  text-align: center; color: rgba(255,255,255,0.25); font-size: 0.75em;
+  pointer-events: none; transition: opacity 0.5s; z-index: 100;
+}
+.nav-dots {
+  position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 7px; z-index: 100;
+}
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); transition: all 0.3s; cursor: pointer;
+}
+.nav-dot.active { background: #ffd700; box-shadow: 0 0 6px rgba(255,215,0,0.5); transform: scale(1.4); }
+
+.audio-btn {
+  position: fixed; top: 14px; right: 14px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: #ffd700; font-size: 1.1em;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 200; backdrop-filter: blur(10px); transition: all 0.3s;
+}
+.audio-btn:active { transform: scale(0.9); }
+.audio-btn.playing { background: rgba(255,215,0,0.15); box-shadow: 0 0 12px rgba(255,215,0,0.2); }
+.page-num { position: fixed; top: 16px; left: 16px; font-size: 0.7em; color: rgba(255,255,255,0.2); z-index: 100; }
+
+/* Voice panel */
+.voice-panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(10,10,15,0.96); backdrop-filter: blur(20px);
+  padding: 20px; border-top: 1px solid rgba(255,215,0,0.15);
+  transform: translateY(100%); transition: transform 0.3s; z-index: 300;
+  border-radius: 18px 18px 0 0;
+}
+.voice-panel.show { transform: translateY(0); }
+.voice-panel label { display: block; color: #7a6a5a; font-size: 0.82em; margin-bottom: 6px; }
+.voice-panel select, .voice-panel input[type="range"] {
+  width: 100%; padding: 10px; border-radius: 8px;
+  border: 1px solid rgba(255,215,0,0.15); background: rgba(255,255,255,0.04);
+  color: #d4c8b0; font-size: 0.95em; margin-bottom: 12px;
+}
+.voice-panel .close-panel { text-align: center; color: #ffd700; cursor: pointer; padding: 8px; }
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
+<div class="page-num" id="pageNum">1 / 10</div>
+<div class="nav-dots" id="navDots"></div>
+<div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
+
+<div class="pages-wrapper">
+
+  <!-- Page 1: Cover -->
+  <div class="page bg-cosmos active" data-page="0">
+    <div class="particles" id="p0"></div>
+    <div class="taiji-wrap ani">
+      <div class="taiji-glow"></div>
+      <svg class="taiji-spin" viewBox="0 0 400 400">
+        <defs>
+          <!-- Yang: 3D white sphere gradient -->
+          <radialGradient id="gY" cx="38%" cy="32%" r="65%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="20%" stop-color="#f8f8f8"/>
+            <stop offset="45%" stop-color="#e8e8e8"/>
+            <stop offset="70%" stop-color="#c0c0c0"/>
+            <stop offset="90%" stop-color="#909090"/>
+            <stop offset="100%" stop-color="#606060"/>
+          </radialGradient>
+          <!-- Yin: 3D black sphere gradient -->
+          <radialGradient id="gN" cx="62%" cy="68%" r="65%">
+            <stop offset="0%" stop-color="#3a3a3a"/>
+            <stop offset="30%" stop-color="#1a1a1a"/>
+            <stop offset="60%" stop-color="#0a0a0a"/>
+            <stop offset="100%" stop-color="#000000"/>
+          </radialGradient>
+          <!-- Highlight for yang -->
+          <radialGradient id="gHL" cx="35%" cy="25%" r="40%">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.7)"/>
+            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+          </radialGradient>
+          <!-- Shadow overlay -->
+          <radialGradient id="gSH" cx="65%" cy="75%" r="60%">
+            <stop offset="0%" stop-color="rgba(0,0,0,0)"/>
+            <stop offset="80%" stop-color="rgba(0,0,0,0.25)"/>
+            <stop offset="100%" stop-color="rgba(0,0,0,0.4)"/>
+          </radialGradient>
+          <!-- Outer ring gradient -->
+          <linearGradient id="gRing" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.3"/>
+            <stop offset="50%" stop-color="#aaaaaa" stop-opacity="0.1"/>
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0.2"/>
+          </linearGradient>
+          <filter id="gl">
+            <feGaussianBlur stdDeviation="2" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="innerShadow">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur"/>
+            <feOffset dx="2" dy="3" result="offset"/>
+            <feComposite in="SourceGraphic" in2="offset" operator="over"/>
+          </filter>
+          <filter id="softGlow">
+            <feGaussianBlur stdDeviation="3" result="glow"/>
+            <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- Outer decorative rings -->
+        <circle cx="200" cy="200" r="195" fill="none" stroke="url(#gRing)" stroke-width="2"/>
+        <circle cx="200" cy="200" r="188" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="3 5"/>
+        <!-- Base shadow -->
+        <ellipse cx="205" cy="205" rx="155" ry="155" fill="rgba(0,0,0,0.15)" filter="url(#gl)"/>
+        <!-- Main circle background -->
+        <circle cx="200" cy="200" r="155" fill="#080808" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+        <!-- Yang fish (white/gold side) -->
+        <path d="M200,45 A155,155 0 0,1 200,355 A77.5,77.5 0 0,1 200,200 A77.5,77.5 0 0,0 200,45 Z" fill="url(#gY)"/>
+        <!-- Yin fish (dark side) -->
+        <path d="M200,45 A155,155 0 0,0 200,355 A77.5,77.5 0 0,0 200,200 A77.5,77.5 0 0,1 200,45 Z" fill="url(#gN)"/>
+        <!-- 3D highlight overlay on yang -->
+        <path d="M200,45 A155,155 0 0,1 200,355 A77.5,77.5 0 0,1 200,200 A77.5,77.5 0 0,0 200,45 Z" fill="url(#gHL)" opacity="0.3"/>
+        <!-- Shadow overlay for depth -->
+        <circle cx="200" cy="200" r="154" fill="url(#gSH)" opacity="0.4"/>
+        <!-- Yang eye (dark dot in light) -->
+        <circle cx="200" cy="122.5" r="24" fill="url(#gN)" filter="url(#innerShadow)"/>
+        <circle cx="198" cy="119" r="8" fill="rgba(40,40,40,0.7)"/>
+        <circle cx="195" cy="116" r="3" fill="rgba(255,255,255,0.2)"/>
+        <!-- Yin eye (light dot in dark) -->
+        <circle cx="200" cy="277.5" r="24" fill="url(#gY)" filter="url(#softGlow)"/>
+        <circle cx="202" cy="274" r="8" fill="rgba(220,220,220,0.8)"/>
+        <circle cx="204" cy="272" r="3" fill="rgba(255,255,255,0.6)"/>
+        <!-- Top highlight crescent -->
+        <path d="M140,80 Q200,55 260,80 Q200,70 140,80 Z" fill="rgba(255,255,255,0.08)"/>
+        <!-- Subtle inner ring -->
+        <circle cx="200" cy="200" r="155" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+      </svg>
+    </div>
+    <div class="title-main ani">太极与阴阳</div>
+    <div class="subtitle ani">第二期 · 万物的起点与根本法则</div>
+  </div>
+
+  <!-- Page 2: Before Everything - Wuji -->
+  <div class="page bg-void" data-page="1">
+    <div class="wuji-container ani">
+      <div class="wuji-circle"></div>
+    </div>
+    <div class="page-title ani">无极：万物之前</div>
+    <div class="page-text ani">
+      在一切开始之前，<br>
+      没有光，没有暗，<br>
+      没有上，没有下。<br><br>
+      这种<span class="em">混沌未分</span>的状态，<br>
+      叫做<span class="em">「无极」</span>。<br><br>
+      <span class="dark">无形无象，无始无终。</span>
+    </div>
+  </div>
+
+  <!-- Page 3: Wuji to Taiji -->
+  <div class="page bg-cosmos" data-page="2">
+    <div class="particles" id="p2"></div>
+    <div class="ani">
+      <svg width="200" height="120" viewBox="0 0 200 120">
+        <!-- Wuji (empty circle) -->
+        <circle cx="45" cy="60" r="35" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5">
+          <animate attributeName="stroke-opacity" values="0.1;0.3;0.1" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <text x="45" y="105" text-anchor="middle" font-size="10" fill="#5a5a5a">无极</text>
+        <!-- Arrow -->
+        <path d="M88,60 L112,60" fill="none" stroke="#ffd700" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6">
+          <animate attributeName="stroke-dashoffset" values="6;0" dur="1s" repeatCount="indefinite"/>
+        </path>
+        <polygon points="115,55 125,60 115,65" fill="#ffd700" opacity="0.6"/>
+        <!-- Taiji (filled) -->
+        <circle cx="155" cy="60" r="35" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="1.5"/>
+        <path d="M155,25 A35,35 0 0,1 155,95 A17.5,17.5 0 0,1 155,60 A17.5,17.5 0 0,0 155,25 Z" fill="rgba(255,215,0,0.5)"/>
+        <path d="M155,25 A35,35 0 0,0 155,95 A17.5,17.5 0 0,0 155,60 A17.5,17.5 0 0,1 155,25 Z" fill="rgba(10,10,20,0.8)"/>
+        <circle cx="155" cy="42.5" r="5" fill="rgba(10,10,20,0.8)"/>
+        <circle cx="155" cy="77.5" r="5" fill="rgba(255,215,0,0.5)"/>
+        <text x="155" y="105" text-anchor="middle" font-size="10" fill="#ffd700">太极</text>
+      </svg>
+    </div>
+    <div class="page-title ani">无极生太极</div>
+    <div class="page-text ani">
+      混沌之中，<br>
+      第一次出现了<span class="em">动静之分</span>。<br><br>
+      这个最初的"<span class="em">动</span>"，<br>
+      就是<span class="em">太极</span>的诞生。<br><br>
+      「太」= 最大、最初<br>
+      「极」= 极点、根本
+    </div>
+    <div class="fact-card ani">
+      <div class="label">📌 周易原文</div>
+      "易有太极，是生两仪，两仪生四象，四象生八卦。"<br>
+      — 《易传·系辞上》
+    </div>
+  </div>
+
+  <!-- Page 4: What is Taiji -->
+  <div class="page bg-dawn" data-page="3">
+    <div class="stars" id="s3"></div>
+    <div class="ani">
+      <svg width="180" height="180" viewBox="0 0 360 360">
+        <defs>
+          <radialGradient id="gY4" cx="38%" cy="32%" r="65%">
+            <stop offset="0%" stop-color="#ffffff"/><stop offset="25%" stop-color="#f0f0f0"/>
+            <stop offset="50%" stop-color="#d0d0d0"/><stop offset="80%" stop-color="#888888"/>
+            <stop offset="100%" stop-color="#505050"/>
+          </radialGradient>
+          <radialGradient id="gN4" cx="62%" cy="68%" r="65%">
+            <stop offset="0%" stop-color="#3a3a3a"/><stop offset="35%" stop-color="#151515"/>
+            <stop offset="100%" stop-color="#000000"/>
+          </radialGradient>
+          <radialGradient id="gHL4" cx="35%" cy="25%" r="40%">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.5)"/>
+            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+          </radialGradient>
+          <radialGradient id="gSH4" cx="65%" cy="75%" r="60%">
+            <stop offset="0%" stop-color="rgba(0,0,0,0)"/>
+            <stop offset="80%" stop-color="rgba(0,0,0,0.2)"/>
+            <stop offset="100%" stop-color="rgba(0,0,0,0.35)"/>
+          </radialGradient>
+        </defs>
+        <circle cx="180" cy="180" r="158" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="3 5"/>
+        <g>
+          <animateTransform attributeName="transform" type="rotate" values="0 180 180;360 180 180" dur="30s" repeatCount="indefinite"/>
+          <circle cx="180" cy="180" r="135" fill="#080808" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+          <path d="M180,45 A135,135 0 0,1 180,315 A67.5,67.5 0 0,1 180,180 A67.5,67.5 0 0,0 180,45 Z" fill="url(#gY4)"/>
+          <path d="M180,45 A135,135 0 0,0 180,315 A67.5,67.5 0 0,0 180,180 A67.5,67.5 0 0,1 180,45 Z" fill="url(#gN4)"/>
+          <path d="M180,45 A135,135 0 0,1 180,315 A67.5,67.5 0 0,1 180,180 A67.5,67.5 0 0,0 180,45 Z" fill="url(#gHL4)" opacity="0.2"/>
+          <circle cx="180" cy="180" r="134" fill="url(#gSH4)" opacity="0.3"/>
+          <circle cx="180" cy="112.5" r="20" fill="url(#gN4)"/>
+          <circle cx="178" cy="110" r="6" fill="rgba(30,30,30,0.6)"/>
+          <circle cx="176" cy="108" r="2.5" fill="rgba(255,255,255,0.2)"/>
+          <circle cx="180" cy="247.5" r="20" fill="url(#gY4)"/>
+          <circle cx="182" cy="245" r="6" fill="rgba(220,220,220,0.7)"/>
+        </g>
+        <text x="180" y="22" text-anchor="middle" font-size="14" fill="#ffffff" opacity="0.4">天</text>
+        <text x="180" y="352" text-anchor="middle" font-size="14" fill="#6a6a6a" opacity="0.4">地</text>
+        <text x="14" y="184" text-anchor="middle" font-size="14" fill="#6a6a6a" opacity="0.4">阴</text>
+        <text x="346" y="184" text-anchor="middle" font-size="14" fill="#ffffff" opacity="0.4">阳</text>
+      </svg>
+    </div>
+    <div class="page-title ani">太极图的秘密</div>
+    <div class="page-text ani">
+      太极图不是装饰画。<br>
+      它是一个<span class="em">动态模型</span>：<br><br>
+      ⚪ 圆形 = <span class="em">完整</span>，无缺无余<br>
+      ◐ 黑白 = <span class="em">阴阳</span>，两种力量<br>
+      🌀 S曲线 = <span class="em">流动</span>，不是直线切割<br>
+      ⚫⚪ 鱼眼 = <span class="em">互含</span>，你中有我
+    </div>
+  </div>
+
+  <!-- Page 5: Yin and Yang -->
+  <div class="page bg-dual" data-page="4">
+    <div class="split-visual ani">
+      <div class="split-side split-yang">☀️</div>
+      <div class="split-vs">⟷</div>
+      <div class="split-side split-yin">🌙</div>
+    </div>
+    <div class="page-title ani">阴与阳</div>
+    <div class="page-text ani">
+      太极一动，分出<span class="em">两仪</span>：<br><br>
+      <span class="em">阳</span> — 明亮、温暖、主动、向上<br>
+      <span class="dark">阴</span> — 幽暗、寒冷、被动、向下<br><br>
+      这不是"好"与"坏"的对立，<br>
+      而是<span class="em">万物运行的两种力量</span>。
+    </div>
+    <div class="fact-card ani">
+      <div class="label">💡 "阴阳"的本义</div>
+      阳 = 山的南面（向阳处）<br>
+      阴 = 山的北面（背阳处）<br>
+      最初就是观察自然得来的。
+    </div>
+  </div>
+</div>
+
+  <!-- Page 6: Three Laws of Yin-Yang -->
+  <div class="page bg-flow" data-page="5">
+    <div class="ani">
+      <svg width="200" height="80" viewBox="0 0 200 80">
+        <!-- Opposing arrows -->
+        <defs>
+          <linearGradient id="gArrowY" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="transparent"/></linearGradient>
+          <linearGradient id="gArrowN" x1="100%" y1="0%" x2="0%" y2="0%"><stop offset="0%" stop-color="#6080c0"/><stop offset="100%" stop-color="transparent"/></linearGradient>
+        </defs>
+        <!-- Top: opposing -->
+        <rect x="50" y="15" width="60" height="4" rx="2" fill="url(#gArrowY)"/>
+        <polygon points="112,12 120,17 112,22" fill="#ffd700" opacity="0.8"/>
+        <rect x="90" y="22" width="60" height="4" rx="2" fill="url(#gArrowN)"/>
+        <polygon points="88,19 80,24 88,29" fill="#6080c0" opacity="0.8"/>
+        <!-- Bottom: cycle -->
+        <path d="M60,55 Q100,35 140,55 Q100,75 60,55" fill="none" stroke="rgba(255,215,0,0.4)" stroke-width="1.5">
+          <animate attributeName="stroke-dashoffset" values="0;20" dur="2s" repeatCount="indefinite"/>
+        </path>
+        <circle cx="60" cy="55" r="4" fill="#ffd700" opacity="0.6">
+          <animate attributeName="cx" values="60;140;60" dur="4s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+    </div>
+    <div class="page-title ani">阴阳三大法则</div>
+    <div class="page-text ani" style="text-align:left;max-width:440px;">
+      <span class="em">① 对立</span><br>
+      阴阳相互对立，彼此制约。<br>
+      没有白天就没有黑夜的概念。<br><br>
+      <span class="em">② 互根</span><br>
+      阴阳相互依存，谁也离不开谁。<br>
+      没有寒就感受不到热。<br><br>
+      <span class="em">③ 转化</span><br>
+      阴阳会相互转化，物极必反。<br>
+      日到正午开始转阴，夜到子时开始转阳。
+    </div>
+  </div>
+
+  <!-- Page 7: Yin-Yang in Nature -->
+  <div class="page bg-nature" data-page="6">
+    <div class="stars" id="s6"></div>
+    <div class="page-title ani">自然中的阴阳</div>
+    <div class="nature-grid ani">
+      <div class="nature-item nature-yang">☀️ 白天</div>
+      <div class="nature-mid">⟷</div>
+      <div class="nature-item nature-yin">🌙 黑夜</div>
+      <div class="nature-item nature-yang">🔥 炎热</div>
+      <div class="nature-mid">⟷</div>
+      <div class="nature-item nature-yin">❄️ 寒冷</div>
+      <div class="nature-item nature-yang">⬆️ 上升</div>
+      <div class="nature-mid">⟷</div>
+      <div class="nature-item nature-yin">⬇️ 下降</div>
+      <div class="nature-item nature-yang">🌱 生长</div>
+      <div class="nature-mid">⟷</div>
+      <div class="nature-item nature-yin">🍂 收藏</div>
+      <div class="nature-item nature-yang">💪 刚强</div>
+      <div class="nature-mid">⟷</div>
+      <div class="nature-item nature-yin">🌊 柔顺</div>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">🧠 核心理解</div>
+      阴阳不是"事物本身"，而是事物的<strong>两面</strong>。<br>
+      同一件事，角度不同，阴阳就不同。<br>
+      比如水：相对于火是阴，相对于冰是阳。
+    </div>
+  </div>
+
+  <!-- Page 8: Transformation - Day to Night -->
+  <div class="page bg-balance" data-page="7">
+    <div class="ani">
+      <svg width="240" height="120" viewBox="0 0 240 120">
+        <!-- Day-night cycle -->
+        <defs>
+          <linearGradient id="gCycle" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#ffd700"/>
+            <stop offset="50%" stop-color="#ff6b35"/>
+            <stop offset="100%" stop-color="#1a1a3e"/>
+          </linearGradient>
+        </defs>
+        <!-- Circular path -->
+        <ellipse cx="120" cy="60" rx="100" ry="45" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <!-- Yang to Yin gradient arc -->
+        <path d="M20,60 Q120,10 220,60" fill="none" stroke="url(#gCycle)" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
+        <path d="M220,60 Q120,110 20,60" fill="none" stroke="url(#gCycle)" stroke-width="3" stroke-linecap="round" opacity="0.4" transform="rotate(180 120 60)"/>
+        <!-- Sun -->
+        <circle cx="20" cy="60" r="12" fill="#ffd700" opacity="0.9">
+          <animate attributeName="cx" values="20;220;20" dur="8s" repeatCount="indefinite"/>
+          <animate attributeName="fill" values="#ffd700;#ffd700;#3a3a6a;#3a3a6a;#ffd700" dur="8s" repeatCount="indefinite"/>
+          <animate attributeName="r" values="12;12;8;8;12" dur="8s" repeatCount="indefinite"/>
+        </circle>
+        <!-- Labels -->
+        <text x="40" y="100" font-size="9" fill="#ffd700" opacity="0.6">阳极</text>
+        <text x="105" y="100" font-size="9" fill="#ff6b35" opacity="0.6">转化</text>
+        <text x="180" y="100" font-size="9" fill="#6a7aaa" opacity="0.6">阴极</text>
+      </svg>
+    </div>
+    <div class="page-title ani">物极必反</div>
+    <div class="page-text ani">
+      阴阳不是静止的50:50。<br>
+      它是一个<span class="em">永恒流动</span>的过程：<br><br>
+      日到<span class="em">正午</span> → 阳极生阴 → 转凉<br>
+      夜到<span class="em">子时</span> → 阴极生阳 → 渐明<br>
+      夏至<span class="em">最热</span> → 开始转秋<br>
+      冬至<span class="em">最冷</span> → 开始转春<br><br>
+      <span class="em">凡事到了极端，就会反转。</span>
+    </div>
+  </div>
+
+  <!-- Page 9: Fish Eyes - Yin in Yang, Yang in Yin -->
+  <div class="page bg-cosmos" data-page="8">
+    <div class="particles" id="p8"></div>
+    <div class="ani">
+      <svg width="180" height="180" viewBox="0 0 180 180">
+        <defs>
+          <radialGradient id="gY3" cx="50%" cy="30%"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#808080"/></radialGradient>
+          <radialGradient id="gN3" cx="50%" cy="70%"><stop offset="0%" stop-color="#2a2a2a"/><stop offset="100%" stop-color="#000000"/></radialGradient>
+        </defs>
+        <circle cx="90" cy="90" r="80" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+        <path d="M90,10 A80,80 0 0,1 90,170 A40,40 0 0,1 90,90 A40,40 0 0,0 90,10 Z" fill="url(#gY3)"/>
+        <path d="M90,10 A80,80 0 0,0 90,170 A40,40 0 0,0 90,90 A40,40 0 0,1 90,10 Z" fill="url(#gN3)"/>
+        <!-- Fish eyes with pulse -->
+        <circle cx="90" cy="50" r="12" fill="url(#gN3)">
+          <animate attributeName="r" values="11;14;11" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="90" cy="50" r="4" fill="rgba(255,215,0,0.5)">
+          <animate attributeName="r" values="3;5;3" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="90" cy="130" r="12" fill="url(#gY3)">
+          <animate attributeName="r" values="11;14;11" dur="3s" repeatCount="indefinite" begin="1.5s"/>
+        </circle>
+        <circle cx="90" cy="130" r="4" fill="#0a0a15">
+          <animate attributeName="r" values="3;5;3" dur="3s" repeatCount="indefinite" begin="1.5s"/>
+        </circle>
+        <!-- Highlight arrows pointing to eyes -->
+        <line x1="140" y1="45" x2="108" y2="48" stroke="#e74c3c" stroke-width="1" opacity="0.7" stroke-dasharray="2 2"/>
+        <text x="143" y="48" font-size="8" fill="#e74c3c" opacity="0.8">阳中之阴</text>
+        <line x1="140" y1="135" x2="108" y2="132" stroke="#3498db" stroke-width="1" opacity="0.7" stroke-dasharray="2 2"/>
+        <text x="143" y="138" font-size="8" fill="#3498db" opacity="0.8">阴中之阳</text>
+      </svg>
+    </div>
+    <div class="page-title ani">阳中有阴，阴中有阳</div>
+    <div class="page-text ani">
+      太极图中的"<span class="em">鱼眼</span>"<br>
+      是最精妙的设计：<br><br>
+      白色中有<span class="dark">黑点</span> →<br>
+      <span class="em">再强的阳，内含转阴的种子</span><br><br>
+      黑色中有<span class="light">白点</span> →<br>
+      <span class="em">再深的阴，内含转阳的种子</span><br><br>
+      这就是为什么：<br>
+      盛世藏危机，绝境有生机。
+    </div>
+  </div>
+
+  <!-- Page 10: Summary -->
+  <div class="page bg-final" data-page="9">
+    <div class="particles" id="p9"></div>
+    <div class="ani">
+      <svg width="70" height="70" viewBox="0 0 70 70">
+        <circle cx="35" cy="35" r="30" fill="none" stroke="rgba(255,215,0,0.2)" stroke-width="1">
+          <animateTransform attributeName="transform" type="rotate" values="0 35 35;360 35 35" dur="20s" repeatCount="indefinite"/>
+        </circle>
+        <path d="M35,5 A30,30 0 0,1 35,65 A15,15 0 0,1 35,35 A15,15 0 0,0 35,5 Z" fill="#ffd700" opacity="0.7">
+          <animateTransform attributeName="transform" type="rotate" values="0 35 35;360 35 35" dur="15s" repeatCount="indefinite"/>
+        </path>
+        <path d="M35,5 A30,30 0 0,0 35,65 A15,15 0 0,0 35,35 A15,15 0 0,1 35,5 Z" fill="#0a0a18" opacity="0.9">
+          <animateTransform attributeName="transform" type="rotate" values="0 35 35;360 35 35" dur="15s" repeatCount="indefinite"/>
+        </path>
+        <circle cx="35" cy="20" r="4" fill="#0a0a18"><animateTransform attributeName="transform" type="rotate" values="0 35 35;360 35 35" dur="15s" repeatCount="indefinite"/></circle>
+        <circle cx="35" cy="50" r="4" fill="#ffd700"><animateTransform attributeName="transform" type="rotate" values="0 35 35;360 35 35" dur="15s" repeatCount="indefinite"/></circle>
+      </svg>
+    </div>
+    <div class="page-title ani">小结</div>
+    <div class="page-text ani">
+      <span class="em">无极</span> → <span class="em">太极</span> → <span class="em">阴阳</span><br>
+      从无到有，从一到二。<br><br>
+      阴阳的核心法则：<br>
+      <span class="em">对立</span> · <span class="em">互根</span> · <span class="em">转化</span><br><br>
+      <span class="dark">世间万物，没有纯阳，也没有纯阴。</span><br>
+      <span class="dark">阴阳始终在流动、转化、平衡。</span><br><br>
+      <span class="em">理解阴阳，就理解了周易的地基。</span>
+    </div>
+    <div class="ani" style="margin-top:20px;padding:12px 20px;border:1px solid rgba(255,215,0,0.15);border-radius:10px;text-align:center;">
+      <div style="color:#ffd700;font-size:1em;font-weight:bold;">下一期预告</div>
+      <div style="color:#6a5a4a;margin-top:5px;">第三期 · 四象与八卦 — 从二到八的推演</div>
+    </div>
+    <div class="ani" style="margin-top:12px;color:#3a3a3a;font-size:0.72em;">— 周易讲解 · 第二期 完 —</div>
+  </div>
+
+</div>
+
+<!-- Voice Panel -->
+<div class="voice-panel" id="voicePanel">
+  <label>🗣️ 声音 <select id="voiceSelect"></select></label>
+  <label>🔊 语速: <span id="rateVal">0.9</span>x <input type="range" id="rateRange" min="0.5" max="1.5" step="0.1" value="0.9"></label>
+  <div class="close-panel" onclick="toggleVoicePanel()">✕ 关闭</div>
+</div>
+
+<script>
+let cur = 0;
+const pages = document.querySelectorAll('.page');
+const total = pages.length;
+let animating = false, speaking = false;
+
+const navDots = document.getElementById('navDots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => go(i);
+  navDots.appendChild(d);
+}
+
+function go(idx) {
+  if (idx < 0 || idx >= total || idx === cur || animating) return;
+  animating = true;
+  window.speechSynthesis.cancel();
+  const old = pages[cur], nw = pages[idx], dir = idx > cur ? 1 : -1;
+  old.classList.remove('active'); old.classList.add('prev');
+  if (dir < 0) { old.style.transform = 'translateX(100%)'; old.style.opacity = '0'; }
+  nw.style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+  nw.classList.remove('prev');
+  requestAnimationFrame(() => {
+    nw.classList.add('active'); nw.style.transform = '';
+    cur = idx; updateUI();
+    setTimeout(() => {
+      animating = false;
+      old.classList.remove('prev'); old.style.transform = ''; old.style.opacity = '';
+      if (speaking) speakPage(cur);
+    }, 650);
+  });
+}
+
+function updateUI() {
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.getElementById('pageNum').textContent = `${cur + 1} / ${total}`;
+  document.getElementById('navHint').style.opacity = '0';
+}
+
+let tx = 0, ty = 0, tt = 0;
+document.addEventListener('touchstart', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY; tt = Date.now();
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty, dt = Date.now() - tt;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 500) { dx < 0 ? go(cur+1) : go(cur-1); return; }
+  if (dt < 300 && Math.abs(dx) < 15 && Math.abs(dy) < 15) {
+    e.changedTouches[0].clientX > window.innerWidth * 0.4 ? go(cur+1) : go(cur-1);
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur+1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur-1); }
+});
+
+// TTS
+const narrations = [
+  "太极与阴阳。第二期，万物的起点与根本法则。",
+  "在一切开始之前，没有光，没有暗，没有上，没有下。这种混沌未分的状态，叫做无极。无形无象，无始无终。",
+  "混沌之中，第一次出现了动静之分。这个最初的动，就是太极的诞生。太，意思是最大、最初。极，意思是极点、根本。周易说：易有太极，是生两仪，两仪生四象，四象生八卦。",
+  "太极图不是装饰画，它是一个动态模型。圆形代表完整，黑白代表阴阳两种力量，S曲线代表流动而非直线切割，鱼眼代表你中有我、我中有你。",
+  "太极一动，分出两仪：阳，代表明亮、温暖、主动、向上。阴，代表幽暗、寒冷、被动、向下。这不是好与坏的对立，而是万物运行的两种力量。阳的本义是山的南面，向阳处。阴的本义是山的北面，背阳处。",
+  "阴阳有三大法则。第一，对立：阴阳相互对立，彼此制约。没有白天就没有黑夜的概念。第二，互根：阴阳相互依存，谁也离不开谁。没有寒就感受不到热。第三，转化：阴阳会相互转化，物极必反。日到正午开始转阴，夜到子时开始转阳。",
+  "自然中处处是阴阳。白天与黑夜，炎热与寒冷，上升与下降，生长与收藏，刚强与柔顺。阴阳不是事物本身，而是事物的两面。同一件事，角度不同，阴阳就不同。比如水，相对于火是阴，相对于冰是阳。",
+  "阴阳不是静止的五五开，它是一个永恒流动的过程。日到正午，阳极生阴，开始转凉。夜到子时，阴极生阳，渐渐转明。夏至最热，开始转秋。冬至最冷，开始转春。凡事到了极端，就会反转。这就是物极必反。",
+  "太极图中的鱼眼是最精妙的设计。白色中有黑点，说明再强的阳，内含转阴的种子。黑色中有白点，说明再深的阴，内含转阳的种子。这就是为什么盛世藏危机，绝境有生机。",
+  "小结。无极生太极，太极分阴阳。阴阳的核心法则：对立、互根、转化。世间万物，没有纯阳，也没有纯阴。阴阳始终在流动、转化、平衡。理解阴阳，就理解了周易的地基。下一期，我们来讲四象与八卦。"
+];
+
+let voices = [];
+function loadVoices() {
+  voices = window.speechSynthesis.getVoices();
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+  const zh = voices.filter(v => (v.lang.startsWith('zh-CN')||v.lang==='zh')&&!v.lang.startsWith('zh-HK')&&!v.lang.startsWith('zh-TW'));
+  // Sort: Edge Online (Natural) first
+  zh.sort((a, b) => {
+    const aOnline = a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Online') && a.name.includes('Natural') ? 2 : a.name.includes('Microsoft') ? 1 : 0;
+    const bOnline = b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Online') && b.name.includes('Natural') ? 2 : b.name.includes('Microsoft') ? 1 : 0;
+    return bOnline - aOnline;
+  });
+  (zh.length ? zh : voices.slice(0, 8)).forEach(v => {
+    const o = document.createElement('option');
+    o.value = voices.indexOf(v);
+    o.textContent = v.name.replace(/Microsoft |Google |Apple /g, '');
+    sel.appendChild(o);
+  });
+}
+window.speechSynthesis.onvoiceschanged = loadVoices;
+setTimeout(loadVoices, 300);
+document.getElementById('rateRange').addEventListener('input', function() {
+  document.getElementById('rateVal').textContent = this.value;
+});
+
+function speakPage(idx) {
+  window.speechSynthesis.cancel();
+  if (!narrations[idx]) return;
+  const u = new SpeechSynthesisUtterance(narrations[idx]);
+  u.lang = 'zh-CN'; u.rate = parseFloat(document.getElementById('rateRange').value);
+  const sv = document.getElementById('voiceSelect');
+  if (sv.value && voices[sv.value]) u.voice = voices[sv.value];
+  u.onend = () => {
+    if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
+    else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
+  };
+  window.speechSynthesis.speak(u);
+}
+
+function toggleAudio() {
+  if (speaking) { speaking = false; window.speechSynthesis.cancel(); }
+  else { speaking = true; speakPage(cur); }
+  updateAudioBtn();
+}
+function updateAudioBtn() {
+  const b = document.getElementById('audioBtn');
+  b.textContent = speaking ? '🔊' : '🔇';
+  b.classList.toggle('playing', speaking);
+}
+
+let lpt;
+document.getElementById('audioBtn').addEventListener('touchstart', e => {
+  lpt = setTimeout(() => { toggleVoicePanel(); e.preventDefault(); }, 600);
+}, { passive: false });
+document.getElementById('audioBtn').addEventListener('touchend', () => clearTimeout(lpt));
+function toggleVoicePanel() { document.getElementById('voicePanel').classList.toggle('show'); }
+
+// Particles & Stars
+function mkParticles(id, n=15) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle ' + (Math.random() > 0.5 ? 'particle-gold' : 'particle-white');
+    p.style.left = Math.random()*100+'%';
+    p.style.animationDelay = Math.random()*7+'s';
+    p.style.animationDuration = (5+Math.random()*4)+'s';
+    const s = 2+Math.random()*4; p.style.width = s+'px'; p.style.height = s+'px';
+    c.appendChild(p);
+  }
+}
+function mkStars(id, n=35) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = Math.random()*4+'s';
+    const sz = 1+Math.random()*2; s.style.width = sz+'px'; s.style.height = sz+'px';
+    c.appendChild(s);
+  }
+}
+
+mkParticles('p0', 18); mkParticles('p2', 14); mkParticles('p8', 16); mkParticles('p9', 12);
+mkStars('s3', 35); mkStars('s6', 30);
+
+setTimeout(() => { document.getElementById('navHint').style.opacity = '0'; }, 4500);
+document.addEventListener('dblclick', e => e.preventDefault());
+</script>
+<script src="../../assets/site.js"></script></body>
+</html>

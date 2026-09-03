@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第2课 分两组做游戏 | 二年级数学 · 分类整理专题</title>
+<style>
+/* ===== Reset & Base ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#ff6b9d;--blue:#4ecdc4;--yellow:#ffe66d;--orange:#ff8a5c;
+  --purple:#a78bfa;--green:#6bcb77;--red:#ff6b6b;--sky:#87ceeb;
+  --bg:#fef9f0;--card:#fff;--text:#333;--shadow:0 4px 20px rgba(0,0,0,.08);
+  --radius:16px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.8;
+  min-height:100vh;overflow-x:hidden;
+  background-image:radial-gradient(circle at 20% 80%,rgba(78,205,196,.08) 0%,transparent 50%),
+                    radial-gradient(circle at 80% 20%,rgba(255,107,157,.08) 0%,transparent 50%);
+}
+
+/* ===== Animated Background ===== */
+.bg-shapes{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.bg-shapes span{
+  position:absolute;display:block;opacity:.06;animation:floatShape 20s linear infinite;
+  font-size:3rem;
+}
+.bg-shapes span:nth-child(1){left:5%;animation-delay:0s;animation-duration:18s}
+.bg-shapes span:nth-child(2){left:20%;animation-delay:3s;animation-duration:22s}
+.bg-shapes span:nth-child(3){left:40%;animation-delay:6s;animation-duration:16s}
+.bg-shapes span:nth-child(4){left:60%;animation-delay:1s;animation-duration:25s}
+.bg-shapes span:nth-child(5){left:75%;animation-delay:8s;animation-duration:19s}
+.bg-shapes span:nth-child(6){left:90%;animation-delay:4s;animation-duration:21s}
+@keyframes floatShape{0%{transform:translateY(110vh) rotate(0deg)}100%{transform:translateY(-10vh) rotate(720deg)}}
+
+/* ===== Container ===== */
+.container{max-width:800px;margin:0 auto;padding:16px;position:relative;z-index:1}
+
+/* ===== Breadcrumb ===== */
+.breadcrumb{
+  background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  color:#fff;padding:12px 20px;border-radius:var(--radius);
+  font-size:.85rem;margin-bottom:20px;
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px;
+  box-shadow:0 4px 15px rgba(102,126,234,.3);
+}
+.breadcrumb a{color:rgba(255,255,255,.85);text-decoration:none}
+.breadcrumb a:hover{color:#fff;text-decoration:underline}
+.breadcrumb .sep{opacity:.5}
+.breadcrumb .current{font-weight:700}
+
+/* ===== Hero ===== */
+.hero{
+  text-align:center;padding:40px 20px;
+  background:linear-gradient(135deg,#ff9a9e 0%,#fecfef 50%,#fdfbfb 100%);
+  border-radius:var(--radius);margin-bottom:24px;
+  box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.hero::before{
+  content:"🎮";position:absolute;top:10px;right:20px;font-size:4rem;opacity:.15;
+  animation:bounce2 3s ease-in-out infinite;
+}
+@keyframes bounce2{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+.hero h1{font-size:2rem;margin-bottom:8px;color:#333}
+.hero .subtitle{font-size:1.1rem;color:#666;margin-bottom:4px}
+.hero .lesson-num{
+  display:inline-block;background:var(--pink);color:#fff;
+  padding:4px 16px;border-radius:20px;font-size:.85rem;margin-top:8px;
+}
+
+/* ===== Section Cards ===== */
+.section{
+  background:var(--card);border-radius:var(--radius);
+  padding:24px;margin-bottom:24px;box-shadow:var(--shadow);
+  border-left:5px solid var(--blue);
+  opacity:0;transform:translateY(30px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+.section.visible{opacity:1;transform:translateY(0)}
+.section.pink-border{border-left-color:var(--pink)}
+.section.yellow-border{border-left-color:var(--yellow)}
+.section.green-border{border-left-color:var(--green)}
+.section.purple-border{border-left-color:var(--purple)}
+.section.orange-border{border-left-color:var(--orange)}
+
+.section-title{
+  font-size:1.4rem;margin-bottom:16px;display:flex;align-items:center;gap:10px;
+}
+.section-title .icon{font-size:1.6rem}
+
+/* ===== TTS Button ===== */
+.tts-btn{
+  display:inline-flex;align-items:center;gap:4px;
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:#fff;border:none;border-radius:20px;
+  padding:4px 14px;font-size:.8rem;cursor:pointer;
+  transition:all .3s;margin-left:8px;vertical-align:middle;
+}
+.tts-btn:hover{transform:scale(1.05);box-shadow:0 3px 10px rgba(102,126,234,.4)}
+.tts-btn.playing{background:linear-gradient(135deg,#ff6b6b,#ee5a24);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+.tts-highlight{background:linear-gradient(120deg,#fff3cd 0%,#ffeaa7 100%);border-radius:6px;padding:2px 4px}
+
+/* ===== People Grid ===== */
+.people-playground{
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
+  padding:20px;background:#f8f9ff;border-radius:12px;margin:16px 0;
+  min-height:80px;border:2px dashed #ddd;
+}
+.person{
+  display:flex;flex-direction:column;align-items:center;
+  padding:8px;border-radius:12px;cursor:pointer;
+  transition:all .3s;user-select:none;width:65px;
+  background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.person:hover{transform:translateY(-4px);box-shadow:0 6px 15px rgba(0,0,0,.12)}
+.person .emoji{font-size:2rem;line-height:1.2}
+.person .label{font-size:.7rem;color:#666;margin-top:2px;text-align:center}
+.person.adult .emoji{font-size:2.4rem}
+.person.child .emoji{font-size:1.8rem}
+.person.selected{outline:3px solid var(--pink);outline-offset:2px;background:#fff0f5}
+.person.placed{opacity:.4;pointer-events:none}
+
+/* ===== Sort Zones ===== */
+.sort-container{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.sort-zone{
+  border:3px dashed #ccc;border-radius:var(--radius);
+  padding:16px;min-height:120px;text-align:center;
+  transition:all .3s;background:#fafafa;
+}
+.sort-zone.active{border-color:var(--blue);background:#f0fffe}
+.sort-zone h3{font-size:1.1rem;margin-bottom:10px;padding:6px 12px;border-radius:8px;display:inline-block}
+.sort-zone.zone-a h3{background:linear-gradient(135deg,#a8e6cf,#88d8a8);color:#2d6a4f}
+.sort-zone.zone-b h3{background:linear-gradient(135deg,#ffd3b6,#ffaaa5);color:#c0392b}
+.sort-zone .count{
+  display:inline-block;background:var(--yellow);
+  padding:2px 12px;border-radius:12px;font-weight:700;font-size:.9rem;
+  margin-top:8px;
+}
+.sort-zone .items{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0}
+
+/* ===== Data Tables ===== */
+.data-table{
+  width:100%;border-collapse:collapse;margin:16px 0;
+  border-radius:12px;overflow:hidden;
+  box-shadow:0 2px 10px rgba(0,0,0,.06);
+}
+.data-table th,.data-table td{
+  padding:12px 16px;text-align:center;border:1px solid #e9ecef;
+}
+.data-table th{
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:#fff;font-weight:600;font-size:.95rem;
+}
+.data-table td{background:#fff;font-size:1rem}
+.data-table .total-row td{background:#fff3cd;font-weight:700;color:#856404}
+.data-table .highlight-cell{
+  animation:popIn .5s ease;font-weight:700;color:var(--pink);font-size:1.2rem;
+}
+@keyframes popIn{0%{transform:scale(0);opacity:0}50%{transform:scale(1.3)}100%{transform:scale(1);opacity:1}}
+
+/* ===== Key Concept Box ===== */
+.concept-box{
+  background:linear-gradient(135deg,#ffecd2 0%,#fcb69f 100%);
+  border-radius:var(--radius);padding:24px;text-align:center;
+  margin:20px 0;position:relative;overflow:hidden;
+}
+.concept-box::before{
+  content:"💡";position:absolute;top:-5px;left:10px;font-size:3rem;opacity:.2;
+}
+.concept-box .concept-text{
+  font-size:1.3rem;font-weight:700;color:#c0392b;
+  line-height:1.6;
+}
+.concept-box .concept-sub{font-size:.95rem;color:#666;margin-top:8px}
+
+/* ===== Total Animation ===== */
+.total-proof{
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  margin:20px 0;padding:20px;background:#f8f9ff;border-radius:12px;
+}
+.total-row-visual{
+  display:flex;align-items:center;gap:10px;font-size:1.1rem;
+  flex-wrap:wrap;justify-content:center;
+}
+.total-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:50px;height:50px;border-radius:50%;font-size:1.5rem;font-weight:700;
+  color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+.total-num.a{background:linear-gradient(135deg,#a8e6cf,#88d8a8);color:#2d6a4f}
+.total-num.b{background:linear-gradient(135deg,#ffd3b6,#ffaaa5);color:#c0392b}
+.total-num.total{
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  width:60px;height:60px;font-size:1.8rem;
+  animation:glow 2s ease-in-out infinite;
+}
+@keyframes glow{0%,100%{box-shadow:0 0 5px rgba(102,126,234,.3)}50%{box-shadow:0 0 25px rgba(102,126,234,.6)}}
+.equal-sign{font-size:2rem;font-weight:700;color:var(--purple)}
+
+/* ===== Clothes Exercise ===== */
+.clothes-grid{
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
+  margin:16px 0;
+}
+.cloth-item{
+  display:flex;flex-direction:column;align-items:center;
+  padding:10px;border-radius:12px;cursor:pointer;
+  transition:all .3s;user-select:none;width:80px;
+  background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.06);
+  border:2px solid transparent;
+}
+.cloth-item:hover{transform:translateY(-3px);box-shadow:0 6px 15px rgba(0,0,0,.12)}
+.cloth-item .emoji{font-size:2.2rem}
+.cloth-item .label{font-size:.75rem;color:#666;margin-top:4px;text-align:center}
+.cloth-item.in-a{border-color:var(--green);background:#f0fff4}
+.cloth-item.in-b{border-color:var(--pink);background:#fff0f5}
+
+/* ===== Animals Exercise ===== */
+.animal-grid{
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
+  margin:16px 0;
+}
+.animal-item{
+  display:flex;flex-direction:column;align-items:center;
+  padding:10px;border-radius:12px;cursor:pointer;
+  transition:all .3s;user-select:none;width:80px;
+  background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.06);
+  border:3px solid transparent;
+}
+.animal-item:hover{transform:translateY(-3px) scale(1.05)}
+.animal-item .emoji{font-size:2.4rem}
+.animal-item .label{font-size:.75rem;color:#666;margin-top:4px}
+.animal-item.in-a{border-color:var(--blue);background:#f0fffe}
+.animal-item.in-b{border-color:var(--orange);background:#fff8f0}
+
+/* ===== Buttons ===== */
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 24px;border:none;border-radius:25px;
+  font-size:1rem;font-weight:600;cursor:pointer;
+  transition:all .3s;font-family:inherit;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;box-shadow:0 4px 12px rgba(102,126,234,.3)}
+.btn-success{background:linear-gradient(135deg,#6bcb77,#4ecdc4);color:#fff;box-shadow:0 4px 12px rgba(107,203,119,.3)}
+.btn-warning{background:linear-gradient(135deg,#ffa726,#ff7043);color:#fff;box-shadow:0 4px 12px rgba(255,167,38,.3)}
+.btn-reset{background:#e9ecef;color:#666}
+.btn-sm{padding:6px 16px;font-size:.85rem}
+
+.btn-group{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px 0}
+
+/* ===== Select Buttons (classification standard) ===== */
+.standard-select{
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:16px 0;
+}
+.standard-btn{
+  padding:10px 20px;border:2px solid #ddd;border-radius:12px;
+  background:#fff;cursor:pointer;font-size:.95rem;transition:all .3s;
+  font-family:inherit;
+}
+.standard-btn:hover{border-color:var(--purple);background:#faf5ff}
+.standard-btn.active{border-color:var(--purple);background:linear-gradient(135deg,#e8daff,#f3e8ff);font-weight:600;color:#6b21a8}
+
+/* ===== Feedback ===== */
+.feedback{
+  padding:12px 20px;border-radius:12px;margin:12px 0;
+  font-weight:600;text-align:center;
+  animation:slideUp .4s ease;display:none;
+}
+.feedback.show{display:block}
+.feedback.success{background:#d4edda;color:#155724;border:1px solid #c3e6cb}
+.feedback.error{background:#f8d7da;color:#721c24;border:1px solid #f5c6cb}
+.feedback.info{background:#d1ecf1;color:#0c5460;border:1px solid #bee5eb}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== Open-ended question ===== */
+.open-question{
+  background:#f8f9ff;border-radius:12px;padding:16px;margin:16px 0;
+  border:2px solid #e0e0ff;
+}
+.open-question textarea{
+  width:100%;border:2px solid #ddd;border-radius:8px;
+  padding:10px;font-size:1rem;font-family:inherit;
+  resize:vertical;min-height:60px;transition:border-color .3s;
+}
+.open-question textarea:focus{border-color:var(--purple);outline:none}
+
+/* ===== Summary Stars ===== */
+.summary-list{list-style:none;padding:0}
+.summary-list li{
+  padding:10px 16px;margin:8px 0;border-radius:10px;
+  background:#f8f9ff;font-size:1rem;
+  display:flex;align-items:flex-start;gap:10px;
+  border-left:4px solid var(--purple);
+}
+.summary-list li .star{font-size:1.3rem;flex-shrink:0}
+
+/* ===== Navigation ===== */
+.nav-bottom{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 0;margin-top:10px;flex-wrap:wrap;gap:10px;
+}
+.nav-link{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 20px;border-radius:25px;text-decoration:none;
+  font-size:.9rem;font-weight:600;transition:all .3s;
+}
+.nav-link:hover{transform:translateY(-2px)}
+.nav-prev{background:#e9ecef;color:#555}
+.nav-prev:hover{background:#ddd}
+.nav-home{background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;box-shadow:0 3px 10px rgba(102,126,234,.3)}
+.nav-next{background:linear-gradient(135deg,#ff9a9e,#fad0c4);color:#fff;box-shadow:0 3px 10px rgba(255,154,158,.3)}
+
+/* ===== Continuous Play ===== */
+.play-all-bar{
+  position:sticky;bottom:0;left:0;right:0;z-index:100;
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  padding:12px;text-align:center;border-radius:16px 16px 0 0;
+  box-shadow:0 -4px 20px rgba(102,126,234,.3);margin-top:20px;
+}
+.play-all-bar button{
+  background:#fff;color:#764ba2;border:none;border-radius:25px;
+  padding:10px 30px;font-size:1rem;font-weight:700;cursor:pointer;
+  transition:all .3s;font-family:inherit;
+}
+.play-all-bar button:hover{transform:scale(1.05)}
+.play-all-bar button.playing{background:#ff6b6b;color:#fff}
+
+/* ===== Confetti ===== */
+.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999}
+.confetti{
+  position:absolute;width:10px;height:10px;opacity:0;
+  animation:confettiFall 3s ease-out forwards;
+}
+@keyframes confettiFall{
+  0%{opacity:1;transform:translateY(-20px) rotate(0deg)}
+  100%{opacity:0;transform:translateY(100vh) rotate(720deg)}
+}
+
+/* ===== Responsive ===== */
+@media(max-width:600px){
+  .container{padding:10px}
+  .hero h1{font-size:1.5rem}
+  .section{padding:16px}
+  .sort-container{grid-template-columns:1fr}
+  .person{width:55px;padding:6px}
+  .person .emoji{font-size:1.6rem}
+  .person.adult .emoji{font-size:2rem}
+  .nav-bottom{justify-content:center}
+}
+
+/* ===== Think bubble ===== */
+.think-bubble{
+  background:linear-gradient(135deg,#e8daff,#f3e8ff);
+  border-radius:var(--radius);padding:16px 20px;margin:16px 0;
+  border:2px dashed var(--purple);position:relative;
+}
+.think-bubble::before{content:"🤔 想一想";font-weight:700;color:#6b21a8;display:block;margin-bottom:8px;font-size:1.1rem}
+
+/* ===== Progress Counter ===== */
+.progress-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  background:#fff;border-radius:20px;padding:4px 12px;
+  font-size:.85rem;color:#764ba2;font-weight:600;
+  box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+</style>
+<style id="public-local-controls">/* 公开站：语音工具就近放置，不使用固定全站通栏 */
+.bottom-bar,.ttsbar,.voice-fab{position:static!important;inset:auto!important;margin:18px auto!important;transform:none!important}.voice-panel{position:static!important;display:block!important;margin:8px auto!important}body{padding-bottom:0!important}
+</style></head>
+<body>
+
+<!-- Background Shapes -->
+<div class="bg-shapes">
+  <span>🎮</span><span>👫</span><span>📊</span><span>🎯</span><span>✨</span><span>🏃</span>
+</div>
+
+<div class="container">
+
+<!-- Breadcrumb -->
+<nav class="breadcrumb">
+  <a href="unit1-index.html">📚 二年级数学 · 分类整理专题</a>
+  <span class="sep">›</span>
+  <a href="unit1-index.html">分类与整理专题</a>
+  <span class="sep">›</span>
+  <span class="current">第2课 分两组做游戏</span>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="subtitle">分类整理专题 · 分类与整理</div>
+  <h1>🎮 分两组做游戏</h1>
+  <p style="color:#888;font-size:.95rem;margin-top:6px">同样的人，不同的分法，结果会一样吗？</p>
+  <span class="lesson-num">📖 第2课 · 学习材料第3-4页</span>
+</div>
+
+<!-- ===== Section 1: Story Intro ===== -->
+<div class="section" id="sec-intro">
+  <div class="section-title">
+    <span class="icon">📖</span> 做游戏啦！
+    <button class="tts-btn" onclick="speakSection('intro')">🔊 听一听</button>
+  </div>
+  <div class="tts-text" data-section="intro">
+    <p>小朋友们，今天操场上有一群人要做游戏！</p>
+    <p>我们来数一数，一共有多少人呢？</p>
+  </div>
+
+  <div class="people-playground" id="allPeople" style="background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border:2px solid #c8e6c9">
+    <!-- Filled by JS -->
+  </div>
+  <p style="text-align:center;font-size:1.1rem;margin-top:8px">
+    数一数：一共有 <strong style="font-size:1.5rem;color:var(--purple)" id="totalDisplay">?</strong> 人
+    <button class="btn btn-sm btn-primary" onclick="revealTotal()" style="margin-left:10px">点击数一数 👆</button>
+  </p>
+</div>
+
+<!-- ===== Section 2: Classify by Age ===== -->
+<div class="section pink-border" id="sec-age">
+  <div class="section-title">
+    <span class="icon">👨‍👩‍👧‍👦</span> 第一种分法：按年龄分
+    <button class="tts-btn" onclick="speakSection('age')">🔊 听一听</button>
+  </div>
+  <div class="tts-text" data-section="age">
+    <p>老师说："我们按<strong>年龄</strong>分成两组吧！大人一组，孩子一组。"</p>
+    <p>请你把下面的人分到正确的组里——点击人物，再点击对应的组！</p>
+  </div>
+
+  <div class="people-playground" id="agePeople">
+    <!-- Filled by JS -->
+  </div>
+
+  <div class="sort-container">
+    <div class="sort-zone zone-a" id="ageZoneA" onclick="placeInZone('age','A')">
+      <h3>👨 大人组</h3>
+      <div class="items" id="ageZoneAItems"></div>
+      <div class="count" id="ageCountA">0 人</div>
+    </div>
+    <div class="sort-zone zone-b" id="ageZoneB" onclick="placeInZone('age','B')">
+      <h3>👧 孩子组</h3>
+      <div class="items" id="ageZoneBItems"></div>
+      <div class="count" id="ageCountB">0 人</div>
+    </div>
+  </div>
+
+  <div id="ageTable" style="display:none">
+    <table class="data-table">
+      <tr><th>分类标准</th><th>类别</th><th>人数</th></tr>
+      <tr><td rowspan="2">按年龄</td><td>大人 👨</td><td class="highlight-cell" id="ageAdultCount">-</td></tr>
+      <tr><td>孩子 👧</td><td class="highlight-cell" id="ageChildCount">-</td></tr>
+      <tr class="total-row"><td colspan="2">合计</td><td id="ageTotalCount">-</td></tr>
+    </table>
+  </div>
+
+  <div class="feedback" id="ageFeedback"></div>
+  <div class="btn-group">
+    <button class="btn btn-success btn-sm" onclick="checkAgeSort()">✅ 检查分组</button>
+    <button class="btn btn-reset btn-sm" onclick="resetSort('age')">🔄 重新来</button>
+  </div>
+</div>
+
+<!-- ===== Section 3: Classify by Gender ===== -->
+<div class="section yellow-border" id="sec-gender">
+  <div class="section-title">
+    <span class="icon">🚹🚺</span> 第二种分法：按性别分
+    <button class="tts-btn" onclick="speakSection('gender')">🔊 听一听</button>
+  </div>
+  <div class="tts-text" data-section="gender">
+    <p>同样是这14个人，这次我们换一种分法！</p>
+    <p>按<strong>性别</strong>分——男的一组，女的一组。来试试吧！</p>
+  </div>
+
+  <div class="people-playground" id="genderPeople">
+    <!-- Filled by JS -->
+  </div>
+
+  <div class="sort-container">
+    <div class="sort-zone zone-a" id="genderZoneA" onclick="placeInZone('gender','A')">
+      <h3>🚹 男生组</h3>
+      <div class="items" id="genderZoneAItems"></div>
+      <div class="count" id="genderCountA">0 人</div>
+    </div>
+    <div class="sort-zone zone-b" id="genderZoneB" onclick="placeInZone('gender','B')">
+      <h3>🚺 女生组</h3>
+      <div class="items" id="genderZoneBItems"></div>
+      <div class="count" id="genderCountB">0 人</div>
+    </div>
+  </div>
+
+  <div id="genderTable" style="display:none">
+    <table class="data-table">
+      <tr><th>分类标准</th><th>类别</th><th>人数</th></tr>
+      <tr><td rowspan="2">按性别</td><td>男 🚹</td><td class="highlight-cell" id="genderMaleCount">-</td></tr>
+      <tr><td>女 🚺</td><td class="highlight-cell" id="genderFemaleCount">-</td></tr>
+      <tr class="total-row"><td colspan="2">合计</td><td id="genderTotalCount">-</td></tr>
+    </table>
+  </div>
+
+  <div class="feedback" id="genderFeedback"></div>
+  <div class="btn-group">
+    <button class="btn btn-success btn-sm" onclick="checkGenderSort()">✅ 检查分组</button>
+    <button class="btn btn-reset btn-sm" onclick="resetSort('gender')">🔄 重新来</button>
+  </div>
+</div>
+
+<!-- ===== Section 4: Key Concept ===== -->
+<div class="section green-border" id="sec-concept">
+  <div class="section-title">
+    <span class="icon">💡</span> 重要发现
+    <button class="tts-btn" onclick="speakSection('concept')">🔊 听一听</button>
+  </div>
+  <div class="tts-text" data-section="concept">
+    <p>让我们把两种分法放在一起比较一下！</p>
+    <p>按年龄分：大人8人加孩子6人，等于14人。</p>
+    <p>按性别分：男7人加女7人，也等于14人。</p>
+    <p>发现了吗？分类的标准不同，每组的人数可能不同，但是总数永远不变！都是14人！</p>
+    <p>这就是今天最重要的知识点：分类标准不同，结果可能不同，但总数不变！</p>
+  </div>
+
+  <!-- Visual proof -->
+  <div class="total-proof">
+    <div class="total-row-visual">
+      <span style="font-size:.9rem">按年龄：</span>
+      <span class="total-num a">8</span>
+      <span class="equal-sign">+</span>
+      <span class="total-num b">6</span>
+      <span class="equal-sign">=</span>
+      <span class="total-num total" id="proofTotal1">14</span>
+    </div>
+    <div class="total-row-visual">
+      <span style="font-size:.9rem">按性别：</span>
+      <span class="total-num a">7</span>
+      <span class="equal-sign">+</span>
+      <span class="total-num b">7</span>
+      <span class="equal-sign">=</span>
+      <span class="total-num total" id="proofTotal2">14</span>
+    </div>
+  </div>
+
+  <div class="concept-box">
+    <div class="concept-text">
+      ⭐ 分类标准不同，结果可能不同，<br>但<span style="font-size:1.6rem;text-decoration:underline">总数不变</span>！
+    </div>
+    <div class="concept-sub">不管怎么分，人还是那些人，一个都不多，一个都不少！</div>
+  </div>
+
+  <div class="think-bubble">
+    <p>除了按年龄和性别，还能怎么分呢？</p>
+    <p style="margin-top:6px;color:#888;font-size:.9rem">
+      💡 提示：戴眼镜的/不戴眼镜的、穿裙子的/穿裤子的、长头发的/短头发的……
+    </p>
+  </div>
+</div>
+
+<!-- ===== Section 5: Practice 1 - Clothes ===== -->
+<div class="section purple-border" id="sec-clothes">
+  <div class="section-title">
+    <span class="icon">✏️</span> 练习1：整理衣柜
+    <button class="tts-btn" onclick="speakSection('clothes')">🔊 听一听</button>
+  </div>
+  <div class="tts-text" data-section="clothes">
+    <p>妈妈的衣柜里有好多衣服！请你选择一种分类标准，把它们分成两组。</p>
+    <p>先选一种分法，然后点击衣服把它们归类吧！</p>
+  </div>
+
+  <p style="margin-bottom:10px;font-weight:600">选择一种分类标准：</p>
+  <div class="standard-select">
+    <button class="standard-btn" onclick="selectClothStandard('type')" id="clothStdType">👕/👖 上衣 / 裤子</button>
+    <button class="standard-btn" onclick="selectClothStandard('sleeve')" id="clothStdSleeve">🧥/👕 长袖 / 短袖</button>
+    <button class="standard-btn" onclick="selectClothStandard('season')" id="clothStdSeason">☀️/❄️ 夏装 / 冬装</button>
+  </div>
+
+  <div class="clothes-grid" id="clothesGrid">
+    <!-- Filled by JS -->
+  </div>
+
+  <div id="clothesSortArea" style="display:none">
+    <div class="sort-container">
+      <div class="sort-zone zone-a" id="clothZoneA" onclick="placeCloth('A')">
+        <h3 id="clothZoneALabel">A组</h3>
+        <div class="items" id="clothZoneAItems"></div>
+        <div class="count" id="clothCountA">0 件</div>
+      </div>
+      <div class="sort-zone zone-b" id="clothZoneB" onclick="placeCloth('B')">
+        <h3 id="clothZoneBLabel">B组</h3>
+        <div class="items" id="clothZoneBItems"></div>
+        <div class="count" id="clothCountB">0 件</div>
+      </div>
+    </div>
+
+    <div id="clothTable" style="display:none">
+      <table class="data-table">
+        <tr><th>类别</th><th>数量</th></tr>
+        <tr><td id="clothCatA">-</td><td class="highlight-cell" id="clothNumA">-</td></tr>
+        <tr><td id="clothCatB">-</td><td class="highlight-cell" id="clothNumB">-</td></tr>
+        <tr class="total-row"><td>合计</td><td id="clothTotal">-</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="feedback" id="clothesFeedback"></div>
+  <div class="btn-group">
+    <button class="btn btn-success btn-sm" onclick="checkClothes()">✅ 检查</button>
+    <button class="btn btn-reset btn-sm" onclick="resetClothes()">🔄 重新来</button>
+  </div>
+</div>
+
+<!-- ===== Section 6: Practice 2 - Animals ===== -->
+<div class="section orange-border" id="sec-animals">
+  <div class="section-title">
+    <span class="icon">🐾</span> 练习2：动物分类
+    <button class="tts-btn" onclick="speakSection('animals')">🔊 听一听</button>
+  </div>
+  <div class="tts-text" data-section="animals">
+    <p>看，这些小动物在一起玩耍！请你选择一种标准，把它们分成两组。</p>
+    <p>分好以后，还要根据你的分类结果，提出一道数学题哦！</p>
+  </div>
+
+  <p style="margin-bottom:10px;font-weight:600">选择一种分类标准：</p>
+  <div class="standard-select">
+    <button class="standard-btn" onclick="selectAnimalStandard('habitat')" id="animalStdHabitat">🌊/🌤️ 水里的 / 天上飞的</button>
+    <button class="standard-btn" onclick="selectAnimalStandard('fly')" id="animalStdFly">🦅/🐢 会飞的 / 不会飞的</button>
+  </div>
+
+  <div class="animal-grid" id="animalGrid">
+    <!-- Filled by JS -->
+  </div>
+
+  <div id="animalSortArea" style="display:none">
+    <div class="sort-container">
+      <div class="sort-zone zone-a" id="animalZoneA" onclick="placeAnimal('A')">
+        <h3 id="animalZoneALabel">A组</h3>
+        <div class="items" id="animalZoneAItems"></div>
+        <div class="count" id="animalCountA">0 只</div>
+      </div>
+      <div class="sort-zone zone-b" id="animalZoneB" onclick="placeAnimal('B')">
+        <h3 id="animalZoneBLabel">B组</h3>
+        <div class="items" id="animalZoneBItems"></div>
+        <div class="count" id="animalCountB">0 只</div>
+      </div>
+    </div>
+
+    <div id="animalTable" style="display:none">
+      <table class="data-table">
+        <tr><th>类别</th><th>数量</th></tr>
+        <tr><td id="animalCatA">-</td><td class="highlight-cell" id="animalNumA">-</td></tr>
+        <tr><td id="animalCatB">-</td><td class="highlight-cell" id="animalNumB">-</td></tr>
+        <tr class="total-row"><td>合计</td><td id="animalTotal">-</td></tr>
+      </table>
+    </div>
+
+    <div class="open-question" id="animalQuestion" style="display:none">
+      <p style="font-weight:600;margin-bottom:8px">📝 根据分类结果，编一道数学题：</p>
+      <textarea id="animalQuestionInput" placeholder="例如：水里的动物比天上飞的多几只？"></textarea>
+      <p style="font-size:.8rem;color:#888;margin-top:6px">💡 提示：可以用"多几只""少几只""一共几只"来编题哦！</p>
+    </div>
+  </div>
+
+  <div class="feedback" id="animalFeedback"></div>
+  <div class="btn-group">
+    <button class="btn btn-success btn-sm" onclick="checkAnimals()">✅ 检查</button>
+    <button class="btn btn-reset btn-sm" onclick="resetAnimals()">🔄 重新来</button>
+  </div>
+</div>
+
+<!-- ===== Section 7: Summary ===== -->
+<div class="section" id="sec-summary" style="border-left-color:#ffd700">
+  <div class="section-title">
+    <span class="icon">🌟</span> 课堂小结
+    <button class="tts-btn" onclick="speakSection('summary')">🔊 听一听</button>
+  </div>
+  <div class="tts-text" data-section="summary">
+    <p>今天我们学到了三个重要的知识：</p>
+    <p>第一，同样一组东西，可以用不同的标准来分类。</p>
+    <p>第二，不同的分类标准，分出来的结果可能不同。</p>
+    <p>第三，不管怎么分，总数永远不变！</p>
+    <p>你学会了吗？真棒！给自己一颗星吧！</p>
+  </div>
+
+  <ul class="summary-list">
+    <li><span class="star">⭐</span>同样一组东西，可以用<strong>不同的标准</strong>来分类</li>
+    <li><span class="star">⭐</span>不同的分类标准，分出来的<strong>结果可能不同</strong></li>
+    <li><span class="star">⭐</span>不管怎么分，<strong>总数永远不变</strong>！</li>
+    <li><span class="star">⭐</span>分类结果可以用<strong>表格</strong>整理</li>
+  </ul>
+
+  <div class="concept-box" style="margin-top:16px;background:linear-gradient(135deg,#ffecd2,#fcb69f)">
+    <div style="font-size:2rem;margin-bottom:8px">🏆</div>
+    <div class="concept-text" style="font-size:1.1rem">
+      你已经完成了第2课的学习！<br>你真棒！🎉
+    </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav-bottom">
+  <a href="unit1-lesson1.html" class="nav-link nav-prev">← 上一课</a>
+  <a href="unit1-index.html" class="nav-link nav-home">📚 课程目录</a>
+  <a href="unit1-lesson3.html" class="nav-link nav-next">下一课 →</a>
+</div>
+
+<!-- Continuous Play Bar -->
+<div class="play-all-bar">
+  <button id="playAllBtn" onclick="togglePlayAll()">
+    ▶️ 连续播放全部内容
+  </button>
+</div>
+
+</div><!-- /container -->
+
+<!-- Confetti container -->
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+// ===== People Data =====
+// 8 adults (4M + 4F) + 6 children (3M + 3F) = 14
+const people = [
+  {id:1, emoji:'👨', label:'爸爸', age:'adult', gender:'male'},
+  {id:2, emoji:'👩', label:'妈妈', age:'adult', gender:'female'},
+  {id:3, emoji:'👨', label:'叔叔', age:'adult', gender:'male'},
+  {id:4, emoji:'👩', label:'阿姨', age:'adult', gender:'female'},
+  {id:5, emoji:'👨‍🦱', label:'伯伯', age:'adult', gender:'male'},
+  {id:6, emoji:'👩‍🦰', label:'姑姑', age:'adult', gender:'female'},
+  {id:7, emoji:'🧔', label:'舅舅', age:'adult', gender:'male'},
+  {id:8, emoji:'👩‍🦳', label:'奶奶', age:'adult', gender:'female'},
+  {id:9, emoji:'👦', label:'小明', age:'child', gender:'male'},
+  {id:10,emoji:'👧', label:'小红', age:'child', gender:'female'},
+  {id:11,emoji:'👦', label:'小刚', age:'child', gender:'male'},
+  {id:12,emoji:'👧', label:'小美', age:'child', gender:'female'},
+  {id:13,emoji:'👦', label:'小亮', age:'child', gender:'male'},
+  {id:14,emoji:'👧', label:'小花', age:'child', gender:'female'},
+];
+
+// ===== Clothes Data =====
+const clothes = [
+  {id:'c1', emoji:'👕', label:'T恤',      type:'top',    sleeve:'short', season:'summer'},
+  {id:'c2', emoji:'👖', label:'长裤',      type:'bottom', sleeve:'long',  season:'winter'},
+  {id:'c3', emoji:'🧥', label:'棉袄',      type:'top',    sleeve:'long',  season:'winter'},
+  {id:'c4', emoji:'👗', label:'裙子',      type:'bottom', sleeve:'short', season:'summer'},
+  {id:'c5', emoji:'🧣', label:'围巾',      type:'top',    sleeve:'long',  season:'winter'},
+  {id:'c6', emoji:'👔', label:'衬衫',      type:'top',    sleeve:'long',  season:'summer'},
+  {id:'c7', emoji:'🩳', label:'短裤',      type:'bottom', sleeve:'short', season:'summer'},
+  {id:'c8', emoji:'🧤', label:'手套',      type:'top',    sleeve:'long',  season:'winter'},
+  {id:'c9', emoji:'👚', label:'背心',      type:'top',    sleeve:'short', season:'summer'},
+  {id:'c10',emoji:'🩱', label:'泳衣',      type:'bottom', sleeve:'short', season:'summer'},
+];
+
+const clothStandards = {
+  type:   {a:'上衣 👕', b:'下装 👖', groupA:['c1','c3','c5','c6','c8','c9'], groupB:['c2','c4','c7','c10']},
+  sleeve: {a:'长袖/长款 🧥', b:'短袖/短款 👕', groupA:['c2','c3','c5','c6','c8'], groupB:['c1','c4','c7','c9','c10']},
+  season: {a:'冬装 ❄️', b:'夏装 ☀️', groupA:['c2','c3','c5','c8'], groupB:['c1','c4','c6','c7','c9','c10']},
+};
+
+// ===== Animals Data =====
+const animals = [
+  {id:'a1', emoji:'🐟', label:'金鱼',    habitat:'water', fly:false},
+  {id:'a2', emoji:'🦋', label:'蝴蝶',    habitat:'sky',   fly:true},
+  {id:'a3', emoji:'🐢', label:'海龟',    habitat:'water', fly:false},
+  {id:'a4', emoji:'🐬', label:'海豚',    habitat:'water', fly:false},
+  {id:'a5', emoji:'🦈', label:'鲨鱼',    habitat:'water', fly:false},
+  {id:'a6', emoji:'🦅', label:'老鹰',    habitat:'sky',   fly:true},
+  {id:'a7', emoji:'🦉', label:'猫头鹰',  habitat:'sky',   fly:true},
+  {id:'a8', emoji:'🐦', label:'喜鹊',    habitat:'sky',   fly:true},
+];
+
+const animalStandards = {
+  habitat: {a:'水里的 🌊', b:'天上飞的 🌤️', groupA:['a1','a3','a4','a5'], groupB:['a2','a6','a7','a8']},
+  fly:     {a:'会飞的 🦅', b:'不会飞的 🐢', groupA:['a2','a6','a7','a8'], groupB:['a1','a3','a4','a5']},
+};
+
+// ===== State =====
+let selectedPerson = {age: null, gender: null};
+let sortedItems = {
+  age: {A:[], B:[]},
+  gender: {A:[], B:[]},
+};
+let selectedCloth = null;
+let clothSorted = {A:[], B:[]};
+let currentClothStandard = null;
+let selectedAnimal = null;
+let animalSorted = {A:[], B:[]};
+let currentAnimalStandard = null;
+
+// ===== Render People =====
+function renderPeople(containerId, clickHandler, cssClass) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = '';
+  people.forEach(p => {
+    const el = document.createElement('div');
+    el.className = `person ${p.age} ${cssClass || ''}`;
+    el.id = `${containerId}-p${p.id}`;
+    el.innerHTML = `<span class="emoji">${p.emoji}</span><span class="label">${p.label}</span>`;
+    el.onclick = () => clickHandler(p, el);
+    c.appendChild(el);
+  });
+}
+
+function renderAllPeople() {
+  const c = document.getElementById('allPeople');
+  c.innerHTML = '';
+  people.forEach(p => {
+    const el = document.createElement('div');
+    el.className = `person ${p.age}`;
+    el.innerHTML = `<span class="emoji">${p.emoji}</span><span class="label">${p.label}</span>`;
+    c.appendChild(el);
+  });
+}
+
+// Reveal total count
+function revealTotal() {
+  const el = document.getElementById('totalDisplay');
+  el.textContent = '14';
+  el.style.animation = 'popIn .5s ease';
+  showFeedbackInline(el.parentElement, '一共有14个人！', 'success');
+}
+
+function showFeedbackInline(parent, text) {
+  // Simple inline flash
+}
+
+// ===== Person Selection =====
+function selectPersonAge(p, el) {
+  const container = document.getElementById('agePeople');
+  container.querySelectorAll('.person').forEach(e => e.classList.remove('selected'));
+  if (sortedItems.age.A.includes(p.id) || sortedItems.age.B.includes(p.id)) return;
+  el.classList.add('selected');
+  selectedPerson.age = p;
+}
+
+function selectPersonGender(p, el) {
+  const container = document.getElementById('genderPeople');
+  container.querySelectorAll('.person').forEach(e => e.classList.remove('selected'));
+  if (sortedItems.gender.A.includes(p.id) || sortedItems.gender.B.includes(p.id)) return;
+  el.classList.add('selected');
+  selectedPerson.gender = p;
+}
+
+function placeInZone(mode, zone) {
+  const p = selectedPerson[mode];
+  if (!p) return;
+
+  sortedItems[mode][zone].push(p.id);
+  selectedPerson[mode] = null;
+
+  // Mark placed in source
+  const srcId = `${mode}People-p${p.id}`;
+  const srcEl = document.getElementById(srcId);
+  if (srcEl) { srcEl.classList.remove('selected'); srcEl.classList.add('placed'); }
+
+  // Add mini person to zone
+  const zoneItems = document.getElementById(`${mode}Zone${zone}Items`);
+  const mini = document.createElement('span');
+  mini.style.cssText = 'font-size:1.5rem;cursor:default;';
+  mini.textContent = p.emoji;
+  mini.title = p.label;
+  zoneItems.appendChild(mini);
+
+  // Update count
+  updateZoneCount(mode);
+}
+
+function updateZoneCount(mode) {
+  const aCount = sortedItems[mode].A.length;
+  const bCount = sortedItems[mode].B.length;
+  const unit = '人';
+  document.getElementById(`${mode}CountA`).textContent = `${aCount} ${unit}`;
+  document.getElementById(`${mode}CountB`).textContent = `${bCount} ${unit}`;
+}
+
+// ===== Check Age Sort =====
+function checkAgeSort() {
+  const aIds = sortedItems.age.A;
+  const bIds = sortedItems.age.B;
+  if (aIds.length + bIds.length < 14) {
+    showFeedback('ageFeedback','还有人没分完哦，继续加油！🙌','error');
+    return;
+  }
+  // Check correctness
+  const adultsInA = aIds.filter(id => people.find(p=>p.id===id).age==='adult').length;
+  const childrenInB = bIds.filter(id => people.find(p=>p.id===id).age==='child').length;
+  // Accept either orientation
+  const correctAB = (adultsInA === 8 && childrenInB === 6);
+  const adultsInB2 = bIds.filter(id => people.find(p=>p.id===id).age==='adult').length;
+  const childrenInA2 = aIds.filter(id => people.find(p=>p.id===id).age==='child').length;
+  const correctBA = (adultsInB2 === 8 && childrenInA2 === 6);
+
+  if (correctAB || correctBA) {
+    showFeedback('ageFeedback','🎉 太棒了！大人8人，孩子6人，一共14人！','success');
+    // Show table
+    document.getElementById('ageTable').style.display = 'block';
+    document.getElementById('ageAdultCount').textContent = '8人';
+    document.getElementById('ageChildCount').textContent = '6人';
+    document.getElementById('ageTotalCount').textContent = '14人';
+    launchConfetti();
+  } else {
+    showFeedback('ageFeedback','有些人分错了哦，注意看看谁是大人，谁是孩子！🤔','error');
+  }
+}
+
+// ===== Check Gender Sort =====
+function checkGenderSort() {
+  const aIds = sortedItems.gender.A;
+  const bIds = sortedItems.gender.B;
+  if (aIds.length + bIds.length < 14) {
+    showFeedback('genderFeedback','还有人没分完哦！💪','error');
+    return;
+  }
+  const malesInA = aIds.filter(id => people.find(p=>p.id===id).gender==='male').length;
+  const femalesInB = bIds.filter(id => people.find(p=>p.id===id).gender==='female').length;
+  const correctAB = (malesInA === 7 && femalesInB === 7);
+  const malesInB2 = bIds.filter(id => people.find(p=>p.id===id).gender==='male').length;
+  const femalesInA2 = aIds.filter(id => people.find(p=>p.id===id).gender==='female').length;
+  const correctBA = (malesInB2 === 7 && femalesInA2 === 7);
+
+  if (correctAB || correctBA) {
+    showFeedback('genderFeedback','🎉 真厉害！男生7人，女生7人，一共还是14人！','success');
+    document.getElementById('genderTable').style.display = 'block';
+    document.getElementById('genderMaleCount').textContent = '7人';
+    document.getElementById('genderFemaleCount').textContent = '7人';
+    document.getElementById('genderTotalCount').textContent = '14人';
+    launchConfetti();
+  } else {
+    showFeedback('genderFeedback','有些人分错了哦，仔细看看男生女生！🧐','error');
+  }
+}
+
+// ===== Reset Sort =====
+function resetSort(mode) {
+  sortedItems[mode] = {A:[], B:[]};
+  selectedPerson[mode] = null;
+  document.getElementById(`${mode}ZoneAItems`).innerHTML = '';
+  document.getElementById(`${mode}ZoneBItems`).innerHTML = '';
+  updateZoneCount(mode);
+  document.getElementById(`${mode}Feedback`).classList.remove('show');
+  if (mode === 'age') {
+    document.getElementById('ageTable').style.display = 'none';
+    renderPeople('agePeople', selectPersonAge);
+  } else {
+    document.getElementById('genderTable').style.display = 'none';
+    renderPeople('genderPeople', selectPersonGender);
+  }
+}
+
+// ===== Clothes =====
+function renderClothes() {
+  const grid = document.getElementById('clothesGrid');
+  grid.innerHTML = '';
+  clothes.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'cloth-item';
+    el.id = `cloth-${c.id}`;
+    el.innerHTML = `<span class="emoji">${c.emoji}</span><span class="label">${c.label}</span>`;
+    el.onclick = () => selectClothItem(c, el);
+    grid.appendChild(el);
+  });
+}
+
+function selectClothItem(c, el) {
+  if (!currentClothStandard) {
+    showFeedback('clothesFeedback','请先选择一种分类标准！👆','info');
+    return;
+  }
+  if (clothSorted.A.includes(c.id) || clothSorted.B.includes(c.id)) return;
+  document.querySelectorAll('.cloth-item').forEach(e => e.style.outline = '');
+  el.style.outline = '3px solid var(--purple)';
+  selectedCloth = c;
+}
+
+function selectClothStandard(std) {
+  currentClothStandard = std;
+  clothSorted = {A:[], B:[]};
+  selectedCloth = null;
+  document.querySelectorAll('.standard-select .standard-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`clothStd${std.charAt(0).toUpperCase()+std.slice(1)}`).classList.add('active');
+
+  const info = clothStandards[std];
+  document.getElementById('clothZoneALabel').textContent = info.a;
+  document.getElementById('clothZoneBLabel').textContent = info.b;
+  document.getElementById('clothZoneAItems').innerHTML = '';
+  document.getElementById('clothZoneBItems').innerHTML = '';
+  document.getElementById('clothCountA').textContent = '0 件';
+  document.getElementById('clothCountB').textContent = '0 件';
+  document.getElementById('clothesSortArea').style.display = 'block';
+  document.getElementById('clothTable').style.display = 'none';
+  document.getElementById('clothesFeedback').classList.remove('show');
+  renderClothes();
+}
+
+function placeCloth(zone) {
+  if (!selectedCloth) return;
+  clothSorted[zone].push(selectedCloth.id);
+
+  const el = document.getElementById(`cloth-${selectedCloth.id}`);
+  el.classList.add(zone === 'A' ? 'in-a' : 'in-b');
+  el.style.outline = '';
+  el.style.opacity = '.5';
+  el.style.pointerEvents = 'none';
+
+  const zoneItems = document.getElementById(`clothZone${zone}Items`);
+  const mini = document.createElement('span');
+  mini.style.cssText = 'font-size:1.6rem;';
+  mini.textContent = selectedCloth.emoji;
+  mini.title = selectedCloth.label;
+  zoneItems.appendChild(mini);
+
+  document.getElementById(`clothCount${zone}`).textContent = `${clothSorted[zone].length} 件`;
+  selectedCloth = null;
+}
+
+function checkClothes() {
+  if (!currentClothStandard) {
+    showFeedback('clothesFeedback','请先选择一种分类标准！','info');
+    return;
+  }
+  const total = clothSorted.A.length + clothSorted.B.length;
+  if (total < clothes.length) {
+    showFeedback('clothesFeedback',`还有${clothes.length - total}件衣服没有分哦！👗`,'error');
+    return;
+  }
+  const info = clothStandards[currentClothStandard];
+  const correctA = clothSorted.A.every(id => info.groupA.includes(id));
+  const correctB = clothSorted.B.every(id => info.groupB.includes(id));
+  const correctReverse = clothSorted.A.every(id => info.groupB.includes(id)) && clothSorted.B.every(id => info.groupA.includes(id));
+
+  if ((correctA && correctB) || correctReverse) {
+    const countA = correctReverse ? info.groupB.length : info.groupA.length;
+    const countB = correctReverse ? info.groupA.length : info.groupB.length;
+    showFeedback('clothesFeedback',`🎉 分得真好！一共${clothes.length}件衣服！`,'success');
+    document.getElementById('clothTable').style.display = 'block';
+    document.getElementById('clothCatA').textContent = correctReverse ? info.b : info.a;
+    document.getElementById('clothCatB').textContent = correctReverse ? info.a : info.b;
+    document.getElementById('clothNumA').textContent = `${countA}件`;
+    document.getElementById('clothNumB').textContent = `${countB}件`;
+    document.getElementById('clothTotal').textContent = `${clothes.length}件`;
+    launchConfetti();
+  } else {
+    showFeedback('clothesFeedback','有些衣服分错了，再想想看！🤔','error');
+  }
+}
+
+function resetClothes() {
+  clothSorted = {A:[], B:[]};
+  selectedCloth = null;
+  if (currentClothStandard) {
+    selectClothStandard(currentClothStandard);
+  }
+}
+
+// ===== Animals =====
+function renderAnimals() {
+  const grid = document.getElementById('animalGrid');
+  grid.innerHTML = '';
+  animals.forEach(a => {
+    const el = document.createElement('div');
+    el.className = 'animal-item';
+    el.id = `animal-${a.id}`;
+    el.innerHTML = `<span class="emoji">${a.emoji}</span><span class="label">${a.label}</span>`;
+    el.onclick = () => selectAnimalItem(a, el);
+    grid.appendChild(el);
+  });
+}
+
+function selectAnimalItem(a, el) {
+  if (!currentAnimalStandard) {
+    showFeedback('animalFeedback','请先选择一种分类标准！👆','info');
+    return;
+  }
+  if (animalSorted.A.includes(a.id) || animalSorted.B.includes(a.id)) return;
+  document.querySelectorAll('.animal-item').forEach(e => e.style.outline = '');
+  el.style.outline = '3px solid var(--purple)';
+  selectedAnimal = a;
+}
+
+function selectAnimalStandard(std) {
+  currentAnimalStandard = std;
+  animalSorted = {A:[], B:[]};
+  selectedAnimal = null;
+  document.querySelectorAll('#sec-animals .standard-select .standard-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`animalStd${std.charAt(0).toUpperCase()+std.slice(1)}`).classList.add('active');
+
+  const info = animalStandards[std];
+  document.getElementById('animalZoneALabel').textContent = info.a;
+  document.getElementById('animalZoneBLabel').textContent = info.b;
+  document.getElementById('animalZoneAItems').innerHTML = '';
+  document.getElementById('animalZoneBItems').innerHTML = '';
+  document.getElementById('animalCountA').textContent = '0 只';
+  document.getElementById('animalCountB').textContent = '0 只';
+  document.getElementById('animalSortArea').style.display = 'block';
+  document.getElementById('animalTable').style.display = 'none';
+  document.getElementById('animalQuestion').style.display = 'none';
+  document.getElementById('animalFeedback').classList.remove('show');
+  renderAnimals();
+}
+
+function placeAnimal(zone) {
+  if (!selectedAnimal) return;
+  animalSorted[zone].push(selectedAnimal.id);
+
+  const el = document.getElementById(`animal-${selectedAnimal.id}`);
+  el.classList.add(zone === 'A' ? 'in-a' : 'in-b');
+  el.style.outline = '';
+  el.style.opacity = '.5';
+  el.style.pointerEvents = 'none';
+
+  const zoneItems = document.getElementById(`animalZone${zone}Items`);
+  const mini = document.createElement('span');
+  mini.style.cssText = 'font-size:1.8rem;';
+  mini.textContent = selectedAnimal.emoji;
+  mini.title = selectedAnimal.label;
+  zoneItems.appendChild(mini);
+
+  document.getElementById(`animalCount${zone}`).textContent = `${animalSorted[zone].length} 只`;
+  selectedAnimal = null;
+}
+
+function checkAnimals() {
+  if (!currentAnimalStandard) {
+    showFeedback('animalFeedback','请先选择一种分类标准！','info');
+    return;
+  }
+  const total = animalSorted.A.length + animalSorted.B.length;
+  if (total < animals.length) {
+    showFeedback('animalFeedback',`还有${animals.length - total}只小动物没有分哦！🐾`,'error');
+    return;
+  }
+  const info = animalStandards[currentAnimalStandard];
+  const correctA = animalSorted.A.every(id => info.groupA.includes(id));
+  const correctB = animalSorted.B.every(id => info.groupB.includes(id));
+  const correctReverse = animalSorted.A.every(id => info.groupB.includes(id)) && animalSorted.B.every(id => info.groupA.includes(id));
+
+  if ((correctA && correctB) || correctReverse) {
+    const countA = correctReverse ? info.groupB.length : info.groupA.length;
+    const countB = correctReverse ? info.groupA.length : info.groupB.length;
+    showFeedback('animalFeedback',`🎉 太棒了！分得非常好！一共${animals.length}只动物！`,'success');
+    document.getElementById('animalTable').style.display = 'block';
+    document.getElementById('animalCatA').textContent = correctReverse ? info.b : info.a;
+    document.getElementById('animalCatB').textContent = correctReverse ? info.a : info.b;
+    document.getElementById('animalNumA').textContent = `${countA}只`;
+    document.getElementById('animalNumB').textContent = `${countB}只`;
+    document.getElementById('animalTotal').textContent = `${animals.length}只`;
+    document.getElementById('animalQuestion').style.display = 'block';
+    launchConfetti();
+  } else {
+    showFeedback('animalFeedback','有些小动物分错了，再想想看！🤔','error');
+  }
+}
+
+function resetAnimals() {
+  animalSorted = {A:[], B:[]};
+  selectedAnimal = null;
+  if (currentAnimalStandard) {
+    selectAnimalStandard(currentAnimalStandard);
+  }
+}
+
+// ===== Feedback =====
+function showFeedback(id, text, type) {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.className = `feedback show ${type}`;
+  setTimeout(() => {
+    if (type !== 'success') el.classList.remove('show');
+  }, 4000);
+}
+
+// ===== Confetti =====
+function launchConfetti() {
+  const container = document.getElementById('confettiContainer');
+  const colors = ['#ff6b9d','#4ecdc4','#ffe66d','#ff8a5c','#a78bfa','#6bcb77'];
+  for (let i = 0; i < 40; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + '%';
+    c.style.animationDelay = Math.random() * 1 + 's';
+    c.style.animationDuration = 2 + Math.random() * 2 + 's';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    c.style.width = 6 + Math.random() * 8 + 'px';
+    c.style.height = 6 + Math.random() * 8 + 'px';
+    container.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
+  }
+}
+
+// ===== TTS =====
+let currentUtterance = null;
+let isPlayingAll = false;
+let playAllIndex = 0;
+const sectionOrder = ['intro','age','gender','concept','clothes','animals','summary'];
+
+const sectionTexts = {};
+
+function initTTSTexts() {
+  sectionOrder.forEach(sec => {
+    const el = document.querySelector(`[data-section="${sec}"]`);
+    if (el) {
+      sectionTexts[sec] = el.textContent.trim();
+    }
+  });
+}
+
+function getPreferredVoice() {
+  const voices = speechSynthesis.getVoices();
+  // Priority: Microsoft Xiaoxiao Online (Natural) → any zh-CN Online Natural → any zh-CN
+  let best = null;
+  let fallback = null;
+  for (const v of voices) {
+    if (v.lang.startsWith('zh') && v.name.includes('Xiaoxiao') && v.name.includes('Online')) return v;
+    if (v.lang.startsWith('zh') && v.name.includes('Online') && v.name.includes('Natural') && !best) best = v;
+    if (v.lang.startsWith('zh') && !fallback) fallback = v;
+  }
+  return best || fallback || null;
+}
+
+function speakSection(sec) {
+  stopSpeaking();
+  const text = sectionTexts[sec];
+  if (!text) return;
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'zh-CN';
+  utter.rate = 0.9;
+  utter.pitch = 1.1;
+  const voice = getPreferredVoice();
+  if (voice) utter.voice = voice;
+
+  // Highlight section
+  const secEl = document.querySelector(`[data-section="${sec}"]`);
+  if (secEl) secEl.classList.add('tts-highlight');
+
+  // Update button
+  const sectionParent = secEl ? secEl.closest('.section') : null;
+  const btn = sectionParent ? sectionParent.querySelector('.tts-btn') : null;
+  if (btn) btn.classList.add('playing');
+
+  utter.onend = () => {
+    if (secEl) secEl.classList.remove('tts-highlight');
+    if (btn) btn.classList.remove('playing');
+    currentUtterance = null;
+    if (isPlayingAll) {
+      playAllIndex++;
+      playNextInAll();
+    }
+  };
+  utter.onerror = utter.onend;
+
+  currentUtterance = utter;
+  speechSynthesis.speak(utter);
+}
+
+function stopSpeaking() {
+  speechSynthesis.cancel();
+  document.querySelectorAll('.tts-highlight').forEach(el => el.classList.remove('tts-highlight'));
+  document.querySelectorAll('.tts-btn.playing').forEach(el => el.classList.remove('playing'));
+  currentUtterance = null;
+}
+
+function togglePlayAll() {
+  const btn = document.getElementById('playAllBtn');
+  if (isPlayingAll) {
+    isPlayingAll = false;
+    stopSpeaking();
+    btn.textContent = '▶️ 连续播放全部内容';
+    btn.classList.remove('playing');
+  } else {
+    isPlayingAll = true;
+    playAllIndex = 0;
+    btn.textContent = '⏹️ 停止播放';
+    btn.classList.add('playing');
+    playNextInAll();
+  }
+}
+
+function playNextInAll() {
+  if (!isPlayingAll || playAllIndex >= sectionOrder.length) {
+    isPlayingAll = false;
+    const btn = document.getElementById('playAllBtn');
+    btn.textContent = '▶️ 连续播放全部内容';
+    btn.classList.remove('playing');
+    return;
+  }
+  const sec = sectionOrder[playAllIndex];
+  // Scroll to section
+  const secEl = document.getElementById(`sec-${sec === 'intro' ? 'intro' : sec}`);
+  if (secEl) secEl.scrollIntoView({behavior:'smooth',block:'center'});
+  setTimeout(() => speakSection(sec), 500);
+}
+
+// ===== Scroll Animation =====
+function initScrollAnimations() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {threshold: 0.1});
+
+  document.querySelectorAll('.section').forEach(sec => observer.observe(sec));
+}
+
+// ===== Init =====
+function init() {
+  renderAllPeople();
+  renderPeople('agePeople', selectPersonAge);
+  renderPeople('genderPeople', selectPersonGender);
+  renderClothes();
+  renderAnimals();
+  initScrollAnimations();
+
+  // Load voices (async in some browsers)
+  if (speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = () => initTTSTexts();
+  }
+  setTimeout(initTTSTexts, 500);
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+  <footer class="footer" lang="zh-CN"><p><strong>版权声明</strong>：本页讲解与配图<strong>均为本页自行编写</strong>，未复制任何教材插图或扫描件；人民教育出版社《数学》二年级上册（2024 年审核）的文字与插图著作权归原出版社及作者所有。</p><p>本页为<strong>家庭自用学习辅助</strong>：不含教材插图、不含扫描件、不用于任何商业用途、不做搜索收录。如权利人认为不妥，请告知即刻下线。</p><p>本页文字与插图均为自绘自拟；<strong>部分练习沿用课本原有题型，个别题目文字与课本原题相近</strong>，均已标注对应页码，仅作家庭自用学习辅助。教材版本已按<strong>课本封面照片核实</strong>：人民教育出版社《数学》二年级上册，封面标注「国家教材委员会专家委员会审核 2024」；第一单元<strong>分类与整理</strong>已按课本<strong>目录页照片</strong>核实，课本自第 1 页起（目录：第二单元「1~6 的表内乘法」自第 10 页起）。例题与情境均为本页自拟，请以课本为准。</p><p>朗读用浏览器语音，建议用 Edge 打开，中文音色最自然。</p></footer>
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一年级下册语文认字卡（语音版）</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "楷体", "KaiTi", "STKaiti", serif; background: linear-gradient(135deg, #fce4ec, #e8f5e9, #e3f2fd, #fff9c4); min-height: 100vh; padding: 20px; }
+h1 { text-align: center; font-size: 2.2em; color: #e91e63; margin: 10px 0 5px; text-shadow: 2px 2px 4px rgba(0,0,0,.1); }
+.subtitle { text-align: center; color: #888; font-size: 1em; margin-bottom: 18px; }
+.filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 24px; }
+.filters button { padding: 8px 20px; border: none; border-radius: 20px; font-size: 1.05em; font-family: inherit; cursor: pointer; transition: all .25s; color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+.filters button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.2); }
+.filters button.active { transform: scale(1.08); box-shadow: 0 0 0 3px #fff, 0 4px 12px rgba(0,0,0,.25); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 18px; max-width: 1100px; margin: 0 auto; }
+.card-wrap { -webkit-perspective: 600px; perspective: 600px; height: 200px; cursor: pointer; }
+.card {
+ position: relative; width: 100%; height: 100%;
+ transition: transform .5s ease;
+ -webkit-transform-style: preserve-3d; transform-style: preserve-3d;
+}
+.card.flipped { -webkit-transform: rotateY(180deg); transform: rotateY(180deg); }
+.card .front, .card .back {
+ position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+ border-radius: 18px;
+ display: flex; flex-direction: column; align-items: center; justify-content: center;
+ box-shadow: 0 4px 16px rgba(0,0,0,.1);
+ padding: 10px;
+ overflow: hidden;
+}
+.card .front {
+ background: #fff;
+ z-index: 2;
+ transition: opacity 0s linear 0.25s;
+}
+.card .back {
+ background: #fff;
+ -webkit-transform: rotateY(180deg); transform: rotateY(180deg);
+ z-index: 1;
+ opacity: 0;
+ transition: opacity 0s linear 0.25s;
+}
+.card.flipped .front { z-index: 1; opacity: 0; }
+.card.flipped .back { z-index: 2; opacity: 1; }
+.card .front .hanzi { font-size: 4.5em; line-height: 1.1; }
+.card .back .pinyin { font-size: 1.6em; }
+.card .back .word { font-size: 1.3em; color: #555; margin-bottom: 6px; }
+.card .unit-tag { position: absolute; top: 8px; right: 10px; font-size: .7em; color: #fff; border-radius: 10px; padding: 1px 8px; }
+.card .back .watermark { font-size: 3em; opacity: .25; position: absolute; bottom: 4px; right: 10px; }
+.card .front .hint { position: absolute; bottom: 8px; font-size: .65em; color: #bbb; }
+.speak-btn {
+ display: inline-flex; align-items: center; gap: 4px;
+ background: linear-gradient(135deg, #ff9800, #ff5722);
+ color: #fff; border: none; border-radius: 16px;
+ padding: 4px 14px; font-size: 0.85em; font-family: inherit;
+ cursor: pointer; transition: all .2s; box-shadow: 0 2px 6px rgba(0,0,0,.15);
+ position: relative; z-index: 10;
+}
+.speak-btn:hover { transform: scale(1.1); box-shadow: 0 3px 10px rgba(0,0,0,.25); }
+.speak-btn:active { transform: scale(0.95); }
+.speak-btn.speaking { animation: pulse 0.6s infinite alternate; }
+@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.15); } }
+
+.front .speak-char-btn {
+ position: absolute; bottom: 8px; right: 10px;
+ background: linear-gradient(135deg, #42a5f5, #1e88e5);
+ color: #fff; border: none; border-radius: 50%;
+ width: 32px; height: 32px; font-size: 1.1em;
+ cursor: pointer; transition: all .2s;
+ display: flex; align-items: center; justify-content: center;
+ box-shadow: 0 2px 6px rgba(0,0,0,.15); z-index: 10;
+}
+.front .speak-char-btn:hover { transform: scale(1.15); }
+
+@media (max-width: 500px) {
+ .grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
+ .card-wrap { height: 180px; }
+ .card .front .hanzi { font-size: 3.5em; }
+ h1 { font-size: 1.6em; }
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+<h1>🌈 一年级下册认字卡 🔊</h1>
+<p class="subtitle">点击卡片翻转 · 点 🔊 听发音</p>
+<div class="filters" id="filters"></div>
+<div class="grid" id="grid"></div>
+<script>
+var palette = [
+ ['#ef5350','#e53935'],['#ab47bc','#8e24aa'],['#42a5f5','#1e88e5'],
+ ['#66bb6a','#43a047'],['#ffa726','#fb8c00'],['#ec407a','#d81b60'],
+ ['#26c6da','#00acc1'],['#8d6e63','#6d4c41']
+];
+var btnColors = ['#ef5350','#ab47bc','#42a5f5','#66bb6a','#ffa726','#ec407a'];
+
+var units = [
+ { name: '第一单元', chars: [
+ ['春','chūn','春天'],['风','fēng','春风'],['冬','dōng','冬天'],['雪','xuě','雪花'],
+ ['花','huā','花朵'],['飞','fēi','飞鸟'],['入','rù','进入'],['姓','xìng','姓名'],
+ ['什','shén','什么'],['么','me','什么'],['双','shuāng','双手'],['国','guó','中国'],
+ ['王','wáng','国王'],['方','fāng','方向'],['青','qīng','青草'],['清','qīng','清水'],
+ ['气','qì','天气'],['晴','qíng','晴天'],['情','qíng','心情'],['请','qǐng','请问'],
+ ['生','shēng','生活'],['字','zì','写字'],['左','zuǒ','左边'],['右','yòu','右边'],
+ ['红','hóng','红色'],['时','shí','时间'],['动','dòng','运动'],['万','wàn','万岁']
+ ]},
+ { name: '第二单元', chars: [
+ ['吃','chī','吃饭'],['叫','jiào','叫声'],['主','zhǔ','主人'],['江','jiāng','长江'],
+ ['住','zhù','住房'],['没','méi','没有'],['以','yǐ','可以'],['会','huì','开会'],
+ ['走','zǒu','走路'],['北','běi','北方'],['京','jīng','北京'],['门','mén','大门'],
+ ['广','guǎng','广大'],['过','guò','过去'],['各','gè','各种'],['种','zhǒng','种子'],
+ ['样','yàng','一样'],['伙','huǒ','伙伴'],['伴','bàn','伙伴'],['这','zhè','这里'],
+ ['太','tài','太阳'],['阳','yáng','太阳'],['校','xiào','学校'],['金','jīn','金色'],
+ ['秋','qiū','秋天'],['因','yīn','因为'],['为','wèi','因为']
+ ]},
+ { name: '第三单元', chars: [
+ ['他','tā','他们'],['河','hé','小河'],['说','shuō','说话'],['也','yě','也是'],
+ ['地','dì','土地'],['听','tīng','听见'],['哥','gē','哥哥'],['弟','dì','弟弟'],
+ ['家','jiā','大家'],['开','kāi','开心'],['关','guān','关门'],['写','xiě','写字'],
+ ['完','wán','完成'],['房','fáng','房子'],['星','xīng','星星'],['笑','xiào','笑话'],
+ ['现','xiàn','现在'],['找','zhǎo','找到'],['玩','wán','好玩'],['很','hěn','很好'],
+ ['当','dāng','当时'],['音','yīn','声音'],['讲','jiǎng','讲话'],['行','xíng','行走'],
+ ['许','xǔ','许多']
+ ]},
+ { name: '第四单元', chars: [
+ ['觉','jué','觉得'],['再','zài','再见'],['午','wǔ','中午'],['节','jié','节日'],
+ ['叶','yè','树叶'],['米','mǐ','大米'],['真','zhēn','真好'],['分','fēn','分开'],
+ ['豆','dòu','豆子'],['那','nà','那里'],['着','zhe','看着'],['到','dào','到达'],
+ ['高','gāo','高兴'],['兴','xìng','高兴'],['千','qiān','千万'],['成','chéng','成功'],
+ ['间','jiān','中间'],['迷','mí','迷路'],['造','zào','造句'],['运','yùn','运动'],
+ ['池','chí','水池'],['欢','huān','欢乐'],['网','wǎng','上网'],['古','gǔ','古代'],
+ ['凉','liáng','凉快'],['细','xì','细心'],['夕','xī','夕阳']
+ ]}
+];
+
+/* ===== 语音朗读 ===== */
+var voicesReady = false;
+var bestZhVoice = null;
+
+function loadVoices() {
+ var voices = speechSynthesis.getVoices();
+ if (!voices.length) return;
+ voicesReady = true;
+ var zhVoices = voices.filter(function(v) { return v.lang.indexOf('zh') === 0 || v.lang.indexOf('cmn') === 0; });
+ // 优先系统原生高质量语音
+ var preferred = ['Online (Natural)', 'Xiaoxiao Online', 'Yunxi Online', 'Xiaoxiao', 'Yunxi', 'Microsoft', 'Ting-Ting', 'Tingting', 'Xiaoyi', 'Huihui'];
+ for (var p = 0; p < preferred.length; p++) {
+  for (var i = 0; i < zhVoices.length; i++) {
+   if (zhVoices[i].name.indexOf(preferred[p]) >= 0) { bestZhVoice = zhVoices[i]; break; }
+  }
+  if (bestZhVoice) break;
+ }
+ if (!bestZhVoice) {
+  for (var i = 0; i < zhVoices.length; i++) {
+   if (zhVoices[i].localService) { bestZhVoice = zhVoices[i]; break; }
+  }
+ }
+ if (!bestZhVoice && zhVoices.length) bestZhVoice = zhVoices[0];
+ if (typeof console !== 'undefined') console.log('[TTS] ZH voice:', bestZhVoice ? bestZhVoice.name : 'default');
+}
+if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+
+function speak(text, e) {
+ if (e) { e.stopPropagation(); e.preventDefault(); }
+ speechSynthesis.cancel();
+ var u = new SpeechSynthesisUtterance(text);
+ u.lang = 'zh-CN';
+ u.rate = 0.75;
+ u.pitch = 1.1;
+ if (bestZhVoice) u.voice = bestZhVoice;
+ speechSynthesis.speak(u);
+}
+
+function speakFull(hz, cw, e) {
+ if (e) { e.stopPropagation(); e.preventDefault(); }
+ speechSynthesis.cancel();
+ var u1 = new SpeechSynthesisUtterance(hz);
+ u1.lang = 'zh-CN'; u1.rate = 0.65; u1.pitch = 1.1;
+ if (bestZhVoice) u1.voice = bestZhVoice;
+ var u2 = new SpeechSynthesisUtterance(cw);
+ u2.lang = 'zh-CN'; u2.rate = 0.75; u2.pitch = 1.05;
+ if (bestZhVoice) u2.voice = bestZhVoice;
+ speechSynthesis.speak(u1);
+ speechSynthesis.speak(u2);
+}
+
+/* ===== 渲染 ===== */
+var fEl = document.getElementById('filters');
+var gEl = document.getElementById('grid');
+
+var allBtn = document.createElement('button');
+allBtn.textContent = '全部';
+allBtn.style.background = '#78909c';
+allBtn.className = 'active';
+allBtn.onclick = function() { render(-1); };
+fEl.appendChild(allBtn);
+
+for (var i = 0; i < units.length; i++) {
+ (function(idx) {
+ var b = document.createElement('button');
+ b.textContent = units[idx].name;
+ b.style.background = btnColors[idx % btnColors.length];
+ b.onclick = function() { render(idx); };
+ fEl.appendChild(b);
+ })(i);
+}
+
+function render(unitIdx) {
+ var btns = fEl.getElementsByTagName('button');
+ for (var i = 0; i < btns.length; i++) {
+ btns[i].className = (i === unitIdx + 1) ? 'active' : '';
+ }
+ gEl.innerHTML = '';
+ var list = [];
+ if (unitIdx < 0) {
+ for (var u = 0; u < units.length; u++)
+ for (var c = 0; c < units[u].chars.length; c++)
+ list.push([units[u].chars[c][0], units[u].chars[c][1], units[u].chars[c][2], u]);
+ } else {
+ for (var c = 0; c < units[unitIdx].chars.length; c++)
+ list.push([units[unitIdx].chars[c][0], units[unitIdx].chars[c][1], units[unitIdx].chars[c][2], unitIdx]);
+ }
+
+ for (var i = 0; i < list.length; i++) {
+ (function(hz, py, cw, ui) {
+ var c1 = palette[ui % palette.length][0];
+ var c2 = palette[ui % palette.length][1];
+ var wrap = document.createElement('div');
+ wrap.className = 'card-wrap';
+
+ var card = document.createElement('div');
+ card.className = 'card';
+
+ /* 正面 */
+ var front = document.createElement('div');
+ front.className = 'front';
+ front.style.border = '3px solid ' + c1;
+ front.innerHTML = '<span class="hanzi" style="color:' + c2 + '">' + hz + '</span>' +
+ '<span class="unit-tag" style="background:' + c1 + '">' + units[ui].name.substr(1, 3) + '</span>' +
+ '<span class="hint">👆 点我翻转</span>';
+
+ // 正面朗读按钮（读单字）
+ var frontSpeakBtn = document.createElement('button');
+ frontSpeakBtn.className = 'speak-char-btn';
+ frontSpeakBtn.innerHTML = '🔊';
+ frontSpeakBtn.title = '朗读：' + hz;
+ frontSpeakBtn.onclick = function(e) { speak(hz, e); };
+ front.appendChild(frontSpeakBtn);
+
+ /* 背面 */
+ var back = document.createElement('div');
+ back.className = 'back';
+ back.style.border = '3px solid ' + c1;
+ back.style.background = 'linear-gradient(135deg,' + c1 + '11,' + c2 + '18)';
+
+ var pinyinDiv = document.createElement('div');
+ pinyinDiv.className = 'pinyin';
+ pinyinDiv.style.color = c1;
+ pinyinDiv.textContent = py;
+
+ var wordDiv = document.createElement('div');
+ wordDiv.className = 'word';
+ wordDiv.textContent = cw;
+
+ // 背面朗读按钮（读单字+组词）
+ var speakBtn = document.createElement('button');
+ speakBtn.className = 'speak-btn';
+ speakBtn.innerHTML = '🔊 朗读';
+ speakBtn.onclick = function(e) { speakFull(hz, cw, e); };
+
+ var watermark = document.createElement('div');
+ watermark.className = 'watermark';
+ watermark.textContent = hz;
+
+ var unitTag = document.createElement('span');
+ unitTag.className = 'unit-tag';
+ unitTag.style.background = c1;
+ unitTag.textContent = units[ui].name.substr(1, 3);
+
+ back.appendChild(pinyinDiv);
+ back.appendChild(wordDiv);
+ back.appendChild(speakBtn);
+ back.appendChild(watermark);
+ back.appendChild(unitTag);
+
+ card.appendChild(front);
+ card.appendChild(back);
+ wrap.appendChild(card);
+
+ wrap.onclick = function() {
+ if (card.className.indexOf('flipped') >= 0) {
+ card.className = 'card';
+ } else {
+ card.className = 'card flipped';
+ }
+ };
+
+ gEl.appendChild(wrap);
+ })(list[i][0], list[i][1], list[i][2], list[i][3]);
+ }
+}
+
+render(-1);
+</script>
+</body>
+</html>

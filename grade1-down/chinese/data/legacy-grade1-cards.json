@@ -1,0 +1,5943 @@
+{
+  "sourceRepo": "/tmp/deploy-check",
+  "recognition": {
+    "pages": [
+      {
+        "file": "yuwen-1b-unit1-shizi.html",
+        "title": "一年级下册·第一单元识字卡 | Coco Learning Park",
+        "count": 46,
+        "uniqueCount": 46,
+        "groups": [
+          {
+            "name": "1.春夏秋冬",
+            "count": 8,
+            "chars": "霜吹落降飘游池入"
+          },
+          {
+            "name": "2.姓氏歌",
+            "count": 10,
+            "chars": "姓氏李张古吴赵孙钱周"
+          },
+          {
+            "name": "3.小青蛙",
+            "count": 8,
+            "chars": "河清眼晴保情请让"
+          },
+          {
+            "name": "4.猜字谜",
+            "count": 12,
+            "chars": "相遇喜欢怕言互令动万纯净"
+          },
+          {
+            "name": "语文园地一",
+            "count": 8,
+            "chars": "团量式图算减组边"
+          }
+        ],
+        "records": [
+          {
+            "char": "霜",
+            "pinyin": "shuāng",
+            "word": "霜降",
+            "group": "1.春夏秋冬",
+            "groupIndex": 0,
+            "itemIndex": 0
+          },
+          {
+            "char": "吹",
+            "pinyin": "chuī",
+            "word": "吹风",
+            "group": "1.春夏秋冬",
+            "groupIndex": 0,
+            "itemIndex": 1
+          },
+          {
+            "char": "落",
+            "pinyin": "luò",
+            "word": "落下",
+            "group": "1.春夏秋冬",
+            "groupIndex": 0,
+            "itemIndex": 2
+          },
+          {
+            "char": "降",
+            "pinyin": "jiàng",
+            "word": "降落",
+            "group": "1.春夏秋冬",
+            "groupIndex": 0,
+            "itemIndex": 3
+          },
+          {
+            "char": "飘",
+            "pinyin": "piāo",
+            "word": "飘落",
+            "group": "1.春夏秋冬",
+            "groupIndex": 0,
+            "itemIndex": 4
+          },
+          {
+            "char": "游",
+            "pinyin": "yóu",
+            "word": "游泳",
+            "group": "1.春夏秋冬",
+            "groupIndex": 0,
+            "itemIndex": 5
+          },
+          {
+            "char": "池",
+            "pinyin": "chí",
+            "word": "水池",
+            "group": "1.春夏秋冬",
+            "groupIndex": 0,
+            "itemIndex": 6
+          },
+          {
+            "char": "入",
+            "pinyin": "rù",
+            "word": "进入",
+            "group": "1.春夏秋冬",
+            "groupIndex": 0,
+            "itemIndex": 7
+          },
+          {
+            "char": "姓",
+            "pinyin": "xìng",
+            "word": "姓名",
+            "group": "2.姓氏歌",
+            "groupIndex": 1,
+            "itemIndex": 0
+          },
+          {
+            "char": "氏",
+            "pinyin": "shì",
+            "word": "姓氏",
+            "group": "2.姓氏歌",
+            "groupIndex": 1,
+            "itemIndex": 1
+          },
+          {
+            "char": "李",
+            "pinyin": "lǐ",
+            "word": "李子",
+            "group": "2.姓氏歌",
+            "groupIndex": 1,
+            "itemIndex": 2
+          },
+          {
+            "char": "张",
+            "pinyin": "zhāng",
+            "word": "张开",
+            "group": "2.姓氏歌",
+            "groupIndex": 1,
+            "itemIndex": 3
+          },
+          {
+            "char": "古",
+            "pinyin": "gǔ",
+            "word": "古代",
+            "group": "2.姓氏歌",
+            "groupIndex": 1,
+            "itemIndex": 4
+          },
+          {
+            "char": "吴",
+            "pinyin": "wú",
+            "word": "吴国",
+            "group": "2.姓氏歌",
+            "groupIndex": 1,
+            "itemIndex": 5
+          },
+          {
+            "char": "赵",
+            "pinyin": "zhào",
+            "word": "赵国",
+            "group": "2.姓氏歌",
+            "groupIndex": 1,
+            "itemIndex": 6
+          },
+          {
+            "char": "孙",
+            "pinyin": "sūn",
+            "word": "子孙",
+            "group": "2.姓氏歌",
+            "groupIndex": 1,
+            "itemIndex": 7
+          },
+          {
+            "char": "钱",
+            "pinyin": "qián",
+            "word": "金钱",
+            "group": "2.姓氏歌",
+            "groupIndex": 1,
+            "itemIndex": 8
+          },
+          {
+            "char": "周",
+            "pinyin": "zhōu",
+            "word": "周围",
+            "group": "2.姓氏歌",
+            "groupIndex": 1,
+            "itemIndex": 9
+          },
+          {
+            "char": "河",
+            "pinyin": "hé",
+            "word": "小河",
+            "group": "3.小青蛙",
+            "groupIndex": 2,
+            "itemIndex": 0
+          },
+          {
+            "char": "清",
+            "pinyin": "qīng",
+            "word": "清水",
+            "group": "3.小青蛙",
+            "groupIndex": 2,
+            "itemIndex": 1
+          },
+          {
+            "char": "眼",
+            "pinyin": "yǎn",
+            "word": "眼睛",
+            "group": "3.小青蛙",
+            "groupIndex": 2,
+            "itemIndex": 2
+          },
+          {
+            "char": "晴",
+            "pinyin": "qíng",
+            "word": "晴天",
+            "group": "3.小青蛙",
+            "groupIndex": 2,
+            "itemIndex": 3
+          },
+          {
+            "char": "保",
+            "pinyin": "bǎo",
+            "word": "保护",
+            "group": "3.小青蛙",
+            "groupIndex": 2,
+            "itemIndex": 4
+          },
+          {
+            "char": "情",
+            "pinyin": "qíng",
+            "word": "心情",
+            "group": "3.小青蛙",
+            "groupIndex": 2,
+            "itemIndex": 5
+          },
+          {
+            "char": "请",
+            "pinyin": "qǐng",
+            "word": "请问",
+            "group": "3.小青蛙",
+            "groupIndex": 2,
+            "itemIndex": 6
+          },
+          {
+            "char": "让",
+            "pinyin": "ràng",
+            "word": "让路",
+            "group": "3.小青蛙",
+            "groupIndex": 2,
+            "itemIndex": 7
+          },
+          {
+            "char": "相",
+            "pinyin": "xiāng",
+            "word": "相遇",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 0
+          },
+          {
+            "char": "遇",
+            "pinyin": "yù",
+            "word": "遇见",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 1
+          },
+          {
+            "char": "喜",
+            "pinyin": "xǐ",
+            "word": "喜欢",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 2
+          },
+          {
+            "char": "欢",
+            "pinyin": "huān",
+            "word": "欢乐",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 3
+          },
+          {
+            "char": "怕",
+            "pinyin": "pà",
+            "word": "害怕",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 4
+          },
+          {
+            "char": "言",
+            "pinyin": "yán",
+            "word": "语言",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 5
+          },
+          {
+            "char": "互",
+            "pinyin": "hù",
+            "word": "互相",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 6
+          },
+          {
+            "char": "令",
+            "pinyin": "lìng",
+            "word": "命令",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 7
+          },
+          {
+            "char": "动",
+            "pinyin": "dòng",
+            "word": "运动",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 8
+          },
+          {
+            "char": "万",
+            "pinyin": "wàn",
+            "word": "万岁",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 9
+          },
+          {
+            "char": "纯",
+            "pinyin": "chún",
+            "word": "纯洁",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 10
+          },
+          {
+            "char": "净",
+            "pinyin": "jìng",
+            "word": "干净",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 11
+          },
+          {
+            "char": "团",
+            "pinyin": "tuán",
+            "word": "团结",
+            "group": "语文园地一",
+            "groupIndex": 4,
+            "itemIndex": 0
+          },
+          {
+            "char": "量",
+            "pinyin": "liàng",
+            "word": "力量",
+            "group": "语文园地一",
+            "groupIndex": 4,
+            "itemIndex": 1
+          },
+          {
+            "char": "式",
+            "pinyin": "shì",
+            "word": "方式",
+            "group": "语文园地一",
+            "groupIndex": 4,
+            "itemIndex": 2
+          },
+          {
+            "char": "图",
+            "pinyin": "tú",
+            "word": "图画",
+            "group": "语文园地一",
+            "groupIndex": 4,
+            "itemIndex": 3
+          },
+          {
+            "char": "算",
+            "pinyin": "suàn",
+            "word": "计算",
+            "group": "语文园地一",
+            "groupIndex": 4,
+            "itemIndex": 4
+          },
+          {
+            "char": "减",
+            "pinyin": "jiǎn",
+            "word": "减少",
+            "group": "语文园地一",
+            "groupIndex": 4,
+            "itemIndex": 5
+          },
+          {
+            "char": "组",
+            "pinyin": "zǔ",
+            "word": "小组",
+            "group": "语文园地一",
+            "groupIndex": 4,
+            "itemIndex": 6
+          },
+          {
+            "char": "边",
+            "pinyin": "biān",
+            "word": "旁边",
+            "group": "语文园地一",
+            "groupIndex": 4,
+            "itemIndex": 7
+          }
+        ],
+        "features": {
+          "singleSpeech": true,
+          "continuousSpeech": true,
+          "speed": true,
+          "voiceSelection": false,
+          "strokeAnimation": true,
+          "pause": false,
+          "replay": true,
+          "tracing": false,
+          "tianzige": true,
+          "print": false,
+          "recognitionQuiz": true
+        }
+      },
+      {
+        "file": "yuwen-1b-unit2-shizi.html",
+        "title": "一年级下册·第二单元识字卡 | Coco Learning Park",
+        "count": 44,
+        "uniqueCount": 44,
+        "groups": [
+          {
+            "name": "1.热爱中国共产党",
+            "count": 16,
+            "chars": "热爱共产党成福幸称杯阳光怀抱想念"
+          },
+          {
+            "name": "2.吃水不忘挖井人",
+            "count": 8,
+            "chars": "觉大太席乡住站土"
+          },
+          {
+            "name": "3.我多想去看看",
+            "count": 7,
+            "chars": "主北京广场非宽"
+          },
+          {
+            "name": "语文园地二",
+            "count": 13,
+            "chars": "安连法堆涂选圈认直哭跟哈跑"
+          }
+        ],
+        "records": [
+          {
+            "char": "热",
+            "pinyin": "rè",
+            "word": "热爱",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 0
+          },
+          {
+            "char": "爱",
+            "pinyin": "ài",
+            "word": "爱心",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 1
+          },
+          {
+            "char": "共",
+            "pinyin": "gòng",
+            "word": "共同",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 2
+          },
+          {
+            "char": "产",
+            "pinyin": "chǎn",
+            "word": "生产",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 3
+          },
+          {
+            "char": "党",
+            "pinyin": "dǎng",
+            "word": "党员",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 4
+          },
+          {
+            "char": "成",
+            "pinyin": "chéng",
+            "word": "成功",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 5
+          },
+          {
+            "char": "福",
+            "pinyin": "fú",
+            "word": "幸福",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 6
+          },
+          {
+            "char": "幸",
+            "pinyin": "xìng",
+            "word": "幸运",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 7
+          },
+          {
+            "char": "称",
+            "pinyin": "chēng",
+            "word": "称呼",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 8
+          },
+          {
+            "char": "杯",
+            "pinyin": "bēi",
+            "word": "杯子",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 9
+          },
+          {
+            "char": "阳",
+            "pinyin": "yáng",
+            "word": "太阳",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 10
+          },
+          {
+            "char": "光",
+            "pinyin": "guāng",
+            "word": "阳光",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 11
+          },
+          {
+            "char": "怀",
+            "pinyin": "huái",
+            "word": "怀念",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 12
+          },
+          {
+            "char": "抱",
+            "pinyin": "bào",
+            "word": "拥抱",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 13
+          },
+          {
+            "char": "想",
+            "pinyin": "xiǎng",
+            "word": "想念",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 14
+          },
+          {
+            "char": "念",
+            "pinyin": "niàn",
+            "word": "怀念",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 15
+          },
+          {
+            "char": "觉",
+            "pinyin": "jué",
+            "word": "感觉",
+            "group": "2.吃水不忘挖井人",
+            "groupIndex": 1,
+            "itemIndex": 0
+          },
+          {
+            "char": "大",
+            "pinyin": "dà",
+            "word": "大小",
+            "group": "2.吃水不忘挖井人",
+            "groupIndex": 1,
+            "itemIndex": 1
+          },
+          {
+            "char": "太",
+            "pinyin": "tài",
+            "word": "太阳",
+            "group": "2.吃水不忘挖井人",
+            "groupIndex": 1,
+            "itemIndex": 2
+          },
+          {
+            "char": "席",
+            "pinyin": "xí",
+            "word": "主席",
+            "group": "2.吃水不忘挖井人",
+            "groupIndex": 1,
+            "itemIndex": 3
+          },
+          {
+            "char": "乡",
+            "pinyin": "xiāng",
+            "word": "家乡",
+            "group": "2.吃水不忘挖井人",
+            "groupIndex": 1,
+            "itemIndex": 4
+          },
+          {
+            "char": "住",
+            "pinyin": "zhù",
+            "word": "居住",
+            "group": "2.吃水不忘挖井人",
+            "groupIndex": 1,
+            "itemIndex": 5
+          },
+          {
+            "char": "站",
+            "pinyin": "zhàn",
+            "word": "站立",
+            "group": "2.吃水不忘挖井人",
+            "groupIndex": 1,
+            "itemIndex": 6
+          },
+          {
+            "char": "土",
+            "pinyin": "tǔ",
+            "word": "泥土",
+            "group": "2.吃水不忘挖井人",
+            "groupIndex": 1,
+            "itemIndex": 7
+          },
+          {
+            "char": "主",
+            "pinyin": "zhǔ",
+            "word": "主人",
+            "group": "3.我多想去看看",
+            "groupIndex": 2,
+            "itemIndex": 0
+          },
+          {
+            "char": "北",
+            "pinyin": "běi",
+            "word": "北京",
+            "group": "3.我多想去看看",
+            "groupIndex": 2,
+            "itemIndex": 1
+          },
+          {
+            "char": "京",
+            "pinyin": "jīng",
+            "word": "北京",
+            "group": "3.我多想去看看",
+            "groupIndex": 2,
+            "itemIndex": 2
+          },
+          {
+            "char": "广",
+            "pinyin": "guǎng",
+            "word": "广大",
+            "group": "3.我多想去看看",
+            "groupIndex": 2,
+            "itemIndex": 3
+          },
+          {
+            "char": "场",
+            "pinyin": "chǎng",
+            "word": "广场",
+            "group": "3.我多想去看看",
+            "groupIndex": 2,
+            "itemIndex": 4
+          },
+          {
+            "char": "非",
+            "pinyin": "fēi",
+            "word": "非常",
+            "group": "3.我多想去看看",
+            "groupIndex": 2,
+            "itemIndex": 5
+          },
+          {
+            "char": "宽",
+            "pinyin": "kuān",
+            "word": "宽大",
+            "group": "3.我多想去看看",
+            "groupIndex": 2,
+            "itemIndex": 6
+          },
+          {
+            "char": "安",
+            "pinyin": "ān",
+            "word": "安全",
+            "group": "语文园地二",
+            "groupIndex": 3,
+            "itemIndex": 0
+          },
+          {
+            "char": "连",
+            "pinyin": "lián",
+            "word": "连接",
+            "group": "语文园地二",
+            "groupIndex": 3,
+            "itemIndex": 1
+          },
+          {
+            "char": "法",
+            "pinyin": "fǎ",
+            "word": "方法",
+            "group": "语文园地二",
+            "groupIndex": 3,
+            "itemIndex": 2
+          },
+          {
+            "char": "堆",
+            "pinyin": "duī",
+            "word": "堆积",
+            "group": "语文园地二",
+            "groupIndex": 3,
+            "itemIndex": 3
+          },
+          {
+            "char": "涂",
+            "pinyin": "tú",
+            "word": "涂色",
+            "group": "语文园地二",
+            "groupIndex": 3,
+            "itemIndex": 4
+          },
+          {
+            "char": "选",
+            "pinyin": "xuǎn",
+            "word": "选择",
+            "group": "语文园地二",
+            "groupIndex": 3,
+            "itemIndex": 5
+          },
+          {
+            "char": "圈",
+            "pinyin": "quān",
+            "word": "圆圈",
+            "group": "语文园地二",
+            "groupIndex": 3,
+            "itemIndex": 6
+          },
+          {
+            "char": "认",
+            "pinyin": "rèn",
+            "word": "认识",
+            "group": "语文园地二",
+            "groupIndex": 3,
+            "itemIndex": 7
+          },
+          {
+            "char": "直",
+            "pinyin": "zhí",
+            "word": "笔直",
+            "group": "语文园地二",
+            "groupIndex": 3,
+            "itemIndex": 8
+          },
+          {
+            "char": "哭",
+            "pinyin": "kū",
+            "word": "哭泣",
+            "group": "语文园地二",
+            "groupIndex": 3,
+            "itemIndex": 9
+          },
+          {
+            "char": "跟",
+            "pinyin": "gēn",
+            "word": "跟随",
+            "group": "语文园地二",
+            "groupIndex": 3,
+            "itemIndex": 10
+          },
+          {
+            "char": "哈",
+            "pinyin": "hā",
+            "word": "哈哈",
+            "group": "语文园地二",
+            "groupIndex": 3,
+            "itemIndex": 11
+          },
+          {
+            "char": "跑",
+            "pinyin": "pǎo",
+            "word": "跑步",
+            "group": "语文园地二",
+            "groupIndex": 3,
+            "itemIndex": 12
+          }
+        ],
+        "features": {
+          "singleSpeech": true,
+          "continuousSpeech": true,
+          "speed": true,
+          "voiceSelection": false,
+          "strokeAnimation": true,
+          "pause": false,
+          "replay": true,
+          "tracing": false,
+          "tianzige": true,
+          "print": false,
+          "recognitionQuiz": true
+        }
+      },
+      {
+        "file": "yuwen-1b-unit3-shizi.html",
+        "title": "一年级下册·第三单元识字卡 | Coco Learning Park",
+        "count": 41,
+        "uniqueCount": 40,
+        "groups": [
+          {
+            "name": "4.小公鸡和小鸭子",
+            "count": 6,
+            "chars": "玩的背肖快已"
+          },
+          {
+            "name": "5.树和喜鹊",
+            "count": 19,
+            "chars": "只很狐跳独孤绳当种海单跑呼叫招球羽轮排"
+          },
+          {
+            "name": "6.怎么都快乐",
+            "count": 7,
+            "chars": "乐邻居都每还这"
+          },
+          {
+            "name": "语文园地三",
+            "count": 9,
+            "chars": "只页止望丁寸千全旦"
+          }
+        ],
+        "records": [
+          {
+            "char": "玩",
+            "pinyin": "wán",
+            "word": "玩耍",
+            "group": "4.小公鸡和小鸭子",
+            "groupIndex": 0,
+            "itemIndex": 0
+          },
+          {
+            "char": "的",
+            "pinyin": "de",
+            "word": "我的",
+            "group": "4.小公鸡和小鸭子",
+            "groupIndex": 0,
+            "itemIndex": 1
+          },
+          {
+            "char": "背",
+            "pinyin": "bèi",
+            "word": "背后",
+            "group": "4.小公鸡和小鸭子",
+            "groupIndex": 0,
+            "itemIndex": 2
+          },
+          {
+            "char": "肖",
+            "pinyin": "xiào",
+            "word": "相肖",
+            "group": "4.小公鸡和小鸭子",
+            "groupIndex": 0,
+            "itemIndex": 3
+          },
+          {
+            "char": "快",
+            "pinyin": "kuài",
+            "word": "快乐",
+            "group": "4.小公鸡和小鸭子",
+            "groupIndex": 0,
+            "itemIndex": 4
+          },
+          {
+            "char": "已",
+            "pinyin": "jǐ",
+            "word": "已经",
+            "group": "4.小公鸡和小鸭子",
+            "groupIndex": 0,
+            "itemIndex": 5
+          },
+          {
+            "char": "只",
+            "pinyin": "zhī",
+            "word": "一只",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 0
+          },
+          {
+            "char": "很",
+            "pinyin": "hěn",
+            "word": "很好",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 1
+          },
+          {
+            "char": "狐",
+            "pinyin": "hú",
+            "word": "狐狸",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 2
+          },
+          {
+            "char": "跳",
+            "pinyin": "tiào",
+            "word": "跳跃",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 3
+          },
+          {
+            "char": "独",
+            "pinyin": "dú",
+            "word": "独自",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 4
+          },
+          {
+            "char": "孤",
+            "pinyin": "gū",
+            "word": "孤独",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 5
+          },
+          {
+            "char": "绳",
+            "pinyin": "shéng",
+            "word": "绳子",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 6
+          },
+          {
+            "char": "当",
+            "pinyin": "dāng",
+            "word": "当时",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 7
+          },
+          {
+            "char": "种",
+            "pinyin": "zhǒng",
+            "word": "种类",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 8
+          },
+          {
+            "char": "海",
+            "pinyin": "hǎi",
+            "word": "大海",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 9
+          },
+          {
+            "char": "单",
+            "pinyin": "dān",
+            "word": "单独",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 10
+          },
+          {
+            "char": "跑",
+            "pinyin": "pǎo",
+            "word": "跑步",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 11
+          },
+          {
+            "char": "呼",
+            "pinyin": "hū",
+            "word": "呼叫",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 12
+          },
+          {
+            "char": "叫",
+            "pinyin": "jiào",
+            "word": "叫声",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 13
+          },
+          {
+            "char": "招",
+            "pinyin": "zhāo",
+            "word": "招手",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 14
+          },
+          {
+            "char": "球",
+            "pinyin": "qiú",
+            "word": "足球",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 15
+          },
+          {
+            "char": "羽",
+            "pinyin": "yǔ",
+            "word": "羽毛",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 16
+          },
+          {
+            "char": "轮",
+            "pinyin": "lún",
+            "word": "轮子",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 17
+          },
+          {
+            "char": "排",
+            "pinyin": "pái",
+            "word": "排队",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 18
+          },
+          {
+            "char": "乐",
+            "pinyin": "lè",
+            "word": "快乐",
+            "group": "6.怎么都快乐",
+            "groupIndex": 2,
+            "itemIndex": 0
+          },
+          {
+            "char": "邻",
+            "pinyin": "lín",
+            "word": "邻居",
+            "group": "6.怎么都快乐",
+            "groupIndex": 2,
+            "itemIndex": 1
+          },
+          {
+            "char": "居",
+            "pinyin": "jū",
+            "word": "居住",
+            "group": "6.怎么都快乐",
+            "groupIndex": 2,
+            "itemIndex": 2
+          },
+          {
+            "char": "都",
+            "pinyin": "dōu",
+            "word": "都是",
+            "group": "6.怎么都快乐",
+            "groupIndex": 2,
+            "itemIndex": 3
+          },
+          {
+            "char": "每",
+            "pinyin": "měi",
+            "word": "每天",
+            "group": "6.怎么都快乐",
+            "groupIndex": 2,
+            "itemIndex": 4
+          },
+          {
+            "char": "还",
+            "pinyin": "hái",
+            "word": "还有",
+            "group": "6.怎么都快乐",
+            "groupIndex": 2,
+            "itemIndex": 5
+          },
+          {
+            "char": "这",
+            "pinyin": "zhè",
+            "word": "这个",
+            "group": "6.怎么都快乐",
+            "groupIndex": 2,
+            "itemIndex": 6
+          },
+          {
+            "char": "只",
+            "pinyin": "zhǐ",
+            "word": "只有",
+            "group": "语文园地三",
+            "groupIndex": 3,
+            "itemIndex": 0
+          },
+          {
+            "char": "页",
+            "pinyin": "yè",
+            "word": "页码",
+            "group": "语文园地三",
+            "groupIndex": 3,
+            "itemIndex": 1
+          },
+          {
+            "char": "止",
+            "pinyin": "zhǐ",
+            "word": "停止",
+            "group": "语文园地三",
+            "groupIndex": 3,
+            "itemIndex": 2
+          },
+          {
+            "char": "望",
+            "pinyin": "wàng",
+            "word": "希望",
+            "group": "语文园地三",
+            "groupIndex": 3,
+            "itemIndex": 3
+          },
+          {
+            "char": "丁",
+            "pinyin": "dīng",
+            "word": "园丁",
+            "group": "语文园地三",
+            "groupIndex": 3,
+            "itemIndex": 4
+          },
+          {
+            "char": "寸",
+            "pinyin": "cùn",
+            "word": "尺寸",
+            "group": "语文园地三",
+            "groupIndex": 3,
+            "itemIndex": 5
+          },
+          {
+            "char": "千",
+            "pinyin": "qiān",
+            "word": "千万",
+            "group": "语文园地三",
+            "groupIndex": 3,
+            "itemIndex": 6
+          },
+          {
+            "char": "全",
+            "pinyin": "quán",
+            "word": "全部",
+            "group": "语文园地三",
+            "groupIndex": 3,
+            "itemIndex": 7
+          },
+          {
+            "char": "旦",
+            "pinyin": "dàn",
+            "word": "元旦",
+            "group": "语文园地三",
+            "groupIndex": 3,
+            "itemIndex": 8
+          }
+        ],
+        "features": {
+          "singleSpeech": true,
+          "continuousSpeech": true,
+          "speed": true,
+          "voiceSelection": false,
+          "strokeAnimation": true,
+          "pause": false,
+          "replay": true,
+          "tracing": false,
+          "tianzige": true,
+          "print": false,
+          "recognitionQuiz": true
+        }
+      },
+      {
+        "file": "yuwen-1b-unit4-shizi.html",
+        "title": "一年级下册·第四单元识字卡 | Coco Learning Park",
+        "count": 38,
+        "uniqueCount": 37,
+        "groups": [
+          {
+            "name": "7.静夜思",
+            "count": 9,
+            "chars": "静思床夜窗亮故低望"
+          },
+          {
+            "name": "8.夜色",
+            "count": 7,
+            "chars": "样笑乱胆再睡觉"
+          },
+          {
+            "name": "9.端午粽",
+            "count": 13,
+            "chars": "端粽节总勇夹煮米甜鲜肉被了"
+          },
+          {
+            "name": "语文园地四",
+            "count": 9,
+            "chars": "册纸文台电防总视部"
+          }
+        ],
+        "records": [
+          {
+            "char": "静",
+            "pinyin": "jìng",
+            "word": "安静",
+            "group": "7.静夜思",
+            "groupIndex": 0,
+            "itemIndex": 0
+          },
+          {
+            "char": "思",
+            "pinyin": "sī",
+            "word": "思念",
+            "group": "7.静夜思",
+            "groupIndex": 0,
+            "itemIndex": 1
+          },
+          {
+            "char": "床",
+            "pinyin": "chuáng",
+            "word": "起床",
+            "group": "7.静夜思",
+            "groupIndex": 0,
+            "itemIndex": 2
+          },
+          {
+            "char": "夜",
+            "pinyin": "yè",
+            "word": "夜晚",
+            "group": "7.静夜思",
+            "groupIndex": 0,
+            "itemIndex": 3
+          },
+          {
+            "char": "窗",
+            "pinyin": "chuāng",
+            "word": "窗户",
+            "group": "7.静夜思",
+            "groupIndex": 0,
+            "itemIndex": 4
+          },
+          {
+            "char": "亮",
+            "pinyin": "liàng",
+            "word": "明亮",
+            "group": "7.静夜思",
+            "groupIndex": 0,
+            "itemIndex": 5
+          },
+          {
+            "char": "故",
+            "pinyin": "gù",
+            "word": "故乡",
+            "group": "7.静夜思",
+            "groupIndex": 0,
+            "itemIndex": 6
+          },
+          {
+            "char": "低",
+            "pinyin": "dī",
+            "word": "低头",
+            "group": "7.静夜思",
+            "groupIndex": 0,
+            "itemIndex": 7
+          },
+          {
+            "char": "望",
+            "pinyin": "wàng",
+            "word": "望月",
+            "group": "7.静夜思",
+            "groupIndex": 0,
+            "itemIndex": 8
+          },
+          {
+            "char": "样",
+            "pinyin": "yàng",
+            "word": "样子",
+            "group": "8.夜色",
+            "groupIndex": 1,
+            "itemIndex": 0
+          },
+          {
+            "char": "笑",
+            "pinyin": "xiào",
+            "word": "笑话",
+            "group": "8.夜色",
+            "groupIndex": 1,
+            "itemIndex": 1
+          },
+          {
+            "char": "乱",
+            "pinyin": "luàn",
+            "word": "混乱",
+            "group": "8.夜色",
+            "groupIndex": 1,
+            "itemIndex": 2
+          },
+          {
+            "char": "胆",
+            "pinyin": "dǎn",
+            "word": "胆量",
+            "group": "8.夜色",
+            "groupIndex": 1,
+            "itemIndex": 3
+          },
+          {
+            "char": "再",
+            "pinyin": "zài",
+            "word": "再见",
+            "group": "8.夜色",
+            "groupIndex": 1,
+            "itemIndex": 4
+          },
+          {
+            "char": "睡",
+            "pinyin": "shuì",
+            "word": "睡觉",
+            "group": "8.夜色",
+            "groupIndex": 1,
+            "itemIndex": 5
+          },
+          {
+            "char": "觉",
+            "pinyin": "jiào",
+            "word": "睡觉",
+            "group": "8.夜色",
+            "groupIndex": 1,
+            "itemIndex": 6
+          },
+          {
+            "char": "端",
+            "pinyin": "duān",
+            "word": "端午",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 0
+          },
+          {
+            "char": "粽",
+            "pinyin": "zòng",
+            "word": "粽子",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 1
+          },
+          {
+            "char": "节",
+            "pinyin": "jié",
+            "word": "节日",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 2
+          },
+          {
+            "char": "总",
+            "pinyin": "zǒng",
+            "word": "总是",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 3
+          },
+          {
+            "char": "勇",
+            "pinyin": "yǒng",
+            "word": "勇敢",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 4
+          },
+          {
+            "char": "夹",
+            "pinyin": "jiā",
+            "word": "夹子",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 5
+          },
+          {
+            "char": "煮",
+            "pinyin": "zhǔ",
+            "word": "煮饭",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 6
+          },
+          {
+            "char": "米",
+            "pinyin": "mǐ",
+            "word": "大米",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 7
+          },
+          {
+            "char": "甜",
+            "pinyin": "tián",
+            "word": "甜蜜",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 8
+          },
+          {
+            "char": "鲜",
+            "pinyin": "xiān",
+            "word": "新鲜",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 9
+          },
+          {
+            "char": "肉",
+            "pinyin": "ròu",
+            "word": "牛肉",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 10
+          },
+          {
+            "char": "被",
+            "pinyin": "bèi",
+            "word": "被子",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 11
+          },
+          {
+            "char": "了",
+            "pinyin": "liǎo",
+            "word": "了解",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 12
+          },
+          {
+            "char": "册",
+            "pinyin": "cè",
+            "word": "手册",
+            "group": "语文园地四",
+            "groupIndex": 3,
+            "itemIndex": 0
+          },
+          {
+            "char": "纸",
+            "pinyin": "zhǐ",
+            "word": "纸张",
+            "group": "语文园地四",
+            "groupIndex": 3,
+            "itemIndex": 1
+          },
+          {
+            "char": "文",
+            "pinyin": "wén",
+            "word": "语文",
+            "group": "语文园地四",
+            "groupIndex": 3,
+            "itemIndex": 2
+          },
+          {
+            "char": "台",
+            "pinyin": "tái",
+            "word": "舞台",
+            "group": "语文园地四",
+            "groupIndex": 3,
+            "itemIndex": 3
+          },
+          {
+            "char": "电",
+            "pinyin": "diàn",
+            "word": "电话",
+            "group": "语文园地四",
+            "groupIndex": 3,
+            "itemIndex": 4
+          },
+          {
+            "char": "防",
+            "pinyin": "fáng",
+            "word": "预防",
+            "group": "语文园地四",
+            "groupIndex": 3,
+            "itemIndex": 5
+          },
+          {
+            "char": "总",
+            "pinyin": "zǒng",
+            "word": "总结",
+            "group": "语文园地四",
+            "groupIndex": 3,
+            "itemIndex": 6
+          },
+          {
+            "char": "视",
+            "pinyin": "shì",
+            "word": "电视",
+            "group": "语文园地四",
+            "groupIndex": 3,
+            "itemIndex": 7
+          },
+          {
+            "char": "部",
+            "pinyin": "bù",
+            "word": "部分",
+            "group": "语文园地四",
+            "groupIndex": 3,
+            "itemIndex": 8
+          }
+        ],
+        "features": {
+          "singleSpeech": true,
+          "continuousSpeech": true,
+          "speed": true,
+          "voiceSelection": false,
+          "strokeAnimation": true,
+          "pause": false,
+          "replay": true,
+          "tracing": false,
+          "tianzige": true,
+          "print": false,
+          "recognitionQuiz": true
+        }
+      },
+      {
+        "file": "yuwen-1b-unit5-shizi.html",
+        "title": "一年级下册·第五单元识字卡 | Coco Learning Park",
+        "count": 57,
+        "uniqueCount": 47,
+        "groups": [
+          {
+            "name": "5.动物儿歌",
+            "count": 11,
+            "chars": "物藏迷运食粮房结网杨香"
+          },
+          {
+            "name": "6.古对今",
+            "count": 15,
+            "chars": "圆暖酷暑细朝霞夕沙体身游幼知义"
+          },
+          {
+            "name": "7.操场上",
+            "count": 16,
+            "chars": "操拍拔相初跑踢近远教茶包轻泡炮鞭"
+          },
+          {
+            "name": "8.人之初",
+            "count": 8,
+            "chars": "之初相近远教习圈"
+          },
+          {
+            "name": "语文园地五",
+            "count": 7,
+            "chars": "饭板茶泡轻鞭炮"
+          }
+        ],
+        "records": [
+          {
+            "char": "物",
+            "pinyin": "wù",
+            "word": "动物",
+            "group": "5.动物儿歌",
+            "groupIndex": 0,
+            "itemIndex": 0
+          },
+          {
+            "char": "藏",
+            "pinyin": "cáng",
+            "word": "躲藏",
+            "group": "5.动物儿歌",
+            "groupIndex": 0,
+            "itemIndex": 1
+          },
+          {
+            "char": "迷",
+            "pinyin": "mí",
+            "word": "迷路",
+            "group": "5.动物儿歌",
+            "groupIndex": 0,
+            "itemIndex": 2
+          },
+          {
+            "char": "运",
+            "pinyin": "yùn",
+            "word": "运动",
+            "group": "5.动物儿歌",
+            "groupIndex": 0,
+            "itemIndex": 3
+          },
+          {
+            "char": "食",
+            "pinyin": "shí",
+            "word": "食物",
+            "group": "5.动物儿歌",
+            "groupIndex": 0,
+            "itemIndex": 4
+          },
+          {
+            "char": "粮",
+            "pinyin": "liáng",
+            "word": "粮食",
+            "group": "5.动物儿歌",
+            "groupIndex": 0,
+            "itemIndex": 5
+          },
+          {
+            "char": "房",
+            "pinyin": "fáng",
+            "word": "房子",
+            "group": "5.动物儿歌",
+            "groupIndex": 0,
+            "itemIndex": 6
+          },
+          {
+            "char": "结",
+            "pinyin": "jié",
+            "word": "结果",
+            "group": "5.动物儿歌",
+            "groupIndex": 0,
+            "itemIndex": 7
+          },
+          {
+            "char": "网",
+            "pinyin": "wǎng",
+            "word": "上网",
+            "group": "5.动物儿歌",
+            "groupIndex": 0,
+            "itemIndex": 8
+          },
+          {
+            "char": "杨",
+            "pinyin": "yáng",
+            "word": "杨树",
+            "group": "5.动物儿歌",
+            "groupIndex": 0,
+            "itemIndex": 9
+          },
+          {
+            "char": "香",
+            "pinyin": "xiāng",
+            "word": "香味",
+            "group": "5.动物儿歌",
+            "groupIndex": 0,
+            "itemIndex": 10
+          },
+          {
+            "char": "圆",
+            "pinyin": "yuán",
+            "word": "圆形",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 0
+          },
+          {
+            "char": "暖",
+            "pinyin": "nuǎn",
+            "word": "温暖",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 1
+          },
+          {
+            "char": "酷",
+            "pinyin": "kù",
+            "word": "酷热",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 2
+          },
+          {
+            "char": "暑",
+            "pinyin": "shǔ",
+            "word": "暑假",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 3
+          },
+          {
+            "char": "细",
+            "pinyin": "xì",
+            "word": "细心",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 4
+          },
+          {
+            "char": "朝",
+            "pinyin": "cháo",
+            "word": "朝阳",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 5
+          },
+          {
+            "char": "霞",
+            "pinyin": "xiá",
+            "word": "彩霞",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 6
+          },
+          {
+            "char": "夕",
+            "pinyin": "xī",
+            "word": "夕阳",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 7
+          },
+          {
+            "char": "沙",
+            "pinyin": "shā",
+            "word": "沙子",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 8
+          },
+          {
+            "char": "体",
+            "pinyin": "tǐ",
+            "word": "身体",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 9
+          },
+          {
+            "char": "身",
+            "pinyin": "shēn",
+            "word": "身体",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 10
+          },
+          {
+            "char": "游",
+            "pinyin": "yóu",
+            "word": "游泳",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 11
+          },
+          {
+            "char": "幼",
+            "pinyin": "yòu",
+            "word": "幼儿",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 12
+          },
+          {
+            "char": "知",
+            "pinyin": "zhī",
+            "word": "知道",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 13
+          },
+          {
+            "char": "义",
+            "pinyin": "yì",
+            "word": "意义",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 14
+          },
+          {
+            "char": "操",
+            "pinyin": "cāo",
+            "word": "做操",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 0
+          },
+          {
+            "char": "拍",
+            "pinyin": "pāi",
+            "word": "拍手",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 1
+          },
+          {
+            "char": "拔",
+            "pinyin": "bá",
+            "word": "拔河",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 2
+          },
+          {
+            "char": "相",
+            "pinyin": "xiāng",
+            "word": "相互",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 3
+          },
+          {
+            "char": "初",
+            "pinyin": "chū",
+            "word": "初始",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 4
+          },
+          {
+            "char": "跑",
+            "pinyin": "pǎo",
+            "word": "跑步",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 5
+          },
+          {
+            "char": "踢",
+            "pinyin": "tī",
+            "word": "踢球",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 6
+          },
+          {
+            "char": "近",
+            "pinyin": "jìn",
+            "word": "远近",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 7
+          },
+          {
+            "char": "远",
+            "pinyin": "yuǎn",
+            "word": "远方",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 8
+          },
+          {
+            "char": "教",
+            "pinyin": "jiào",
+            "word": "教学",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 9
+          },
+          {
+            "char": "茶",
+            "pinyin": "chá",
+            "word": "喝茶",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 10
+          },
+          {
+            "char": "包",
+            "pinyin": "bāo",
+            "word": "书包",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 11
+          },
+          {
+            "char": "轻",
+            "pinyin": "qīng",
+            "word": "轻松",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 12
+          },
+          {
+            "char": "泡",
+            "pinyin": "pào",
+            "word": "泡茶",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 13
+          },
+          {
+            "char": "炮",
+            "pinyin": "pào",
+            "word": "鞭炮",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 14
+          },
+          {
+            "char": "鞭",
+            "pinyin": "biān",
+            "word": "鞭炮",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 15
+          },
+          {
+            "char": "之",
+            "pinyin": "zhī",
+            "word": "之后",
+            "group": "8.人之初",
+            "groupIndex": 3,
+            "itemIndex": 0
+          },
+          {
+            "char": "初",
+            "pinyin": "chū",
+            "word": "初始",
+            "group": "8.人之初",
+            "groupIndex": 3,
+            "itemIndex": 1
+          },
+          {
+            "char": "相",
+            "pinyin": "xiāng",
+            "word": "相近",
+            "group": "8.人之初",
+            "groupIndex": 3,
+            "itemIndex": 2
+          },
+          {
+            "char": "近",
+            "pinyin": "jìn",
+            "word": "附近",
+            "group": "8.人之初",
+            "groupIndex": 3,
+            "itemIndex": 3
+          },
+          {
+            "char": "远",
+            "pinyin": "yuǎn",
+            "word": "远方",
+            "group": "8.人之初",
+            "groupIndex": 3,
+            "itemIndex": 4
+          },
+          {
+            "char": "教",
+            "pinyin": "jiào",
+            "word": "教育",
+            "group": "8.人之初",
+            "groupIndex": 3,
+            "itemIndex": 5
+          },
+          {
+            "char": "习",
+            "pinyin": "xí",
+            "word": "学习",
+            "group": "8.人之初",
+            "groupIndex": 3,
+            "itemIndex": 6
+          },
+          {
+            "char": "圈",
+            "pinyin": "quān",
+            "word": "圆圈",
+            "group": "8.人之初",
+            "groupIndex": 3,
+            "itemIndex": 7
+          },
+          {
+            "char": "饭",
+            "pinyin": "fàn",
+            "word": "吃饭",
+            "group": "语文园地五",
+            "groupIndex": 4,
+            "itemIndex": 0
+          },
+          {
+            "char": "板",
+            "pinyin": "bǎn",
+            "word": "黑板",
+            "group": "语文园地五",
+            "groupIndex": 4,
+            "itemIndex": 1
+          },
+          {
+            "char": "茶",
+            "pinyin": "chá",
+            "word": "喝茶",
+            "group": "语文园地五",
+            "groupIndex": 4,
+            "itemIndex": 2
+          },
+          {
+            "char": "泡",
+            "pinyin": "pào",
+            "word": "泡茶",
+            "group": "语文园地五",
+            "groupIndex": 4,
+            "itemIndex": 3
+          },
+          {
+            "char": "轻",
+            "pinyin": "qīng",
+            "word": "年轻",
+            "group": "语文园地五",
+            "groupIndex": 4,
+            "itemIndex": 4
+          },
+          {
+            "char": "鞭",
+            "pinyin": "biān",
+            "word": "鞭炮",
+            "group": "语文园地五",
+            "groupIndex": 4,
+            "itemIndex": 5
+          },
+          {
+            "char": "炮",
+            "pinyin": "pào",
+            "word": "鞭炮",
+            "group": "语文园地五",
+            "groupIndex": 4,
+            "itemIndex": 6
+          }
+        ],
+        "features": {
+          "singleSpeech": true,
+          "continuousSpeech": true,
+          "speed": true,
+          "voiceSelection": false,
+          "strokeAnimation": true,
+          "pause": false,
+          "replay": true,
+          "tracing": false,
+          "tianzige": true,
+          "print": false,
+          "recognitionQuiz": true
+        }
+      },
+      {
+        "file": "yuwen-1b-unit6-shizi.html",
+        "title": "一年级下册·第六单元识字卡 | Coco Learning Park",
+        "count": 58,
+        "uniqueCount": 57,
+        "groups": [
+          {
+            "name": "10.古诗二首",
+            "count": 9,
+            "chars": "首踪浮洋露角蛙蜻淘"
+          },
+          {
+            "name": "11.浪花",
+            "count": 14,
+            "chars": "浪迈偷悄桥给次泪消平泛照柔荷"
+          },
+          {
+            "name": "12.荷叶圆圆",
+            "count": 12,
+            "chars": "珠摇篮亮晶停坪展透翅膀朵"
+          },
+          {
+            "name": "13.要下雨了",
+            "count": 14,
+            "chars": "要腰阴沉呀忙呢吗面空闷吧消息"
+          },
+          {
+            "name": "语文园地六",
+            "count": 9,
+            "chars": "棍豆汤蚊扇椅牵织斗"
+          }
+        ],
+        "records": [
+          {
+            "char": "首",
+            "pinyin": "shǒu",
+            "word": "首先",
+            "group": "10.古诗二首",
+            "groupIndex": 0,
+            "itemIndex": 0
+          },
+          {
+            "char": "踪",
+            "pinyin": "zōng",
+            "word": "踪迹",
+            "group": "10.古诗二首",
+            "groupIndex": 0,
+            "itemIndex": 1
+          },
+          {
+            "char": "浮",
+            "pinyin": "fú",
+            "word": "漂浮",
+            "group": "10.古诗二首",
+            "groupIndex": 0,
+            "itemIndex": 2
+          },
+          {
+            "char": "洋",
+            "pinyin": "yáng",
+            "word": "海洋",
+            "group": "10.古诗二首",
+            "groupIndex": 0,
+            "itemIndex": 3
+          },
+          {
+            "char": "露",
+            "pinyin": "lù",
+            "word": "露水",
+            "group": "10.古诗二首",
+            "groupIndex": 0,
+            "itemIndex": 4
+          },
+          {
+            "char": "角",
+            "pinyin": "jiǎo",
+            "word": "牛角",
+            "group": "10.古诗二首",
+            "groupIndex": 0,
+            "itemIndex": 5
+          },
+          {
+            "char": "蛙",
+            "pinyin": "wā",
+            "word": "青蛙",
+            "group": "10.古诗二首",
+            "groupIndex": 0,
+            "itemIndex": 6
+          },
+          {
+            "char": "蜻",
+            "pinyin": "qīng",
+            "word": "蜻蜓",
+            "group": "10.古诗二首",
+            "groupIndex": 0,
+            "itemIndex": 7
+          },
+          {
+            "char": "淘",
+            "pinyin": "táo",
+            "word": "淘气",
+            "group": "10.古诗二首",
+            "groupIndex": 0,
+            "itemIndex": 8
+          },
+          {
+            "char": "浪",
+            "pinyin": "làng",
+            "word": "浪花",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 0
+          },
+          {
+            "char": "迈",
+            "pinyin": "mài",
+            "word": "迈步",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 1
+          },
+          {
+            "char": "偷",
+            "pinyin": "tōu",
+            "word": "小偷",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 2
+          },
+          {
+            "char": "悄",
+            "pinyin": "qiāo",
+            "word": "悄悄",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 3
+          },
+          {
+            "char": "桥",
+            "pinyin": "qiáo",
+            "word": "小桥",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 4
+          },
+          {
+            "char": "给",
+            "pinyin": "gěi",
+            "word": "给你",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 5
+          },
+          {
+            "char": "次",
+            "pinyin": "cì",
+            "word": "一次",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 6
+          },
+          {
+            "char": "泪",
+            "pinyin": "lèi",
+            "word": "泪水",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 7
+          },
+          {
+            "char": "消",
+            "pinyin": "xiāo",
+            "word": "消失",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 8
+          },
+          {
+            "char": "平",
+            "pinyin": "píng",
+            "word": "平安",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 9
+          },
+          {
+            "char": "泛",
+            "pinyin": "fàn",
+            "word": "泛舟",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 10
+          },
+          {
+            "char": "照",
+            "pinyin": "zhào",
+            "word": "照片",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 11
+          },
+          {
+            "char": "柔",
+            "pinyin": "róu",
+            "word": "温柔",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 12
+          },
+          {
+            "char": "荷",
+            "pinyin": "hé",
+            "word": "荷花",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 13
+          },
+          {
+            "char": "珠",
+            "pinyin": "zhū",
+            "word": "珍珠",
+            "group": "12.荷叶圆圆",
+            "groupIndex": 2,
+            "itemIndex": 0
+          },
+          {
+            "char": "摇",
+            "pinyin": "yáo",
+            "word": "摇摆",
+            "group": "12.荷叶圆圆",
+            "groupIndex": 2,
+            "itemIndex": 1
+          },
+          {
+            "char": "篮",
+            "pinyin": "lán",
+            "word": "篮球",
+            "group": "12.荷叶圆圆",
+            "groupIndex": 2,
+            "itemIndex": 2
+          },
+          {
+            "char": "亮",
+            "pinyin": "liàng",
+            "word": "明亮",
+            "group": "12.荷叶圆圆",
+            "groupIndex": 2,
+            "itemIndex": 3
+          },
+          {
+            "char": "晶",
+            "pinyin": "jīng",
+            "word": "水晶",
+            "group": "12.荷叶圆圆",
+            "groupIndex": 2,
+            "itemIndex": 4
+          },
+          {
+            "char": "停",
+            "pinyin": "tíng",
+            "word": "停止",
+            "group": "12.荷叶圆圆",
+            "groupIndex": 2,
+            "itemIndex": 5
+          },
+          {
+            "char": "坪",
+            "pinyin": "píng",
+            "word": "草坪",
+            "group": "12.荷叶圆圆",
+            "groupIndex": 2,
+            "itemIndex": 6
+          },
+          {
+            "char": "展",
+            "pinyin": "zhǎn",
+            "word": "展开",
+            "group": "12.荷叶圆圆",
+            "groupIndex": 2,
+            "itemIndex": 7
+          },
+          {
+            "char": "透",
+            "pinyin": "tòu",
+            "word": "透明",
+            "group": "12.荷叶圆圆",
+            "groupIndex": 2,
+            "itemIndex": 8
+          },
+          {
+            "char": "翅",
+            "pinyin": "chì",
+            "word": "翅膀",
+            "group": "12.荷叶圆圆",
+            "groupIndex": 2,
+            "itemIndex": 9
+          },
+          {
+            "char": "膀",
+            "pinyin": "bǎng",
+            "word": "翅膀",
+            "group": "12.荷叶圆圆",
+            "groupIndex": 2,
+            "itemIndex": 10
+          },
+          {
+            "char": "朵",
+            "pinyin": "duǒ",
+            "word": "花朵",
+            "group": "12.荷叶圆圆",
+            "groupIndex": 2,
+            "itemIndex": 11
+          },
+          {
+            "char": "要",
+            "pinyin": "yào",
+            "word": "需要",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 0
+          },
+          {
+            "char": "腰",
+            "pinyin": "yāo",
+            "word": "弯腰",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 1
+          },
+          {
+            "char": "阴",
+            "pinyin": "yīn",
+            "word": "阴天",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 2
+          },
+          {
+            "char": "沉",
+            "pinyin": "chén",
+            "word": "沉重",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 3
+          },
+          {
+            "char": "呀",
+            "pinyin": "ya",
+            "word": "好呀",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 4
+          },
+          {
+            "char": "忙",
+            "pinyin": "máng",
+            "word": "忙碌",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 5
+          },
+          {
+            "char": "呢",
+            "pinyin": "ne",
+            "word": "好呢",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 6
+          },
+          {
+            "char": "吗",
+            "pinyin": "ma",
+            "word": "好吗",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 7
+          },
+          {
+            "char": "面",
+            "pinyin": "miàn",
+            "word": "面条",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 8
+          },
+          {
+            "char": "空",
+            "pinyin": "kòng",
+            "word": "天空",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 9
+          },
+          {
+            "char": "闷",
+            "pinyin": "mēn",
+            "word": "闷热",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 10
+          },
+          {
+            "char": "吧",
+            "pinyin": "ba",
+            "word": "好吧",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 11
+          },
+          {
+            "char": "消",
+            "pinyin": "xiāo",
+            "word": "消息",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 12
+          },
+          {
+            "char": "息",
+            "pinyin": "xī",
+            "word": "休息",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 13
+          },
+          {
+            "char": "棍",
+            "pinyin": "gùn",
+            "word": "棍子",
+            "group": "语文园地六",
+            "groupIndex": 4,
+            "itemIndex": 0
+          },
+          {
+            "char": "豆",
+            "pinyin": "dòu",
+            "word": "豆子",
+            "group": "语文园地六",
+            "groupIndex": 4,
+            "itemIndex": 1
+          },
+          {
+            "char": "汤",
+            "pinyin": "tāng",
+            "word": "鸡汤",
+            "group": "语文园地六",
+            "groupIndex": 4,
+            "itemIndex": 2
+          },
+          {
+            "char": "蚊",
+            "pinyin": "wén",
+            "word": "蚊子",
+            "group": "语文园地六",
+            "groupIndex": 4,
+            "itemIndex": 3
+          },
+          {
+            "char": "扇",
+            "pinyin": "shàn",
+            "word": "扇子",
+            "group": "语文园地六",
+            "groupIndex": 4,
+            "itemIndex": 4
+          },
+          {
+            "char": "椅",
+            "pinyin": "yǐ",
+            "word": "椅子",
+            "group": "语文园地六",
+            "groupIndex": 4,
+            "itemIndex": 5
+          },
+          {
+            "char": "牵",
+            "pinyin": "qiān",
+            "word": "牵手",
+            "group": "语文园地六",
+            "groupIndex": 4,
+            "itemIndex": 6
+          },
+          {
+            "char": "织",
+            "pinyin": "zhī",
+            "word": "编织",
+            "group": "语文园地六",
+            "groupIndex": 4,
+            "itemIndex": 7
+          },
+          {
+            "char": "斗",
+            "pinyin": "dǒu",
+            "word": "星斗",
+            "group": "语文园地六",
+            "groupIndex": 4,
+            "itemIndex": 8
+          }
+        ],
+        "features": {
+          "singleSpeech": true,
+          "continuousSpeech": true,
+          "speed": true,
+          "voiceSelection": false,
+          "strokeAnimation": true,
+          "pause": false,
+          "replay": true,
+          "tracing": false,
+          "tianzige": true,
+          "print": false,
+          "recognitionQuiz": true
+        }
+      },
+      {
+        "file": "yuwen-1b-unit7-shizi.html",
+        "title": "一年级下册·第七单元识字卡 | Coco Learning Park",
+        "count": 60,
+        "uniqueCount": 60,
+        "groups": [
+          {
+            "name": "14.文具的家",
+            "count": 13,
+            "chars": "具铅新平盒些此仔检查所伙伴"
+          },
+          {
+            "name": "15.一分钟",
+            "count": 12,
+            "chars": "钟迟背灯等啊决定已经位表"
+          },
+          {
+            "name": "16.动物王国开大会",
+            "count": 14,
+            "chars": "虎熊通注意遍百为因舌理呀忘第"
+          },
+          {
+            "name": "17.小猴子下山",
+            "count": 13,
+            "chars": "猴块结兴掰扛往棵满扔摘捧追"
+          },
+          {
+            "name": "语文园地七",
+            "count": 8,
+            "chars": "刷梳巾皂洗澡脸盆"
+          }
+        ],
+        "records": [
+          {
+            "char": "具",
+            "pinyin": "jù",
+            "word": "文具",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 0
+          },
+          {
+            "char": "铅",
+            "pinyin": "qiān",
+            "word": "铅笔",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 1
+          },
+          {
+            "char": "新",
+            "pinyin": "xīn",
+            "word": "新的",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 2
+          },
+          {
+            "char": "平",
+            "pinyin": "píng",
+            "word": "平安",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 3
+          },
+          {
+            "char": "盒",
+            "pinyin": "hé",
+            "word": "盒子",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 4
+          },
+          {
+            "char": "些",
+            "pinyin": "xiē",
+            "word": "一些",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 5
+          },
+          {
+            "char": "此",
+            "pinyin": "cǐ",
+            "word": "此时",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 6
+          },
+          {
+            "char": "仔",
+            "pinyin": "zǐ",
+            "word": "仔细",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 7
+          },
+          {
+            "char": "检",
+            "pinyin": "jiǎn",
+            "word": "检查",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 8
+          },
+          {
+            "char": "查",
+            "pinyin": "chá",
+            "word": "查找",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 9
+          },
+          {
+            "char": "所",
+            "pinyin": "suǒ",
+            "word": "所以",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 10
+          },
+          {
+            "char": "伙",
+            "pinyin": "huǒ",
+            "word": "伙伴",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 11
+          },
+          {
+            "char": "伴",
+            "pinyin": "bàn",
+            "word": "伴侣",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 12
+          },
+          {
+            "char": "钟",
+            "pinyin": "zhōng",
+            "word": "时钟",
+            "group": "15.一分钟",
+            "groupIndex": 1,
+            "itemIndex": 0
+          },
+          {
+            "char": "迟",
+            "pinyin": "chí",
+            "word": "迟到",
+            "group": "15.一分钟",
+            "groupIndex": 1,
+            "itemIndex": 1
+          },
+          {
+            "char": "背",
+            "pinyin": "bèi",
+            "word": "背包",
+            "group": "15.一分钟",
+            "groupIndex": 1,
+            "itemIndex": 2
+          },
+          {
+            "char": "灯",
+            "pinyin": "dēng",
+            "word": "电灯",
+            "group": "15.一分钟",
+            "groupIndex": 1,
+            "itemIndex": 3
+          },
+          {
+            "char": "等",
+            "pinyin": "děng",
+            "word": "等待",
+            "group": "15.一分钟",
+            "groupIndex": 1,
+            "itemIndex": 4
+          },
+          {
+            "char": "啊",
+            "pinyin": "a",
+            "word": "好啊",
+            "group": "15.一分钟",
+            "groupIndex": 1,
+            "itemIndex": 5
+          },
+          {
+            "char": "决",
+            "pinyin": "jué",
+            "word": "决定",
+            "group": "15.一分钟",
+            "groupIndex": 1,
+            "itemIndex": 6
+          },
+          {
+            "char": "定",
+            "pinyin": "dìng",
+            "word": "一定",
+            "group": "15.一分钟",
+            "groupIndex": 1,
+            "itemIndex": 7
+          },
+          {
+            "char": "已",
+            "pinyin": "yǐ",
+            "word": "已经",
+            "group": "15.一分钟",
+            "groupIndex": 1,
+            "itemIndex": 8
+          },
+          {
+            "char": "经",
+            "pinyin": "jīng",
+            "word": "经过",
+            "group": "15.一分钟",
+            "groupIndex": 1,
+            "itemIndex": 9
+          },
+          {
+            "char": "位",
+            "pinyin": "wèi",
+            "word": "座位",
+            "group": "15.一分钟",
+            "groupIndex": 1,
+            "itemIndex": 10
+          },
+          {
+            "char": "表",
+            "pinyin": "biǎo",
+            "word": "手表",
+            "group": "15.一分钟",
+            "groupIndex": 1,
+            "itemIndex": 11
+          },
+          {
+            "char": "虎",
+            "pinyin": "hǔ",
+            "word": "老虎",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 0
+          },
+          {
+            "char": "熊",
+            "pinyin": "xióng",
+            "word": "狗熊",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 1
+          },
+          {
+            "char": "通",
+            "pinyin": "tōng",
+            "word": "通知",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 2
+          },
+          {
+            "char": "注",
+            "pinyin": "zhù",
+            "word": "注意",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 3
+          },
+          {
+            "char": "意",
+            "pinyin": "yì",
+            "word": "意思",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 4
+          },
+          {
+            "char": "遍",
+            "pinyin": "biàn",
+            "word": "一遍",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 5
+          },
+          {
+            "char": "百",
+            "pinyin": "bǎi",
+            "word": "一百",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 6
+          },
+          {
+            "char": "为",
+            "pinyin": "wèi",
+            "word": "因为",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 7
+          },
+          {
+            "char": "因",
+            "pinyin": "yīn",
+            "word": "原因",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 8
+          },
+          {
+            "char": "舌",
+            "pinyin": "shé",
+            "word": "舌头",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 9
+          },
+          {
+            "char": "理",
+            "pinyin": "lǐ",
+            "word": "道理",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 10
+          },
+          {
+            "char": "呀",
+            "pinyin": "yā",
+            "word": "好呀",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 11
+          },
+          {
+            "char": "忘",
+            "pinyin": "wàng",
+            "word": "忘记",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 12
+          },
+          {
+            "char": "第",
+            "pinyin": "dì",
+            "word": "第一",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 13
+          },
+          {
+            "char": "猴",
+            "pinyin": "hóu",
+            "word": "猴子",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 0
+          },
+          {
+            "char": "块",
+            "pinyin": "kuài",
+            "word": "一块",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 1
+          },
+          {
+            "char": "结",
+            "pinyin": "jié",
+            "word": "结果",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 2
+          },
+          {
+            "char": "兴",
+            "pinyin": "xīng",
+            "word": "高兴",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 3
+          },
+          {
+            "char": "掰",
+            "pinyin": "bāi",
+            "word": "掰开",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 4
+          },
+          {
+            "char": "扛",
+            "pinyin": "káng",
+            "word": "扛起",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 5
+          },
+          {
+            "char": "往",
+            "pinyin": "wǎng",
+            "word": "往前",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 6
+          },
+          {
+            "char": "棵",
+            "pinyin": "kē",
+            "word": "一棵",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 7
+          },
+          {
+            "char": "满",
+            "pinyin": "mǎn",
+            "word": "满意",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 8
+          },
+          {
+            "char": "扔",
+            "pinyin": "rēng",
+            "word": "扔掉",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 9
+          },
+          {
+            "char": "摘",
+            "pinyin": "zhāi",
+            "word": "摘花",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 10
+          },
+          {
+            "char": "捧",
+            "pinyin": "pěng",
+            "word": "捧起",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 11
+          },
+          {
+            "char": "追",
+            "pinyin": "zhuī",
+            "word": "追赶",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 12
+          },
+          {
+            "char": "刷",
+            "pinyin": "shuā",
+            "word": "刷牙",
+            "group": "语文园地七",
+            "groupIndex": 4,
+            "itemIndex": 0
+          },
+          {
+            "char": "梳",
+            "pinyin": "shū",
+            "word": "梳头",
+            "group": "语文园地七",
+            "groupIndex": 4,
+            "itemIndex": 1
+          },
+          {
+            "char": "巾",
+            "pinyin": "jīn",
+            "word": "毛巾",
+            "group": "语文园地七",
+            "groupIndex": 4,
+            "itemIndex": 2
+          },
+          {
+            "char": "皂",
+            "pinyin": "zào",
+            "word": "肥皂",
+            "group": "语文园地七",
+            "groupIndex": 4,
+            "itemIndex": 3
+          },
+          {
+            "char": "洗",
+            "pinyin": "xǐ",
+            "word": "洗手",
+            "group": "语文园地七",
+            "groupIndex": 4,
+            "itemIndex": 4
+          },
+          {
+            "char": "澡",
+            "pinyin": "zǎo",
+            "word": "洗澡",
+            "group": "语文园地七",
+            "groupIndex": 4,
+            "itemIndex": 5
+          },
+          {
+            "char": "脸",
+            "pinyin": "liǎn",
+            "word": "洗脸",
+            "group": "语文园地七",
+            "groupIndex": 4,
+            "itemIndex": 6
+          },
+          {
+            "char": "盆",
+            "pinyin": "pén",
+            "word": "脸盆",
+            "group": "语文园地七",
+            "groupIndex": 4,
+            "itemIndex": 7
+          }
+        ],
+        "features": {
+          "singleSpeech": true,
+          "continuousSpeech": true,
+          "speed": true,
+          "voiceSelection": false,
+          "strokeAnimation": true,
+          "pause": false,
+          "replay": true,
+          "tracing": false,
+          "tianzige": true,
+          "print": false,
+          "recognitionQuiz": true
+        }
+      },
+      {
+        "file": "yuwen-1b-unit8-shizi.html",
+        "title": "一年级下册·第八单元识字卡 | Coco Learning Park",
+        "count": 48,
+        "uniqueCount": 47,
+        "groups": [
+          {
+            "name": "18.棉花姑娘",
+            "count": 13,
+            "chars": "棉姑娘病她治燕帮害别干惊奇"
+          },
+          {
+            "name": "19.咕咚",
+            "count": 14,
+            "chars": "咕咚熟掉湖吓啦鹿象野拦哪那领"
+          },
+          {
+            "name": "20.小壁虎借尾巴",
+            "count": 13,
+            "chars": "壁借咬难哪爬您拨赶摆过孩转"
+          },
+          {
+            "name": "语文园地八",
+            "count": 8,
+            "chars": "吵现顶胖票户交父"
+          }
+        ],
+        "records": [
+          {
+            "char": "棉",
+            "pinyin": "mián",
+            "word": "棉花",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 0
+          },
+          {
+            "char": "姑",
+            "pinyin": "gū",
+            "word": "姑娘",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 1
+          },
+          {
+            "char": "娘",
+            "pinyin": "niáng",
+            "word": "姑娘",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 2
+          },
+          {
+            "char": "病",
+            "pinyin": "bìng",
+            "word": "生病",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 3
+          },
+          {
+            "char": "她",
+            "pinyin": "tā",
+            "word": "她的",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 4
+          },
+          {
+            "char": "治",
+            "pinyin": "zhì",
+            "word": "治病",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 5
+          },
+          {
+            "char": "燕",
+            "pinyin": "yàn",
+            "word": "燕子",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 6
+          },
+          {
+            "char": "帮",
+            "pinyin": "bāng",
+            "word": "帮忙",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 7
+          },
+          {
+            "char": "害",
+            "pinyin": "hài",
+            "word": "害怕",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 8
+          },
+          {
+            "char": "别",
+            "pinyin": "bié",
+            "word": "别人",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 9
+          },
+          {
+            "char": "干",
+            "pinyin": "gàn",
+            "word": "干净",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 10
+          },
+          {
+            "char": "惊",
+            "pinyin": "jīng",
+            "word": "惊讶",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 11
+          },
+          {
+            "char": "奇",
+            "pinyin": "qí",
+            "word": "奇怪",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 12
+          },
+          {
+            "char": "咕",
+            "pinyin": "gū",
+            "word": "咕咚",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 0
+          },
+          {
+            "char": "咚",
+            "pinyin": "dōng",
+            "word": "咕咚",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 1
+          },
+          {
+            "char": "熟",
+            "pinyin": "shú",
+            "word": "成熟",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 2
+          },
+          {
+            "char": "掉",
+            "pinyin": "diào",
+            "word": "掉落",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 3
+          },
+          {
+            "char": "湖",
+            "pinyin": "hú",
+            "word": "湖水",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 4
+          },
+          {
+            "char": "吓",
+            "pinyin": "xià",
+            "word": "吓人",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 5
+          },
+          {
+            "char": "啦",
+            "pinyin": "la",
+            "word": "好啦",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 6
+          },
+          {
+            "char": "鹿",
+            "pinyin": "lù",
+            "word": "小鹿",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 7
+          },
+          {
+            "char": "象",
+            "pinyin": "xiàng",
+            "word": "大象",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 8
+          },
+          {
+            "char": "野",
+            "pinyin": "yě",
+            "word": "野外",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 9
+          },
+          {
+            "char": "拦",
+            "pinyin": "lán",
+            "word": "拦住",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 10
+          },
+          {
+            "char": "哪",
+            "pinyin": "nǎ",
+            "word": "哪里",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 11
+          },
+          {
+            "char": "那",
+            "pinyin": "nà",
+            "word": "那个",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 12
+          },
+          {
+            "char": "领",
+            "pinyin": "lǐng",
+            "word": "领导",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 13
+          },
+          {
+            "char": "壁",
+            "pinyin": "bì",
+            "word": "墙壁",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 0
+          },
+          {
+            "char": "借",
+            "pinyin": "jiè",
+            "word": "借书",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 1
+          },
+          {
+            "char": "咬",
+            "pinyin": "yǎo",
+            "word": "咬住",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 2
+          },
+          {
+            "char": "难",
+            "pinyin": "nán",
+            "word": "困难",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 3
+          },
+          {
+            "char": "哪",
+            "pinyin": "na",
+            "word": "哪个",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 4
+          },
+          {
+            "char": "爬",
+            "pinyin": "pá",
+            "word": "爬山",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 5
+          },
+          {
+            "char": "您",
+            "pinyin": "nín",
+            "word": "您好",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 6
+          },
+          {
+            "char": "拨",
+            "pinyin": "bō",
+            "word": "拨开",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 7
+          },
+          {
+            "char": "赶",
+            "pinyin": "gǎn",
+            "word": "赶快",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 8
+          },
+          {
+            "char": "摆",
+            "pinyin": "bǎi",
+            "word": "摆动",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 9
+          },
+          {
+            "char": "过",
+            "pinyin": "guò",
+            "word": "过去",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 10
+          },
+          {
+            "char": "孩",
+            "pinyin": "hái",
+            "word": "孩子",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 11
+          },
+          {
+            "char": "转",
+            "pinyin": "zhuǎn",
+            "word": "转动",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 12
+          },
+          {
+            "char": "吵",
+            "pinyin": "chǎo",
+            "word": "吵闹",
+            "group": "语文园地八",
+            "groupIndex": 3,
+            "itemIndex": 0
+          },
+          {
+            "char": "现",
+            "pinyin": "xiàn",
+            "word": "现在",
+            "group": "语文园地八",
+            "groupIndex": 3,
+            "itemIndex": 1
+          },
+          {
+            "char": "顶",
+            "pinyin": "dǐng",
+            "word": "头顶",
+            "group": "语文园地八",
+            "groupIndex": 3,
+            "itemIndex": 2
+          },
+          {
+            "char": "胖",
+            "pinyin": "pàng",
+            "word": "胖子",
+            "group": "语文园地八",
+            "groupIndex": 3,
+            "itemIndex": 3
+          },
+          {
+            "char": "票",
+            "pinyin": "piào",
+            "word": "票子",
+            "group": "语文园地八",
+            "groupIndex": 3,
+            "itemIndex": 4
+          },
+          {
+            "char": "户",
+            "pinyin": "hù",
+            "word": "门户",
+            "group": "语文园地八",
+            "groupIndex": 3,
+            "itemIndex": 5
+          },
+          {
+            "char": "交",
+            "pinyin": "jiāo",
+            "word": "交朋友",
+            "group": "语文园地八",
+            "groupIndex": 3,
+            "itemIndex": 6
+          },
+          {
+            "char": "父",
+            "pinyin": "fù",
+            "word": "父亲",
+            "group": "语文园地八",
+            "groupIndex": 3,
+            "itemIndex": 7
+          }
+        ],
+        "features": {
+          "singleSpeech": true,
+          "continuousSpeech": true,
+          "speed": true,
+          "voiceSelection": false,
+          "strokeAnimation": true,
+          "pause": false,
+          "replay": true,
+          "tracing": false,
+          "tianzige": true,
+          "print": false,
+          "recognitionQuiz": true
+        }
+      }
+    ],
+    "recordCount": 392,
+    "uniqueChars": [
+      "霜",
+      "吹",
+      "落",
+      "降",
+      "飘",
+      "游",
+      "池",
+      "入",
+      "姓",
+      "氏",
+      "李",
+      "张",
+      "古",
+      "吴",
+      "赵",
+      "孙",
+      "钱",
+      "周",
+      "河",
+      "清",
+      "眼",
+      "晴",
+      "保",
+      "情",
+      "请",
+      "让",
+      "相",
+      "遇",
+      "喜",
+      "欢",
+      "怕",
+      "言",
+      "互",
+      "令",
+      "动",
+      "万",
+      "纯",
+      "净",
+      "团",
+      "量",
+      "式",
+      "图",
+      "算",
+      "减",
+      "组",
+      "边",
+      "热",
+      "爱",
+      "共",
+      "产",
+      "党",
+      "成",
+      "福",
+      "幸",
+      "称",
+      "杯",
+      "阳",
+      "光",
+      "怀",
+      "抱",
+      "想",
+      "念",
+      "觉",
+      "大",
+      "太",
+      "席",
+      "乡",
+      "住",
+      "站",
+      "土",
+      "主",
+      "北",
+      "京",
+      "广",
+      "场",
+      "非",
+      "宽",
+      "安",
+      "连",
+      "法",
+      "堆",
+      "涂",
+      "选",
+      "圈",
+      "认",
+      "直",
+      "哭",
+      "跟",
+      "哈",
+      "跑",
+      "玩",
+      "的",
+      "背",
+      "肖",
+      "快",
+      "已",
+      "只",
+      "很",
+      "狐",
+      "跳",
+      "独",
+      "孤",
+      "绳",
+      "当",
+      "种",
+      "海",
+      "单",
+      "呼",
+      "叫",
+      "招",
+      "球",
+      "羽",
+      "轮",
+      "排",
+      "乐",
+      "邻",
+      "居",
+      "都",
+      "每",
+      "还",
+      "这",
+      "页",
+      "止",
+      "望",
+      "丁",
+      "寸",
+      "千",
+      "全",
+      "旦",
+      "静",
+      "思",
+      "床",
+      "夜",
+      "窗",
+      "亮",
+      "故",
+      "低",
+      "样",
+      "笑",
+      "乱",
+      "胆",
+      "再",
+      "睡",
+      "端",
+      "粽",
+      "节",
+      "总",
+      "勇",
+      "夹",
+      "煮",
+      "米",
+      "甜",
+      "鲜",
+      "肉",
+      "被",
+      "了",
+      "册",
+      "纸",
+      "文",
+      "台",
+      "电",
+      "防",
+      "视",
+      "部",
+      "物",
+      "藏",
+      "迷",
+      "运",
+      "食",
+      "粮",
+      "房",
+      "结",
+      "网",
+      "杨",
+      "香",
+      "圆",
+      "暖",
+      "酷",
+      "暑",
+      "细",
+      "朝",
+      "霞",
+      "夕",
+      "沙",
+      "体",
+      "身",
+      "幼",
+      "知",
+      "义",
+      "操",
+      "拍",
+      "拔",
+      "初",
+      "踢",
+      "近",
+      "远",
+      "教",
+      "茶",
+      "包",
+      "轻",
+      "泡",
+      "炮",
+      "鞭",
+      "之",
+      "习",
+      "饭",
+      "板",
+      "首",
+      "踪",
+      "浮",
+      "洋",
+      "露",
+      "角",
+      "蛙",
+      "蜻",
+      "淘",
+      "浪",
+      "迈",
+      "偷",
+      "悄",
+      "桥",
+      "给",
+      "次",
+      "泪",
+      "消",
+      "平",
+      "泛",
+      "照",
+      "柔",
+      "荷",
+      "珠",
+      "摇",
+      "篮",
+      "晶",
+      "停",
+      "坪",
+      "展",
+      "透",
+      "翅",
+      "膀",
+      "朵",
+      "要",
+      "腰",
+      "阴",
+      "沉",
+      "呀",
+      "忙",
+      "呢",
+      "吗",
+      "面",
+      "空",
+      "闷",
+      "吧",
+      "息",
+      "棍",
+      "豆",
+      "汤",
+      "蚊",
+      "扇",
+      "椅",
+      "牵",
+      "织",
+      "斗",
+      "具",
+      "铅",
+      "新",
+      "盒",
+      "些",
+      "此",
+      "仔",
+      "检",
+      "查",
+      "所",
+      "伙",
+      "伴",
+      "钟",
+      "迟",
+      "灯",
+      "等",
+      "啊",
+      "决",
+      "定",
+      "经",
+      "位",
+      "表",
+      "虎",
+      "熊",
+      "通",
+      "注",
+      "意",
+      "遍",
+      "百",
+      "为",
+      "因",
+      "舌",
+      "理",
+      "忘",
+      "第",
+      "猴",
+      "块",
+      "兴",
+      "掰",
+      "扛",
+      "往",
+      "棵",
+      "满",
+      "扔",
+      "摘",
+      "捧",
+      "追",
+      "刷",
+      "梳",
+      "巾",
+      "皂",
+      "洗",
+      "澡",
+      "脸",
+      "盆",
+      "棉",
+      "姑",
+      "娘",
+      "病",
+      "她",
+      "治",
+      "燕",
+      "帮",
+      "害",
+      "别",
+      "干",
+      "惊",
+      "奇",
+      "咕",
+      "咚",
+      "熟",
+      "掉",
+      "湖",
+      "吓",
+      "啦",
+      "鹿",
+      "象",
+      "野",
+      "拦",
+      "哪",
+      "那",
+      "领",
+      "壁",
+      "借",
+      "咬",
+      "难",
+      "爬",
+      "您",
+      "拨",
+      "赶",
+      "摆",
+      "过",
+      "孩",
+      "转",
+      "吵",
+      "现",
+      "顶",
+      "胖",
+      "票",
+      "户",
+      "交",
+      "父"
+    ],
+    "uniqueCount": 365
+  },
+  "writing": {
+    "pages": [
+      {
+        "file": "yuwen-1b-unit1-enhanced.html",
+        "title": "一年级下册·第一单元识字卡 | Coco Learning Park",
+        "count": 28,
+        "uniqueCount": 28,
+        "groups": [
+          {
+            "name": "1.春夏秋冬",
+            "count": 6,
+            "chars": "春冬花吹飞入"
+          },
+          {
+            "name": "2.姓氏歌",
+            "count": 6,
+            "chars": "什么古胡双言"
+          },
+          {
+            "name": "3.小青蛙",
+            "count": 6,
+            "chars": "青清苗晴请生"
+          },
+          {
+            "name": "4.猜字谜",
+            "count": 6,
+            "chars": "字红动万无明"
+          },
+          {
+            "name": "语文园地一",
+            "count": 4,
+            "chars": "文卡片合"
+          }
+        ],
+        "records": [
+          {
+            "char": "春",
+            "pinyin": "chūn",
+            "word": "春天",
+            "group": "1.春夏秋冬",
+            "groupIndex": 0,
+            "itemIndex": 0
+          },
+          {
+            "char": "冬",
+            "pinyin": "dōng",
+            "word": "冬天",
+            "group": "1.春夏秋冬",
+            "groupIndex": 0,
+            "itemIndex": 1
+          },
+          {
+            "char": "花",
+            "pinyin": "huā",
+            "word": "花朵",
+            "group": "1.春夏秋冬",
+            "groupIndex": 0,
+            "itemIndex": 2
+          },
+          {
+            "char": "吹",
+            "pinyin": "chuī",
+            "word": "吹风",
+            "group": "1.春夏秋冬",
+            "groupIndex": 0,
+            "itemIndex": 3
+          },
+          {
+            "char": "飞",
+            "pinyin": "fēi",
+            "word": "飞鸟",
+            "group": "1.春夏秋冬",
+            "groupIndex": 0,
+            "itemIndex": 4
+          },
+          {
+            "char": "入",
+            "pinyin": "rù",
+            "word": "进入",
+            "group": "1.春夏秋冬",
+            "groupIndex": 0,
+            "itemIndex": 5
+          },
+          {
+            "char": "什",
+            "pinyin": "shén",
+            "word": "什么",
+            "group": "2.姓氏歌",
+            "groupIndex": 1,
+            "itemIndex": 0
+          },
+          {
+            "char": "么",
+            "pinyin": "me",
+            "word": "什么",
+            "group": "2.姓氏歌",
+            "groupIndex": 1,
+            "itemIndex": 1
+          },
+          {
+            "char": "古",
+            "pinyin": "gǔ",
+            "word": "古代",
+            "group": "2.姓氏歌",
+            "groupIndex": 1,
+            "itemIndex": 2
+          },
+          {
+            "char": "胡",
+            "pinyin": "hú",
+            "word": "胡说",
+            "group": "2.姓氏歌",
+            "groupIndex": 1,
+            "itemIndex": 3
+          },
+          {
+            "char": "双",
+            "pinyin": "shuāng",
+            "word": "双手",
+            "group": "2.姓氏歌",
+            "groupIndex": 1,
+            "itemIndex": 4
+          },
+          {
+            "char": "言",
+            "pinyin": "yán",
+            "word": "语言",
+            "group": "2.姓氏歌",
+            "groupIndex": 1,
+            "itemIndex": 5
+          },
+          {
+            "char": "青",
+            "pinyin": "qīng",
+            "word": "青草",
+            "group": "3.小青蛙",
+            "groupIndex": 2,
+            "itemIndex": 0
+          },
+          {
+            "char": "清",
+            "pinyin": "qīng",
+            "word": "清水",
+            "group": "3.小青蛙",
+            "groupIndex": 2,
+            "itemIndex": 1
+          },
+          {
+            "char": "苗",
+            "pinyin": "miáo",
+            "word": "禾苗",
+            "group": "3.小青蛙",
+            "groupIndex": 2,
+            "itemIndex": 2
+          },
+          {
+            "char": "晴",
+            "pinyin": "qíng",
+            "word": "晴天",
+            "group": "3.小青蛙",
+            "groupIndex": 2,
+            "itemIndex": 3
+          },
+          {
+            "char": "请",
+            "pinyin": "qǐng",
+            "word": "请问",
+            "group": "3.小青蛙",
+            "groupIndex": 2,
+            "itemIndex": 4
+          },
+          {
+            "char": "生",
+            "pinyin": "shēng",
+            "word": "学生",
+            "group": "3.小青蛙",
+            "groupIndex": 2,
+            "itemIndex": 5
+          },
+          {
+            "char": "字",
+            "pinyin": "zì",
+            "word": "写字",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 0
+          },
+          {
+            "char": "红",
+            "pinyin": "hóng",
+            "word": "红色",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 1
+          },
+          {
+            "char": "动",
+            "pinyin": "dòng",
+            "word": "运动",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 2
+          },
+          {
+            "char": "万",
+            "pinyin": "wàn",
+            "word": "万岁",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 3
+          },
+          {
+            "char": "无",
+            "pinyin": "wú",
+            "word": "无人",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 4
+          },
+          {
+            "char": "明",
+            "pinyin": "míng",
+            "word": "明天",
+            "group": "4.猜字谜",
+            "groupIndex": 3,
+            "itemIndex": 5
+          },
+          {
+            "char": "文",
+            "pinyin": "wén",
+            "word": "语文",
+            "group": "语文园地一",
+            "groupIndex": 4,
+            "itemIndex": 0
+          },
+          {
+            "char": "卡",
+            "pinyin": "kǎ",
+            "word": "卡片",
+            "group": "语文园地一",
+            "groupIndex": 4,
+            "itemIndex": 1
+          },
+          {
+            "char": "片",
+            "pinyin": "piàn",
+            "word": "卡片",
+            "group": "语文园地一",
+            "groupIndex": 4,
+            "itemIndex": 2
+          },
+          {
+            "char": "合",
+            "pinyin": "hé",
+            "word": "合唱",
+            "group": "语文园地一",
+            "groupIndex": 4,
+            "itemIndex": 3
+          }
+        ],
+        "features": {
+          "singleSpeech": true,
+          "continuousSpeech": true,
+          "speed": true,
+          "voiceSelection": false,
+          "strokeAnimation": true,
+          "pause": false,
+          "replay": true,
+          "tracing": true,
+          "tianzige": true,
+          "print": false,
+          "recognitionQuiz": false
+        }
+      },
+      {
+        "file": "yuwen-1b-unit2-enhanced.html",
+        "title": "一年级下册·第二单元阅读卡 | Coco Learning Park",
+        "count": 20,
+        "uniqueCount": 20,
+        "groups": [
+          {
+            "name": "1.热爱中国共产党",
+            "count": 6,
+            "chars": "共产当太阳光"
+          },
+          {
+            "name": "2.吃水不忘挖井人",
+            "count": 6,
+            "chars": "亮竹江主方后"
+          },
+          {
+            "name": "3.我多想去看看",
+            "count": 6,
+            "chars": "告的会北京广"
+          },
+          {
+            "name": "语文园地二",
+            "count": 2,
+            "chars": "写认"
+          }
+        ],
+        "records": [
+          {
+            "char": "共",
+            "pinyin": "gòng",
+            "word": "共同",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 0
+          },
+          {
+            "char": "产",
+            "pinyin": "chǎn",
+            "word": "生产",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 1
+          },
+          {
+            "char": "当",
+            "pinyin": "dāng",
+            "word": "当时",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 2
+          },
+          {
+            "char": "太",
+            "pinyin": "tài",
+            "word": "太阳",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 3
+          },
+          {
+            "char": "阳",
+            "pinyin": "yáng",
+            "word": "太阳",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 4
+          },
+          {
+            "char": "光",
+            "pinyin": "guāng",
+            "word": "阳光",
+            "group": "1.热爱中国共产党",
+            "groupIndex": 0,
+            "itemIndex": 5
+          },
+          {
+            "char": "亮",
+            "pinyin": "liàng",
+            "word": "明亮",
+            "group": "2.吃水不忘挖井人",
+            "groupIndex": 1,
+            "itemIndex": 0
+          },
+          {
+            "char": "竹",
+            "pinyin": "zhú",
+            "word": "竹子",
+            "group": "2.吃水不忘挖井人",
+            "groupIndex": 1,
+            "itemIndex": 1
+          },
+          {
+            "char": "江",
+            "pinyin": "jiāng",
+            "word": "长江",
+            "group": "2.吃水不忘挖井人",
+            "groupIndex": 1,
+            "itemIndex": 2
+          },
+          {
+            "char": "主",
+            "pinyin": "zhǔ",
+            "word": "主人",
+            "group": "2.吃水不忘挖井人",
+            "groupIndex": 1,
+            "itemIndex": 3
+          },
+          {
+            "char": "方",
+            "pinyin": "fāng",
+            "word": "方向",
+            "group": "2.吃水不忘挖井人",
+            "groupIndex": 1,
+            "itemIndex": 4
+          },
+          {
+            "char": "后",
+            "pinyin": "hòu",
+            "word": "后面",
+            "group": "2.吃水不忘挖井人",
+            "groupIndex": 1,
+            "itemIndex": 5
+          },
+          {
+            "char": "告",
+            "pinyin": "gào",
+            "word": "告诉",
+            "group": "3.我多想去看看",
+            "groupIndex": 2,
+            "itemIndex": 0
+          },
+          {
+            "char": "的",
+            "pinyin": "de",
+            "word": "我的",
+            "group": "3.我多想去看看",
+            "groupIndex": 2,
+            "itemIndex": 1
+          },
+          {
+            "char": "会",
+            "pinyin": "huì",
+            "word": "开会",
+            "group": "3.我多想去看看",
+            "groupIndex": 2,
+            "itemIndex": 2
+          },
+          {
+            "char": "北",
+            "pinyin": "běi",
+            "word": "北京",
+            "group": "3.我多想去看看",
+            "groupIndex": 2,
+            "itemIndex": 3
+          },
+          {
+            "char": "京",
+            "pinyin": "jīng",
+            "word": "北京",
+            "group": "3.我多想去看看",
+            "groupIndex": 2,
+            "itemIndex": 4
+          },
+          {
+            "char": "广",
+            "pinyin": "guǎng",
+            "word": "广大",
+            "group": "3.我多想去看看",
+            "groupIndex": 2,
+            "itemIndex": 5
+          },
+          {
+            "char": "写",
+            "pinyin": "xiě",
+            "word": "写字",
+            "group": "语文园地二",
+            "groupIndex": 3,
+            "itemIndex": 0
+          },
+          {
+            "char": "认",
+            "pinyin": "rèn",
+            "word": "认识",
+            "group": "语文园地二",
+            "groupIndex": 3,
+            "itemIndex": 1
+          }
+        ],
+        "features": {
+          "singleSpeech": true,
+          "continuousSpeech": true,
+          "speed": true,
+          "voiceSelection": false,
+          "strokeAnimation": true,
+          "pause": false,
+          "replay": true,
+          "tracing": true,
+          "tianzige": true,
+          "print": false,
+          "recognitionQuiz": false
+        }
+      },
+      {
+        "file": "yuwen-1b-unit3-enhanced.html",
+        "title": "一年级下册·第三单元阅读卡 | Coco Learning Park",
+        "count": 23,
+        "uniqueCount": 23,
+        "groups": [
+          {
+            "name": "4.小公鸡和小鸭子",
+            "count": 6,
+            "chars": "走河说让自己"
+          },
+          {
+            "name": "5.树和喜鹊",
+            "count": 6,
+            "chars": "从好们他回毛"
+          },
+          {
+            "name": "6.怎么都快乐",
+            "count": 5,
+            "chars": "快乐当书画"
+          },
+          {
+            "name": "语文园地三",
+            "count": 6,
+            "chars": "止斤寸丁千旦"
+          }
+        ],
+        "records": [
+          {
+            "char": "走",
+            "pinyin": "zǒu",
+            "word": "走路",
+            "group": "4.小公鸡和小鸭子",
+            "groupIndex": 0,
+            "itemIndex": 0
+          },
+          {
+            "char": "河",
+            "pinyin": "hé",
+            "word": "小河",
+            "group": "4.小公鸡和小鸭子",
+            "groupIndex": 0,
+            "itemIndex": 1
+          },
+          {
+            "char": "说",
+            "pinyin": "shuō",
+            "word": "说话",
+            "group": "4.小公鸡和小鸭子",
+            "groupIndex": 0,
+            "itemIndex": 2
+          },
+          {
+            "char": "让",
+            "pinyin": "ràng",
+            "word": "让路",
+            "group": "4.小公鸡和小鸭子",
+            "groupIndex": 0,
+            "itemIndex": 3
+          },
+          {
+            "char": "自",
+            "pinyin": "zì",
+            "word": "自己",
+            "group": "4.小公鸡和小鸭子",
+            "groupIndex": 0,
+            "itemIndex": 4
+          },
+          {
+            "char": "己",
+            "pinyin": "jǐ",
+            "word": "自己",
+            "group": "4.小公鸡和小鸭子",
+            "groupIndex": 0,
+            "itemIndex": 5
+          },
+          {
+            "char": "从",
+            "pinyin": "cóng",
+            "word": "从前",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 0
+          },
+          {
+            "char": "好",
+            "pinyin": "hǎo",
+            "word": "好人",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 1
+          },
+          {
+            "char": "们",
+            "pinyin": "men",
+            "word": "我们",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 2
+          },
+          {
+            "char": "他",
+            "pinyin": "tā",
+            "word": "他的",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 3
+          },
+          {
+            "char": "回",
+            "pinyin": "huí",
+            "word": "回家",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 4
+          },
+          {
+            "char": "毛",
+            "pinyin": "máo",
+            "word": "毛笔",
+            "group": "5.树和喜鹊",
+            "groupIndex": 1,
+            "itemIndex": 5
+          },
+          {
+            "char": "快",
+            "pinyin": "kuài",
+            "word": "快乐",
+            "group": "6.怎么都快乐",
+            "groupIndex": 2,
+            "itemIndex": 0
+          },
+          {
+            "char": "乐",
+            "pinyin": "lè",
+            "word": "快乐",
+            "group": "6.怎么都快乐",
+            "groupIndex": 2,
+            "itemIndex": 1
+          },
+          {
+            "char": "当",
+            "pinyin": "dāng",
+            "word": "当然",
+            "group": "6.怎么都快乐",
+            "groupIndex": 2,
+            "itemIndex": 2
+          },
+          {
+            "char": "书",
+            "pinyin": "shū",
+            "word": "读书",
+            "group": "6.怎么都快乐",
+            "groupIndex": 2,
+            "itemIndex": 3
+          },
+          {
+            "char": "画",
+            "pinyin": "huà",
+            "word": "画画",
+            "group": "6.怎么都快乐",
+            "groupIndex": 2,
+            "itemIndex": 4
+          },
+          {
+            "char": "止",
+            "pinyin": "zhǐ",
+            "word": "停止",
+            "group": "语文园地三",
+            "groupIndex": 3,
+            "itemIndex": 0
+          },
+          {
+            "char": "斤",
+            "pinyin": "jīn",
+            "word": "斤两",
+            "group": "语文园地三",
+            "groupIndex": 3,
+            "itemIndex": 1
+          },
+          {
+            "char": "寸",
+            "pinyin": "cùn",
+            "word": "尺寸",
+            "group": "语文园地三",
+            "groupIndex": 3,
+            "itemIndex": 2
+          },
+          {
+            "char": "丁",
+            "pinyin": "dīng",
+            "word": "园丁",
+            "group": "语文园地三",
+            "groupIndex": 3,
+            "itemIndex": 3
+          },
+          {
+            "char": "千",
+            "pinyin": "qiān",
+            "word": "千万",
+            "group": "语文园地三",
+            "groupIndex": 3,
+            "itemIndex": 4
+          },
+          {
+            "char": "旦",
+            "pinyin": "dàn",
+            "word": "元旦",
+            "group": "语文园地三",
+            "groupIndex": 3,
+            "itemIndex": 5
+          }
+        ],
+        "features": {
+          "singleSpeech": true,
+          "continuousSpeech": true,
+          "speed": true,
+          "voiceSelection": false,
+          "strokeAnimation": true,
+          "pause": false,
+          "replay": true,
+          "tracing": true,
+          "tianzige": true,
+          "print": false,
+          "recognitionQuiz": false
+        }
+      },
+      {
+        "file": "yuwen-1b-unit4-enhanced.html",
+        "title": "一年级下册·第四单元阅读卡 | Coco Learning Park",
+        "count": 22,
+        "uniqueCount": 22,
+        "groups": [
+          {
+            "name": "7.静夜思",
+            "count": 6,
+            "chars": "思床前地故乡"
+          },
+          {
+            "name": "8.夜色",
+            "count": 6,
+            "chars": "色把讲样笑再"
+          },
+          {
+            "name": "9.端午粽",
+            "count": 6,
+            "chars": "节米间吃分肉"
+          },
+          {
+            "name": "语文园地四",
+            "count": 4,
+            "chars": "册纸电衣"
+          }
+        ],
+        "records": [
+          {
+            "char": "思",
+            "pinyin": "sī",
+            "word": "思念",
+            "group": "7.静夜思",
+            "groupIndex": 0,
+            "itemIndex": 0
+          },
+          {
+            "char": "床",
+            "pinyin": "chuáng",
+            "word": "起床",
+            "group": "7.静夜思",
+            "groupIndex": 0,
+            "itemIndex": 1
+          },
+          {
+            "char": "前",
+            "pinyin": "qián",
+            "word": "前面",
+            "group": "7.静夜思",
+            "groupIndex": 0,
+            "itemIndex": 2
+          },
+          {
+            "char": "地",
+            "pinyin": "dì",
+            "word": "大地",
+            "group": "7.静夜思",
+            "groupIndex": 0,
+            "itemIndex": 3
+          },
+          {
+            "char": "故",
+            "pinyin": "gù",
+            "word": "故乡",
+            "group": "7.静夜思",
+            "groupIndex": 0,
+            "itemIndex": 4
+          },
+          {
+            "char": "乡",
+            "pinyin": "xiāng",
+            "word": "家乡",
+            "group": "7.静夜思",
+            "groupIndex": 0,
+            "itemIndex": 5
+          },
+          {
+            "char": "色",
+            "pinyin": "sè",
+            "word": "颜色",
+            "group": "8.夜色",
+            "groupIndex": 1,
+            "itemIndex": 0
+          },
+          {
+            "char": "把",
+            "pinyin": "bǎ",
+            "word": "把手",
+            "group": "8.夜色",
+            "groupIndex": 1,
+            "itemIndex": 1
+          },
+          {
+            "char": "讲",
+            "pinyin": "jiǎng",
+            "word": "讲话",
+            "group": "8.夜色",
+            "groupIndex": 1,
+            "itemIndex": 2
+          },
+          {
+            "char": "样",
+            "pinyin": "yàng",
+            "word": "样子",
+            "group": "8.夜色",
+            "groupIndex": 1,
+            "itemIndex": 3
+          },
+          {
+            "char": "笑",
+            "pinyin": "xiào",
+            "word": "笑话",
+            "group": "8.夜色",
+            "groupIndex": 1,
+            "itemIndex": 4
+          },
+          {
+            "char": "再",
+            "pinyin": "zài",
+            "word": "再见",
+            "group": "8.夜色",
+            "groupIndex": 1,
+            "itemIndex": 5
+          },
+          {
+            "char": "节",
+            "pinyin": "jié",
+            "word": "节日",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 0
+          },
+          {
+            "char": "米",
+            "pinyin": "mǐ",
+            "word": "大米",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 1
+          },
+          {
+            "char": "间",
+            "pinyin": "jiān",
+            "word": "中间",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 2
+          },
+          {
+            "char": "吃",
+            "pinyin": "chī",
+            "word": "吃饭",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 3
+          },
+          {
+            "char": "分",
+            "pinyin": "fēn",
+            "word": "分开",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 4
+          },
+          {
+            "char": "肉",
+            "pinyin": "ròu",
+            "word": "牛肉",
+            "group": "9.端午粽",
+            "groupIndex": 2,
+            "itemIndex": 5
+          },
+          {
+            "char": "册",
+            "pinyin": "cè",
+            "word": "手册",
+            "group": "语文园地四",
+            "groupIndex": 3,
+            "itemIndex": 0
+          },
+          {
+            "char": "纸",
+            "pinyin": "zhǐ",
+            "word": "纸张",
+            "group": "语文园地四",
+            "groupIndex": 3,
+            "itemIndex": 1
+          },
+          {
+            "char": "电",
+            "pinyin": "diàn",
+            "word": "电话",
+            "group": "语文园地四",
+            "groupIndex": 3,
+            "itemIndex": 2
+          },
+          {
+            "char": "衣",
+            "pinyin": "yī",
+            "word": "衣服",
+            "group": "语文园地四",
+            "groupIndex": 3,
+            "itemIndex": 3
+          }
+        ],
+        "features": {
+          "singleSpeech": true,
+          "continuousSpeech": true,
+          "speed": true,
+          "voiceSelection": false,
+          "strokeAnimation": true,
+          "pause": false,
+          "replay": true,
+          "tracing": true,
+          "tianzige": true,
+          "print": false,
+          "recognitionQuiz": false
+        }
+      },
+      {
+        "file": "yuwen-1b-unit5-enhanced.html",
+        "title": "一年级下册·第五单元识字卡 | Coco Learning Park",
+        "count": 24,
+        "uniqueCount": 24,
+        "groups": [
+          {
+            "name": "5.动物儿歌",
+            "count": 6,
+            "chars": "物造运欢房网"
+          },
+          {
+            "name": "6.古对今",
+            "count": 6,
+            "chars": "对今雪细语话"
+          },
+          {
+            "name": "7.操场上",
+            "count": 5,
+            "chars": "打跑足沙包"
+          },
+          {
+            "name": "8.人之初",
+            "count": 5,
+            "chars": "近远学习义"
+          },
+          {
+            "name": "语文园地五",
+            "count": 2,
+            "chars": "饱抱"
+          }
+        ],
+        "records": [
+          {
+            "char": "物",
+            "pinyin": "wù",
+            "word": "动物",
+            "group": "5.动物儿歌",
+            "groupIndex": 0,
+            "itemIndex": 0
+          },
+          {
+            "char": "造",
+            "pinyin": "zào",
+            "word": "制造",
+            "group": "5.动物儿歌",
+            "groupIndex": 0,
+            "itemIndex": 1
+          },
+          {
+            "char": "运",
+            "pinyin": "yùn",
+            "word": "运动",
+            "group": "5.动物儿歌",
+            "groupIndex": 0,
+            "itemIndex": 2
+          },
+          {
+            "char": "欢",
+            "pinyin": "huān",
+            "word": "欢乐",
+            "group": "5.动物儿歌",
+            "groupIndex": 0,
+            "itemIndex": 3
+          },
+          {
+            "char": "房",
+            "pinyin": "fáng",
+            "word": "房子",
+            "group": "5.动物儿歌",
+            "groupIndex": 0,
+            "itemIndex": 4
+          },
+          {
+            "char": "网",
+            "pinyin": "wǎng",
+            "word": "上网",
+            "group": "5.动物儿歌",
+            "groupIndex": 0,
+            "itemIndex": 5
+          },
+          {
+            "char": "对",
+            "pinyin": "duì",
+            "word": "对面",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 0
+          },
+          {
+            "char": "今",
+            "pinyin": "jīn",
+            "word": "今天",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 1
+          },
+          {
+            "char": "雪",
+            "pinyin": "xuě",
+            "word": "下雪",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 2
+          },
+          {
+            "char": "细",
+            "pinyin": "xì",
+            "word": "细心",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 3
+          },
+          {
+            "char": "语",
+            "pinyin": "yǔ",
+            "word": "语文",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 4
+          },
+          {
+            "char": "话",
+            "pinyin": "huà",
+            "word": "说话",
+            "group": "6.古对今",
+            "groupIndex": 1,
+            "itemIndex": 5
+          },
+          {
+            "char": "打",
+            "pinyin": "dǎ",
+            "word": "打球",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 0
+          },
+          {
+            "char": "跑",
+            "pinyin": "pǎo",
+            "word": "跑步",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 1
+          },
+          {
+            "char": "足",
+            "pinyin": "zú",
+            "word": "足球",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 2
+          },
+          {
+            "char": "沙",
+            "pinyin": "shā",
+            "word": "沙子",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 3
+          },
+          {
+            "char": "包",
+            "pinyin": "bāo",
+            "word": "书包",
+            "group": "7.操场上",
+            "groupIndex": 2,
+            "itemIndex": 4
+          },
+          {
+            "char": "近",
+            "pinyin": "jìn",
+            "word": "远近",
+            "group": "8.人之初",
+            "groupIndex": 3,
+            "itemIndex": 0
+          },
+          {
+            "char": "远",
+            "pinyin": "yuǎn",
+            "word": "远方",
+            "group": "8.人之初",
+            "groupIndex": 3,
+            "itemIndex": 1
+          },
+          {
+            "char": "学",
+            "pinyin": "xué",
+            "word": "学习",
+            "group": "8.人之初",
+            "groupIndex": 3,
+            "itemIndex": 2
+          },
+          {
+            "char": "习",
+            "pinyin": "xí",
+            "word": "练习",
+            "group": "8.人之初",
+            "groupIndex": 3,
+            "itemIndex": 3
+          },
+          {
+            "char": "义",
+            "pinyin": "yì",
+            "word": "意义",
+            "group": "8.人之初",
+            "groupIndex": 3,
+            "itemIndex": 4
+          },
+          {
+            "char": "饱",
+            "pinyin": "bǎo",
+            "word": "吃饱",
+            "group": "语文园地五",
+            "groupIndex": 4,
+            "itemIndex": 0
+          },
+          {
+            "char": "抱",
+            "pinyin": "bào",
+            "word": "拥抱",
+            "group": "语文园地五",
+            "groupIndex": 4,
+            "itemIndex": 1
+          }
+        ],
+        "features": {
+          "singleSpeech": true,
+          "continuousSpeech": true,
+          "speed": true,
+          "voiceSelection": false,
+          "strokeAnimation": true,
+          "pause": false,
+          "replay": true,
+          "tracing": true,
+          "tianzige": true,
+          "print": false,
+          "recognitionQuiz": false
+        }
+      },
+      {
+        "file": "yuwen-1b-unit6-enhanced.html",
+        "title": "一年级下册·第六单元阅读卡 | Coco Learning Park",
+        "count": 22,
+        "uniqueCount": 22,
+        "groups": [
+          {
+            "name": "10.古诗二首",
+            "count": 4,
+            "chars": "首采角早"
+          },
+          {
+            "name": "11.浪花",
+            "count": 4,
+            "chars": "眼泪它贝"
+          },
+          {
+            "name": "12.荷叶圆圆",
+            "count": 5,
+            "chars": "机唱台朵来"
+          },
+          {
+            "name": "13.要下雨了",
+            "count": 6,
+            "chars": "这看美面问加"
+          },
+          {
+            "name": "语文园地六",
+            "count": 3,
+            "chars": "笔知豆"
+          }
+        ],
+        "records": [
+          {
+            "char": "首",
+            "pinyin": "shǒu",
+            "word": "首先",
+            "group": "10.古诗二首",
+            "groupIndex": 0,
+            "itemIndex": 0
+          },
+          {
+            "char": "采",
+            "pinyin": "cǎi",
+            "word": "采花",
+            "group": "10.古诗二首",
+            "groupIndex": 0,
+            "itemIndex": 1
+          },
+          {
+            "char": "角",
+            "pinyin": "jiǎo",
+            "word": "牛角",
+            "group": "10.古诗二首",
+            "groupIndex": 0,
+            "itemIndex": 2
+          },
+          {
+            "char": "早",
+            "pinyin": "zǎo",
+            "word": "早上",
+            "group": "10.古诗二首",
+            "groupIndex": 0,
+            "itemIndex": 3
+          },
+          {
+            "char": "眼",
+            "pinyin": "yǎn",
+            "word": "眼睛",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 0
+          },
+          {
+            "char": "泪",
+            "pinyin": "lèi",
+            "word": "泪水",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 1
+          },
+          {
+            "char": "它",
+            "pinyin": "tā",
+            "word": "它的",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 2
+          },
+          {
+            "char": "贝",
+            "pinyin": "bèi",
+            "word": "宝贝",
+            "group": "11.浪花",
+            "groupIndex": 1,
+            "itemIndex": 3
+          },
+          {
+            "char": "机",
+            "pinyin": "jī",
+            "word": "飞机",
+            "group": "12.荷叶圆圆",
+            "groupIndex": 2,
+            "itemIndex": 0
+          },
+          {
+            "char": "唱",
+            "pinyin": "chàng",
+            "word": "唱歌",
+            "group": "12.荷叶圆圆",
+            "groupIndex": 2,
+            "itemIndex": 1
+          },
+          {
+            "char": "台",
+            "pinyin": "tái",
+            "word": "舞台",
+            "group": "12.荷叶圆圆",
+            "groupIndex": 2,
+            "itemIndex": 2
+          },
+          {
+            "char": "朵",
+            "pinyin": "duǒ",
+            "word": "花朵",
+            "group": "12.荷叶圆圆",
+            "groupIndex": 2,
+            "itemIndex": 3
+          },
+          {
+            "char": "来",
+            "pinyin": "lái",
+            "word": "过来",
+            "group": "12.荷叶圆圆",
+            "groupIndex": 2,
+            "itemIndex": 4
+          },
+          {
+            "char": "这",
+            "pinyin": "zhè",
+            "word": "这个",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 0
+          },
+          {
+            "char": "看",
+            "pinyin": "kàn",
+            "word": "看书",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 1
+          },
+          {
+            "char": "美",
+            "pinyin": "měi",
+            "word": "美丽",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 2
+          },
+          {
+            "char": "面",
+            "pinyin": "miàn",
+            "word": "面条",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 3
+          },
+          {
+            "char": "问",
+            "pinyin": "wèn",
+            "word": "问好",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 4
+          },
+          {
+            "char": "加",
+            "pinyin": "jiā",
+            "word": "加油",
+            "group": "13.要下雨了",
+            "groupIndex": 3,
+            "itemIndex": 5
+          },
+          {
+            "char": "笔",
+            "pinyin": "bǐ",
+            "word": "铅笔",
+            "group": "语文园地六",
+            "groupIndex": 4,
+            "itemIndex": 0
+          },
+          {
+            "char": "知",
+            "pinyin": "zhī",
+            "word": "知道",
+            "group": "语文园地六",
+            "groupIndex": 4,
+            "itemIndex": 1
+          },
+          {
+            "char": "豆",
+            "pinyin": "dòu",
+            "word": "豆子",
+            "group": "语文园地六",
+            "groupIndex": 4,
+            "itemIndex": 2
+          }
+        ],
+        "features": {
+          "singleSpeech": true,
+          "continuousSpeech": true,
+          "speed": true,
+          "voiceSelection": false,
+          "strokeAnimation": true,
+          "pause": false,
+          "replay": true,
+          "tracing": true,
+          "tianzige": true,
+          "print": false,
+          "recognitionQuiz": false
+        }
+      },
+      {
+        "file": "yuwen-1b-unit7-enhanced.html",
+        "title": "一年级下册·第七单元阅读卡 | Coco Learning Park",
+        "count": 26,
+        "uniqueCount": 26,
+        "groups": [
+          {
+            "name": "14.文具的家",
+            "count": 6,
+            "chars": "元斗道放平安"
+          },
+          {
+            "name": "15.一分钟",
+            "count": 5,
+            "chars": "站坐车老师"
+          },
+          {
+            "name": "16.动物王国开大会",
+            "count": 6,
+            "chars": "国都百时点林"
+          },
+          {
+            "name": "17.小猴子下山",
+            "count": 7,
+            "chars": "高兴着往瓜兔进"
+          },
+          {
+            "name": "语文园地七",
+            "count": 2,
+            "chars": "巾洗"
+          }
+        ],
+        "records": [
+          {
+            "char": "元",
+            "pinyin": "yuán",
+            "word": "一元",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 0
+          },
+          {
+            "char": "斗",
+            "pinyin": "dǒu",
+            "word": "星斗",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 1
+          },
+          {
+            "char": "道",
+            "pinyin": "dào",
+            "word": "知道",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 2
+          },
+          {
+            "char": "放",
+            "pinyin": "fàng",
+            "word": "放学",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 3
+          },
+          {
+            "char": "平",
+            "pinyin": "píng",
+            "word": "平安",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 4
+          },
+          {
+            "char": "安",
+            "pinyin": "ān",
+            "word": "安全",
+            "group": "14.文具的家",
+            "groupIndex": 0,
+            "itemIndex": 5
+          },
+          {
+            "char": "站",
+            "pinyin": "zhàn",
+            "word": "站立",
+            "group": "15.一分钟",
+            "groupIndex": 1,
+            "itemIndex": 0
+          },
+          {
+            "char": "坐",
+            "pinyin": "zuò",
+            "word": "坐下",
+            "group": "15.一分钟",
+            "groupIndex": 1,
+            "itemIndex": 1
+          },
+          {
+            "char": "车",
+            "pinyin": "chē",
+            "word": "汽车",
+            "group": "15.一分钟",
+            "groupIndex": 1,
+            "itemIndex": 2
+          },
+          {
+            "char": "老",
+            "pinyin": "lǎo",
+            "word": "老师",
+            "group": "15.一分钟",
+            "groupIndex": 1,
+            "itemIndex": 3
+          },
+          {
+            "char": "师",
+            "pinyin": "shī",
+            "word": "老师",
+            "group": "15.一分钟",
+            "groupIndex": 1,
+            "itemIndex": 4
+          },
+          {
+            "char": "国",
+            "pinyin": "guó",
+            "word": "中国",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 0
+          },
+          {
+            "char": "都",
+            "pinyin": "dōu",
+            "word": "都是",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 1
+          },
+          {
+            "char": "百",
+            "pinyin": "bǎi",
+            "word": "一百",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 2
+          },
+          {
+            "char": "时",
+            "pinyin": "shí",
+            "word": "时间",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 3
+          },
+          {
+            "char": "点",
+            "pinyin": "diǎn",
+            "word": "一点",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 4
+          },
+          {
+            "char": "林",
+            "pinyin": "lín",
+            "word": "树林",
+            "group": "16.动物王国开大会",
+            "groupIndex": 2,
+            "itemIndex": 5
+          },
+          {
+            "char": "高",
+            "pinyin": "gāo",
+            "word": "高兴",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 0
+          },
+          {
+            "char": "兴",
+            "pinyin": "xìng",
+            "word": "高兴",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 1
+          },
+          {
+            "char": "着",
+            "pinyin": "zhe",
+            "word": "看着",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 2
+          },
+          {
+            "char": "往",
+            "pinyin": "wǎng",
+            "word": "往前",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 3
+          },
+          {
+            "char": "瓜",
+            "pinyin": "guā",
+            "word": "西瓜",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 4
+          },
+          {
+            "char": "兔",
+            "pinyin": "tù",
+            "word": "兔子",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 5
+          },
+          {
+            "char": "进",
+            "pinyin": "jìn",
+            "word": "进去",
+            "group": "17.小猴子下山",
+            "groupIndex": 3,
+            "itemIndex": 6
+          },
+          {
+            "char": "巾",
+            "pinyin": "jīn",
+            "word": "毛巾",
+            "group": "语文园地七",
+            "groupIndex": 4,
+            "itemIndex": 0
+          },
+          {
+            "char": "洗",
+            "pinyin": "xǐ",
+            "word": "洗手",
+            "group": "语文园地七",
+            "groupIndex": 4,
+            "itemIndex": 1
+          }
+        ],
+        "features": {
+          "singleSpeech": true,
+          "continuousSpeech": true,
+          "speed": true,
+          "voiceSelection": false,
+          "strokeAnimation": true,
+          "pause": false,
+          "replay": true,
+          "tracing": true,
+          "tianzige": true,
+          "print": false,
+          "recognitionQuiz": false
+        }
+      },
+      {
+        "file": "yuwen-1b-unit8-enhanced.html",
+        "title": "一年级下册·第八单元阅读卡 | Coco Learning Park",
+        "count": 21,
+        "uniqueCount": 21,
+        "groups": [
+          {
+            "name": "18.棉花姑娘",
+            "count": 6,
+            "chars": "她空身星久到"
+          },
+          {
+            "name": "19.咕咚",
+            "count": 6,
+            "chars": "下怕为家象没"
+          },
+          {
+            "name": "20.小壁虎借尾巴",
+            "count": 6,
+            "chars": "向边行干过找"
+          },
+          {
+            "name": "语文园地八",
+            "count": 3,
+            "chars": "页户交"
+          }
+        ],
+        "records": [
+          {
+            "char": "她",
+            "pinyin": "tā",
+            "word": "她的",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 0
+          },
+          {
+            "char": "空",
+            "pinyin": "kōng",
+            "word": "天空",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 1
+          },
+          {
+            "char": "身",
+            "pinyin": "shēn",
+            "word": "身体",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 2
+          },
+          {
+            "char": "星",
+            "pinyin": "xīng",
+            "word": "星星",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 3
+          },
+          {
+            "char": "久",
+            "pinyin": "jiǔ",
+            "word": "长久",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 4
+          },
+          {
+            "char": "到",
+            "pinyin": "dào",
+            "word": "到达",
+            "group": "18.棉花姑娘",
+            "groupIndex": 0,
+            "itemIndex": 5
+          },
+          {
+            "char": "下",
+            "pinyin": "xià",
+            "word": "下面",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 0
+          },
+          {
+            "char": "怕",
+            "pinyin": "pà",
+            "word": "害怕",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 1
+          },
+          {
+            "char": "为",
+            "pinyin": "wèi",
+            "word": "因为",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 2
+          },
+          {
+            "char": "家",
+            "pinyin": "jiā",
+            "word": "回家",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 3
+          },
+          {
+            "char": "象",
+            "pinyin": "xiàng",
+            "word": "大象",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 4
+          },
+          {
+            "char": "没",
+            "pinyin": "méi",
+            "word": "没有",
+            "group": "19.咕咚",
+            "groupIndex": 1,
+            "itemIndex": 5
+          },
+          {
+            "char": "向",
+            "pinyin": "xiàng",
+            "word": "方向",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 0
+          },
+          {
+            "char": "边",
+            "pinyin": "biān",
+            "word": "旁边",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 1
+          },
+          {
+            "char": "行",
+            "pinyin": "xíng",
+            "word": "行走",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 2
+          },
+          {
+            "char": "干",
+            "pinyin": "gàn",
+            "word": "干净",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 3
+          },
+          {
+            "char": "过",
+            "pinyin": "guò",
+            "word": "过去",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 4
+          },
+          {
+            "char": "找",
+            "pinyin": "zhǎo",
+            "word": "找到",
+            "group": "20.小壁虎借尾巴",
+            "groupIndex": 2,
+            "itemIndex": 5
+          },
+          {
+            "char": "页",
+            "pinyin": "yè",
+            "word": "页码",
+            "group": "语文园地八",
+            "groupIndex": 3,
+            "itemIndex": 0
+          },
+          {
+            "char": "户",
+            "pinyin": "hù",
+            "word": "门户",
+            "group": "语文园地八",
+            "groupIndex": 3,
+            "itemIndex": 1
+          },
+          {
+            "char": "交",
+            "pinyin": "jiāo",
+            "word": "交朋友",
+            "group": "语文园地八",
+            "groupIndex": 3,
+            "itemIndex": 2
+          }
+        ],
+        "features": {
+          "singleSpeech": true,
+          "continuousSpeech": true,
+          "speed": true,
+          "voiceSelection": false,
+          "strokeAnimation": true,
+          "pause": false,
+          "replay": true,
+          "tracing": true,
+          "tianzige": true,
+          "print": false,
+          "recognitionQuiz": false
+        }
+      }
+    ],
+    "recordCount": 186,
+    "uniqueChars": [
+      "春",
+      "冬",
+      "花",
+      "吹",
+      "飞",
+      "入",
+      "什",
+      "么",
+      "古",
+      "胡",
+      "双",
+      "言",
+      "青",
+      "清",
+      "苗",
+      "晴",
+      "请",
+      "生",
+      "字",
+      "红",
+      "动",
+      "万",
+      "无",
+      "明",
+      "文",
+      "卡",
+      "片",
+      "合",
+      "共",
+      "产",
+      "当",
+      "太",
+      "阳",
+      "光",
+      "亮",
+      "竹",
+      "江",
+      "主",
+      "方",
+      "后",
+      "告",
+      "的",
+      "会",
+      "北",
+      "京",
+      "广",
+      "写",
+      "认",
+      "走",
+      "河",
+      "说",
+      "让",
+      "自",
+      "己",
+      "从",
+      "好",
+      "们",
+      "他",
+      "回",
+      "毛",
+      "快",
+      "乐",
+      "书",
+      "画",
+      "止",
+      "斤",
+      "寸",
+      "丁",
+      "千",
+      "旦",
+      "思",
+      "床",
+      "前",
+      "地",
+      "故",
+      "乡",
+      "色",
+      "把",
+      "讲",
+      "样",
+      "笑",
+      "再",
+      "节",
+      "米",
+      "间",
+      "吃",
+      "分",
+      "肉",
+      "册",
+      "纸",
+      "电",
+      "衣",
+      "物",
+      "造",
+      "运",
+      "欢",
+      "房",
+      "网",
+      "对",
+      "今",
+      "雪",
+      "细",
+      "语",
+      "话",
+      "打",
+      "跑",
+      "足",
+      "沙",
+      "包",
+      "近",
+      "远",
+      "学",
+      "习",
+      "义",
+      "饱",
+      "抱",
+      "首",
+      "采",
+      "角",
+      "早",
+      "眼",
+      "泪",
+      "它",
+      "贝",
+      "机",
+      "唱",
+      "台",
+      "朵",
+      "来",
+      "这",
+      "看",
+      "美",
+      "面",
+      "问",
+      "加",
+      "笔",
+      "知",
+      "豆",
+      "元",
+      "斗",
+      "道",
+      "放",
+      "平",
+      "安",
+      "站",
+      "坐",
+      "车",
+      "老",
+      "师",
+      "国",
+      "都",
+      "百",
+      "时",
+      "点",
+      "林",
+      "高",
+      "兴",
+      "着",
+      "往",
+      "瓜",
+      "兔",
+      "进",
+      "巾",
+      "洗",
+      "她",
+      "空",
+      "身",
+      "星",
+      "久",
+      "到",
+      "下",
+      "怕",
+      "为",
+      "家",
+      "象",
+      "没",
+      "向",
+      "边",
+      "行",
+      "干",
+      "过",
+      "找",
+      "页",
+      "户",
+      "交"
+    ],
+    "uniqueCount": 185
+  },
+  "otherPages": [
+    {
+      "file": "yuwen-1b-unit1.html",
+      "title": "一年级下册·第一单元认字卡（写字表）",
+      "bytes": 12973
+    },
+    {
+      "file": "语文认字卡-speak.html",
+      "title": "一年级下册语文认字卡（语音版）",
+      "bytes": 12803
+    },
+    {
+      "file": "hanzi-learn.html",
+      "title": "汉字讲解",
+      "bytes": 13269
+    },
+    {
+      "file": "ciyu-review-shizi.html",
+      "title": "词语复习·写字卡 | Coco Learning Park",
+      "bytes": 23088
+    }
+  ]
+}

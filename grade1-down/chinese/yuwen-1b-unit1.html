@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>一年级下册·第一单元认字卡（写字表）</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"楷体","KaiTi","STKaiti",serif;background:linear-gradient(135deg,#fce4ec,#e8f5e9,#e3f2fd,#fff9c4);min-height:100vh;padding:16px}
+h1{text-align:center;font-size:2em;color:#e91e63;margin:10px 0 4px;text-shadow:2px 2px 4px rgba(0,0,0,.1)}
+.subtitle{text-align:center;color:#888;font-size:.95em;margin-bottom:14px}
+.filters{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:20px}
+.filters button{padding:7px 18px;border:none;border-radius:20px;font-size:1em;font-family:inherit;cursor:pointer;transition:all .25s;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.filters button:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.filters button.active{transform:scale(1.08);box-shadow:0 0 0 3px #fff,0 4px 12px rgba(0,0,0,.25)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:16px;max-width:1000px;margin:0 auto}
+.card-wrap{perspective:600px;height:190px;cursor:pointer}
+.card{position:relative;width:100%;height:100%;transition:transform .5s ease;transform-style:preserve-3d}
+.card.flipped{transform:rotateY(180deg)}
+.card .front,.card .back{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.1);padding:10px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.card .front{background:#fff;z-index:2}
+.card .back{background:#fff;transform:rotateY(180deg)}
+.card .front .hanzi{font-size:4.2em;line-height:1.1}
+.card .back .pinyin{font-size:1.5em;margin-bottom:4px}
+.card .back .word{font-size:1.2em;color:#555;margin-bottom:6px}
+.card .lesson-tag{position:absolute;top:7px;left:9px;font-size:.65em;color:#fff;border-radius:10px;padding:1px 8px}
+.card .back .watermark{font-size:2.8em;opacity:.2;position:absolute;bottom:4px;right:10px}
+.card .front .hint{position:absolute;bottom:7px;font-size:.6em;color:#bbb}
+.speak-btn{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#ff9800,#ff5722);color:#fff;border:none;border-radius:16px;padding:4px 14px;font-size:.82em;font-family:inherit;cursor:pointer;transition:all .2s;box-shadow:0 2px 6px rgba(0,0,0,.15);position:relative;z-index:10}
+.speak-btn:hover{transform:scale(1.1)}
+.speak-btn:active{transform:scale(.95)}
+.speak-btn.speaking{animation:pulse .6s infinite alternate}
+@keyframes pulse{from{transform:scale(1)}to{transform:scale(1.15)}}
+.front .speak-char-btn{position:absolute;bottom:7px;right:9px;background:linear-gradient(135deg,#42a5f5,#1e88e5);color:#fff;border:none;border-radius:50%;width:30px;height:30px;font-size:1em;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.15);z-index:10}
+.front .speak-char-btn:hover{transform:scale(1.15)}
+.controls{text-align:center;margin:20px 0 10px}
+.controls button{padding:10px 28px;border:none;border-radius:24px;font-size:1.05em;font-family:inherit;cursor:pointer;color:#fff;background:linear-gradient(135deg,#7c4dff,#536dfe);box-shadow:0 3px 10px rgba(0,0,0,.2);transition:all .2s;margin:4px}
+.controls button:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(0,0,0,.3)}
+.controls button:disabled{opacity:.5;transform:none}
+.controls .stop-btn{background:linear-gradient(135deg,#ef5350,#d32f2f)}
+.speed-ctrl{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;font-size:.9em;color:#666}
+.speed-ctrl input{width:120px}
+.footer{text-align:center;color:#aaa;font-size:.75em;margin-top:18px;padding-bottom:10px}
+@media(max-width:500px){
+ .grid{grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:10px}
+ .card-wrap{height:170px}
+ .card .front .hanzi{font-size:3.3em}
+ h1{font-size:1.5em}
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+<h1>📖 第一单元 · 识字 🔊</h1>
+<p class="subtitle">一年级下册写字表 · 点卡片翻转 · 点🔊听发音</p>
+<div class="filters" id="filters"></div>
+<div class="grid" id="grid"></div>
+<div class="controls">
+ <button id="playAllBtn">▶ 连续播放（听写练习）</button>
+ <button id="stopBtn" class="stop-btn" style="display:none">⏹ 停止</button>
+ <div class="speed-ctrl">
+  <span>语速：</span><input type="range" id="speedSlider" min="0.4" max="1.2" step="0.05" value="0.7"><span id="speedVal">0.7x</span>
+ </div>
+</div>
+<p class="footer">🦎 Coco Learning Park · 人教版2024新课标 · 数据来源：课本写字表总表</p>
+
+<script>
+var palette=[
+ ['#ef5350','#e53935'],['#ab47bc','#8e24aa'],['#42a5f5','#1e88e5'],
+ ['#66bb6a','#43a047'],['#ffa726','#fb8c00']
+];
+var btnColors=['#ef5350','#ab47bc','#42a5f5','#66bb6a','#ffa726'];
+
+// 第一单元数据：[汉字, 拼音, 组词, 课名]
+var lessons=[
+ {name:'1.春夏秋冬',chars:[
+  ['春','chūn','春天','春风来了'],['冬','dōng','冬天','冬雪'],
+  ['花','huā','花朵','开花'],['吹','chuī','吹风','吹气'],
+  ['飞','fēi','飞鸟','飞机'],['入','rù','进入','出入']
+ ]},
+ {name:'2.姓氏歌',chars:[
+  ['什','shén','什么','什么人'],['么','me','什么','怎么'],
+  ['古','gǔ','古代','古人'],['胡','hú','胡说','胡子'],
+  ['双','shuāng','双手','一双'],['言','yán','语言','发言']
+ ]},
+ {name:'3.小青蛙',chars:[
+  ['青','qīng','青草','青蛙'],['清','qīng','清水','清楚'],
+  ['苗','miáo','禾苗','树苗'],['晴','qíng','晴天','天晴'],
+  ['请','qǐng','请问','请坐'],['生','shēng','生活','学生']
+ ]},
+ {name:'4.猜字谜',chars:[
+  ['字','zì','写字','汉字'],['红','hóng','红色','红花'],
+  ['动','dòng','运动','动物'],['万','wàn','万岁','千万'],
+  ['无','wú','无人','无法'],['明','míng','明天','光明']
+ ]},
+ {name:'语文园地一',chars:[
+  ['文','wén','语文','文字'],['卡','kǎ','卡片','生字卡'],
+  ['片','piàn','卡片','一片'],['合','hé','合唱','合作']
+ ]}
+];
+
+var speechRate=0.7;
+var bestZhVoice=null;
+var isPlaying=false;
+var stopRequested=false;
+
+function loadVoices(){
+ var voices=speechSynthesis.getVoices();
+ if(!voices.length)return;
+ var zh=voices.filter(function(v){return (v.lang.indexOf('zh-CN')===0||v.lang==='zh'||v.lang.indexOf('cmn')===0)&&v.lang.indexOf('zh-HK')!==0&&v.lang.indexOf('zh-TW')!==0});
+ var pref=['Online (Natural)','Xiaoxiao Online','Yunxi Online','Microsoft Xiaoxiao','Microsoft Yunxi','Ting-Ting','Tingting','Xiaoxiao','Xiaoyi','Huihui'];
+ for(var p=0;p<pref.length;p++){
+  for(var i=0;i<zh.length;i++){
+   if(zh[i].name.indexOf(pref[p])>=0){bestZhVoice=zh[i];break}
+  }
+  if(bestZhVoice)break;
+ }
+ if(!bestZhVoice){for(var i=0;i<zh.length;i++){if(zh[i].localService){bestZhVoice=zh[i];break}}}
+ if(!bestZhVoice&&zh.length)bestZhVoice=zh[0];
+}
+if(speechSynthesis.onvoiceschanged!==undefined)speechSynthesis.onvoiceschanged=loadVoices;
+loadVoices();
+
+function speak(text,e){
+ if(e){e.stopPropagation();e.preventDefault()}
+ speechSynthesis.cancel();
+ var u=new SpeechSynthesisUtterance(text);
+ u.lang='zh-CN';u.rate=speechRate;u.pitch=1.1;
+ if(bestZhVoice)u.voice=bestZhVoice;
+ speechSynthesis.speak(u);
+}
+
+function speakSeq(texts,cb){
+ if(!texts.length){if(cb)cb();return}
+ speechSynthesis.cancel();
+ var idx=0;
+ function next(){
+  if(stopRequested||idx>=texts.length){if(cb)cb();return}
+  var u=new SpeechSynthesisUtterance(texts[idx]);
+  u.lang='zh-CN';u.rate=speechRate;u.pitch=1.1;
+  if(bestZhVoice)u.voice=bestZhVoice;
+  u.onend=function(){idx++;setTimeout(next,400)};
+  u.onerror=function(){idx++;setTimeout(next,400)};
+  speechSynthesis.speak(u);
+ }
+ next();
+}
+
+// 渲染
+var fEl=document.getElementById('filters');
+var gEl=document.getElementById('grid');
+
+var allBtn=document.createElement('button');
+allBtn.textContent='全部('+getTotalCount()+')';
+allBtn.style.background='#78909c';
+allBtn.className='active';
+allBtn.onclick=function(){render(-1)};
+fEl.appendChild(allBtn);
+
+function getTotalCount(){var n=0;for(var i=0;i<lessons.length;i++)n+=lessons[i].chars.length;return n}
+
+for(var i=0;i<lessons.length;i++){
+ (function(idx){
+  var b=document.createElement('button');
+  b.textContent=lessons[idx].name;
+  b.style.background=btnColors[idx%btnColors.length];
+  b.onclick=function(){render(idx)};
+  fEl.appendChild(b);
+ })(i);
+}
+
+function render(lessonIdx){
+ var btns=fEl.getElementsByTagName('button');
+ for(var i=0;i<btns.length;i++)btns[i].className=(i===lessonIdx+1)?'active':'';
+ gEl.innerHTML='';
+ var list=[];
+ if(lessonIdx<0){
+  for(var l=0;l<lessons.length;l++)
+   for(var c=0;c<lessons[l].chars.length;c++)
+    list.push({hz:lessons[l].chars[c][0],py:lessons[l].chars[c][1],cw:lessons[l].chars[c][2],li:l});
+ }else{
+  for(var c=0;c<lessons[lessonIdx].chars.length;c++)
+   list.push({hz:lessons[lessonIdx].chars[c][0],py:lessons[lessonIdx].chars[c][1],cw:lessons[lessonIdx].chars[c][2],li:lessonIdx});
+ }
+
+ for(var i=0;i<list.length;i++){
+  (function(hz,py,cw,li){
+   var c1=palette[li%palette.length][0],c2=palette[li%palette.length][1];
+   var wrap=document.createElement('div');wrap.className='card-wrap';
+   var card=document.createElement('div');card.className='card';
+
+   var front=document.createElement('div');front.className='front';
+   front.style.border='3px solid '+c1;
+   var hanzi=document.createElement('span');hanzi.className='hanzi';hanzi.style.color=c2;hanzi.textContent=hz;
+   var tag=document.createElement('span');tag.className='lesson-tag';tag.style.background=c1;tag.textContent=lessons[li].name.length>6?lessons[li].name.substr(0,6):lessons[li].name;
+   var hint=document.createElement('span');hint.className='hint';hint.textContent='👆 点我翻转';
+   var fBtn=document.createElement('button');fBtn.className='speak-char-btn';fBtn.innerHTML='🔊';fBtn.title='朗读：'+hz;
+   fBtn.addEventListener('click',function(e){speak(hz,e)});
+   front.appendChild(hanzi);front.appendChild(tag);front.appendChild(hint);front.appendChild(fBtn);
+
+   var back=document.createElement('div');back.className='back';
+   back.style.border='3px solid '+c1;
+   back.style.background='linear-gradient(135deg,'+c1+'11,'+c2+'18)';
+   var pyDiv=document.createElement('div');pyDiv.className='pinyin';pyDiv.style.color=c1;pyDiv.textContent=py;
+   var cwDiv=document.createElement('div');cwDiv.className='word';cwDiv.textContent=cw;
+   var sBtn=document.createElement('button');sBtn.className='speak-btn';sBtn.innerHTML='🔊 朗读';
+   sBtn.addEventListener('click',function(e){
+    e.stopPropagation();e.preventDefault();
+    speakSeq([hz,cw],null);
+   });
+   var wm=document.createElement('div');wm.className='watermark';wm.textContent=hz;
+   var tag2=document.createElement('span');tag2.className='lesson-tag';tag2.style.background=c1;tag2.textContent=lessons[li].name.length>6?lessons[li].name.substr(0,6):lessons[li].name;
+   back.appendChild(pyDiv);back.appendChild(cwDiv);back.appendChild(sBtn);back.appendChild(wm);back.appendChild(tag2);
+
+   card.appendChild(front);card.appendChild(back);wrap.appendChild(card);
+   wrap.addEventListener('click',function(){card.classList.toggle('flipped')});
+   gEl.appendChild(wrap);
+  })(list[i].hz,list[i].py,list[i].cw,list[i].li);
+ }
+}
+
+render(-1);
+
+// 连续播放
+var playBtn=document.getElementById('playAllBtn');
+var stopBtnEl=document.getElementById('stopBtn');
+var speedSlider=document.getElementById('speedSlider');
+var speedVal=document.getElementById('speedVal');
+
+speedSlider.addEventListener('input',function(){
+ speechRate=parseFloat(this.value);
+ speedVal.textContent=speechRate.toFixed(2)+'x';
+});
+
+playBtn.addEventListener('click',function(){
+ if(isPlaying)return;
+ isPlaying=true;stopRequested=false;
+ playBtn.style.display='none';stopBtnEl.style.display='inline-block';
+ var allChars=[];
+ for(var l=0;l<lessons.length;l++)
+  for(var c=0;c<lessons[l].chars.length;c++)
+   allChars.push([lessons[l].chars[c][0],lessons[l].chars[c][1],lessons[l].chars[c][2]]);
+ var idx=0;
+ function playNext(){
+  if(stopRequested||idx>=allChars.length){finish();return}
+  var hz=allChars[idx][0],cw=allChars[idx][2];
+  // 翻转对应卡片
+  var cards=gEl.querySelectorAll('.card-wrap');
+  if(cards[idx]){
+   cards[idx].scrollIntoView({behavior:'smooth',block:'center'});
+   var card=cards[idx].querySelector('.card');
+   if(card&&!card.classList.contains('flipped'))card.classList.add('flipped');
+  }
+  speakSeq([hz,cw],function(){
+   idx++;
+   setTimeout(playNext,600);
+  });
+ }
+ function finish(){
+  isPlaying=false;stopRequested=false;
+  playBtn.style.display='inline-block';stopBtnEl.style.display='none';
+ }
+ playNext();
+});
+
+stopBtnEl.addEventListener('click',function(){
+ stopRequested=true;
+ speechSynthesis.cancel();
+ isPlaying=false;
+ playBtn.style.display='inline-block';stopBtnEl.style.display='none';
+});
+</script>
+</body>
+</html>

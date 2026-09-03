@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>纽扣分类 - 二年级数学 · 分类整理专题 分类整理第3课</title>
+<style>
+/* ===== Reset & Base ===== */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif;background:linear-gradient(135deg,#FFF5E6 0%,#FFE8F0 50%,#E8F0FF 100%);min-height:100vh;color:#333;line-height:1.6;overflow-x:hidden}
+
+/* ===== Header / Nav ===== */
+.breadcrumb{background:linear-gradient(90deg,#FF6B9D,#C44FE0,#4F8FE0);color:#fff;text-align:center;padding:10px 16px;font-size:14px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.breadcrumb a{color:#FFE08A;text-decoration:none}
+.breadcrumb a:hover{text-decoration:underline}
+
+.lesson-title{text-align:center;padding:28px 16px 12px;position:relative}
+.lesson-title h1{font-size:clamp(26px,5vw,36px);background:linear-gradient(90deg,#FF4444,#C44FE0,#4488FF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.lesson-title .subtitle{font-size:16px;color:#666;margin-top:4px}
+
+/* ===== Section cards ===== */
+.section{max-width:780px;margin:20px auto;padding:24px 20px;background:#fff;border-radius:20px;box-shadow:0 4px 20px rgba(0,0,0,.08);position:relative;overflow:hidden}
+.section::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#FF6B9D,#FFD93D,#6BCB77,#4D96FF)}
+.section-icon{font-size:28px;margin-right:8px;vertical-align:middle}
+.section h2{font-size:clamp(20px,4vw,24px);color:#444;margin-bottom:16px;display:flex;align-items:center;gap:6px}
+.section h2 .section-icon{font-size:28px}
+.section p,.section li{font-size:clamp(15px,3.2vw,17px);margin-bottom:8px}
+
+/* ===== TTS Button ===== */
+.tts-btn{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#FF9A56,#FF6B9D);color:#fff;border:none;border-radius:20px;padding:6px 16px;font-size:14px;cursor:pointer;margin:6px 4px;transition:.2s}
+.tts-btn:hover{transform:scale(1.05);box-shadow:0 3px 12px rgba(255,107,157,.4)}
+.tts-btn:active{transform:scale(.97)}
+.tts-btn.playing{animation:pulse-glow 1s infinite}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 8px rgba(255,107,157,.5)}50%{box-shadow:0 0 20px rgba(255,107,157,.8)}}
+
+/* ===== Button (physical) shapes ===== */
+.button-grid{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;padding:12px;min-height:90px}
+.btn-shape{position:relative;width:64px;height:64px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .35s cubic-bezier(.34,1.56,.64,1);user-select:none;border:3px solid rgba(0,0,0,.18);box-shadow:2px 3px 8px rgba(0,0,0,.15)}
+.btn-shape:hover{transform:scale(1.12) rotate(-3deg);box-shadow:3px 5px 14px rgba(0,0,0,.22)}
+.btn-shape.circle{border-radius:50%}
+.btn-shape.square{border-radius:10px}
+.btn-shape.red{background:linear-gradient(135deg,#FF6666,#FF4444)}
+.btn-shape.blue{background:linear-gradient(135deg,#66AAFF,#4488FF)}
+.btn-shape .holes{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center}
+.btn-shape .hole{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.85);box-shadow:inset 1px 1px 2px rgba(0,0,0,.25)}
+.btn-shape .holes.h2{flex-direction:column;gap:10px}
+.btn-shape .holes.h4{width:26px;display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.btn-shape .label-tag{position:absolute;bottom:-22px;font-size:11px;white-space:nowrap;color:#666;font-weight:600}
+.btn-shape.selected{outline:3px dashed #FFD700;outline-offset:3px;animation:wiggle .4s}
+.btn-shape.sorted{opacity:.5;pointer-events:none;transform:scale(.85)}
+@keyframes wiggle{0%{transform:rotate(0)}25%{transform:rotate(-5deg)}75%{transform:rotate(5deg)}100%{transform:rotate(0)}}
+
+/* ===== Drop zones ===== */
+.drop-zones{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:14px}
+.drop-zone{min-width:120px;min-height:100px;border:3px dashed #ccc;border-radius:16px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:6px;transition:.3s;background:rgba(255,255,255,.5)}
+.drop-zone .zone-label{font-size:15px;font-weight:700;color:#555;margin-bottom:4px;text-align:center}
+.drop-zone.highlight{border-color:#FFD93D;background:rgba(255,217,61,.15);transform:scale(1.03)}
+.drop-zone .zone-buttons{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.drop-zone.correct{border-color:#6BCB77;background:rgba(107,203,119,.1);animation:flash-green .6s}
+@keyframes flash-green{0%,100%{background:rgba(107,203,119,.1)}50%{background:rgba(107,203,119,.3)}}
+
+/* ===== Tree Diagram ===== */
+.tree-container{overflow-x:auto;padding:20px 0}
+.tree-svg{display:block;margin:0 auto}
+.tree-node{cursor:default}
+.tree-node rect,.tree-node circle{transition:all .4s}
+.tree-node text{font-family:'Microsoft YaHei',sans-serif;font-size:13px;fill:#333}
+.tree-appear{animation:fadeSlideUp .5s ease-out both}
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== Level Counter ===== */
+.level-counter{display:flex;justify-content:center;gap:12px;margin:18px 0;flex-wrap:wrap}
+.level-badge{padding:8px 18px;border-radius:30px;font-size:18px;font-weight:700;color:#fff;opacity:.35;transition:.4s;transform:scale(.9)}
+.level-badge.active{opacity:1;transform:scale(1);box-shadow:0 3px 12px rgba(0,0,0,.2)}
+.level-badge.l1{background:linear-gradient(135deg,#FF6B9D,#FF4444)}
+.level-badge.l2{background:linear-gradient(135deg,#FFB347,#FF6B9D)}
+.level-badge.l3{background:linear-gradient(135deg,#6BCB77,#4D96FF)}
+
+/* ===== Buttons / actions ===== */
+.action-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 24px;border:none;border-radius:30px;font-size:16px;font-weight:600;cursor:pointer;transition:.25s;color:#fff}
+.action-btn:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.action-btn:active{transform:translateY(0)}
+.action-btn.primary{background:linear-gradient(135deg,#4D96FF,#6BCB77)}
+.action-btn.secondary{background:linear-gradient(135deg,#FF6B9D,#C44FE0)}
+.action-btn.reset{background:linear-gradient(135deg,#aaa,#888)}
+.action-btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+/* ===== Insight Box ===== */
+.insight-box{background:linear-gradient(135deg,#FFF8E1,#FFECB3);border-left:5px solid #FFB347;border-radius:12px;padding:16px 20px;margin:14px 0;font-size:17px}
+.insight-box .icon{font-size:24px;margin-right:6px}
+
+/* ===== Story area ===== */
+.story-area{background:linear-gradient(135deg,#FFF0F5,#FFF5EE);border-radius:16px;padding:20px;margin:10px 0;position:relative}
+.story-character{font-size:60px;text-align:center;margin-bottom:8px;animation:bounce-char 2s infinite}
+@keyframes bounce-char{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.story-text{font-size:17px;text-align:center;color:#555;line-height:1.8}
+
+/* ===== Scattered buttons (intro animation) ===== */
+.scattered-box{position:relative;width:100%;height:200px;background:linear-gradient(135deg,#f5f0e8,#ece4d4);border-radius:16px;overflow:hidden;margin:12px 0;border:2px solid #ddd}
+.scattered-box .btn-shape{position:absolute;transition:all 1s cubic-bezier(.34,1.56,.64,1)}
+
+/* ===== Practice: card area ===== */
+.card-item{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:70px;height:85px;border-radius:10px;border:2px solid #ddd;background:#fff;margin:5px;cursor:pointer;transition:.3s;font-size:28px;box-shadow:2px 2px 6px rgba(0,0,0,.08)}
+.card-item:hover{transform:scale(1.08);border-color:#FFD93D}
+.card-item .card-label{font-size:11px;color:#888;margin-top:2px}
+.card-item.placed{opacity:.4;pointer-events:none}
+
+/* ===== Feedback overlay ===== */
+.feedback{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:#fff;border-radius:20px;padding:30px 40px;text-align:center;z-index:200;box-shadow:0 10px 40px rgba(0,0,0,.25);transition:.35s}
+.feedback.show{transform:translate(-50%,-50%) scale(1)}
+.feedback .fb-icon{font-size:60px;display:block;margin-bottom:10px}
+.feedback .fb-text{font-size:20px;font-weight:600;color:#333}
+.feedback-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:199;display:none}
+.feedback-backdrop.show{display:block}
+
+/* ===== Extension box ===== */
+.extension-box{background:linear-gradient(135deg,#E8F5E9,#F1F8E9);border-left:5px solid #6BCB77;border-radius:12px;padding:16px 20px;margin:14px 0}
+
+/* ===== Summary stars ===== */
+.summary-stars{display:flex;justify-content:center;gap:4px;margin:10px 0;font-size:32px;animation:star-sparkle 2s infinite}
+@keyframes star-sparkle{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3)}}
+
+/* ===== Bottom nav ===== */
+.bottom-nav{max-width:780px;margin:24px auto 40px;display:flex;justify-content:space-between;align-items:center;padding:0 16px;gap:8px;flex-wrap:wrap}
+.bottom-nav a{text-decoration:none;padding:10px 20px;border-radius:30px;font-size:15px;font-weight:600;color:#fff;background:linear-gradient(135deg,#4D96FF,#6BCB77);transition:.25s;text-align:center}
+.bottom-nav a:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(77,150,255,.3)}
+.bottom-nav a.disabled{background:#ccc;pointer-events:none}
+
+/* ===== Order demo area ===== */
+.order-demo{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:12px 0}
+.order-card{padding:12px 18px;border-radius:14px;background:#fff;border:2px solid #ddd;cursor:pointer;transition:.3s;text-align:center;min-width:100px}
+.order-card:hover{border-color:#FFD93D;transform:translateY(-2px)}
+.order-card.active{border-color:#4D96FF;background:linear-gradient(135deg,#E3F2FD,#fff);box-shadow:0 3px 12px rgba(77,150,255,.2)}
+.order-card .order-title{font-size:15px;font-weight:700;color:#555}
+.order-card .order-seq{font-size:12px;color:#999;margin-top:2px}
+
+/* ===== Animations ===== */
+.fade-in{animation:fadeIn .6s ease-out both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.pop-in{animation:popIn .4s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes popIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+
+/* ===== Practice table ===== */
+.practice-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:15px}
+.practice-table th,.practice-table td{border:2px solid #ddd;padding:10px;text-align:center}
+.practice-table th{background:linear-gradient(135deg,#FFE8F0,#E8F0FF);color:#555;font-weight:700}
+.practice-table td{min-height:50px;vertical-align:middle}
+.practice-table .drop-cell{min-height:60px;cursor:pointer;transition:.2s;position:relative}
+.practice-table .drop-cell:hover{background:rgba(255,217,61,.15)}
+.practice-table .drop-cell.filled{background:rgba(107,203,119,.08)}
+
+/* ===== Responsive ===== */
+@media(max-width:480px){
+  .section{margin:12px 8px;padding:16px 14px}
+  .btn-shape{width:50px;height:50px}
+  .btn-shape .hole{width:6px;height:6px}
+  .drop-zone{min-width:90px;min-height:80px}
+  .bottom-nav{flex-direction:column;align-items:stretch}
+  .bottom-nav a{text-align:center}
+}
+
+/* ===== Confetti ===== */
+.confetti-piece{position:fixed;width:10px;height:10px;z-index:300;pointer-events:none;animation:confetti-fall 3s linear forwards}
+@keyframes confetti-fall{0%{opacity:1;transform:translateY(-20px) rotate(0deg)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
+</style>
+<style id="public-local-controls">/* 公开站：语音工具就近放置，不使用固定全站通栏 */
+.bottom-bar,.ttsbar,.voice-fab{position:static!important;inset:auto!important;margin:18px auto!important;transform:none!important}.voice-panel{position:static!important;display:block!important;margin:8px auto!important}body{padding-bottom:0!important}
+</style></head>
+<body>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+  <a href="unit1-index.html">二年级数学 · 分类整理专题</a> &gt;
+  <a href="unit1-index.html">分类与整理专题</a> &gt;
+  第3课 纽扣分类
+</div>
+
+<!-- Title -->
+<div class="lesson-title">
+  <h1>🧵 纽扣分类</h1>
+  <div class="subtitle">多次分类 · 分完还能继续分！</div>
+</div>
+
+<!-- Level Counter -->
+<div class="level-counter" id="levelCounter">
+  <div class="level-badge l1" id="badge1">第1次：2类</div>
+  <div class="level-badge l2" id="badge2">第2次：4类</div>
+  <div class="level-badge l3" id="badge3">第3次：8类</div>
+</div>
+
+<!-- ===== Section 1: Story ===== -->
+<div class="section fade-in" id="sec-story">
+  <h2><span class="section-icon">📖</span> 丽丽的纽扣盒</h2>
+  <button class="tts-btn" onclick="speak('丽丽不小心打翻了纽扣盒！好多纽扣洒了一地，有红色的、蓝色的，圆形的、方形的，有2个孔的，也有4个孔的。我们来帮丽丽把纽扣分类整理好吧！')">🔊 听故事</button>
+
+  <div class="story-area">
+    <div class="story-character">👧</div>
+    <div class="story-text">
+      丽丽不小心<strong>打翻</strong>了纽扣盒！<br>
+      好多纽扣洒了一地 😱<br>
+      有<span style="color:#FF4444;font-weight:700">红色</span>的、<span style="color:#4488FF;font-weight:700">蓝色</span>的，<br>
+      有⭕圆形的、🟥方形的，<br>
+      有2个孔的、4个孔的……<br>
+      <strong>我们来帮丽丽分类整理吧！</strong>
+    </div>
+  </div>
+
+  <!-- Scattered buttons animation -->
+  <div class="scattered-box" id="scatteredBox"></div>
+  <div style="text-align:center;margin-top:8px">
+    <button class="action-btn secondary" onclick="scatterButtons()">🌪️ 再打翻一次</button>
+    <button class="action-btn primary" onclick="scrollToSection('sec-level1')">👉 开始分类</button>
+  </div>
+</div>
+
+<!-- ===== Section 2: Level 1 - By Shape ===== -->
+<div class="section fade-in" id="sec-level1">
+  <h2><span class="section-icon">🔍</span> 第一次分类：按形状分</h2>
+  <button class="tts-btn" onclick="speak('第一次分类，我们先按形状来分。圆形的放一边，方形的放另一边。点一下纽扣，再点你想放的格子。')">🔊 听讲解</button>
+
+  <p>👆 点一下纽扣，再点你想放的格子</p>
+  <div class="button-grid" id="l1-source"></div>
+
+  <div class="drop-zones" id="l1-zones">
+    <div class="drop-zone" data-accept="circle" onclick="dropInZone('l1','circle')">
+      <div class="zone-label">⭕ 圆形</div>
+      <div class="zone-buttons" id="l1-zone-circle"></div>
+    </div>
+    <div class="drop-zone" data-accept="square" onclick="dropInZone('l1','square')">
+      <div class="zone-label">🟥 方形</div>
+      <div class="zone-buttons" id="l1-zone-square"></div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:14px">
+    <button class="action-btn reset" onclick="resetLevel(1)">🔄 重来</button>
+    <button class="action-btn primary" id="l1-check" onclick="checkLevel1()" disabled>✅ 检查</button>
+  </div>
+  <div id="l1-result" style="margin-top:12px"></div>
+</div>
+
+<!-- ===== Section 3: Level 2 - By Color ===== -->
+<div class="section fade-in" id="sec-level2" style="display:none">
+  <h2><span class="section-icon">🔍</span> 第二次分类：按颜色再分</h2>
+  <button class="tts-btn" onclick="speak('分完形状还能继续分！现在我们在每组里面，再按颜色分一分。红色的放一边，蓝色的放另一边。')">🔊 听讲解</button>
+
+  <div class="insight-box">
+    <span class="icon">💡</span> <strong>分完一次还可以继续分！</strong>
+  </div>
+
+  <p>👆 把每组纽扣再按颜色分开</p>
+
+  <h3 style="margin:12px 0 6px;color:#888">⭕ 圆形纽扣：</h3>
+  <div class="button-grid" id="l2-circle-source"></div>
+  <div class="drop-zones">
+    <div class="drop-zone" data-accept="circle-red" onclick="dropInZone('l2-circle','red')">
+      <div class="zone-label">🔴 圆形+红色</div>
+      <div class="zone-buttons" id="l2-zone-circle-red"></div>
+    </div>
+    <div class="drop-zone" data-accept="circle-blue" onclick="dropInZone('l2-circle','blue')">
+      <div class="zone-label">🔵 圆形+蓝色</div>
+      <div class="zone-buttons" id="l2-zone-circle-blue"></div>
+    </div>
+  </div>
+
+  <h3 style="margin:18px 0 6px;color:#888">🟥 方形纽扣：</h3>
+  <div class="button-grid" id="l2-square-source"></div>
+  <div class="drop-zones">
+    <div class="drop-zone" data-accept="square-red" onclick="dropInZone('l2-square','red')">
+      <div class="zone-label">🔴 方形+红色</div>
+      <div class="zone-buttons" id="l2-zone-square-red"></div>
+    </div>
+    <div class="drop-zone" data-accept="square-blue" onclick="dropInZone('l2-square','blue')">
+      <div class="zone-label">🔵 方形+蓝色</div>
+      <div class="zone-buttons" id="l2-zone-square-blue"></div>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin-top:14px">
+    <button class="action-btn reset" onclick="resetLevel(2)">🔄 重来</button>
+    <button class="action-btn primary" id="l2-check" onclick="checkLevel2()" disabled>✅ 检查</button>
+  </div>
+  <div id="l2-result" style="margin-top:12px"></div>
+</div>
+
+<!-- ===== Section 4: Level 3 - By Holes ===== -->
+<div class="section fade-in" id="sec-level3" style="display:none">
+  <p style="background:#FFF8E6;border-left:4px solid #E8B93B;border-radius:6px;padding:.6em .8em;margin:.8em 0;font-size:.95em">📖 <strong>这一步课本上有。</strong>课本第 6 页上小朋友说：「还可以按……分，<strong>最后分成了 8 类</strong>。」课本还让你回头想一想：「<strong>不管按什么顺序分类，最后都分成了 8 类。</strong>」所以下面按孔数再分，是<strong>跟着课本走</strong>，不是额外加的。<br>另外：这里的 <strong>8 颗纽扣是本页自己画的</strong>，<strong>课本那盒纽扣请在书上第 5–6 页自己看。</strong></p>
+  <h2><span class="section-icon">🔍</span> 第三次分类：按孔数再分</h2>
+  <button class="tts-btn" onclick="speak('太棒了！现在每组里面，再按孔数分一分。2个孔的放一边，4个孔的放另一边。看看最后一共分成了多少类？')">🔊 听讲解</button>
+
+  <p>👆 把每组纽扣再按孔数分开</p>
+  <div id="l3-groups"></div>
+
+  <div style="text-align:center;margin-top:14px">
+    <button class="action-btn reset" onclick="resetLevel(3)">🔄 重来</button>
+    <button class="action-btn primary" id="l3-check" onclick="checkLevel3()" disabled>✅ 检查</button>
+  </div>
+  <div id="l3-result" style="margin-top:12px"></div>
+</div>
+
+<!-- ===== Section 5: Tree Diagram ===== -->
+<div class="section fade-in" id="sec-tree" style="display:none">
+  <h2><span class="section-icon">🌳</span> 分类树</h2>
+  <button class="tts-btn" onclick="speak('看！这就是我们的分类树。第一次按形状分成2类，第二次按颜色分成4类，第三次按孔数分成8类。每分一次，类别就多一倍！')">🔊 听讲解</button>
+
+  <div class="tree-container" id="treeContainer">
+    <svg class="tree-svg" id="treeSvg" viewBox="0 0 760 420" width="100%" height="420"></svg>
+  </div>
+  <div style="text-align:center">
+    <button class="action-btn primary" onclick="animateTree()">▶️ 播放动画</button>
+    <button class="action-btn reset" onclick="resetTree()">🔄 重来</button>
+  </div>
+</div>
+
+<!-- ===== Section 6: Key Insight ===== -->
+<div class="section fade-in" id="sec-insight" style="display:none">
+  <h2><span class="section-icon">💡</span> 重要发现</h2>
+  <button class="tts-btn" onclick="speak('不管你先按什么分，最后都会分成8类！你可以先按形状，再按颜色，再按孔数。也可以先按颜色，再按形状，再按孔数。不管哪种顺序，结果都是8类。因为每个纽扣都有3个特征，每次分类用掉一个特征。每分一次，类数就多一倍：2类、4类、8类。')">🔊 听讲解</button>
+
+  <div class="insight-box" style="font-size:19px;text-align:center">
+    <span class="icon">🌟</span><br>
+    <strong>不管按什么顺序分类，<br>最后都分成了 <span style="color:#FF4444;font-size:28px">8</span> 类！</strong>
+  </div>
+
+  <p style="text-align:center;margin:14px 0">试试不同的分类顺序，看看结果是不是一样？</p>
+  <div class="order-demo" id="orderDemo">
+    <div class="order-card active" onclick="showOrder(1)">
+      <div class="order-title">顺序一</div>
+      <div class="order-seq">形状→颜色→孔数</div>
+      <div style="font-size:13px;color:#6BCB77;margin-top:4px;font-weight:700">→ 8类 ✅</div>
+    </div>
+    <div class="order-card" onclick="showOrder(2)">
+      <div class="order-title">顺序二</div>
+      <div class="order-seq">颜色→形状→孔数</div>
+      <div style="font-size:13px;color:#6BCB77;margin-top:4px;font-weight:700">→ 8类 ✅</div>
+    </div>
+    <div class="order-card" onclick="showOrder(3)">
+      <div class="order-title">顺序三</div>
+      <div class="order-seq">孔数→颜色→形状</div>
+      <div style="font-size:13px;color:#6BCB77;margin-top:4px;font-weight:700">→ 8类 ✅</div>
+    </div>
+  </div>
+
+  <div class="insight-box" style="background:linear-gradient(135deg,#E3F2FD,#E8EAF6)">
+    <span class="icon">🧮</span>
+    每个纽扣有 <strong>3个特征</strong>，<strong>每分一次，类数就多一倍</strong>：<br>
+    <span style="font-size:22px;font-weight:700;color:#C44FE0">2 类 → 4 类 → 8 类</span><br>
+    <span style="font-size:14px;color:#666">（先分成 2 类，每类再分成 2 份就是 4 类，再分一次就是 8 类——数一数就知道。）</span>
+  </div>
+</div>
+
+<!-- ===== Section 7: Extension ===== -->
+<div class="section fade-in" id="sec-extension" style="display:none">
+  <h2><span class="section-icon">🌈</span> 拓展思考</h2>
+  <button class="tts-btn" onclick="speak('纽扣店里这8种纽扣，每种都有很多颗。做一件新衣服需要2颗一模一样的扣子。从这8种里面挑，一共有几种挑法呢？')">🔊 听题目</button>
+
+  <div class="extension-box">
+    <p><strong>🧥 纽扣店里这 8 种纽扣，<span style="color:#FF4444">每种都有很多颗</span>。</strong></p><p><strong>做一件新衣服需要 2 颗<span style="color:#FF4444">一模一样</span>的扣子。</strong></p>
+    <p>从我们分好的纽扣里选，有几种选择？</p>
+  </div>
+
+  <div style="text-align:center;margin:16px 0">
+    <p style="margin-bottom:10px;font-size:16px">你的答案是：</p>
+    <div id="ext-choices" style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px">
+      <button class="action-btn" style="background:#aaa" onclick="checkExtension(4)">4种</button>
+      <button class="action-btn" style="background:#aaa" onclick="checkExtension(6)">6种</button>
+      <button class="action-btn" style="background:#aaa" onclick="checkExtension(8)">8种</button>
+      <button class="action-btn" style="background:#aaa" onclick="checkExtension(16)">16种</button>
+    </div>
+  </div>
+  <div id="ext-result"></div>
+</div>
+
+<!-- ===== Section 8: Practice ===== -->
+<div class="section fade-in" id="sec-practice" style="display:none">
+  <h2><span class="section-icon">✏️</span> 练一练：卡片分类</h2>
+  <button class="tts-btn" onclick="speak('下面有一些卡片，有三角形、圆形和方形三种形状，每种形状上面还有花或者水果的图案。先按形状分一分，再想一想还能怎么继续分？')">🔊 听题目</button>
+
+  <p>有一些卡片，形状有三角形△、圆形○、方形□，<br>图案有🌸花和🍎水果。</p>
+
+  <div style="text-align:center;margin:10px 0">
+    <div id="practice-cards"></div>
+  </div>
+
+  <h3 style="margin:16px 0 8px">（1）先按<strong>形状</strong>分一分：</h3>
+  <table class="practice-table" id="practice-table1">
+    <thead>
+      <tr>
+        <th>△ 三角形</th>
+        <th>○ 圆形</th>
+        <th>□ 方形</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="drop-cell" data-shape="triangle" onclick="dropPracticeCard('triangle')"></td>
+        <td class="drop-cell" data-shape="circle" onclick="dropPracticeCard('circle')"></td>
+        <td class="drop-cell" data-shape="square" onclick="dropPracticeCard('square')"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="text-align:center;margin:10px 0">
+    <button class="action-btn reset" onclick="resetPractice()">🔄 重来</button>
+    <button class="action-btn primary" id="practice-check1" onclick="checkPractice1()" disabled>✅ 检查</button>
+  </div>
+
+  <div id="practice1-result"></div>
+
+  <div id="practice-part2" style="display:none;margin-top:20px">
+    <h3 style="margin:16px 0 8px">（2）还能继续分吗？怎么分？</h3>
+    <div id="practice-q2-options" style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:10px 0">
+      <button class="action-btn" style="background:#aaa" onclick="checkPractice2('pattern')">按图案分（花🌸 / 水果🍎）</button>
+      <button class="action-btn" style="background:#aaa" onclick="checkPractice2('color')">按颜色分</button>
+      <button class="action-btn" style="background:#aaa" onclick="checkPractice2('no')">不能再分了</button>
+    </div>
+    <div id="practice2-result"></div>
+  </div>
+</div>
+
+<!-- ===== Section 9: Summary ===== -->
+<div class="section fade-in" id="sec-summary" style="display:none">
+  <h2><span class="section-icon">🌟</span> 今天学到了什么？</h2>
+  <button class="tts-btn" onclick="speak('今天我们学了多次分类。把东西分完一次后，还可以继续分。每多一个特征，就可以多分一次。不管按什么顺序分类，最后的结果都是一样的。你真棒！')">🔊 听总结</button>
+
+  <div class="summary-stars">⭐⭐⭐⭐⭐</div>
+
+  <div style="background:linear-gradient(135deg,#FFF8E1,#F3E5F5);border-radius:14px;padding:18px;margin:12px 0">
+    <p>📌 <strong>分完一次还可以继续分！</strong></p>
+    <p>📌 每多一个特征，就可以多分一次</p>
+    <p>📌 <strong>不管按什么顺序分，结果都一样</strong></p>
+    <p>📌 有3个特征，每分一次类数多一倍 → <strong>2 类 → 4 类 → 8 类</strong></p>
+  </div>
+
+  <div style="text-align:center;font-size:36px;margin:16px 0;animation:bounce-char 1.5s infinite">
+    🎉 你真棒！🎉
+  </div>
+</div>
+
+<!-- ===== Bottom Navigation ===== -->
+<div class="bottom-nav">
+  <a href="unit1-lesson2.html">← 上一课</a>
+  <a href="unit1-index.html">📚 课程目录</a>
+  <a href="unit1-exercises.html">下一课 →</a>
+</div>
+
+<!-- Feedback overlay -->
+<div class="feedback-backdrop" id="fbBackdrop" onclick="hideFeedback()"></div>
+<div class="feedback" id="fbBox">
+  <span class="fb-icon" id="fbIcon">🎉</span>
+  <div class="fb-text" id="fbText">太棒了！</div>
+</div>
+
+<script>
+// ===== BUTTON DATA =====
+// 8 types of buttons: shape x color x holes
+const ALL_BUTTONS = [
+  {id:'cr2',shape:'circle',color:'red',holes:2,label:'圆红2孔'},
+  {id:'cr4',shape:'circle',color:'red',holes:4,label:'圆红4孔'},
+  {id:'cb2',shape:'circle',color:'blue',holes:2,label:'圆蓝2孔'},
+  {id:'cb4',shape:'circle',color:'blue',holes:4,label:'圆蓝4孔'},
+  {id:'sr2',shape:'square',color:'red',holes:2,label:'方红2孔'},
+  {id:'sr4',shape:'square',color:'red',holes:4,label:'方红4孔'},
+  {id:'sb2',shape:'square',color:'blue',holes:2,label:'方蓝2孔'},
+  {id:'sb4',shape:'square',color:'blue',holes:4,label:'方蓝4孔'},
+];
+
+// ===== STATE =====
+let selectedBtn = null;
+let l1Placed = {circle:[],square:[]};
+let l2Placed = {'circle-red':[],'circle-blue':[],'square-red':[],'square-blue':[]};
+let l3Placed = {};
+let practiceSelected = null;
+let practiceCards = [];
+let practiceTable1 = {triangle:[],circle:[],square:[]};
+
+// ===== TTS =====
+let currentUtterance = null;
+function speak(text) {
+  if (!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  u.rate = 0.88;
+  u.pitch = 1.1;
+  const voices = window.speechSynthesis.getVoices();
+  const xiao = voices.find(v => v.name.includes('Xiaoxiao') && v.name.includes('Online'));
+  const zhVoice = xiao || voices.find(v => v.name.includes('Microsoft') && v.lang.startsWith('zh'));
+  if (zhVoice) u.voice = zhVoice;
+  // Manage TTS button glow
+  document.querySelectorAll('.tts-btn.playing').forEach(b => b.classList.remove('playing'));
+  const callerBtn = event && event.target && event.target.closest('.tts-btn');
+  if (callerBtn) callerBtn.classList.add('playing');
+  u.onend = () => { if (callerBtn) callerBtn.classList.remove('playing'); };
+  window.speechSynthesis.speak(u);
+}
+// Preload voices
+if ('speechSynthesis' in window) {
+  speechSynthesis.getVoices();
+  speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+}
+
+// ===== CREATE BUTTON ELEMENT =====
+function createBtnEl(btn, size, showLabel) {
+  const el = document.createElement('div');
+  el.className = `btn-shape ${btn.shape === 'circle' ? 'circle' : 'square'} ${btn.color}`;
+  if (size) { el.style.width = size + 'px'; el.style.height = size + 'px'; }
+  const holesDiv = document.createElement('div');
+  holesDiv.className = 'holes h' + btn.holes;
+  for (let i = 0; i < btn.holes; i++) {
+    const h = document.createElement('div');
+    h.className = 'hole';
+    holesDiv.appendChild(h);
+  }
+  el.appendChild(holesDiv);
+  if (showLabel) {
+    const tag = document.createElement('div');
+    tag.className = 'label-tag';
+    tag.textContent = btn.label;
+    el.appendChild(tag);
+  }
+  el.dataset.btnId = btn.id;
+  return el;
+}
+
+// ===== SCATTERED BUTTONS (INTRO) =====
+function scatterButtons() {
+  const box = document.getElementById('scatteredBox');
+  box.innerHTML = '';
+  const shuffled = [...ALL_BUTTONS].sort(() => Math.random() - 0.5);
+  shuffled.forEach((btn, i) => {
+    const el = createBtnEl(btn, 52, false);
+    el.style.position = 'absolute';
+    el.style.left = (10 + Math.random() * 70) + '%';
+    el.style.top = (10 + Math.random() * 55) + '%';
+    el.style.transform = `rotate(${Math.random() * 60 - 30}deg)`;
+    el.style.animationDelay = (i * 0.08) + 's';
+    el.classList.add('pop-in');
+    box.appendChild(el);
+  });
+}
+
+// ===== SCROLL =====
+function scrollToSection(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ===== LEVEL 1: BY SHAPE =====
+function initLevel1() {
+  const src = document.getElementById('l1-source');
+  src.innerHTML = '';
+  l1Placed = {circle:[],square:[]};
+  selectedBtn = null;
+  document.getElementById('l1-zone-circle').innerHTML = '';
+  document.getElementById('l1-zone-square').innerHTML = '';
+  document.getElementById('l1-result').innerHTML = '';
+  document.getElementById('l1-check').disabled = true;
+
+  const shuffled = [...ALL_BUTTONS].sort(() => Math.random() - 0.5);
+  shuffled.forEach(btn => {
+    const el = createBtnEl(btn, 60, false);
+    el.onclick = () => selectButton(el, btn, 'l1');
+    src.appendChild(el);
+  });
+}
+
+function selectButton(el, btn, level) {
+  // Deselect previous
+  document.querySelectorAll(`#${level === 'l1' ? 'l1-source' : (level + '-source')} .selected`).forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedBtn = { el, btn, level };
+}
+
+function dropInZone(level, target) {
+  if (!selectedBtn || !selectedBtn.btn) return;
+  const btn = selectedBtn.btn;
+  const el = selectedBtn.el;
+
+  if (level === 'l1') {
+    // Check correct
+    if (btn.shape !== target) {
+      showFeedback('❌', '这个不是' + (target === 'circle' ? '圆形' : '方形') + '哦！');
+      return;
+    }
+    const zone = document.getElementById('l1-zone-' + target);
+    const clone = createBtnEl(btn, 48, false);
+    clone.classList.add('pop-in');
+    zone.appendChild(clone);
+    el.classList.add('sorted');
+    l1Placed[target].push(btn);
+    selectedBtn = null;
+    // Check if all placed
+    const total = l1Placed.circle.length + l1Placed.square.length;
+    if (total >= ALL_BUTTONS.length) document.getElementById('l1-check').disabled = false;
+  }
+  else if (level.startsWith('l2-circle')) {
+    if (btn.color !== target) {
+      showFeedback('❌', '颜色不对哦！');
+      return;
+    }
+    if (btn.shape !== 'circle') { showFeedback('❌', '这不是圆形纽扣哦'); return; }
+    const zone = document.getElementById('l2-zone-circle-' + target);
+    const clone = createBtnEl(btn, 44, false);
+    clone.classList.add('pop-in');
+    zone.appendChild(clone);
+    el.classList.add('sorted');
+    l2Placed['circle-' + target].push(btn);
+    selectedBtn = null;
+    checkL2Completeness();
+  }
+  else if (level.startsWith('l2-square')) {
+    if (btn.color !== target) {
+      showFeedback('❌', '颜色不对哦！');
+      return;
+    }
+    if (btn.shape !== 'square') { showFeedback('❌', '这不是方形纽扣哦'); return; }
+    const zone = document.getElementById('l2-zone-square-' + target);
+    const clone = createBtnEl(btn, 44, false);
+    clone.classList.add('pop-in');
+    zone.appendChild(clone);
+    el.classList.add('sorted');
+    l2Placed['square-' + target].push(btn);
+    selectedBtn = null;
+    checkL2Completeness();
+  }
+  else if (level.startsWith('l3-')) {
+    // l3-{shape}-{color}, target is holes count string
+    const parts = level.replace('l3-','').split('-');
+    const shape = parts[0], color = parts[1];
+    const holeTarget = parseInt(target);
+    if (btn.holes !== holeTarget) { showFeedback('❌', '孔数不对哦！'); return; }
+    if (btn.shape !== shape || btn.color !== color) { showFeedback('❌', '这个纽扣不属于这组哦'); return; }
+    const key = shape + '-' + color + '-' + target;
+    const zone = document.getElementById('l3-zone-' + key);
+    const clone = createBtnEl(btn, 40, false);
+    clone.classList.add('pop-in');
+    zone.appendChild(clone);
+    el.classList.add('sorted');
+    if (!l3Placed[key]) l3Placed[key] = [];
+    l3Placed[key].push(btn);
+    selectedBtn = null;
+    checkL3Completeness();
+  }
+}
+
+function checkL2Completeness() {
+  const total = Object.values(l2Placed).reduce((s, a) => s + a.length, 0);
+  if (total >= ALL_BUTTONS.length) document.getElementById('l2-check').disabled = false;
+}
+function checkL3Completeness() {
+  const total = Object.values(l3Placed).reduce((s, a) => s + a.length, 0);
+  if (total >= ALL_BUTTONS.length) document.getElementById('l3-check').disabled = false;
+}
+
+function checkLevel1() {
+  // Verify
+  const circleOK = l1Placed.circle.every(b => b.shape === 'circle');
+  const squareOK = l1Placed.square.every(b => b.shape === 'square');
+  if (circleOK && squareOK && l1Placed.circle.length + l1Placed.square.length === 8) {
+    document.getElementById('l1-result').innerHTML = '<div class="insight-box"><span class="icon">🎉</span> <strong>太棒了！按形状分成了2类！</strong></div>';
+    showFeedback('🎉', '第一次分类完成！分成了2类！');
+    document.getElementById('badge1').classList.add('active');
+    // Show level 2 after delay
+    setTimeout(() => {
+      document.getElementById('sec-level2').style.display = 'block';
+      initLevel2();
+      setTimeout(() => scrollToSection('sec-level2'), 300);
+    }, 1500);
+  } else {
+    showFeedback('🤔', '有纽扣放错地方了，再检查一下？');
+  }
+}
+
+// ===== LEVEL 2: BY COLOR =====
+function initLevel2() {
+  l2Placed = {'circle-red':[],'circle-blue':[],'square-red':[],'square-blue':[]};
+  selectedBtn = null;
+  ['l2-zone-circle-red','l2-zone-circle-blue','l2-zone-square-red','l2-zone-square-blue'].forEach(id => {
+    document.getElementById(id).innerHTML = '';
+  });
+  document.getElementById('l2-result').innerHTML = '';
+  document.getElementById('l2-check').disabled = true;
+
+  // Circle source
+  const cSrc = document.getElementById('l2-circle-source');
+  cSrc.innerHTML = '';
+  const circles = ALL_BUTTONS.filter(b => b.shape === 'circle').sort(() => Math.random() - 0.5);
+  circles.forEach(btn => {
+    const el = createBtnEl(btn, 56, false);
+    el.onclick = () => { document.querySelectorAll('#l2-circle-source .selected, #l2-square-source .selected').forEach(e=>e.classList.remove('selected')); el.classList.add('selected'); selectedBtn = {el,btn,level:'l2-circle'}; };
+    cSrc.appendChild(el);
+  });
+
+  // Square source
+  const sSrc = document.getElementById('l2-square-source');
+  sSrc.innerHTML = '';
+  const squares = ALL_BUTTONS.filter(b => b.shape === 'square').sort(() => Math.random() - 0.5);
+  squares.forEach(btn => {
+    const el = createBtnEl(btn, 56, false);
+    el.onclick = () => { document.querySelectorAll('#l2-circle-source .selected, #l2-square-source .selected').forEach(e=>e.classList.remove('selected')); el.classList.add('selected'); selectedBtn = {el,btn,level:'l2-square'}; };
+    sSrc.appendChild(el);
+  });
+}
+
+function checkLevel2() {
+  const ok = Object.entries(l2Placed).every(([key, arr]) => {
+    const [shape, color] = key.split('-');
+    return arr.every(b => b.shape === shape && b.color === color);
+  });
+  const total = Object.values(l2Placed).reduce((s,a)=>s+a.length,0);
+  if (ok && total === 8) {
+    document.getElementById('l2-result').innerHTML = '<div class="insight-box"><span class="icon">🎉</span> <strong>继续分！按颜色分成了4类！</strong></div>';
+    showFeedback('🎉', '第二次分类完成！分成了4类！');
+    document.getElementById('badge2').classList.add('active');
+    setTimeout(() => {
+      document.getElementById('sec-level3').style.display = 'block';
+      initLevel3();
+      setTimeout(() => scrollToSection('sec-level3'), 300);
+    }, 1500);
+  } else {
+    showFeedback('🤔', '有纽扣放错地方了，再检查一下？');
+  }
+}
+
+// ===== LEVEL 3: BY HOLES =====
+function initLevel3() {
+  l3Placed = {};
+  selectedBtn = null;
+  document.getElementById('l3-result').innerHTML = '';
+  document.getElementById('l3-check').disabled = true;
+  const container = document.getElementById('l3-groups');
+  container.innerHTML = '';
+
+  const groups = [
+    {shape:'circle',color:'red',label:'🔴⭕ 圆红'},
+    {shape:'circle',color:'blue',label:'🔵⭕ 圆蓝'},
+    {shape:'square',color:'red',label:'🔴🟥 方红'},
+    {shape:'square',color:'blue',label:'🔵🟥 方蓝'},
+  ];
+
+  groups.forEach(g => {
+    const wrapper = document.createElement('div');
+    wrapper.style.cssText = 'margin:14px 0;padding:10px;background:rgba(0,0,0,.02);border-radius:12px';
+    wrapper.innerHTML = `<h4 style="color:#666;margin-bottom:6px">${g.label}：</h4>`;
+
+    const srcDiv = document.createElement('div');
+    srcDiv.className = 'button-grid';
+    srcDiv.id = `l3-${g.shape}-${g.color}-source`;
+
+    const btns = ALL_BUTTONS.filter(b => b.shape === g.shape && b.color === g.color);
+    btns.forEach(btn => {
+      const el = createBtnEl(btn, 52, false);
+      const lvlKey = `l3-${g.shape}-${g.color}`;
+      el.onclick = () => {
+        document.querySelectorAll('#l3-groups .selected').forEach(e => e.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedBtn = { el, btn, level: lvlKey };
+      };
+      srcDiv.appendChild(el);
+    });
+    wrapper.appendChild(srcDiv);
+
+    const zones = document.createElement('div');
+    zones.className = 'drop-zones';
+    zones.innerHTML = `
+      <div class="drop-zone" onclick="dropInZone('l3-${g.shape}-${g.color}','2')">
+        <div class="zone-label">⚬⚬ 2孔</div>
+        <div class="zone-buttons" id="l3-zone-${g.shape}-${g.color}-2"></div>
+      </div>
+      <div class="drop-zone" onclick="dropInZone('l3-${g.shape}-${g.color}','4')">
+        <div class="zone-label">⚬⚬⚬⚬ 4孔</div>
+        <div class="zone-buttons" id="l3-zone-${g.shape}-${g.color}-4"></div>
+      </div>`;
+    wrapper.appendChild(zones);
+    container.appendChild(wrapper);
+  });
+}
+
+function checkLevel3() {
+  const total = Object.values(l3Placed).reduce((s,a)=>s+a.length,0);
+  const ok = Object.entries(l3Placed).every(([key, arr]) => {
+    const parts = key.split('-');
+    const holeCount = parseInt(parts[2]);
+    return arr.every(b => b.holes === holeCount);
+  });
+  if (ok && total === 8) {
+    document.getElementById('l3-result').innerHTML = '<div class="insight-box"><span class="icon">🎉</span> <strong>全部分完！一共分成了8类！</strong></div>';
+    showFeedback('🎉', '第三次分类完成！一共8类！');
+    document.getElementById('badge3').classList.add('active');
+    confetti();
+    setTimeout(() => {
+      ['sec-tree','sec-insight','sec-extension','sec-practice','sec-summary'].forEach(id => {
+        document.getElementById(id).style.display = 'block';
+      });
+      buildTree();
+      initPractice();
+      setTimeout(() => scrollToSection('sec-tree'), 400);
+    }, 2000);
+  } else {
+    showFeedback('🤔', '有纽扣放错地方了，再检查一下？');
+  }
+}
+
+// ===== RESET LEVELS =====
+function resetLevel(n) {
+  if (n === 1) initLevel1();
+  else if (n === 2) initLevel2();
+  else if (n === 3) initLevel3();
+}
+
+// ===== TREE DIAGRAM =====
+let treePhase = 0;
+function buildTree() {
+  treePhase = 0;
+  drawTreePhase(0);
+}
+
+function drawTreePhase(phase) {
+  const svg = document.getElementById('treeSvg');
+  svg.innerHTML = '';
+  // Layout constants
+  const W = 760, levels = [50, 130, 230, 340];
+  const colors = { root:'#FFB347', l1:'#FF6B9D', l2:'#C44FE0', l3:'#4D96FF' };
+
+  // Nodes
+  const nodes = {
+    root: { x: W/2, y: levels[0], text: '全部纽扣', w: 100, color: colors.root },
+    // Level 1
+    circle: { x: W/4, y: levels[1], text: '⭕ 圆形', w: 86, color: colors.l1 },
+    square: { x: 3*W/4, y: levels[1], text: '🟥 方形', w: 86, color: colors.l1 },
+    // Level 2
+    cr: { x: W/8, y: levels[2], text: '🔴圆红', w: 76, color: colors.l2 },
+    cb: { x: 3*W/8, y: levels[2], text: '🔵圆蓝', w: 76, color: colors.l2 },
+    sr: { x: 5*W/8, y: levels[2], text: '🔴方红', w: 76, color: colors.l2 },
+    sb: { x: 7*W/8, y: levels[2], text: '🔵方蓝', w: 76, color: colors.l2 },
+    // Level 3
+    cr2:{ x:W/16,     y:levels[3], text:'2孔', w:52, color:colors.l3 },
+    cr4:{ x:3*W/16,   y:levels[3], text:'4孔', w:52, color:colors.l3 },
+    cb2:{ x:5*W/16,   y:levels[3], text:'2孔', w:52, color:colors.l3 },
+    cb4:{ x:7*W/16,   y:levels[3], text:'4孔', w:52, color:colors.l3 },
+    sr2:{ x:9*W/16,   y:levels[3], text:'2孔', w:52, color:colors.l3 },
+    sr4:{ x:11*W/16,  y:levels[3], text:'4孔', w:52, color:colors.l3 },
+    sb2:{ x:13*W/16,  y:levels[3], text:'2孔', w:52, color:colors.l3 },
+    sb4:{ x:15*W/16,  y:levels[3], text:'4孔', w:52, color:colors.l3 },
+  };
+
+  const edges = [
+    ['root','circle'],['root','square'],
+    ['circle','cr'],['circle','cb'],['square','sr'],['square','sb'],
+    ['cr','cr2'],['cr','cr4'],['cb','cb2'],['cb','cb4'],
+    ['sr','sr2'],['sr','sr4'],['sb','sb2'],['sb','sb4'],
+  ];
+
+  const phaseNodes = [
+    ['root'],
+    ['root','circle','square'],
+    ['root','circle','square','cr','cb','sr','sb'],
+    Object.keys(nodes),
+  ];
+  const phaseEdges = [
+    [],
+    edges.slice(0,2),
+    edges.slice(0,6),
+    edges,
+  ];
+
+  const showNodes = new Set(phaseNodes[Math.min(phase, 3)]);
+  const showEdges = phaseEdges[Math.min(phase, 3)];
+
+  // Draw edges
+  showEdges.forEach(([from, to], i) => {
+    const a = nodes[from], b = nodes[to];
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', a.x); line.setAttribute('y1', a.y + 18);
+    line.setAttribute('x2', b.x); line.setAttribute('y2', b.y - 18);
+    line.setAttribute('stroke', '#ccc'); line.setAttribute('stroke-width', '2');
+    line.classList.add('tree-appear');
+    line.style.animationDelay = (i * 0.08) + 's';
+    svg.appendChild(line);
+  });
+
+  // Draw nodes
+  let idx = 0;
+  showNodes.forEach(key => {
+    const n = nodes[key];
+    const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.classList.add('tree-node','tree-appear');
+    g.style.animationDelay = (idx * 0.1) + 's';
+
+    const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    rect.setAttribute('x', n.x - n.w/2); rect.setAttribute('y', n.y - 16);
+    rect.setAttribute('width', n.w); rect.setAttribute('height', 32);
+    rect.setAttribute('rx', 16); rect.setAttribute('fill', n.color);
+    rect.setAttribute('opacity', '0.9');
+
+    const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+    txt.setAttribute('x', n.x); txt.setAttribute('y', n.y + 5);
+    txt.setAttribute('text-anchor','middle'); txt.setAttribute('fill','#fff');
+    txt.setAttribute('font-weight','bold'); txt.setAttribute('font-size', key.length > 3 ? '12' : '13');
+    txt.textContent = n.text;
+
+    g.appendChild(rect);
+    g.appendChild(txt);
+    svg.appendChild(g);
+    idx++;
+  });
+
+  // Level labels on right
+  const labelData = [
+    { y: levels[1], text: '← 第1次', show: phase >= 1 },
+    { y: levels[2], text: '← 第2次', show: phase >= 2 },
+    { y: levels[3], text: '← 第3次', show: phase >= 3 },
+  ];
+  labelData.forEach(ld => {
+    if (!ld.show) return;
+    const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+    txt.setAttribute('x', W - 10); txt.setAttribute('y', ld.y + 4);
+    txt.setAttribute('text-anchor','end'); txt.setAttribute('fill','#999');
+    txt.setAttribute('font-size','12');
+    txt.classList.add('tree-appear');
+    txt.textContent = ld.text;
+    svg.appendChild(txt);
+  });
+}
+
+function animateTree() {
+  treePhase = 0;
+  drawTreePhase(0);
+  const go = () => {
+    treePhase++;
+    if (treePhase <= 3) {
+      drawTreePhase(treePhase);
+      setTimeout(go, 1200);
+    }
+  };
+  setTimeout(go, 800);
+}
+function resetTree() { treePhase = 0; drawTreePhase(0); }
+
+// ===== ORDER DEMO =====
+function showOrder(n) {
+  document.querySelectorAll('.order-card').forEach((c,i) => c.classList.toggle('active', i === n-1));
+}
+
+// ===== EXTENSION =====
+function checkExtension(answer) {
+  const res = document.getElementById('ext-result');
+  if (answer === 8) {
+    res.innerHTML = `
+      <div class="insight-box" style="background:linear-gradient(135deg,#E8F5E9,#C8E6C9)">
+        <span class="icon">🎉</span> <strong>正确！一共8种选择！</strong><br>
+        因为一共有8类不同的纽扣，每类都可以选2颗一样的。<br>
+        圆红2孔、圆红4孔、圆蓝2孔、圆蓝4孔、<br>方红2孔、方红4孔、方蓝2孔、方蓝4孔 = <strong>8种</strong>
+      </div>`;
+    showFeedback('🎉', '答对啦！8种选择！');
+  } else {
+    res.innerHTML = `<div class="insight-box"><span class="icon">🤔</span> 不太对哦，再想想看。一共有多少种不同的纽扣？每种选2颗就行！</div>`;
+    showFeedback('🤔', '再想想看！');
+  }
+}
+
+// ===== PRACTICE: CARD CLASSIFICATION =====
+const PRACTICE_DATA = [
+  { id:'p1', shape:'triangle', pattern:'flower', emoji:'△🌸', label:'三角形·花' },
+  { id:'p2', shape:'triangle', pattern:'fruit', emoji:'△🍎', label:'三角形·水果' },
+  { id:'p3', shape:'circle', pattern:'flower', emoji:'○🌸', label:'圆形·花' },
+  { id:'p4', shape:'circle', pattern:'fruit', emoji:'○🍎', label:'圆形·水果' },
+  { id:'p5', shape:'square', pattern:'flower', emoji:'□🌸', label:'方形·花' },
+  { id:'p6', shape:'square', pattern:'fruit', emoji:'□🍎', label:'方形·水果' },
+];
+
+function initPractice() {
+  practiceSelected = null;
+  practiceTable1 = {triangle:[],circle:[],square:[]};
+  document.getElementById('practice1-result').innerHTML = '';
+  document.getElementById('practice-part2').style.display = 'none';
+  document.getElementById('practice-check1').disabled = true;
+
+  const container = document.getElementById('practice-cards');
+  container.innerHTML = '';
+  const shuffled = [...PRACTICE_DATA].sort(() => Math.random() - 0.5);
+  shuffled.forEach(card => {
+    const el = document.createElement('div');
+    el.className = 'card-item';
+    el.id = 'pcard-' + card.id;
+    el.innerHTML = `<span>${card.emoji}</span><span class="card-label">${card.label}</span>`;
+    el.onclick = () => {
+      document.querySelectorAll('.card-item.selected').forEach(e => e.classList.remove('selected'));
+      el.style.outline = '3px dashed #FFD700';
+      el.style.outlineOffset = '2px';
+      practiceSelected = card;
+    };
+    container.appendChild(el);
+  });
+
+  // Reset table cells
+  document.querySelectorAll('#practice-table1 .drop-cell').forEach(cell => cell.innerHTML = '');
+}
+
+function dropPracticeCard(targetShape) {
+  if (!practiceSelected) return;
+  const card = practiceSelected;
+  if (card.shape !== targetShape) {
+    showFeedback('❌', '形状不对哦！');
+    return;
+  }
+  // Place in cell
+  const cell = document.querySelector(`#practice-table1 .drop-cell[data-shape="${targetShape}"]`);
+  const span = document.createElement('span');
+  span.style.cssText = 'display:inline-block;margin:3px;font-size:22px';
+  span.textContent = card.emoji;
+  span.classList.add('pop-in');
+  cell.appendChild(span);
+  cell.classList.add('filled');
+
+  practiceTable1[targetShape].push(card);
+
+  // Mark card as placed
+  const cardEl = document.getElementById('pcard-' + card.id);
+  if (cardEl) { cardEl.classList.add('placed'); cardEl.style.outline = 'none'; }
+  practiceSelected = null;
+
+  const total = Object.values(practiceTable1).reduce((s,a)=>s+a.length,0);
+  if (total >= PRACTICE_DATA.length) document.getElementById('practice-check1').disabled = false;
+}
+
+function checkPractice1() {
+  const ok = Object.entries(practiceTable1).every(([shape, arr]) => arr.every(c => c.shape === shape));
+  const total = Object.values(practiceTable1).reduce((s,a)=>s+a.length,0);
+  if (ok && total === 6) {
+    document.getElementById('practice1-result').innerHTML = '<div class="insight-box"><span class="icon">✅</span> <strong>按形状分类正确！</strong></div>';
+    showFeedback('🎉', '分类正确！');
+    document.getElementById('practice-part2').style.display = 'block';
+  } else {
+    showFeedback('🤔', '有卡片放错了哦');
+  }
+}
+
+function checkPractice2(answer) {
+  const res = document.getElementById('practice2-result');
+  if (answer === 'pattern') {
+    res.innerHTML = `
+      <div class="insight-box" style="background:linear-gradient(135deg,#E8F5E9,#C8E6C9)">
+        <span class="icon">🎉</span> <strong>正确！还可以按图案继续分！</strong><br>
+        每种形状里面，都可以再分成🌸花和🍎水果两组。<br>
+        3 种形状，每种再分 2 份：<strong>2 + 2 + 2 = 6 类</strong>
+      </div>`;
+    showFeedback('🎉', '答对啦！');
+  } else {
+    res.innerHTML = `<div class="insight-box"><span class="icon">🤔</span> 想一想，每种形状里面的卡片还有什么不同？</div>`;
+    showFeedback('🤔', '再想想看！');
+  }
+}
+
+function resetPractice() {
+  initPractice();
+}
+
+// ===== FEEDBACK =====
+function showFeedback(icon, text) {
+  const box = document.getElementById('fbBox');
+  const backdrop = document.getElementById('fbBackdrop');
+  document.getElementById('fbIcon').textContent = icon;
+  document.getElementById('fbText').textContent = text;
+  box.classList.add('show');
+  backdrop.classList.add('show');
+  setTimeout(hideFeedback, 1800);
+}
+function hideFeedback() {
+  document.getElementById('fbBox').classList.remove('show');
+  document.getElementById('fbBackdrop').classList.remove('show');
+}
+
+// ===== CONFETTI =====
+function confetti() {
+  const colors = ['#FF6B9D','#FFD93D','#6BCB77','#4D96FF','#C44FE0','#FF9A56'];
+  for (let i = 0; i < 40; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = (Math.random() * 100) + 'vw';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDelay = (Math.random() * 1.5) + 's';
+    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    piece.style.width = (6 + Math.random() * 8) + 'px';
+    piece.style.height = (6 + Math.random() * 8) + 'px';
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 4500);
+  }
+}
+
+// ===== INIT =====
+window.addEventListener('DOMContentLoaded', () => {
+  scatterButtons();
+  initLevel1();
+});
+</script>
+  <footer class="footer" lang="zh-CN"><p><strong>版权声明</strong>：本页讲解与配图<strong>均为本页自行编写</strong>，未复制任何教材插图或扫描件；人民教育出版社《数学》二年级上册（2024 年审核）的文字与插图著作权归原出版社及作者所有。</p><p>本页为<strong>家庭自用学习辅助</strong>：不含教材插图、不含扫描件、不用于任何商业用途、不做搜索收录。如权利人认为不妥，请告知即刻下线。</p><p>本页文字与插图均为自绘自拟；<strong>部分练习沿用课本原有题型，个别题目文字与课本原题相近</strong>，均已标注对应页码，仅作家庭自用学习辅助。教材版本已按<strong>课本封面照片核实</strong>：人民教育出版社《数学》二年级上册，封面标注「国家教材委员会专家委员会审核 2024」；第一单元<strong>分类与整理</strong>已按课本<strong>目录页照片</strong>核实，课本自第 1 页起（目录：第二单元「1~6 的表内乘法」自第 10 页起）。例题与情境均为本页自拟，请以课本为准。</p><p>朗读用浏览器语音，建议用 Edge 打开，中文音色最自然。</p></footer>
+</body>
+</html>

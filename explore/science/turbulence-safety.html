@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco科学科普讲解：怎样理解飞机颠簸">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>飞机颠簸安全吗？| 动画讲解</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            margin: 30px 0 10px;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        /* Sky scene */
+        .sky-scene {
+            position: relative;
+            height: 300px;
+            background: linear-gradient(180deg, #0a1628, #1a3a5c);
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 20px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .clouds {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        .cloud {
+            position: absolute;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50px;
+            animation: cloudMove 8s linear infinite;
+        }
+        .cloud:nth-child(1) { width: 120px; height: 40px; top: 20%; left: -120px; animation-delay: 0s; }
+        .cloud:nth-child(2) { width: 80px; height: 30px; top: 50%; left: -80px; animation-delay: 3s; }
+        .cloud:nth-child(3) { width: 150px; height: 45px; top: 70%; left: -150px; animation-delay: 5s; }
+        .cloud:nth-child(4) { width: 100px; height: 35px; top: 35%; left: -100px; animation-delay: 7s; }
+
+        @keyframes cloudMove {
+            from { transform: translateX(0); }
+            to { transform: translateX(calc(800px + 200px)); }
+        }
+
+        /* Airplane */
+        .airplane {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            animation: smoothFly 3s ease-in-out infinite;
+            transition: animation 0.3s;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+        }
+        .airplane.turbulence {
+            animation: turbulenceFly 0.3s ease-in-out infinite;
+        }
+        @keyframes smoothFly {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+            50% { transform: translate(-50%, calc(-50% - 5px)) rotate(0.5deg); }
+        }
+        @keyframes turbulenceFly {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            20% { transform: translate(-48%, calc(-50% - 8px)) rotate(-2deg); }
+            40% { transform: translate(-52%, calc(-50% + 6px)) rotate(1.5deg); }
+            60% { transform: translate(-49%, calc(-50% - 4px)) rotate(-1deg); }
+            80% { transform: translate(-51%, calc(-50% + 7px)) rotate(2deg); }
+            100% { transform: translate(-50%, -50%) rotate(0deg); }
+        }
+
+        /* Turbulence particles */
+        .turbulence-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .turbulence-particles.active { opacity: 1; }
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            animation: particleFloat 1s linear infinite;
+        }
+        .particle:nth-child(1) { top: 30%; left: 20%; animation-delay: 0.1s; }
+        .particle:nth-child(2) { top: 50%; left: 35%; animation-delay: 0.3s; }
+        .particle:nth-child(3) { top: 40%; left: 60%; animation-delay: 0.5s; }
+        .particle:nth-child(4) { top: 60%; left: 75%; animation-delay: 0.2s; }
+        .particle:nth-child(5) { top: 25%; left: 80%; animation-delay: 0.7s; }
+        .particle:nth-child(6) { top: 70%; left: 45%; animation-delay: 0.4s; }
+        .particle:nth-child(7) { top: 55%; left: 15%; animation-delay: 0.6s; }
+        .particle:nth-child(8) { top: 35%; left: 90%; animation-delay: 0.8s; }
+
+        @keyframes particleFloat {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+            50% { transform: translate(10px, -10px) scale(1.5); opacity: 1; }
+            100% { transform: translate(-5px, 15px) scale(0.5); opacity: 0; }
+        }
+
+        /* Control button */
+        .btn-group {
+            text-align: center;
+            margin: 15px 0;
+        }
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+        .btn-turbulence {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: #fff;
+        }
+        .btn-turbulence:hover { transform: scale(1.05); box-shadow: 0 5px 20px rgba(245,87,108,0.4); }
+        .btn-smooth {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: #fff;
+        }
+        .btn-smooth:hover { transform: scale(1.05); box-shadow: 0 5px 20px rgba(79,172,254,0.4); }
+
+        /* Info cards */
+        .section { margin: 40px 0; }
+        .section-title {
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 25px;
+            margin: 15px 0;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255,255,255,0.2);
+        }
+        .card h3 { color: #4facfe; margin-bottom: 10px; font-size: 1.1em; }
+        .card p { color: #ccc; line-height: 1.8; }
+
+        /* Wing flex animation */
+        .wing-demo {
+            position: relative;
+            height: 200px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 16px;
+            overflow: hidden;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .wing {
+            width: 250px;
+            height: 8px;
+            background: linear-gradient(90deg, #888, #ccc);
+            border-radius: 4px;
+            position: relative;
+            transform-origin: left center;
+            animation: wingFlex 2s ease-in-out infinite;
+        }
+        .wing::before {
+            content: '机翼可弯曲 ±90°';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.85em;
+            color: #4facfe;
+            white-space: nowrap;
+        }
+        .wing::after {
+            content: '';
+            position: absolute;
+            right: -5px;
+            top: -3px;
+            width: 10px;
+            height: 14px;
+            background: #4facfe;
+            border-radius: 3px;
+            opacity: 0.6;
+        }
+        .wing-body {
+            width: 40px;
+            height: 60px;
+            background: linear-gradient(180deg, #555, #333);
+            border-radius: 20px 20px 10px 10px;
+            position: absolute;
+            left: calc(50% - 145px);
+        }
+        @keyframes wingFlex {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(3deg); }
+            75% { transform: rotate(-2deg); }
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2.2em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #00d2ff, #3a7bd5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-label { color: #aaa; margin-top: 8px; font-size: 0.9em; }
+
+        /* Turbulence types */
+        .type-list { list-style: none; }
+        .type-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .type-list li:last-child { border: none; }
+        .type-icon { font-size: 1.5em; flex-shrink: 0; }
+        .type-content strong { color: #fff; }
+        .type-content p { color: #aaa; font-size: 0.9em; margin-top: 4px; }
+
+        /* Safety tips */
+        .tips {
+            background: linear-gradient(135deg, rgba(79,172,254,0.1), rgba(0,242,254,0.05));
+            border: 1px solid rgba(79,172,254,0.3);
+            border-radius: 16px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+        .tips h3 { color: #4facfe; margin-bottom: 15px; }
+        .tips ul { list-style: none; }
+        .tips li {
+            padding: 8px 0;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .tips li::before { content: '✈️'; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            color: #666;
+            padding: 40px 0 20px;
+            font-size: 0.85em;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.5em; }
+            .sky-scene { height: 220px; }
+            .airplane { font-size: 45px; }
+            .stats { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+    <div class="container">
+        <h1>✈️ 飞机颠簸安全吗？</h1>
+        <p class="subtitle">用动画告诉你真相 — 颠簸 ≠ 危险</p>
+
+        <!-- Interactive demo -->
+        <div class="sky-scene">
+            <div class="clouds">
+                <div class="cloud"></div>
+                <div class="cloud"></div>
+                <div class="cloud"></div>
+                <div class="cloud"></div>
+            </div>
+            <div class="turbulence-particles" id="particles">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
+            <div class="airplane" id="airplane">✈️</div>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-turbulence" onclick="startTurbulence()">💨 模拟颠簸</button>
+            <button class="btn btn-smooth" onclick="stopTurbulence()">☁️ 恢复平稳</button>
+        </div>
+
+        <!-- Key answer -->
+        <div class="section">
+            <div class="section-title">💡 核心结论</div>
+            <div class="card">
+                <h3>颠簸几乎不可能让飞机坠毁</h3>
+                <p>现代客机设计承受能力远超自然界颠簸强度。<br>
+                历史上<strong>没有一架现代客机</strong>因为颠簸本身而解体坠毁。<br>
+                颠簸中飞机高度变化通常只有 <strong>3-15米</strong>，感觉剧烈但实际幅度极小。</p>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="section">
+            <div class="section-title">📊 数据说话</div>
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">1.5倍</div>
+                    <div class="stat-label">机翼设计承受极限载荷<br>（正常飞行的 1.5 倍安全余量）</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">±90°</div>
+                    <div class="stat-label">机翼可弯曲角度<br>（不会折断）</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">&lt;0.1%</div>
+                    <div class="stat-label">严重颠簸发生概率<br>（大部分航班一生遇不到）</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wing flex demo -->
+        <div class="section">
+            <div class="section-title">🔧 为什么不会断？</div>
+            <div class="wing-demo">
+                <div class="wing-body"></div>
+                <div class="wing"></div>
+            </div>
+            <div class="card">
+                <h3>机翼是"柔性"设计</h3>
+                <p>机翼设计为可弯曲结构，就像钓鱼竿一样 —— 弯了不断。<br>
+                波音 787 机翼在测试中弯曲超过 7.6 米才断裂，远超任何自然颠簸能施加的力。<br>
+                <strong>颠簸让翅膀弹，不是让翅膀折。</strong></p>
+            </div>
+        </div>
+
+        <!-- Turbulence types -->
+        <div class="section">
+            <div class="section-title">🌪️ 颠簸的种类</div>
+            <div class="card">
+                <ul class="type-list">
+                    <li>
+                        <span class="type-icon">☁️</span>
+                        <div class="type-content">
+                            <strong>轻度颠簸（Light）</strong>
+                            <p>像开车过减速带，饮料轻微晃动。最常见，完全无害。</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="type-icon">🌧️</span>
+                        <div class="type-content">
+                            <strong>中度颠簸（Moderate）</strong>
+                            <p>没系安全带会离开座位，行走困难。不舒服但飞机毫无压力。</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="type-icon">⛈️</span>
+                        <div class="type-content">
+                            <strong>严重颠簸（Severe）</strong>
+                            <p>物品飞起，未系安全带可能受伤。极罕见，飞机仍在设计承受范围内。</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="type-icon">🌀</span>
+                        <div class="type-content">
+                            <strong>晴空颠簸（CAT）</strong>
+                            <p>无云区域的突发颠簸，无法肉眼预见。系好安全带的原因！</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Why it feels scary -->
+        <div class="section">
+            <div class="section-title">🧠 为什么感觉很可怕？</div>
+            <div class="card">
+                <h3>你的身体在骗你</h3>
+                <p>
+                    📌 <strong>失重感</strong> — 飞机下降 3 米你就有"掉下去"的错觉<br>
+                    📌 <strong>缺乏参照</strong> — 万米高空看不到地面，大脑无法判断幅度<br>
+                    📌 <strong>噪音放大恐惧</strong> — 气流声 + 物品响声 = 大脑判定"危险"<br>
+                    📌 <strong>失控感</strong> — 你不是驾驶者，本能会放大不确定性<br><br>
+                    实际情况：飞行员可能只是把这标记为"轻度颠簸"，继续喝咖啡 ☕
+                </p>
+            </div>
+        </div>
+
+        <!-- Safety tips -->
+        <div class="section">
+            <div class="section-title">🛡️ 乘客安全建议</div>
+            <div class="tips">
+                <h3>唯一的风险是你自己没系安全带</h3>
+                <ul>
+                    <li>全程系好安全带（即使灯灭了）— 这是颠簸伤人的唯一原因</li>
+                    <li>选择机翼附近座位 — 颠簸感最小的位置</li>
+                    <li>行李放好、热饮加盖 — 防烫伤</li>
+                    <li>听到安全带提示立刻系上 — 飞行员有雷达预警</li>
+                    <li>深呼吸放松 — 颠簸通常几分钟就过去</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Comparison -->
+        <div class="section">
+            <div class="section-title">🚗 类比理解</div>
+            <div class="card">
+                <p>
+                    飞机颠簸 ≈ 汽车走烂路<br><br>
+                    🚗 汽车在坑洼路面颠簸 → 你不会觉得车要散架<br>
+                    ✈️ 飞机在不稳定气流中颠簸 → 同理，结构远超承受需求<br><br>
+                    区别只是：坐车你能看到路，坐飞机你看不到"空气的路"。<br>
+                    <strong>看不到 ≠ 不安全。</strong>
+                </p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>✈️ 安全带系好，放心飞 | 数据来源：FAA / Boeing / ICAO</p>
+        </div>
+    </div>
+
+    <script>
+        function startTurbulence() {
+            document.getElementById('airplane').classList.add('turbulence');
+            document.getElementById('particles').classList.add('active');
+        }
+        function stopTurbulence() {
+            document.getElementById('airplane').classList.remove('turbulence');
+            document.getElementById('particles').classList.remove('active');
+        }
+
+        // Auto demo on load
+        setTimeout(() => {
+            startTurbulence();
+            setTimeout(stopTurbulence, 3000);
+        }, 2000);
+    </script>
+<script src="../../assets/site.js"></script><div role="note" style="position:relative;z-index:10;margin:24px auto 110px;padding:10px 14px;width:min(920px,92vw);border-top:1px solid #ddd;color:#666;font:13px/1.6 sans-serif"><strong>使用提示：</strong>本页帮助理解现象，不作为专业操作指导。</div></body>
+</html>

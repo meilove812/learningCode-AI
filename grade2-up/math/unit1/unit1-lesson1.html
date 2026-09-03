@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>气球分类 · 二年级数学 · 分类整理专题 · 分类整理第1课</title>
+<style>
+/* ===== RESET & BASE ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:18px}
+body{font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",system-ui,sans-serif;
+  background:linear-gradient(135deg,#e0f7fa 0%,#fff9c4 50%,#fce4ec 100%);
+  color:#333;min-height:100vh;padding-bottom:80px;overflow-x:hidden}
+
+/* ===== ANIMATED BACKGROUND ===== */
+body::before{content:'';position:fixed;top:0;left:0;width:200vw;height:200vh;
+  background:radial-gradient(circle at 20% 30%,rgba(255,105,180,.08) 0%,transparent 50%),
+             radial-gradient(circle at 80% 70%,rgba(100,149,237,.08) 0%,transparent 50%),
+             radial-gradient(circle at 50% 50%,rgba(255,215,0,.06) 0%,transparent 50%);
+  animation:bgFloat 20s ease-in-out infinite;z-index:-1;pointer-events:none}
+@keyframes bgFloat{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,-20px)}}
+
+/* ===== HEADER NAV ===== */
+.breadcrumb{background:linear-gradient(135deg,#7c4dff,#448aff);color:#fff;
+  padding:12px 20px;font-size:.78rem;display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+  box-shadow:0 2px 12px rgba(124,77,255,.3)}
+.breadcrumb a{color:#e8eaf6;text-decoration:none}
+.breadcrumb a:hover{text-decoration:underline}
+.breadcrumb .sep{opacity:.5}
+
+/* ===== HERO ===== */
+.hero{text-align:center;padding:40px 20px 30px;animation:fadeSlideDown .8s ease-out}
+.hero h1{font-size:2rem;color:#6a1b9a;text-shadow:2px 2px 0 rgba(255,255,255,.7);margin-bottom:8px}
+.hero .subtitle{font-size:1.1rem;color:#7c4dff;font-weight:500}
+@keyframes fadeSlideDown{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== SECTIONS ===== */
+.section{max-width:800px;margin:24px auto;padding:0 16px}
+.card{background:#fff;border-radius:20px;padding:28px 24px;margin-bottom:24px;
+  box-shadow:0 4px 20px rgba(0,0,0,.06);position:relative;overflow:hidden;
+  opacity:0;transform:translateY(30px);transition:opacity .6s,transform .6s}
+.card.visible{opacity:1;transform:translateY(0)}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,#ff6f00,#ff4081,#7c4dff,#448aff);border-radius:20px 20px 0 0}
+.card h2{font-size:1.3rem;color:#4a148c;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.card h3{font-size:1.05rem;color:#6a1b9a;margin:18px 0 10px;display:flex;align-items:center;gap:6px}
+
+/* TTS button */
+.tts-btn{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#7c4dff,#448aff);
+  color:#fff;border:none;border-radius:50px;padding:6px 14px;font-size:.78rem;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;vertical-align:middle;margin-left:8px}
+.tts-btn:hover{transform:scale(1.08);box-shadow:0 3px 12px rgba(124,77,255,.4)}
+.tts-btn:active{transform:scale(.95)}
+.tts-btn.playing{background:linear-gradient(135deg,#ff4081,#ff6f00);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,64,129,.4)}50%{box-shadow:0 0 0 8px rgba(255,64,129,0)}}
+
+/* TTS highlight */
+.tts-paragraph{padding:4px 8px;border-radius:8px;transition:background .3s}
+.tts-paragraph.speaking{background:linear-gradient(135deg,rgba(124,77,255,.08),rgba(68,138,255,.08));
+  border-left:3px solid #7c4dff}
+
+/* ===== BALLOON SVGs ===== */
+.balloon-area{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;padding:16px 0}
+.balloon-wrap{cursor:pointer;transition:transform .3s,filter .3s;position:relative;
+  animation:floatBalloon 3s ease-in-out infinite}
+.balloon-wrap:nth-child(odd){animation-delay:-.5s}
+.balloon-wrap:nth-child(3n){animation-delay:-1s}
+.balloon-wrap:hover{transform:scale(1.15);filter:brightness(1.1)}
+.balloon-wrap.selected{filter:brightness(.6) saturate(.3);transform:scale(.85);pointer-events:none}
+.balloon-wrap .balloon-label{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);
+  font-size:.6rem;background:rgba(0,0,0,.5);color:#fff;padding:1px 6px;border-radius:8px;white-space:nowrap}
+@keyframes floatBalloon{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+svg.balloon{width:64px;height:80px;filter:drop-shadow(2px 4px 6px rgba(0,0,0,.15))}
+
+/* ===== DROP ZONES ===== */
+.classify-zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:16px 0}
+.drop-zone{border:3px dashed #bbb;border-radius:16px;padding:14px;min-height:140px;
+  text-align:center;transition:border-color .3s,background .3s;position:relative}
+.drop-zone.active{border-color:#7c4dff;background:rgba(124,77,255,.04)}
+.drop-zone .zone-title{font-weight:700;font-size:1rem;margin-bottom:8px;color:#4a148c}
+.drop-zone .zone-items{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;min-height:50px}
+.drop-zone .zone-count{font-size:.85rem;color:#666;margin-top:6px}
+
+/* ===== COUNT TABLE ===== */
+.count-table{width:100%;border-collapse:separate;border-spacing:0;border-radius:12px;overflow:hidden;margin:16px 0}
+.count-table th,.count-table td{padding:10px 14px;text-align:center;border:1px solid #e0e0e0}
+.count-table th{background:linear-gradient(135deg,#ede7f6,#e8eaf6);color:#4a148c;font-size:.9rem}
+.count-table td{background:#fff;font-size:1rem}
+.count-table input[type=number]{width:50px;font-size:1.1rem;text-align:center;border:2px solid #ce93d8;
+  border-radius:8px;padding:4px;font-family:inherit;outline:none;transition:border-color .3s}
+.count-table input[type=number]:focus{border-color:#7c4dff}
+
+/* ===== BUTTONS ===== */
+.btn{display:inline-flex;align-items:center;gap:6px;border:none;border-radius:50px;
+  padding:10px 24px;font-size:.9rem;font-weight:600;cursor:pointer;transition:transform .2s,box-shadow .2s;
+  font-family:inherit}
+.btn:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.btn:active{transform:scale(.96)}
+.btn-primary{background:linear-gradient(135deg,#7c4dff,#448aff);color:#fff}
+.btn-success{background:linear-gradient(135deg,#00c853,#00e676);color:#fff}
+.btn-warning{background:linear-gradient(135deg,#ff6f00,#ffab00);color:#fff}
+.btn-reset{background:#eee;color:#666}
+
+/* ===== FEEDBACK ===== */
+.feedback{padding:12px 16px;border-radius:12px;margin:12px 0;font-weight:600;font-size:.95rem;
+  animation:popIn .3s ease-out;display:none}
+.feedback.show{display:block}
+.feedback.correct{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);color:#2e7d32;border:2px solid #81c784}
+.feedback.wrong{background:linear-gradient(135deg,#fce4ec,#f8bbd0);color:#c62828;border:2px solid #ef9a9a}
+.feedback.info{background:linear-gradient(135deg,#e3f2fd,#bbdefb);color:#1565c0;border:2px solid #90caf9}
+@keyframes popIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+
+/* ===== SCORE ===== */
+.score-bar{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);
+  backdrop-filter:blur(10px);padding:8px 20px;display:flex;justify-content:space-between;
+  align-items:center;box-shadow:0 2px 12px rgba(0,0,0,.06);font-size:.85rem}
+.score-bar .stars{color:#ffc107;font-size:1.2rem;letter-spacing:2px}
+
+/* ===== METHOD TABS ===== */
+.method-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.method-tab{padding:8px 18px;border-radius:50px;border:2px solid #ce93d8;background:#fff;
+  cursor:pointer;font-size:.85rem;font-weight:600;color:#7b1fa2;transition:all .3s;font-family:inherit}
+.method-tab.active{background:linear-gradient(135deg,#ab47bc,#7c4dff);color:#fff;border-color:transparent}
+
+/* ===== PICTOGRAPH ===== */
+.pictograph{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.picto-row{display:flex;align-items:center;gap:8px}
+.picto-label{min-width:60px;font-weight:600;font-size:.9rem;text-align:right}
+.picto-icons{display:flex;gap:2px;flex-wrap:wrap}
+.picto-icon{font-size:1.4rem;animation:popIn .3s ease-out}
+.picto-count{font-weight:700;color:#7c4dff;min-width:30px}
+
+/* ===== MCQ ===== */
+.mcq-options{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
+.mcq-opt{padding:10px 20px;border-radius:50px;border:2px solid #e0e0e0;background:#fff;
+  cursor:pointer;font-size:.95rem;font-weight:600;transition:all .3s;font-family:inherit}
+.mcq-opt:hover{border-color:#7c4dff;background:#f3e5f5}
+.mcq-opt.chosen-correct{border-color:#4caf50;background:#e8f5e9;color:#2e7d32}
+.mcq-opt.chosen-wrong{border-color:#f44336;background:#fce4ec;color:#c62828}
+
+/* ===== CONFETTI ===== */
+.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999}
+.confetti-piece{position:absolute;width:10px;height:10px;opacity:.9;animation:confettiFall 2s ease-out forwards}
+@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0) scale(1);opacity:1}
+  100%{transform:translateY(100vh) rotate(720deg) scale(0);opacity:0}}
+
+/* ===== ITEM GRIDS (vegetables/leaves) ===== */
+.item-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:12px 0}
+.grid-item{font-size:2.2rem;cursor:pointer;padding:8px;border-radius:12px;
+  transition:transform .3s,background .3s,box-shadow .3s;user-select:none}
+.grid-item:hover{transform:scale(1.2);background:rgba(124,77,255,.08)}
+.grid-item.picked{opacity:.3;pointer-events:none;transform:scale(.7)}
+
+/* ===== FOOTER NAV ===== */
+.footer-nav{max-width:800px;margin:32px auto 0;padding:0 16px}
+.footer-nav .nav-row{display:flex;justify-content:space-between;align-items:center;
+  background:#fff;border-radius:16px;padding:14px 20px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.footer-nav a{text-decoration:none;color:#7c4dff;font-weight:600;font-size:.9rem;
+  display:flex;align-items:center;gap:4px;transition:color .3s}
+.footer-nav a:hover{color:#4a148c}
+.footer-nav .disabled{color:#ccc;pointer-events:none}
+
+/* ===== FULL-READ BOTTOM BAR ===== */
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.95);
+  backdrop-filter:blur(10px);padding:10px 20px;display:flex;justify-content:center;gap:12px;
+  box-shadow:0 -2px 12px rgba(0,0,0,.08);z-index:200}
+
+/* ===== SUMMARY BOX ===== */
+.summary-box{background:linear-gradient(135deg,#fff8e1,#fff3e0);border:2px solid #ffcc02;
+  border-radius:16px;padding:20px;margin:12px 0}
+.summary-box ul{list-style:none;padding-left:0}
+.summary-box li{padding:6px 0;font-size:.95rem}
+.summary-box li::before{content:'⭐';margin-right:8px}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px){
+  html{font-size:16px}
+  .hero h1{font-size:1.6rem}
+  .classify-zones{grid-template-columns:1fr}
+  .balloon-area{gap:8px}
+  svg.balloon{width:50px;height:64px}
+  .card{padding:20px 16px}
+}
+
+/* ===== TRANSITIONS UTILITY ===== */
+.delay-1{transition-delay:.1s}.delay-2{transition-delay:.2s}.delay-3{transition-delay:.3s}
+.delay-4{transition-delay:.4s}.delay-5{transition-delay:.5s}
+</style>
+<style id="public-local-controls">/* 公开站：语音工具就近放置，不使用固定全站通栏 */
+.bottom-bar,.ttsbar,.voice-fab{position:static!important;inset:auto!important;margin:18px auto!important;transform:none!important}.voice-panel{position:static!important;display:block!important;margin:8px auto!important}body{padding-bottom:0!important}
+</style></head>
+<body>
+
+<!-- ===== BREADCRUMB ===== -->
+<nav class="breadcrumb">
+  <a href="unit1-index.html">二年级数学 · 分类整理专题</a><span class="sep">›</span>
+  <a href="unit1-index.html">分类整理专题 · 分类与整理</a><span class="sep">›</span>
+  <span>第1课 · 气球分类</span>
+</nav>
+
+<!-- ===== SCORE BAR ===== -->
+<div class="score-bar">
+  <div>🎯 得分：<span id="scoreNum">0</span> 分</div>
+  <div class="stars" id="starBar">☆☆☆☆☆</div>
+</div>
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <h1>🎈 气球分类</h1>
+  <div class="subtitle">分类整理专题 · 分类与整理 · 第1课</div>
+</div>
+
+<!-- ========================================== -->
+<!-- ===== TEACHING SECTION ===== -->
+<!-- ========================================== -->
+<div class="section" id="teach-section">
+
+  <!-- INTRO -->
+  <div class="card" data-tts="小朋友们好！欢迎来到气球分类课堂！今天我们要学习怎样把不同的气球分成几组。看看下面这些漂亮的气球吧！">
+    <h2>📖 讲解：气球分类 <button class="tts-btn" onclick="speakCard(this)">🔊 听一听</button></h2>
+    <p class="tts-paragraph">小朋友们好！欢迎来到气球分类课堂！🎉</p>
+    <p class="tts-paragraph" style="margin-top:8px">今天我们要学习怎样把不同的气球<strong>分成几组</strong>。看看下面这些漂亮的气球吧！</p>
+
+    <!-- Display all 12 balloons -->
+    <div class="balloon-area" id="demoBalloons"></div>
+    <p class="tts-paragraph" style="margin-top:8px;text-align:center;color:#888;font-size:.85rem">
+      一共有 <strong>12</strong> 个气球，有不同的形状和颜色哦！
+    </p>
+  </div>
+
+  <!-- BY SHAPE -->
+  <div class="card" data-tts="我们可以按照形状来分类。花形气球有3个，心形气球有4个，圆形气球有5个。圆形气球最多，花形气球最少。">
+    <h2>🌸 按形状分类 <button class="tts-btn" onclick="speakCard(this)">🔊 听一听</button></h2>
+    <p class="tts-paragraph">我们可以按照<strong>形状</strong>来分类：</p>
+    <div class="classify-zones" id="shapeDemo">
+      <div class="drop-zone">
+        <div class="zone-title">🌸 花形</div>
+        <div class="zone-items" id="shapeFlower"></div>
+        <div class="zone-count">3 个</div>
+      </div>
+      <div class="drop-zone">
+        <div class="zone-title">💗 心形</div>
+        <div class="zone-items" id="shapeHeart"></div>
+        <div class="zone-count">4 个</div>
+      </div>
+      <div class="drop-zone">
+        <div class="zone-title">🎈 圆形</div>
+        <div class="zone-items" id="shapeCircle"></div>
+        <div class="zone-count">5 个</div>
+      </div>
+    </div>
+    <p class="tts-paragraph">圆形气球<strong>最多</strong>（5个），花形气球<strong>最少</strong>（3个）。</p>
+  </div>
+
+  <!-- BY COLOR (课本第1页末问，开放题：不给答案) -->
+  <div class="card" data-tts="同一堆气球，还可以按颜色分，这就是换了一个分类标准。课本最后问：按颜色分，你是怎样表示分的结果的？这一题课本没有给答案，这里也不给。请你回到课本上按颜色数一数，再自己挑一种表示方法。">
+    <h2>🎨 换个标准：按颜色分 <button class="tts-btn" onclick="speakCard(this)">🔊 听一听</button></h2>
+    <p class="tts-paragraph">同一堆气球，<strong>还可以按颜色分</strong>——这就是换了一个<strong>分类标准</strong>。</p>
+    <p class="tts-paragraph">课本这一页最后一问：<strong>「按颜色分，你是怎样表示分的结果的？」</strong></p>
+    <p class="tts-paragraph"><strong>课本没有给答案，这里也不给。</strong>请你回到<strong>课本第 1 页</strong>按颜色数一数，再自己挑一种表示方法：分组摆一摆、上面那样涂格子，或者写「图标＋数字」。</p>
+    <p class="tts-paragraph">数完问自己一句：<strong>哪种颜色最多？哪种最少？</strong></p>
+  </div>
+
+    <!-- PAINT CHART (课本第2页原题：涂一涂、填一填) -->
+  <style>
+  .paint-wrap{display:flex;gap:1.4em;justify-content:center;align-items:flex-end;flex-wrap:wrap;margin:.8em 0}
+  .paint-col{display:flex;flex-direction:column-reverse;gap:.35em}
+  .paint-cell{width:2.5em;height:2.5em;border:2px solid #9bb7d4;border-radius:50%;background:#fff;cursor:pointer;padding:0;font-size:1em}
+  .paint-cell[aria-pressed="true"]{background:#f6c445;border-color:#d9a107}
+  .paint-base{border-top:3px solid #555;margin-top:.5em;padding-top:.4em;display:flex;gap:1.4em;justify-content:center}
+  .paint-sym{width:2.5em;text-align:center;font-size:1.5em}
+  .paint-fill{display:flex;gap:1.4em;justify-content:center;margin-top:.5em}
+  .paint-num{width:2.5em;text-align:center;font-size:1.2em;font-weight:700;color:#b03a2e}
+  .paint-look{margin-top:.8em;padding:.6em .8em;background:#fff8e6;border-left:4px solid #e8b93b;border-radius:6px}
+  </style>
+  <div class="card" data-tts="现在你自己来涂一涂。按形状分好以后，一个气球就涂一个圆圈，从下往上涂。涂完看一看，哪一列最高，哪一列最矮。">
+    <h2>✏️ 涂一涂、填一填 <button class="tts-btn" onclick="speakCard(this)">🔊 听一听</button></h2>
+    <p class="tts-paragraph">课本要求：<strong>按形状分一分，再涂一涂、填一填。</strong>一个气球就涂一个圆圈，<strong>从下往上</strong>涂。</p>
+    <p style="text-align:center;font-size:.95em;color:#555;background:#F5F7FA;border-radius:6px;padding:.35em .6em;margin:.4em 0">○ = 1 个气球</p>
+    <div class="paint-wrap" id="paintChart"></div>
+    <div class="paint-base"><span class="paint-sym">🌸</span><span class="paint-sym">💗</span><span class="paint-sym">🎈</span></div>
+    <div class="paint-fill"><span class="paint-num" id="pn0">( )</span><span class="paint-num" id="pn1">( )</span><span class="paint-num" id="pn2">( )</span></div>
+    <p class="paint-look" data-tts="涂完了不用算，直接看：哪一列最高，那种气球就最多；哪一列最矮，那种就最少。">
+      涂完了<strong>不用算</strong>——直接看：<strong>哪一列最高，那种气球就最多；最矮的那列，就是最少。</strong>
+    </p>
+    <button class="tts-btn" onclick="resetPaint()">↻ 重新涂</button>
+  </div>
+  <script>
+  (function(){
+    var wrap=document.getElementById('paintChart');
+    if(!wrap)return;
+    var ROWS=5,COLS=3;
+    for(var c=0;c<COLS;c++){
+      var col=document.createElement('div');col.className='paint-col';col.dataset.col=c;
+      for(var r=0;r<ROWS;r++){
+        var b=document.createElement('button');
+        b.className='paint-cell';b.type='button';
+        b.setAttribute('aria-pressed','false');
+        b.setAttribute('aria-label','第'+(c+1)+'列 第'+(r+1)+'个圆圈');
+        col.appendChild(b);
+      }
+      wrap.appendChild(col);
+    }
+    function tally(){
+      wrap.querySelectorAll('.paint-col').forEach(function(col){
+        var n=col.querySelectorAll('[aria-pressed="true"]').length;
+        var el=document.getElementById('pn'+col.dataset.col);
+        if(el)el.textContent=n?'( '+n+' )':'( )';
+      });
+    }
+    wrap.addEventListener('click',function(e){
+      var b=e.target.closest('.paint-cell');
+      if(!b)return;
+      b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'?'false':'true');
+      tally();
+    });
+    window.resetPaint=function(){
+      wrap.querySelectorAll('.paint-cell').forEach(function(b){b.setAttribute('aria-pressed','false')});
+      tally();
+    };
+  })();
+  </script>
+
+  <!-- THREE METHODS -->
+  <div class="card" data-tts="整理分类结果有三种方法。第一种方法叫先分再数，先把同一类的放在一起，再数每类有几个。第二种方法叫边数边画，一边数一边画圆圈来记录。第三种方法是用图标加数字，用小图标排一排，旁边写上数字。">
+    <h2>📊 三种整理方法 <button class="tts-btn" onclick="speakCard(this)">🔊 听一听</button></h2>
+    <p class="tts-paragraph">整理分类结果有三种方法，点击下面的按钮看看吧：</p>
+
+    <div class="method-tabs">
+      <button class="method-tab active" onclick="showMethod(0,this)">① 先分再数</button>
+      <button class="method-tab" onclick="showMethod(1,this)">② 边数边画</button>
+      <button class="method-tab" onclick="showMethod(2,this)">③ 图标+数字</button>
+    </div>
+
+    <!-- Method 0: Sort then count -->
+    <div class="method-panel" id="method0">
+      <h3>① 先分再数</h3>
+      <p class="tts-paragraph">先把同一类的<strong>放在一起</strong>，再<strong>数</strong>每类有几个。</p>
+      <div class="classify-zones">
+        <div class="drop-zone"><div class="zone-title">🌸 花形</div>
+          <div class="zone-items" style="font-size:1.8rem">🌸🌸🌸</div>
+          <div class="zone-count">数一数 → <strong>3个</strong></div></div>
+        <div class="drop-zone"><div class="zone-title">💗 心形</div>
+          <div class="zone-items" style="font-size:1.8rem">💗💗💗💗</div>
+          <div class="zone-count">数一数 → <strong>4个</strong></div></div>
+        <div class="drop-zone"><div class="zone-title">🎈 圆形</div>
+          <div class="zone-items" style="font-size:1.8rem">🎈🎈🎈🎈🎈</div>
+          <div class="zone-count">数一数 → <strong>5个</strong></div></div>
+      </div>
+    </div>
+
+    <!-- Method 1: Count and draw -->
+    <div class="method-panel" id="method1" style="display:none">
+      <h3>② 边数边画</h3>
+      <p class="tts-paragraph">一边数一边<strong>画圆圈</strong>来记录：</p>
+      <table class="count-table">
+        <tr><th>类型</th><th>画一画</th><th>一共</th></tr>
+        <tr><td>🌸 花形</td><td style="font-size:1.2rem;letter-spacing:4px">○ ○ ○</td><td><strong>3</strong></td></tr>
+        <tr><td>💗 心形</td><td style="font-size:1.2rem;letter-spacing:4px">○ ○ ○ ○</td><td><strong>4</strong></td></tr>
+        <tr><td>🎈 圆形</td><td style="font-size:1.2rem;letter-spacing:4px">○ ○ ○ ○ ○</td><td><strong>5</strong></td></tr>
+      </table>
+    </div>
+
+    <!-- Method 2: Pictograph -->
+    <div class="method-panel" id="method2" style="display:none">
+      <h3>③ 图标 + 数字</h3>
+      <p class="tts-paragraph">用小图标<strong>排一排</strong>，旁边写上数字：</p>
+      <div class="pictograph">
+        <div class="picto-row"><span class="picto-label">花形</span>
+          <div class="picto-icons">🌸🌸🌸</div><span class="picto-count">3</span></div>
+        <div class="picto-row"><span class="picto-label">心形</span>
+          <div class="picto-icons">💗💗💗💗</div><span class="picto-count">4</span></div>
+        <div class="picto-row"><span class="picto-label">圆形</span>
+          <div class="picto-icons">🎈🎈🎈🎈🎈</div><span class="picto-count">5</span></div>
+      </div>
+      <p class="tts-paragraph" style="margin-top:8px;color:#666;font-size:.85rem">💡 这就像一幅小小的<strong>统计图</strong>！</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- ===== PRACTICE SECTION ===== -->
+<!-- ========================================== -->
+<div class="section" id="practice-section">
+
+  <!-- ===== EXERCISE 1: Classify Balloons by Shape ===== -->
+  <div class="card" data-tts="练习一：请你来把气球按形状分类吧！点击气球，再点击正确的分组框，把它放进去。">
+    <h2>✏️ 练习一：气球分类 <button class="tts-btn" onclick="speakCard(this)">🔊 听一听</button></h2>
+    <p class="tts-paragraph">请你来把气球按<strong>形状</strong>分类吧！<br>👆 点击一个气球，再点击正确的分组框。</p>
+
+    <div class="balloon-area" id="ex1Balloons"></div>
+
+    <div class="classify-zones">
+      <div class="drop-zone" onclick="dropToZone('ex1','flower')" id="ex1ZoneFlower">
+        <div class="zone-title">🌸 花形</div>
+        <div class="zone-items" id="ex1ItemsFlower"></div>
+        <div class="zone-count" id="ex1CountFlower">0 个</div>
+      </div>
+      <div class="drop-zone" onclick="dropToZone('ex1','heart')" id="ex1ZoneHeart">
+        <div class="zone-title">💗 心形</div>
+        <div class="zone-items" id="ex1ItemsHeart"></div>
+        <div class="zone-count" id="ex1CountHeart">0 个</div>
+      </div>
+      <div class="drop-zone" onclick="dropToZone('ex1','circle')" id="ex1ZoneCircle">
+        <div class="zone-title">🎈 圆形</div>
+        <div class="zone-items" id="ex1ItemsCircle"></div>
+        <div class="zone-count" id="ex1CountCircle">0 个</div>
+      </div>
+    </div>
+
+    <div class="feedback" id="ex1Feedback"></div>
+    <div style="text-align:center;margin-top:10px">
+      <button class="btn btn-primary" onclick="checkEx1()">✅ 检查答案</button>
+      <button class="btn btn-reset" onclick="resetEx1()" style="margin-left:8px">🔄 重做</button>
+    </div>
+  </div>
+
+  <!-- ===== EXERCISE 2: Count after classification ===== -->
+  <div class="card" data-tts="练习二：数一数，填一填。按颜色分类后，请填写每种颜色各有几个气球。">
+    <h2>✏️ 练习二：数一数，填一填 <button class="tts-btn" onclick="speakCard(this)">🔊 听一听</button></h2>
+    <p class="tts-paragraph">按<strong>颜色</strong>分类后，请填写每种颜色各有几个气球：<br><span style="font-size:.92em;color:#6b6b6b">（数的是<strong>本页这 12 个气球</strong>，不是课本上那张图——课本那张请在书上自己数。）</span></p>
+
+    <div class="classify-zones" style="margin-bottom:12px">
+      <div class="drop-zone"><div class="zone-title">🔴 红色</div>
+        <div class="zone-items" id="ex2Red" style="font-size:1.8rem"></div></div>
+      <div class="drop-zone"><div class="zone-title">🔵 蓝色</div>
+        <div class="zone-items" id="ex2Blue" style="font-size:1.8rem"></div></div>
+      <div class="drop-zone"><div class="zone-title">🟡 黄色</div>
+        <div class="zone-items" id="ex2Yellow" style="font-size:1.8rem"></div></div>
+    </div>
+
+    <table class="count-table">
+      <tr><th>颜色</th><th>数量</th></tr>
+      <tr><td>🔴 红色</td><td><input type="number" id="ex2InputRed" min="0" max="20"></td></tr>
+      <tr><td>🔵 蓝色</td><td><input type="number" id="ex2InputBlue" min="0" max="20"></td></tr>
+      <tr><td>🟡 黄色</td><td><input type="number" id="ex2InputYellow" min="0" max="20"></td></tr>
+    </table>
+
+    <div class="feedback" id="ex2Feedback"></div>
+    <div style="text-align:center;margin-top:10px">
+      <button class="btn btn-primary" onclick="checkEx2()">✅ 检查答案</button>
+    </div>
+  </div>
+
+  <!-- ===== EXERCISE 3: Compare most/least (balloons) ===== -->
+  <div class="card" data-tts="练习三：比一比。按形状分类，哪种气球最多？哪种气球最少？">
+    <h2>✏️ 练习三：比一比 <button class="tts-btn" onclick="speakCard(this)">🔊 听一听</button></h2>
+    <p class="tts-paragraph">按<strong>形状</strong>分类：</p>
+    <div class="pictograph" style="margin-bottom:12px">
+      <div class="picto-row"><span class="picto-label">🌸 花形</span><div class="picto-icons">🌸🌸🌸</div><span class="picto-count">3</span></div>
+      <div class="picto-row"><span class="picto-label">💗 心形</span><div class="picto-icons">💗💗💗💗</div><span class="picto-count">4</span></div>
+      <div class="picto-row"><span class="picto-label">🎈 圆形</span><div class="picto-icons">🎈🎈🎈🎈🎈</div><span class="picto-count">5</span></div>
+    </div>
+
+    <p class="tts-paragraph">哪种气球<strong>最多</strong>？</p>
+    <div class="mcq-options" id="ex3MostOpts">
+      <button class="mcq-opt" onclick="pickMCQ('ex3Most','flower',this)">🌸 花形</button>
+      <button class="mcq-opt" onclick="pickMCQ('ex3Most','heart',this)">💗 心形</button>
+      <button class="mcq-opt" onclick="pickMCQ('ex3Most','circle',this)">🎈 圆形</button>
+    </div>
+    <div class="feedback" id="ex3MostFb"></div>
+
+    <p class="tts-paragraph" style="margin-top:12px">哪种气球<strong>最少</strong>？</p>
+    <div class="mcq-options" id="ex3LeastOpts">
+      <button class="mcq-opt" onclick="pickMCQ('ex3Least','flower',this)">🌸 花形</button>
+      <button class="mcq-opt" onclick="pickMCQ('ex3Least','heart',this)">💗 心形</button>
+      <button class="mcq-opt" onclick="pickMCQ('ex3Least','circle',this)">🎈 圆形</button>
+    </div>
+    <div class="feedback" id="ex3LeastFb"></div>
+  </div>
+
+  <!-- ===== EXERCISE 4: Classify Leaves ===== -->
+  <div class="card" data-tts="练习四：叶子分类。请把下面的叶子按种类分开，然后数一数每种有几片。">
+    <h2>✏️ 练习四：叶子分类 🍃 <button class="tts-btn" onclick="speakCard(this)">🔊 听一听</button></h2>
+    <p class="tts-paragraph">请把下面的叶子按<strong>种类</strong>分开，点击叶子放到正确的组里：</p>
+
+    <div class="item-grid" id="ex4Items"></div>
+
+    <div class="classify-zones">
+      <div class="drop-zone" onclick="dropToZone('ex4','flower')" id="ex4ZoneFlower">
+        <div class="zone-title">🌺 花叶</div>
+        <div class="zone-items" id="ex4ItemsFlower"></div>
+        <div class="zone-count" id="ex4CountFlower">0 片</div>
+      </div>
+      <div class="drop-zone" onclick="dropToZone('ex4','big')" id="ex4ZoneBig">
+        <div class="zone-title">🍃 大叶</div>
+        <div class="zone-items" id="ex4ItemsBig"></div>
+        <div class="zone-count" id="ex4CountBig">0 片</div>
+      </div>
+      <div class="drop-zone" onclick="dropToZone('ex4','ginkgo')" id="ex4ZoneGinkgo">
+        <div class="zone-title">🍂 银杏叶</div>
+        <div class="zone-items" id="ex4ItemsGinkgo"></div>
+        <div class="zone-count" id="ex4CountGinkgo">0 片</div>
+      </div>
+      <div class="drop-zone" onclick="dropToZone('ex4','bean')" id="ex4ZoneBean">
+        <div class="zone-title">🫛 小豆荚</div>
+        <div class="zone-items" id="ex4ItemsBean"></div>
+        <div class="zone-count" id="ex4CountBean">0 片</div>
+      </div>
+    </div>
+
+    <div class="feedback" id="ex4Feedback"></div>
+    <div style="text-align:center;margin-top:10px">
+      <button class="btn btn-primary" onclick="checkEx4()">✅ 检查答案</button>
+      <button class="btn btn-reset" onclick="resetEx4()" style="margin-left:8px">🔄 重做</button>
+    </div>
+  </div>
+
+  <!-- ===== EXERCISE 5: Classify Vegetables ===== -->
+  <div class="card" data-tts="练习五：蔬菜分类。请把蔬菜分成几组，数一数每组有几个，再比一比哪种最多、哪种最少。">
+    <h2>✏️ 练习五：蔬菜分类 🥬 <button class="tts-btn" onclick="speakCard(this)">🔊 听一听</button></h2>
+    <p class="tts-paragraph">请把蔬菜按<strong>种类</strong>分开，点击蔬菜放到正确的组里：</p>
+
+    <div class="item-grid" id="ex5Items"></div>
+
+    <div class="classify-zones">
+      <div class="drop-zone" onclick="dropToZone('ex5','carrot')" id="ex5ZoneCarrot">
+        <div class="zone-title">🥕 胡萝卜</div>
+        <div class="zone-items" id="ex5ItemsCarrot"></div>
+        <div class="zone-count" id="ex5CountCarrot">0 个</div>
+      </div>
+      <div class="drop-zone" onclick="dropToZone('ex5','tomato')" id="ex5ZoneTomato">
+        <div class="zone-title">🍅 小番茄</div>
+        <div class="zone-items" id="ex5ItemsTomato"></div>
+        <div class="zone-count" id="ex5CountTomato">0 个</div>
+      </div>
+      <div class="drop-zone" onclick="dropToZone('ex5','pepper')" id="ex5ZonePepper">
+        <div class="zone-title">🫑 青椒</div>
+        <div class="zone-items" id="ex5ItemsPepper"></div>
+        <div class="zone-count" id="ex5CountPepper">0 个</div>
+      </div>
+      <div class="drop-zone" onclick="dropToZone('ex5','onion')" id="ex5ZoneOnion">
+        <div class="zone-title">🧅 洋葱</div>
+        <div class="zone-items" id="ex5ItemsOnion"></div>
+        <div class="zone-count" id="ex5CountOnion">0 个</div>
+      </div>
+      <div class="drop-zone" onclick="dropToZone('ex5','cucumber')" id="ex5ZoneCucumber">
+        <div class="zone-title">🥒 黄瓜</div>
+        <div class="zone-items" id="ex5ItemsCucumber"></div>
+        <div class="zone-count" id="ex5CountCucumber">0 个</div>
+      </div>
+      <div class="drop-zone" onclick="dropToZone('ex5','chili')" id="ex5ZoneChili">
+        <div class="zone-title">🌶️ 辣椒</div>
+        <div class="zone-items" id="ex5ItemsChili"></div>
+        <div class="zone-count" id="ex5CountChili">0 个</div>
+      </div>
+    </div>
+
+    <div class="feedback" id="ex5Feedback"></div>
+
+    <div style="margin-top:12px">
+      <p class="tts-paragraph">🤔 哪种蔬菜<strong>最多</strong>？</p>
+      <div class="mcq-options" id="ex5MostOpts">
+        <button class="mcq-opt" onclick="pickMCQ('ex5Most','carrot',this)">🥕</button>
+        <button class="mcq-opt" onclick="pickMCQ('ex5Most','tomato',this)">🍅</button>
+        <button class="mcq-opt" onclick="pickMCQ('ex5Most','pepper',this)">🫑</button>
+        <button class="mcq-opt" onclick="pickMCQ('ex5Most','onion',this)">🧅</button>
+        <button class="mcq-opt" onclick="pickMCQ('ex5Most','cucumber',this)">🥒</button>
+        <button class="mcq-opt" onclick="pickMCQ('ex5Most','chili',this)">🌶️</button>
+      </div>
+      <div class="feedback" id="ex5MostFb"></div>
+
+      <p class="tts-paragraph" style="margin-top:8px">🤔 哪种蔬菜<strong>最少</strong>？</p>
+      <div class="mcq-options" id="ex5LeastOpts">
+        <button class="mcq-opt" onclick="pickMCQ('ex5Least','carrot',this)">🥕</button>
+        <button class="mcq-opt" onclick="pickMCQ('ex5Least','tomato',this)">🍅</button>
+        <button class="mcq-opt" onclick="pickMCQ('ex5Least','pepper',this)">🫑</button>
+        <button class="mcq-opt" onclick="pickMCQ('ex5Least','onion',this)">🧅</button>
+        <button class="mcq-opt" onclick="pickMCQ('ex5Least','cucumber',this)">🥒</button>
+        <button class="mcq-opt" onclick="pickMCQ('ex5Least','chili',this)">🌶️</button>
+      </div>
+      <div class="feedback" id="ex5LeastFb"></div>
+    </div>
+
+    <div style="text-align:center;margin-top:12px">
+      <button class="btn btn-primary" onclick="checkEx5()">✅ 检查分类</button>
+      <button class="btn btn-reset" onclick="resetEx5()" style="margin-left:8px">🔄 重做</button>
+    </div>
+  </div>
+
+  <!-- ===== DISCUSSION: Benefits ===== -->
+  <div class="card" data-tts="想一想，分类有什么好处呢？分类可以让东西更容易找到，也更容易数清楚有多少个。生活中到处都有分类，比如书架上的书按类型摆放，衣柜里的衣服按季节整理。">
+    <h2>💬 想一想 <button class="tts-btn" onclick="speakCard(this)">🔊 听一听</button></h2>
+    <p class="tts-paragraph">分类有什么<strong>好处</strong>呢？</p>
+    <div class="summary-box" style="background:linear-gradient(135deg,#e3f2fd,#e8eaf6);border-color:#90caf9">
+      <ul>
+        <li>分类让东西更<strong>容易找到</strong> 🔍</li>
+        <li>分类让数量更<strong>容易数清楚</strong> 🔢</li>
+        <li>分类让我们能<strong>比较多少</strong> 📊</li>
+      </ul>
+    </div>
+    <p class="tts-paragraph" style="margin-top:8px">生活中到处都有分类：书架上的书📚按类型摆放，衣柜里的衣服👕按季节整理……你还能想到哪些呢？</p>
+  </div>
+
+  <!-- ===== SUMMARY ===== -->
+  <div class="card" data-tts="今天的小结：分类就是把同一类的东西放在一起。可以按照不同的标准分类，比如形状或颜色。整理结果可以用先分再数、边数边画、图标加数字三种方法。分类可以帮助我们比较多少。太棒了，你学会了！">
+    <h2>🌟 今日小结 <button class="tts-btn" onclick="speakCard(this)">🔊 听一听</button></h2>
+    <div class="summary-box">
+      <ul>
+        <li><strong>分类</strong>就是把同一类的东西放在一起</li>
+        <li>可以按照不同的<strong>标准</strong>分类（形状、颜色……）</li>
+        <li>整理结果有三种方法：先分再数、边数边画、图标+数字</li>
+        <li>分类可以帮助我们<strong>比较多少</strong></li>
+      </ul>
+    </div>
+    <p style="text-align:center;font-size:1.3rem;margin-top:12px">🎉 太棒了，你学会了！继续加油！💪</p>
+  </div>
+</div>
+
+<!-- ===== FOOTER NAV ===== -->
+<div class="footer-nav">
+  <div class="nav-row">
+    <a class="disabled">← 上一课</a>
+    <a href="unit1-index.html">📚 课程目录</a>
+    <a href="unit1-lesson2.html">下一课 →</a>
+  </div>
+</div>
+
+<!-- ===== BOTTOM BAR ===== -->
+<div class="bottom-bar">
+  <button class="btn btn-warning" id="fullReadBtn" onclick="fullRead()">🔊 连续播放</button>
+  <button class="btn btn-reset" onclick="stopTTS()">⏹ 停止</button>
+</div>
+
+<!-- ===== CONFETTI CONTAINER ===== -->
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+// =========================================
+// ===== TTS ENGINE =====
+// =========================================
+let ttsVoice = null;
+let ttsUtterance = null;
+let ttsPlaying = false;
+let fullReadQueue = [];
+let fullReadIndex = -1;
+
+function initVoices() {
+  const voices = speechSynthesis.getVoices();
+  const preferred = voices.find(v => v.lang.startsWith('zh') && v.name.includes('Xiaoxiao'));
+  const natural = voices.find(v => v.lang.startsWith('zh') && v.name.includes('Online') && v.name.includes('Natural'));
+  const fallback = voices.find(v => v.lang.startsWith('zh'));
+  ttsVoice = preferred || natural || fallback || null;
+}
+speechSynthesis.onvoiceschanged = initVoices;
+initVoices();
+
+function speakText(text, card, onEnd) {
+  speechSynthesis.cancel();
+  ttsUtterance = new SpeechSynthesisUtterance(text);
+  if (ttsVoice) ttsUtterance.voice = ttsVoice;
+  ttsUtterance.lang = 'zh-CN';
+  ttsUtterance.rate = 0.9;
+  ttsUtterance.pitch = 1.1;
+  ttsPlaying = true;
+
+  // Highlight paragraphs
+  const paragraphs = card ? card.querySelectorAll('.tts-paragraph') : [];
+  let pIdx = 0;
+  paragraphs.forEach(p => p.classList.remove('speaking'));
+  if (paragraphs.length > 0) paragraphs[0].classList.add('speaking');
+
+  ttsUtterance.onboundary = function(e) {
+    if (e.name === 'sentence' && pIdx < paragraphs.length - 1) {
+      paragraphs[pIdx].classList.remove('speaking');
+      pIdx++;
+      paragraphs[pIdx].classList.add('speaking');
+      paragraphs[pIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
+  ttsUtterance.onend = function() {
+    paragraphs.forEach(p => p.classList.remove('speaking'));
+    ttsPlaying = false;
+    // Reset TTS buttons
+    document.querySelectorAll('.tts-btn.playing').forEach(b => b.classList.remove('playing'));
+    if (onEnd) onEnd();
+  };
+  ttsUtterance.onerror = function() {
+    ttsPlaying = false;
+    document.querySelectorAll('.tts-btn.playing').forEach(b => b.classList.remove('playing'));
+  };
+
+  speechSynthesis.speak(ttsUtterance);
+}
+
+function speakCard(btn) {
+  if (ttsPlaying) { stopTTS(); return; }
+  const card = btn.closest('.card');
+  const text = card.getAttribute('data-tts') || card.innerText;
+  btn.classList.add('playing');
+  speakText(text, card);
+}
+
+function stopTTS() {
+  speechSynthesis.cancel();
+  ttsPlaying = false;
+  fullReadQueue = [];
+  fullReadIndex = -1;
+  document.querySelectorAll('.tts-btn.playing').forEach(b => b.classList.remove('playing'));
+  document.querySelectorAll('.tts-paragraph.speaking').forEach(p => p.classList.remove('speaking'));
+  document.getElementById('fullReadBtn').textContent = '🔊 连续播放';
+}
+
+function fullRead() {
+  if (ttsPlaying) { stopTTS(); return; }
+  const cards = document.querySelectorAll('.card[data-tts]');
+  fullReadQueue = Array.from(cards);
+  fullReadIndex = 0;
+  document.getElementById('fullReadBtn').textContent = '⏸ 暂停播放';
+  readNext();
+}
+
+function readNext() {
+  if (fullReadIndex < 0 || fullReadIndex >= fullReadQueue.length) {
+    stopTTS();
+    return;
+  }
+  const card = fullReadQueue[fullReadIndex];
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const text = card.getAttribute('data-tts');
+  speakText(text, card, () => {
+    fullReadIndex++;
+    if (fullReadIndex < fullReadQueue.length) {
+      setTimeout(readNext, 400);
+    } else {
+      stopTTS();
+    }
+  });
+}
+
+// =========================================
+// ===== BALLOON DATA & SVG =====
+// =========================================
+const COLORS = {
+  red: { fill: '#FF4444', stroke: '#CC0000', label: '红' },
+  blue: { fill: '#4488FF', stroke: '#2255CC', label: '蓝' },
+  yellow: { fill: '#FFD700', stroke: '#CC9900', label: '黄' }
+};
+
+// 12 balloons: flower×3, heart×4, circle×5 distributed across colors
+const BALLOONS = [
+  { id: 'b1', shape: 'flower', color: 'red' },
+  { id: 'b2', shape: 'flower', color: 'blue' },
+  { id: 'b3', shape: 'flower', color: 'yellow' },
+  { id: 'b4', shape: 'heart', color: 'red' },
+  { id: 'b5', shape: 'heart', color: 'red' },
+  { id: 'b6', shape: 'heart', color: 'blue' },
+  { id: 'b7', shape: 'heart', color: 'yellow' },
+  { id: 'b8', shape: 'circle', color: 'red' },
+  { id: 'b9', shape: 'circle', color: 'red' },
+  { id: 'b10', shape: 'circle', color: 'blue' },
+  { id: 'b11', shape: 'circle', color: 'blue' },
+  { id: 'b12', shape: 'circle', color: 'yellow' }
+];
+
+function makeBalloonSVG(shape, colorKey, size) {
+  size = size || 64;
+  const h = size * 1.25;
+  const c = COLORS[colorKey];
+  const cx = size / 2, cy = size / 2;
+  let pathD = '';
+
+  if (shape === 'flower') {
+    // Flower shape: 5 petals
+    const r = size * 0.18;
+    const R = size * 0.28;
+    let petals = '';
+    for (let i = 0; i < 5; i++) {
+      const angle = (i * 72 - 90) * Math.PI / 180;
+      const px = cx + R * Math.cos(angle);
+      const py = cy + R * Math.sin(angle);
+      petals += `<circle cx="${px}" cy="${py}" r="${r}" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/>`;
+    }
+    return `<svg class="balloon" viewBox="0 0 ${size} ${h}" width="${size}" height="${h}">
+      ${petals}
+      <circle cx="${cx}" cy="${cy}" r="${size*0.12}" fill="${c.stroke}"/>
+      <circle cx="${cx}" cy="${cy}" r="${size*0.06}" fill="#FFD700"/>
+      <line x1="${cx}" y1="${cy+size*0.38}" x2="${cx}" y2="${h-2}" stroke="#999" stroke-width="1.5"/>
+    </svg>`;
+  } else if (shape === 'heart') {
+    const s = size * 0.45;
+    return `<svg class="balloon" viewBox="0 0 ${size} ${h}" width="${size}" height="${h}">
+      <path d="M${cx},${cy+s*0.5}
+        C${cx},${cy+s*0.5} ${cx-s},${cy-s*0.2} ${cx-s*0.6},${cy-s*0.5}
+        C${cx-s*0.2},${cy-s*0.8} ${cx},${cy-s*0.2} ${cx},${cy-s*0.05}
+        C${cx},${cy-s*0.2} ${cx+s*0.2},${cy-s*0.8} ${cx+s*0.6},${cy-s*0.5}
+        C${cx+s},${cy-s*0.2} ${cx},${cy+s*0.5} ${cx},${cy+s*0.5}Z"
+        fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/>
+      <ellipse cx="${cx-s*0.15}" cy="${cy-s*0.2}" rx="${s*0.08}" ry="${s*0.12}" fill="rgba(255,255,255,.4)" transform="rotate(-20 ${cx-s*0.15} ${cy-s*0.2})"/>
+      <line x1="${cx}" y1="${cy+s*0.5+2}" x2="${cx}" y2="${h-2}" stroke="#999" stroke-width="1.5"/>
+    </svg>`;
+  } else {
+    // Circle
+    const r = size * 0.36;
+    return `<svg class="balloon" viewBox="0 0 ${size} ${h}" width="${size}" height="${h}">
+      <ellipse cx="${cx}" cy="${cy}" rx="${r}" ry="${r*1.15}" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/>
+      <ellipse cx="${cx-r*0.25}" cy="${cy-r*0.35}" rx="${r*0.12}" ry="${r*0.2}" fill="rgba(255,255,255,.45)" transform="rotate(-20 ${cx-r*0.25} ${cy-r*0.35})"/>
+      <polygon points="${cx-3},${cy+r*1.15} ${cx+3},${cy+r*1.15} ${cx},${cy+r*1.15+6}" fill="${c.stroke}"/>
+      <line x1="${cx}" y1="${cy+r*1.15+6}" x2="${cx}" y2="${h-2}" stroke="#999" stroke-width="1.5"/>
+    </svg>`;
+  }
+}
+
+const SHAPE_LABELS = { flower: '花形', heart: '心形', circle: '圆形' };
+
+function renderBalloons(containerId, balloons, clickHandler) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  // Shuffle for display
+  const shuffled = [...balloons].sort(() => Math.random() - 0.5);
+  shuffled.forEach(b => {
+    const wrap = document.createElement('div');
+    wrap.className = 'balloon-wrap';
+    wrap.setAttribute('data-id', b.id);
+    wrap.setAttribute('data-shape', b.shape);
+    wrap.setAttribute('data-color', b.color);
+    wrap.innerHTML = makeBalloonSVG(b.shape, b.color);
+    if (clickHandler) {
+      wrap.onclick = () => clickHandler(b, wrap);
+    }
+    container.appendChild(wrap);
+  });
+}
+
+// =========================================
+// ===== DEMO RENDERING =====
+// =========================================
+function renderDemos() {
+  // All balloons
+  renderBalloons('demoBalloons', BALLOONS);
+
+  // Shape demo zones
+  const byShape = { flower: [], heart: [], circle: [] };
+  BALLOONS.forEach(b => byShape[b.shape].push(b));
+  ['flower', 'heart', 'circle'].forEach(s => {
+    const el = document.getElementById('shape' + s.charAt(0).toUpperCase() + s.slice(1));
+    if (!el) return;
+    el.innerHTML = byShape[s].map(b =>
+      `<div style="display:inline-block">${makeBalloonSVG(b.shape, b.color, 40)}</div>`
+    ).join('');
+  });
+
+  // Color demo zones
+  const byColor = { red: [], blue: [], yellow: [] };
+  BALLOONS.forEach(b => byColor[b.color].push(b));
+  ['red', 'blue', 'yellow'].forEach(c => {
+    const key = c.charAt(0).toUpperCase() + c.slice(1);
+    const el = document.getElementById('color' + key);
+    if (!el) return;
+    el.innerHTML = byColor[c].map(b =>
+      `<div style="display:inline-block">${makeBalloonSVG(b.shape, b.color, 40)}</div>`
+    ).join('');
+  });
+
+  // Ex2: color display
+  ['red', 'blue', 'yellow'].forEach(c => {
+    const key = c.charAt(0).toUpperCase() + c.slice(1);
+    const el = document.getElementById('ex2' + key);
+    if (!el) return;
+    el.innerHTML = byColor[c].map(b =>
+      `<div style="display:inline-block">${makeBalloonSVG(b.shape, b.color, 40)}</div>`
+    ).join('');
+  });
+}
+
+// =========================================
+// ===== SCORE SYSTEM =====
+// =========================================
+let totalScore = 0;
+const MAX_SCORE = 100;
+const earnedSet = new Set();
+
+function addScore(exerciseId, points) {
+  if (earnedSet.has(exerciseId)) return;
+  earnedSet.add(exerciseId);
+  totalScore = Math.min(totalScore + points, MAX_SCORE);
+  document.getElementById('scoreNum').textContent = totalScore;
+  const filled = Math.round(totalScore / 20);
+  document.getElementById('starBar').textContent = '★'.repeat(filled) + '☆'.repeat(5 - filled);
+  if (totalScore >= MAX_SCORE) launchConfetti();
+}
+
+// =========================================
+// ===== CONFETTI =====
+// =========================================
+function launchConfetti() {
+  const container = document.getElementById('confettiContainer');
+  const colors = ['#ff4081', '#7c4dff', '#448aff', '#00e676', '#ffab00', '#ff6f00', '#ffd700'];
+  for (let i = 0; i < 60; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.top = '-10px';
+    piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    piece.style.width = (6 + Math.random() * 8) + 'px';
+    piece.style.height = (6 + Math.random() * 8) + 'px';
+    piece.style.animationDuration = (1.5 + Math.random()) + 's';
+    piece.style.animationDelay = (Math.random() * 0.5) + 's';
+    container.appendChild(piece);
+  }
+  setTimeout(() => container.innerHTML = '', 3000);
+}
+
+function miniConfetti(el) {
+  const rect = el.getBoundingClientRect();
+  const container = document.getElementById('confettiContainer');
+  const colors = ['#ff4081', '#7c4dff', '#00e676', '#ffab00'];
+  for (let i = 0; i < 15; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.left = (rect.left + rect.width / 2 + (Math.random()-0.5)*60) + 'px';
+    p.style.top = (rect.top - 10) + 'px';
+    p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    p.style.borderRadius = '50%';
+    p.style.width = '6px';
+    p.style.height = '6px';
+    p.style.animationDuration = '1.2s';
+    p.style.animationDelay = (Math.random() * 0.3) + 's';
+    container.appendChild(p);
+  }
+  setTimeout(() => { try { container.innerHTML = '' } catch(e){} }, 2000);
+}
+
+// =========================================
+// ===== FEEDBACK HELPER =====
+// =========================================
+function showFeedback(id, type, text) {
+  const el = document.getElementById(id);
+  el.className = 'feedback show ' + type;
+  el.textContent = text;
+}
+
+// =========================================
+// ===== EXERCISE 1: Classify Balloons =====
+// =========================================
+let ex1Selected = null;
+let ex1Placed = {}; // balloonId → zone
+let ex1Data = [...BALLOONS];
+
+function initEx1() {
+  ex1Selected = null;
+  ex1Placed = {};
+  renderBalloons('ex1Balloons', ex1Data, (b, wrap) => {
+    if (ex1Selected) {
+      // Deselect previous
+      const prev = document.querySelector('#ex1Balloons .balloon-wrap[data-id="'+ex1Selected.id+'"]');
+      if (prev) prev.style.outline = '';
+    }
+    ex1Selected = b;
+    wrap.style.outline = '3px solid #7c4dff';
+    wrap.style.outlineOffset = '2px';
+    wrap.style.borderRadius = '12px';
+    // Highlight zones
+    document.querySelectorAll('#practice-section .drop-zone').forEach(z => z.classList.add('active'));
+  });
+}
+
+function dropToZone(exercise, zone) {
+  if (exercise === 'ex1') {
+    if (!ex1Selected) return;
+    const b = ex1Selected;
+    // Place balloon in zone
+    ex1Placed[b.id] = zone;
+    // Mark as selected (grey out in source)
+    const wrap = document.querySelector('#ex1Balloons .balloon-wrap[data-id="'+b.id+'"]');
+    if (wrap) { wrap.classList.add('selected'); wrap.style.outline = ''; }
+    // Add small balloon to zone
+    const container = document.getElementById('ex1Items' + zone.charAt(0).toUpperCase() + zone.slice(1));
+    if (container) {
+      const mini = document.createElement('span');
+      mini.innerHTML = makeBalloonSVG(b.shape, b.color, 36);
+      mini.style.display = 'inline-block';
+      mini.setAttribute('data-id', b.id);
+      container.appendChild(mini);
+    }
+    // Update count
+    updateZoneCount('ex1', zone, '个');
+    ex1Selected = null;
+    document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('active'));
+  } else if (exercise === 'ex4') {
+    handleGenericDrop('ex4', zone, '片');
+  } else if (exercise === 'ex5') {
+    handleGenericDrop('ex5', zone, '个');
+  }
+}
+
+function updateZoneCount(ex, zone, unit) {
+  const container = document.getElementById(ex + 'Items' + zone.charAt(0).toUpperCase() + zone.slice(1));
+  const countEl = document.getElementById(ex + 'Count' + zone.charAt(0).toUpperCase() + zone.slice(1));
+  if (container && countEl) {
+    countEl.textContent = container.children.length + ' ' + unit;
+  }
+}
+
+function checkEx1() {
+  let correct = 0;
+  const total = BALLOONS.length;
+  BALLOONS.forEach(b => {
+    if (ex1Placed[b.id] === b.shape) correct++;
+  });
+  if (Object.keys(ex1Placed).length < total) {
+    showFeedback('ex1Feedback', 'info', '🤔 还有气球没有分类哦，继续加油！');
+  } else if (correct === total) {
+    showFeedback('ex1Feedback', 'correct', '🎉 太棒了！全部分对了！花形3个、心形4个、圆形5个！');
+    addScore('ex1', 25);
+    miniConfetti(document.getElementById('ex1Feedback'));
+  } else {
+    showFeedback('ex1Feedback', 'wrong', `😅 有 ${total-correct} 个气球放错了，再试试吧！提示：看看气球的形状哦！`);
+  }
+}
+
+function resetEx1() {
+  ex1Selected = null;
+  ex1Placed = {};
+  ['Flower','Heart','Circle'].forEach(z => {
+    const items = document.getElementById('ex1Items' + z);
+    const count = document.getElementById('ex1Count' + z);
+    if (items) items.innerHTML = '';
+    if (count) count.textContent = '0 个';
+  });
+  document.getElementById('ex1Feedback').className = 'feedback';
+  initEx1();
+}
+
+// =========================================
+// ===== EXERCISE 2: Count =====
+// =========================================
+function checkEx2() {
+  const r = parseInt(document.getElementById('ex2InputRed').value);
+  const b = parseInt(document.getElementById('ex2InputBlue').value);
+  const y = parseInt(document.getElementById('ex2InputYellow').value);
+  if (r === 5 && b === 4 && y === 3) {
+    showFeedback('ex2Feedback', 'correct', '🎉 完全正确！红色5个、蓝色4个、黄色3个！');
+    addScore('ex2', 20);
+    miniConfetti(document.getElementById('ex2Feedback'));
+  } else if (isNaN(r) || isNaN(b) || isNaN(y)) {
+    showFeedback('ex2Feedback', 'info', '🤔 请填写每种颜色的数量哦！');
+  } else {
+    let hints = [];
+    if (r !== 5) hints.push('红色');
+    if (b !== 4) hints.push('蓝色');
+    if (y !== 3) hints.push('黄色');
+    showFeedback('ex2Feedback', 'wrong', `😅 ${hints.join('、')}的数量不对，再仔细数一数！`);
+  }
+}
+
+// =========================================
+// ===== EXERCISE 3: Compare MCQ =====
+// =========================================
+const MCQ_ANSWERS = {
+  ex3Most: 'circle',
+  ex3Least: 'flower',
+  ex5Most: 'tomato',
+  ex5Least: 'onion'
+};
+
+const MCQ_POINTS = {
+  ex3Most: 10,
+  ex3Least: 10,
+  ex5Most: 5,
+  ex5Least: 5
+};
+
+function pickMCQ(qId, value, btn) {
+  const correct = MCQ_ANSWERS[qId];
+  const opts = btn.parentElement.querySelectorAll('.mcq-opt');
+  // Disable all
+  opts.forEach(o => { o.style.pointerEvents = 'none'; });
+  if (value === correct) {
+    btn.classList.add('chosen-correct');
+    showFeedback(qId + 'Fb', 'correct', '✅ 答对了！真棒！');
+    addScore(qId, MCQ_POINTS[qId] || 10);
+    miniConfetti(btn);
+  } else {
+    btn.classList.add('chosen-wrong');
+    // Show correct
+    opts.forEach(o => {
+      if (o.textContent.includes(correct === 'circle' ? '圆形' : correct === 'flower' ? '花形' :
+          correct === 'heart' ? '心形' : correct === 'tomato' ? '🍅' : correct === 'onion' ? '🧅' : ''))
+      {
+        // Approximate, let's just highlight correct differently
+      }
+    });
+    showFeedback(qId + 'Fb', 'wrong', '😅 不对哦，再想想！看看数字比一比。');
+    // Re-enable after a moment
+    setTimeout(() => {
+      opts.forEach(o => {
+        o.style.pointerEvents = '';
+        o.classList.remove('chosen-wrong');
+      });
+      document.getElementById(qId + 'Fb').className = 'feedback';
+    }, 1500);
+  }
+}
+
+// =========================================
+// ===== EXERCISE 4: Leaves =====
+// =========================================
+const LEAF_DATA = [
+  { id: 'l1', type: 'flower', emoji: '🌺' },
+  { id: 'l2', type: 'flower', emoji: '🌺' },
+  { id: 'l3', type: 'flower', emoji: '🌺' },
+  { id: 'l4', type: 'big', emoji: '🍃' },
+  { id: 'l5', type: 'big', emoji: '🍃' },
+  { id: 'l6', type: 'big', emoji: '🍃' },
+  { id: 'l7', type: 'big', emoji: '🍃' },
+  { id: 'l8', type: 'big', emoji: '🍃' },
+  { id: 'l9', type: 'ginkgo', emoji: '🍂' },
+  { id: 'l10', type: 'ginkgo', emoji: '🍂' },
+  { id: 'l11', type: 'bean', emoji: '🫛' },
+  { id: 'l12', type: 'bean', emoji: '🫛' },
+  { id: 'l13', type: 'bean', emoji: '🫛' },
+  { id: 'l14', type: 'flower', emoji: '🌺' },
+  { id: 'l15', type: 'ginkgo', emoji: '🍂' }
+];
+
+let ex4Selected = null;
+let ex4Placed = {};
+
+function initEx4() {
+  ex4Selected = null;
+  ex4Placed = {};
+  const container = document.getElementById('ex4Items');
+  container.innerHTML = '';
+  const shuffled = [...LEAF_DATA].sort(() => Math.random() - 0.5);
+  shuffled.forEach(item => {
+    const el = document.createElement('span');
+    el.className = 'grid-item';
+    el.textContent = item.emoji;
+    el.setAttribute('data-id', item.id);
+    el.setAttribute('data-type', item.type);
+    el.onclick = () => {
+      if (ex4Selected) {
+        const prevEl = container.querySelector(`[data-id="${ex4Selected.id}"]`);
+        if (prevEl) prevEl.style.outline = '';
+      }
+      ex4Selected = item;
+      el.style.outline = '3px solid #7c4dff';
+      el.style.borderRadius = '12px';
+    };
+    container.appendChild(el);
+  });
+}
+
+function handleGenericDrop(exercise, zone, unit) {
+  const selectedVar = exercise === 'ex4' ? 'ex4Selected' : 'ex5Selected';
+  const placedVar = exercise === 'ex4' ? ex4Placed : ex5Placed;
+  const selected = exercise === 'ex4' ? ex4Selected : ex5Selected;
+
+  if (!selected) return;
+
+  placedVar[selected.id] = zone;
+
+  // Grey out source
+  const srcContainer = document.getElementById(exercise + 'Items');
+  const srcEl = srcContainer.querySelector(`[data-id="${selected.id}"]`);
+  if (srcEl) { srcEl.classList.add('picked'); srcEl.style.outline = ''; }
+
+  // Add to zone
+  const zoneKey = zone.charAt(0).toUpperCase() + zone.slice(1);
+  const targetContainer = document.getElementById(exercise + 'Items' + zoneKey);
+  if (targetContainer) {
+    const mini = document.createElement('span');
+    mini.textContent = selected.emoji;
+    mini.style.fontSize = '1.6rem';
+    mini.setAttribute('data-id', selected.id);
+    targetContainer.appendChild(mini);
+  }
+
+  updateZoneCount(exercise, zone, unit);
+
+  if (exercise === 'ex4') ex4Selected = null;
+  else ex5Selected = null;
+}
+
+function checkEx4() {
+  let correct = 0;
+  const total = LEAF_DATA.length;
+  LEAF_DATA.forEach(item => {
+    if (ex4Placed[item.id] === item.type) correct++;
+  });
+  if (Object.keys(ex4Placed).length < total) {
+    showFeedback('ex4Feedback', 'info', '🤔 还有叶子没分完哦，继续加油！');
+  } else if (correct === total) {
+    showFeedback('ex4Feedback', 'correct', '🎉 全对！花叶4片、大叶5片、银杏叶3片、小豆荚3个！');
+    addScore('ex4', 15);
+    miniConfetti(document.getElementById('ex4Feedback'));
+  } else {
+    showFeedback('ex4Feedback', 'wrong', `😅 有 ${total-correct} 个放错了，看看叶子的样子再试试！`);
+  }
+}
+
+function resetEx4() {
+  ['Flower','Big','Ginkgo','Bean'].forEach(z => {
+    const items = document.getElementById('ex4Items' + z);
+    const count = document.getElementById('ex4Count' + z);
+    if (items) items.innerHTML = '';
+    if (count) count.textContent = '0 片';
+  });
+  document.getElementById('ex4Feedback').className = 'feedback';
+  initEx4();
+}
+
+// =========================================
+// ===== EXERCISE 5: Vegetables =====
+// =========================================
+const VEG_DATA = [
+  { id: 'v1', type: 'carrot', emoji: '🥕' },
+  { id: 'v2', type: 'carrot', emoji: '🥕' },
+  { id: 'v3', type: 'carrot', emoji: '🥕' },
+  { id: 'v4', type: 'tomato', emoji: '🍅' },
+  { id: 'v5', type: 'tomato', emoji: '🍅' },
+  { id: 'v6', type: 'tomato', emoji: '🍅' },
+  { id: 'v7', type: 'tomato', emoji: '🍅' },
+  { id: 'v8', type: 'tomato', emoji: '🍅' },
+  { id: 'v9', type: 'pepper', emoji: '🫑' },
+  { id: 'v10', type: 'pepper', emoji: '🫑' },
+  { id: 'v11', type: 'onion', emoji: '🧅' },
+  { id: 'v12', type: 'cucumber', emoji: '🥒' },
+  { id: 'v13', type: 'cucumber', emoji: '🥒' },
+  { id: 'v14', type: 'chili', emoji: '🌶️' },
+  { id: 'v15', type: 'chili', emoji: '🌶️' },
+  { id: 'v16', type: 'chili', emoji: '🌶️' }
+];
+
+let ex5Selected = null;
+let ex5Placed = {};
+
+function initEx5() {
+  ex5Selected = null;
+  ex5Placed = {};
+  const container = document.getElementById('ex5Items');
+  container.innerHTML = '';
+  const shuffled = [...VEG_DATA].sort(() => Math.random() - 0.5);
+  shuffled.forEach(item => {
+    const el = document.createElement('span');
+    el.className = 'grid-item';
+    el.textContent = item.emoji;
+    el.setAttribute('data-id', item.id);
+    el.setAttribute('data-type', item.type);
+    el.onclick = () => {
+      if (ex5Selected) {
+        const prevEl = container.querySelector(`[data-id="${ex5Selected.id}"]`);
+        if (prevEl) prevEl.style.outline = '';
+      }
+      ex5Selected = item;
+      el.style.outline = '3px solid #7c4dff';
+      el.style.borderRadius = '12px';
+    };
+    container.appendChild(el);
+  });
+}
+
+function checkEx5() {
+  let correct = 0;
+  const total = VEG_DATA.length;
+  VEG_DATA.forEach(item => {
+    if (ex5Placed[item.id] === item.type) correct++;
+  });
+  if (Object.keys(ex5Placed).length < total) {
+    showFeedback('ex5Feedback', 'info', '🤔 还有蔬菜没分完哦，继续加油！');
+  } else if (correct === total) {
+    showFeedback('ex5Feedback', 'correct', '🎉 全对！胡萝卜3个、番茄5个、青椒2个、洋葱1个、黄瓜2个、辣椒3个！');
+    addScore('ex5classify', 10);
+    miniConfetti(document.getElementById('ex5Feedback'));
+  } else {
+    showFeedback('ex5Feedback', 'wrong', `😅 有 ${total-correct} 个放错了，看清楚蔬菜的样子再试试！`);
+  }
+}
+
+function resetEx5() {
+  ['Carrot','Tomato','Pepper','Onion','Cucumber','Chili'].forEach(z => {
+    const items = document.getElementById('ex5Items' + z);
+    const count = document.getElementById('ex5Count' + z);
+    if (items) items.innerHTML = '';
+    if (count) count.textContent = '0 个';
+  });
+  document.getElementById('ex5Feedback').className = 'feedback';
+  document.getElementById('ex5MostFb').className = 'feedback';
+  document.getElementById('ex5LeastFb').className = 'feedback';
+  // Reset MCQ buttons
+  document.querySelectorAll('#ex5MostOpts .mcq-opt, #ex5LeastOpts .mcq-opt').forEach(o => {
+    o.style.pointerEvents = '';
+    o.className = 'mcq-opt';
+  });
+  initEx5();
+}
+
+// =========================================
+// ===== METHOD TABS =====
+// =========================================
+function showMethod(idx, btn) {
+  document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  for (let i = 0; i < 3; i++) {
+    const panel = document.getElementById('method' + i);
+    if (panel) panel.style.display = (i === idx) ? 'block' : 'none';
+  }
+}
+
+// =========================================
+// ===== SCROLL ANIMATION =====
+// =========================================
+function animateOnScroll() {
+  const cards = document.querySelectorAll('.card');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+  cards.forEach(card => observer.observe(card));
+}
+
+// =========================================
+// ===== INIT =====
+// =========================================
+document.addEventListener('DOMContentLoaded', () => {
+  renderDemos();
+  initEx1();
+  initEx4();
+  initEx5();
+  animateOnScroll();
+});
+</script>
+  <footer class="footer" lang="zh-CN"><p><strong>版权声明</strong>：本页讲解与配图<strong>均为本页自行编写</strong>，未复制任何教材插图或扫描件；人民教育出版社《数学》二年级上册（2024 年审核）的文字与插图著作权归原出版社及作者所有。</p><p>本页为<strong>家庭自用学习辅助</strong>：不含教材插图、不含扫描件、不用于任何商业用途、不做搜索收录。如权利人认为不妥，请告知即刻下线。</p><p>本页文字与插图均为自绘自拟；<strong>部分练习沿用课本原有题型，个别题目文字与课本原题相近</strong>，均已标注对应页码，仅作家庭自用学习辅助。教材版本已按<strong>课本封面照片核实</strong>：人民教育出版社《数学》二年级上册，封面标注「国家教材委员会专家委员会审核 2024」；第一单元<strong>分类与整理</strong>已按课本<strong>目录页照片</strong>核实，课本自第 1 页起（目录：第二单元「1~6 的表内乘法」自第 10 页起）。例题与情境均为本页自拟，请以课本为准。</p><p>朗读用浏览器语音，建议用 Edge 打开，中文音色最自然。</p></footer>
+</body>
+</html>

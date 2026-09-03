@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧩 逻辑推理训练</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;background:linear-gradient(135deg,#fff3e0,#e8f5e9,#e3f2fd);min-height:100vh}
+
+/* Welcome Screen */
+#welcome{position:fixed;inset:0;background:linear-gradient(135deg,#ff9800,#ff5722);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;cursor:pointer;color:#fff;text-align:center}
+#welcome h1{font-size:2.5em;margin-bottom:12px}
+#welcome p{font-size:1.3em;opacity:.9}
+#welcome .tap{margin-top:30px;font-size:1.1em;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* Tabs */
+.tabs{display:flex;gap:8px;padding:12px 16px;background:#fff;position:sticky;top:0;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.tab{flex:1;padding:12px;border:none;border-radius:12px;font-size:1em;font-weight:bold;cursor:pointer;transition:.2s}
+.tab.active{background:#ff9800;color:#fff;box-shadow:0 2px 8px rgba(255,152,0,.4)}
+.tab:not(.active){background:#f5f5f5;color:#666}
+
+/* Content */
+.puzzle{display:none;padding:16px;max-width:600px;margin:0 auto}
+.puzzle.active{display:block}
+
+/* Cards */
+.animal-card,.person-card{background:#fff;border-radius:16px;padding:16px;margin:8px 0;box-shadow:0 2px 8px rgba(0,0,0,.08);display:flex;align-items:flex-start;gap:12px;position:relative;transition:.3s}
+.animal-card .emoji,.person-card .emoji{font-size:2.5em;flex-shrink:0}
+.speech-bubble{background:#f0f0f0;border-radius:12px;padding:10px 14px;font-size:1em;line-height:1.6;position:relative;flex:1}
+.speech-bubble::before{content:'';position:absolute;left:-8px;top:14px;border:6px solid transparent;border-right-color:#f0f0f0}
+
+.animal-card.guilty{background:#ffebee;border:2px solid #f44336}
+.animal-card.guilty .carrot{position:absolute;top:8px;right:12px;font-size:1.5em;animation:bounce .5s}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+.animal-card.liar::after{content:'❌';position:absolute;top:8px;right:12px;font-size:1.3em}
+.animal-card.contradiction{border:2px solid #ff9800}
+.contradiction-badge{position:absolute;top:-10px;right:-10px;font-size:1.5em;animation:zap .5s}
+@keyframes zap{0%{transform:scale(0) rotate(0)}100%{transform:scale(1) rotate(20deg)}}
+
+/* Person cards for puzzle 2 */
+.match-area{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0}
+.person-badge{background:#fff;border-radius:12px;padding:12px 16px;text-align:center;font-size:1.1em;box-shadow:0 2px 6px rgba(0,0,0,.08);min-width:80px;position:relative}
+.person-badge .big{font-size:2em;display:block;margin-bottom:4px}
+.dept-badge{background:#e3f2fd;border-radius:10px;padding:8px 14px;font-size:1em;min-width:80px;text-align:center}
+.match-line{font-size:1.2em;color:#4caf50;font-weight:bold;margin:4px 0;text-align:center}
+.person-badge.matched{border:2px solid #4caf50}
+.person-badge.eliminated::after{content:'❌';position:absolute;top:-6px;right:-6px;font-size:1em}
+
+/* Teacher bubble (single short sentence) */
+.teacher-msg{background:#e8f5e9;border-radius:16px;padding:14px 16px;margin:8px 0;font-size:1em;line-height:1.7;border-left:4px solid #4caf50;opacity:0;transform:translateY(10px);transition:.4s}
+.teacher-msg.show{opacity:1;transform:translateY(0)}
+.teacher-msg .icon{font-size:1.3em;margin-right:6px}
+
+/* Choices */
+.choices{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;justify-content:center}
+.choice-btn{padding:10px 20px;border:2px solid #e0e0e0;border-radius:12px;background:#fff;font-size:1em;cursor:pointer;transition:.2s;min-width:60px;text-align:center}
+.choice-btn:active{transform:scale(.95)}
+.choice-btn.selected{border-color:#ff9800;background:#fff3e0}
+.choice-btn.correct{border-color:#4caf50;background:#e8f5e9}
+.choice-btn.wrong{border-color:#f44336;background:#ffebee;animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* Multi-select for contradiction */
+.animal-select{padding:10px 16px;border:2px solid #e0e0e0;border-radius:12px;background:#fff;font-size:1em;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:8px}
+.animal-select.picked{border-color:#ff9800;background:#fff3e0}
+.animal-select.correct-pick{border-color:#4caf50;background:#e8f5e9}
+
+/* Celebration */
+.celebration{text-align:center;font-size:1.5em;padding:20px;animation:celebrate .6s}
+@keyframes celebrate{0%{transform:scale(0)}50%{transform:scale(1.2)}100%{transform:scale(1)}}
+
+/* Summary Card */
+.summary-card{background:linear-gradient(135deg,#fff9c4,#fff176);border-radius:16px;padding:16px;margin:16px 0;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.summary-card h3{font-size:1.2em;margin-bottom:8px}
+.summary-card p{font-size:1em;line-height:1.6}
+
+/* Practice */
+.practice-section{background:#f3e5f5;border-radius:16px;padding:16px;margin:20px 0}
+.practice-section h3{font-size:1.1em;margin-bottom:10px;color:#7b1fa2}
+
+/* Hint button */
+.hint-btn{padding:8px 18px;border:2px solid #ff9800;border-radius:10px;background:#fff3e0;font-size:.95em;cursor:pointer;margin:8px 0;transition:.2s}
+.hint-btn:active{transform:scale(.95)}
+.hint-btn:disabled{opacity:.5;cursor:not-allowed;border-color:#ccc;background:#f5f5f5}
+
+/* Confirm button */
+.confirm-btn{display:inline-block;padding:10px 24px;background:#ff9800;color:#fff;border:none;border-radius:12px;font-size:1em;cursor:pointer;margin:8px 0}
+.confirm-btn:disabled{background:#ccc;cursor:not-allowed}
+
+/* Footer */
+footer{text-align:center;padding:20px;color:#999;font-size:.85em}
+
+/* Step container */
+.step{display:none;margin:12px 0}
+.step.active{display:block}
+
+/* Typewriter cursor */
+.typewriter-cursor{display:inline-block;width:2px;height:1em;background:#333;animation:blink .8s infinite;vertical-align:text-bottom;margin-left:2px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* Condition cards */
+.condition-card{background:#fff;border-radius:12px;padding:12px 16px;margin:6px 0;font-size:1em;line-height:1.6;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;align-items:center;gap:8px}
+.condition-card .num{background:#ff9800;color:#fff;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8em;flex-shrink:0}
+
+/* Elimination Grid for Puzzle 2 */
+.elim-grid{display:grid;grid-template-columns:60px repeat(3,1fr);gap:0;margin:16px auto;max-width:320px;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.elim-cell{display:flex;align-items:center;justify-content:center;padding:10px 6px;font-size:.95em;font-weight:600;background:#fff;border:1px solid #e0e0e0;min-height:44px;transition:.3s}
+.elim-cell.header{background:#e3f2fd;color:#1565c0;font-size:.85em}
+.elim-cell.row-header{background:#fff3e0;color:#e65100;font-size:.85em}
+.elim-cell.corner{background:#f5f5f5}
+.elim-cell .mark{transform:scale(0);transition:transform .4s cubic-bezier(.68,-.55,.27,1.55);display:inline-block;font-size:1.3em}
+.elim-cell .mark.visible{transform:scale(1)}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../index.html">首页</a><a href="../grade1-down/index.html">一年级</a><a href="../grade2-up/index.html">二年级</a><a href="../explore/science/index.html">科普</a><a href="../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<!-- Welcome Screen -->
+<div id="welcome" onclick="startApp()">
+  <h1>🧩 逻辑推理训练</h1>
+  <p>两道经典推理题<br>跟着老师一步步来!</p>
+  <div class="tap">👆 点击开始</div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs" id="tabs" style="display:none">
+  <button class="tab active" onclick="switchPuzzle(0)">🥕 谁偷了胡萝卜</button>
+  <button class="tab" onclick="switchPuzzle(1)">🏥 谁是外科医生</button>
+</div>
+
+<!-- Puzzle 1: Carrot -->
+<div class="puzzle active" id="puzzle0">
+  <!-- Step 0: Show problem -->
+  <div class="step active" id="p0s0">
+    <div style="text-align:center;margin:10px 0">
+      <span style="background:#ff9800;color:#fff;padding:4px 12px;border-radius:20px;font-size:.85em">⭐⭐⭐⭐ 矛盾法</span>
+    </div>
+    <div id="p0introBubbles"></div>
+    <div id="p0animals"></div>
+    <div id="p0ruleBubbles"></div>
+    <div style="text-align:center;margin-top:12px">
+      <button class="confirm-btn" id="p0nextBtn" style="display:none" onclick="p0GoStep1()">好的,开始推理! 👉</button>
+    </div>
+  </div>
+
+  <!-- Step 1: Find contradiction -->
+  <div class="step" id="p0s1">
+    <div id="p0s1Bubbles"></div>
+    <div class="choices" id="p0pick">
+      <div class="animal-select" data-a="fox" onclick="p0Pick(this)">🦊 狐狸</div>
+      <div class="animal-select" data-a="tiger" onclick="p0Pick(this)">🐯 老虎</div>
+      <div class="animal-select" data-a="lion" onclick="p0Pick(this)">🦁 狮子</div>
+      <div class="animal-select" data-a="wolf" onclick="p0Pick(this)">🐺 狼</div>
+    </div>
+    <button class="confirm-btn" id="p0confirmPick" style="display:none" onclick="p0CheckContra()">确定!</button>
+    <div id="p0pickFeedback"></div>
+  </div>
+
+  <!-- Step 2: Mark liars -->
+  <div class="step" id="p0s2">
+    <div id="p0s2Bubbles"></div>
+    <div id="p0s2Visual"></div>
+    <div style="text-align:center;margin-top:10px">
+      <button class="confirm-btn" onclick="p0GoStep3()">继续 👉</button>
+    </div>
+  </div>
+
+  <!-- Step 3: Final answer -->
+  <div class="step" id="p0s3">
+    <div id="p0s3Bubbles"></div>
+    <div class="choices" id="p0answer">
+      <button class="choice-btn" onclick="p0Final(this,'fox')">🦊 狐狸</button>
+      <button class="choice-btn" onclick="p0Final(this,'tiger')">🐯 老虎</button>
+      <button class="choice-btn" onclick="p0Final(this,'lion')">🦁 狮子</button>
+      <button class="choice-btn" onclick="p0Final(this,'wolf')">🐺 狼</button>
+    </div>
+  </div>
+
+  <!-- Step 4: Celebration -->
+  <div class="step" id="p0s4">
+    <div class="celebration">🎉🥕 答对啦！是狐狸偷的！</div>
+    <div id="p0s4Visual"></div>
+
+    <div style="background:#e8f5e9;border-radius:12px;padding:14px;margin:16px 0;border-left:4px solid #4caf50">
+      <div style="font-weight:700;color:#2e7d32;margin-bottom:10px">🔍 验证一下：如果狐狸偷的……</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:.95em">
+        <div style="background:#ffebee;border-radius:8px;padding:8px 12px">🦊 狐狸说"不是我偷的" → <b>假话 ❌</b>（就是你偷的！）</div>
+        <div style="background:#ffebee;border-radius:8px;padding:8px 12px">🐯 老虎说"是狼偷的" → <b>假话 ❌</b>（不是狼，是狐狸）</div>
+        <div style="background:#ffebee;border-radius:8px;padding:8px 12px">🦁 狮子说"是老虎偷的" → <b>假话 ❌</b>（不是老虎，是狐狸）</div>
+        <div style="background:#e8f5e9;border-radius:8px;padding:8px 12px">🐺 狼说"我没偷" → <b>真话 ✅</b>（狼确实没偷！）</div>
+      </div>
+      <div style="text-align:center;margin-top:10px;color:#2e7d32;font-weight:700">✅ 只有狼一个人说真话 — 完全符合题目！</div>
+    </div>
+
+    <div class="summary-card">
+      <h3>⭐ 方法总结</h3>
+      <p><b>① 找"对不上"的两个人</b> — 一个说是，一个说不是<br>
+      <b>② 真话在他们里面</b> — 其他人都说假话<br>
+      <b>③ 假话反过来 = 答案</b><br>
+      <b>④ 验证！</b> — 把答案代回去检查每个人说的是真话还是假话</p>
+    </div>
+    <div style="text-align:center;margin-top:10px">
+      <button class="confirm-btn" onclick="p0ShowPractice()">📝 来做练习题!</button>
+    </div>
+  </div>
+
+  <!-- Step 5: Practice -->
+  <div class="step" id="p0s5">
+    <div class="practice-section">
+      <h3>📝 练习:谁做了好事?</h3>
+      <div class="teacher-msg show" style="background:#f3e5f5;border-left-color:#7b1fa2">
+        <span class="icon">📖</span>
+        甲乙丙三人中有一人做了好事。<br>
+        🅰️ 甲说:"是乙做的。"<br>
+        🅱️ 乙说:"不是我做的。"<br>
+        🅲️ 丙说:"不是我做的。"<br>
+        <strong>只有一人说了假话。</strong>谁做了好事?
+      </div>
+      <div style="text-align:center">
+        <button class="hint-btn" id="p0HintBtn" onclick="p0ShowHint()">💡 提示</button>
+      </div>
+      <div id="p0HintArea"></div>
+      <div class="choices">
+        <button class="choice-btn" onclick="p0Practice(this,'jia')">🅰️ 甲</button>
+        <button class="choice-btn" onclick="p0Practice(this,'yi')">🅱️ 乙</button>
+        <button class="choice-btn" onclick="p0Practice(this,'bing')">🅲️ 丙</button>
+      </div>
+      <div id="p0practiceFb" style="margin-top:10px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Puzzle 2: Doctor -->
+<div class="puzzle" id="puzzle1">
+  <!-- Transition bubble (shown once) -->
+  <div id="p1Transition" style="display:none"></div>
+
+  <!-- Step 0: Show problem -->
+  <div class="step active" id="p1s0">
+    <div style="text-align:center;margin:10px 0">
+      <span style="background:#2196f3;color:#fff;padding:4px 12px;border-radius:20px;font-size:.85em">⭐⭐⭐⭐ 排除法</span>
+    </div>
+    <div id="p1introBubbles"></div>
+    <div class="match-area" id="p1persons">
+      <div class="person-badge" id="pb-jia"><span class="big">👨</span>甲</div>
+      <div class="person-badge" id="pb-yi"><span class="big">👩</span>乙</div>
+      <div class="person-badge" id="pb-bing"><span class="big">👨</span>丙</div>
+    </div>
+    <div class="match-area" id="p1depts">
+      <div class="dept-badge">🫀 内科</div>
+      <div class="dept-badge">🔪 外科</div>
+      <div class="dept-badge">👶 儿科</div>
+    </div>
+    <div id="p1conditions"></div>
+    <div style="text-align:center;margin-top:12px">
+      <button class="confirm-btn" id="p1nextBtn" style="display:none" onclick="p1GoStep1()">好的,开始推理! 👉</button>
+    </div>
+  </div>
+
+  <!-- Elimination Grid (persists across steps) -->
+  <div id="p1GridContainer" style="display:none">
+    <div style="text-align:center;font-size:.9em;color:#666;margin-bottom:4px">🔍 排除表格</div>
+    <div class="elim-grid" id="p1Grid">
+      <div class="elim-cell corner"></div>
+      <div class="elim-cell header">🫀内科</div>
+      <div class="elim-cell header">🔪外科</div>
+      <div class="elim-cell header">👶儿科</div>
+      <div class="elim-cell row-header">甲</div>
+      <div class="elim-cell" id="g-jia-nei"><span class="mark" id="m-jia-nei"></span></div>
+      <div class="elim-cell" id="g-jia-wai"><span class="mark" id="m-jia-wai"></span></div>
+      <div class="elim-cell" id="g-jia-er"><span class="mark" id="m-jia-er"></span></div>
+      <div class="elim-cell row-header">乙</div>
+      <div class="elim-cell" id="g-yi-nei"><span class="mark" id="m-yi-nei"></span></div>
+      <div class="elim-cell" id="g-yi-wai"><span class="mark" id="m-yi-wai"></span></div>
+      <div class="elim-cell" id="g-yi-er"><span class="mark" id="m-yi-er"></span></div>
+      <div class="elim-cell row-header">丙</div>
+      <div class="elim-cell" id="g-bing-nei"><span class="mark" id="m-bing-nei"></span></div>
+      <div class="elim-cell" id="g-bing-wai"><span class="mark" id="m-bing-wai"></span></div>
+      <div class="elim-cell" id="g-bing-er"><span class="mark" id="m-bing-er"></span></div>
+    </div>
+  </div>
+
+  <!-- Step 1 -->
+  <div class="step" id="p1s1">
+    <div id="p1s1Bubbles"></div>
+    <div class="choices">
+      <button class="choice-btn" onclick="p1Step1(this,'m')">👨 男的</button>
+      <button class="choice-btn" onclick="p1Step1(this,'f')">👩 女的</button>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step" id="p1s2">
+    <div id="p1s2Bubbles"></div>
+    <div class="choices">
+      <button class="choice-btn" onclick="p1Step2(this,'jia')">👨 甲</button>
+      <button class="choice-btn" onclick="p1Step2(this,'yi')">👩 乙</button>
+      <button class="choice-btn" onclick="p1Step2(this,'bing')">👨 丙</button>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step" id="p1s3">
+    <div id="p1s3Bubbles"></div>
+    <div class="choices">
+      <button class="choice-btn" onclick="p1Step3(this,'yes')">是同一个人</button>
+      <button class="choice-btn" onclick="p1Step3(this,'no')">不是同一个人</button>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="step" id="p1s4">
+    <div id="p1s4Bubbles"></div>
+    <div class="choices">
+      <button class="choice-btn" onclick="p1Step4(this,'jia')">👨 甲</button>
+      <button class="choice-btn" onclick="p1Step4(this,'yi')">👩 乙</button>
+      <button class="choice-btn" onclick="p1Step4(this,'bing')">👨 丙</button>
+    </div>
+  </div>
+
+  <!-- Step 5: Celebration -->
+  <div class="step" id="p1s5">
+    <div class="celebration">🎉 全部答对!</div>
+    <div class="match-area">
+      <div style="text-align:center">
+        <div class="person-badge matched"><span class="big">👨</span>甲<br><small style="color:#4caf50">🔪 外科</small></div>
+      </div>
+      <div style="text-align:center">
+        <div class="person-badge matched"><span class="big">👩</span>乙<br><small style="color:#2196f3">👶 儿科</small></div>
+      </div>
+      <div style="text-align:center">
+        <div class="person-badge matched"><span class="big">👨</span>丙<br><small style="color:#f44336">🫀 内科</small></div>
+      </div>
+    </div>
+    <div class="summary-card" style="background:linear-gradient(135deg,#bbdefb,#90caf9)">
+      <h3>⭐ 方法总结:排除法</h3>
+      <p>用已知条件一个一个排除!<br>不可能的划掉 ❌<br>剩下的就是答案 ✅</p>
+    </div>
+    <div style="text-align:center;margin-top:10px">
+      <button class="confirm-btn" onclick="p1ShowPractice()">📝 来做练习题!</button>
+    </div>
+  </div>
+
+  <!-- Step 6: Practice -->
+  <div class="step" id="p1s6">
+    <div class="practice-section">
+      <h3>📝 练习:谁是班长?</h3>
+      <div class="teacher-msg show" style="background:#f3e5f5;border-left-color:#7b1fa2">
+        <span class="icon">📖</span>
+        小红、小明、小华三人,一个是班长,一个是学习委员,一个是体育委员。<br>
+        1 小红不是班长<br>
+        2 小明不是学习委员<br>
+        3 班长不戴眼镜<br>
+        4 小华戴眼镜<br>
+        <strong>谁是班长?</strong>
+      </div>
+      <div style="text-align:center">
+        <button class="hint-btn" id="p1HintBtn" onclick="p1ShowHint()">💡 提示</button>
+      </div>
+      <div id="p1HintArea"></div>
+      <div class="choices">
+        <button class="choice-btn" onclick="p1Practice(this,'hong')">小红</button>
+        <button class="choice-btn" onclick="p1Practice(this,'ming')">小明</button>
+        <button class="choice-btn" onclick="p1Practice(this,'hua')">小华</button>
+      </div>
+      <div id="p1practiceFb" style="margin-top:10px"></div>
+    </div>
+  </div>
+</div>
+
+<footer>🦎 Coco Learning Park · 逻辑推理训练</footer>
+
+<script>
+// Edge High-Fidelity TTS: auto-select best voice
+var _edgeTTSVoice = null;
+function _initEdgeVoice() {
+  var voices = speechSynthesis.getVoices();
+  if (!voices.length) return;
+  var zh = voices.filter(function(v) { return /^zh-CN|^zh$|^cmn/i.test(v.lang)&&!/^zh-HK|^zh-TW/i.test(v.lang); });
+  _edgeTTSVoice = zh.find(function(v){ return v.name.indexOf('Xiaoxiao')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Online')>=0 && v.name.indexOf('Natural')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Yunxi')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Microsoft')>=0; })
+    || zh[0] || null;
+}
+_initEdgeVoice();
+if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = function(){ _initEdgeVoice(); };
+
+// ========== TTS (with generation-based isolation) ==========
+let speaking=false, stopAll=false;
+let ttsGeneration=0;
+
+function speak(text,lang,rate,gen){
+  return new Promise(r=>{
+    if(stopAll||(gen!==undefined&&gen!==ttsGeneration)){r();return}
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang=lang||'zh-CN';u.rate=rate||1.0;
+    u.onend=()=>{speaking=false;r()};
+    u.onerror=()=>{speaking=false;r()};
+    speaking=true;
+    speechSynthesis.speak(u);
+  });
+}
+function stopSpeak(){stopAll=true;ttsGeneration++;speechSynthesis.cancel();speaking=false}
+function resetStop(){stopAll=false}
+function genValid(gen){return gen===ttsGeneration&&!stopAll}
+
+// ========== Typewriter ==========
+function typewrite(el,text,speed,gen){
+  return new Promise(r=>{
+    el.textContent='';
+    let i=0;
+    const cursor=document.createElement('span');
+    cursor.className='typewriter-cursor';
+    el.appendChild(cursor);
+    function next(){
+      if(stopAll||(gen!==undefined&&gen!==ttsGeneration)||i>=text.length){
+        cursor.remove();
+        el.textContent=text;
+        r();return;
+      }
+      el.textContent=text.slice(0,i+1);
+      el.appendChild(cursor);
+      i++;
+      setTimeout(next,speed||40);
+    }
+    next();
+  });
+}
+
+// ========== Bubble System ==========
+// Shows teacher bubbles one by one with TTS
+function createBubble(text){
+  const div=document.createElement('div');
+  div.className='teacher-msg';
+  div.innerHTML=`<span class="icon">👩‍🏫</span> <span class="bubble-text"></span>`;
+  return div;
+}
+
+async function showBubbles(container, texts, gen){
+  for(const text of texts){
+    if(!genValid(gen)) return;
+    const bubble=createBubble(text);
+    container.appendChild(bubble);
+    // Small delay then show
+    await new Promise(r=>setTimeout(r,50));
+    if(!genValid(gen)) return;
+    bubble.classList.add('show');
+    const span=bubble.querySelector('.bubble-text');
+    // Typewrite + speak together
+    const p1=typewrite(span,text,40,gen);
+    const p2=speak(text,'zh-CN',1.0,gen);
+    await Promise.all([p1,p2]);
+    if(!genValid(gen)) return;
+    await new Promise(r=>setTimeout(r,300));
+  }
+}
+
+// Single bubble shorthand
+async function showSingleBubble(container, text, gen){
+  await showBubbles(container,[text],gen);
+}
+
+// ========== App Start ==========
+let audioUnlocked=false;
+function startApp(){
+  document.getElementById('welcome').style.display='none';
+  document.getElementById('tabs').style.display='flex';
+  const u=new SpeechSynthesisUtterance('');
+  u.volume=0;speechSynthesis.speak(u);
+  audioUnlocked=true;
+  initPuzzle0();
+}
+
+// ========== Puzzle Switch ==========
+let currentPuzzle=0;
+let p1FirstOpen=true;
+function switchPuzzle(n){
+  stopSpeak();
+  currentPuzzle=n;
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===n));
+  document.querySelectorAll('.puzzle').forEach((p,i)=>p.classList.toggle('active',i===n));
+  if(n===1&&!p1Inited) initPuzzle1();
+}
+
+// ========== PUZZLE 0: Carrot ==========
+const animalData=[
+  {id:'fox',emoji:'🦊',name:'狐狸',says:'胡萝卜不是我偷的。'},
+  {id:'tiger',emoji:'🐯',name:'老虎',says:'胡萝卜是狼偷的。'},
+  {id:'lion',emoji:'🦁',name:'狮子',says:'胡萝卜是老虎偷的。'},
+  {id:'wolf',emoji:'🐺',name:'狼',says:'我没有偷过胡萝卜。'}
+];
+
+async function initPuzzle0(){
+  resetStop();
+  const gen=ttsGeneration;
+  const introTexts=[
+    '兔子的胡萝卜丢了！🥕',
+    '去找黑猫警长报案。',
+    '黑猫警长锁定了四只动物……🔍'
+  ];
+  await showBubbles(document.getElementById('p0introBubbles'),introTexts,gen);
+  if(!genValid(gen)) return;
+  // Show animal cards one by one
+  const container=document.getElementById('p0animals');
+  for(const a of animalData){
+    if(!genValid(gen)) break;
+    const card=document.createElement('div');
+    card.className='animal-card';
+    card.id='acard-'+a.id;
+    card.innerHTML=`<div class="emoji">${a.emoji}</div><div class="speech-bubble"><div style="font-size:.75em;color:#999;margin-bottom:2px">🪧 ${a.name}举牌说:</div>"${a.says}"</div><div class="verdict" id="v-${a.id}" style="display:none;font-size:1.5em;text-align:center;margin-top:4px"></div>`;
+    container.appendChild(card);
+    await speak(`${a.name}说:${a.says}`,'zh-CN',1.0,gen);
+    if(!genValid(gen)) break;
+    await new Promise(r=>setTimeout(r,300));
+  }
+  if(!genValid(gen)) return;
+  // Show rule
+  const ruleTexts=['四只动物中，只有一只说的是真话。','请问：胡萝卜是谁偷的？🤔'];
+  await showBubbles(document.getElementById('p0ruleBubbles'),ruleTexts,gen);
+  if(!genValid(gen)) return;
+  document.getElementById('p0nextBtn').style.display='inline-block';
+}
+
+function showStep(puzzle,step){
+  document.querySelectorAll(`#puzzle${puzzle} .step`).forEach(s=>s.classList.remove('active'));
+  document.getElementById(`p${puzzle}s${step}`).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+async function p0GoStep1(){
+  showStep(0,1);
+  resetStop();
+  const gen=ttsGeneration;
+  await showBubbles(document.getElementById('p0s1Bubbles'),[
+    '先找找——谁和谁说的话互相矛盾？🤔',
+    '点选两只动物！'
+  ],gen);
+}
+
+let p0Picked=[];
+function p0Pick(el){
+  const a=el.dataset.a;
+  if(el.classList.contains('picked')){
+    el.classList.remove('picked');
+    p0Picked=p0Picked.filter(x=>x!==a);
+  }else{
+    if(p0Picked.length>=2) return;
+    el.classList.add('picked');
+    p0Picked.push(a);
+  }
+  document.getElementById('p0confirmPick').style.display=p0Picked.length===2?'inline-block':'none';
+}
+
+async function p0CheckContra(){
+  const correct=p0Picked.includes('tiger')&&p0Picked.includes('wolf');
+  const fb=document.getElementById('p0pickFeedback');
+  const gen=ttsGeneration;
+  if(!correct){
+    fb.innerHTML='<div class="teacher-msg show" style="background:#ffebee;border-left-color:#f44336"><span class="icon">🤔</span> 再想想!谁说"是狼偷的",谁说"我没偷"?他们的话是不是相反的?</div>';
+    await speak('再想想!谁说是狼偷的,谁说我没偷?','zh-CN',1.0,gen);
+    document.querySelectorAll('#p0pick .animal-select').forEach(e=>e.classList.remove('picked'));
+    p0Picked=[];
+    document.getElementById('p0confirmPick').style.display='none';
+    return;
+  }
+  document.querySelectorAll('#p0pick .animal-select').forEach(e=>{
+    if(e.dataset.a==='tiger'||e.dataset.a==='wolf') e.classList.add('correct-pick');
+  });
+  fb.innerHTML='<div class="teacher-msg show" style="background:#e8f5e9;border-left-color:#4caf50"><span class="icon">👏</span> 没错!老虎说"是狼偷的",狼说"我没偷"——完全矛盾!</div>';
+  await speak('没错!老虎和狼说的完全矛盾!','zh-CN',1.0,gen);
+  document.getElementById('p0confirmPick').style.display='none';
+  if(genValid(gen)) setTimeout(()=>p0GoStep2(),1200);
+}
+
+async function p0GoStep2(){
+  showStep(0,2);
+  resetStop();
+  const gen=ttsGeneration;
+  const tiger=document.getElementById('acard-tiger');
+  const wolf=document.getElementById('acard-wolf');
+  if(tiger) tiger.classList.add('contradiction');
+  if(wolf) wolf.classList.add('contradiction');
+  const vis=document.getElementById('p0s2Visual');
+  vis.innerHTML=`
+    <div style="background:#fff3e0;border-radius:12px;padding:14px;margin:10px 0;text-align:center">
+      <div style="font-size:1.1em;font-weight:700;color:#e65100;margin-bottom:8px">🔍 他们两个说的对不上!有人在说谎!</div>
+      <div style="display:flex;justify-content:center;align-items:center;gap:12px">
+        <div style="text-align:center"><span style="font-size:2.5em">🐯</span><br><span style="font-size:.85em">是狼偷的!</span></div>
+        <span style="font-size:2.5em;color:#ff9800;animation:pulse 1s infinite">⚡</span>
+        <div style="text-align:center"><span style="font-size:2.5em">🐺</span><br><span style="font-size:.85em">不是我偷的!</span></div>
+      </div>
+      <div style="color:#666;font-size:.9em;margin-top:6px">一个说"是",一个说"不是" → 真话就在这里面!</div>
+    </div>
+    <div style="background:#ffebee;border-radius:12px;padding:14px;margin:10px 0;text-align:center">
+      <div style="font-size:1.1em;font-weight:700;color:#c62828;margin-bottom:8px">❌ 其他的 = 说假话!</div>
+      <div style="display:flex;justify-content:center;gap:30px">
+        <div style="text-align:center"><span style="font-size:2.5em">🦊</span><br><span style="font-size:.85em;color:#c62828">❌ 假话</span></div>
+        <div style="text-align:center"><span style="font-size:2.5em">🦁</span><br><span style="font-size:.85em;color:#c62828">❌ 假话</span></div>
+      </div>
+    </div>`;
+  const fox=document.getElementById('acard-fox');
+  const lion=document.getElementById('acard-lion');
+  if(fox) fox.classList.add('liar');
+  if(lion) lion.classList.add('liar');
+  await showBubbles(document.getElementById('p0s2Bubbles'),[
+    '老虎和狼说的对不上！',
+    '一个说"是狼"，一个说"不是我"——真话就在他们两个里面！',
+    '只有一个人说真话，其他的狐狸和狮子呢？他们说的都是假话！❌'
+  ],gen);
+}
+
+async function p0GoStep3(){
+  showStep(0,3);
+  resetStop();
+  const gen=ttsGeneration;
+  await showBubbles(document.getElementById('p0s3Bubbles'),[
+    '狐狸说"不是我偷的"——可这是假话呀！',
+    '假话反过来是什么？"是我偷的"！😮',
+    '那胡萝卜到底是谁偷的？选一个吧！'
+  ],gen);
+}
+
+async function p0Final(btn,ans){
+  if(btn.classList.contains('correct')||btn.classList.contains('wrong')) return;
+  const gen=ttsGeneration;
+  if(ans!=='fox'){
+    btn.classList.add('wrong');
+    await speak('再想想!狐狸说了假话哦!','zh-CN',1.0,gen);
+    setTimeout(()=>btn.classList.remove('wrong'),800);
+    return;
+  }
+  btn.classList.add('correct');
+  ['fox','tiger','lion','wolf'].forEach(id=>{
+    const vd=document.getElementById('v-'+id);
+    if(vd){vd.style.display='block';vd.textContent=id==='fox'?'🥕犯人!':'✅无辜';}
+  });
+  await speak('答对啦!是狐狸偷的!','zh-CN',1.0,gen);
+  if(!genValid(gen)) return;
+  setTimeout(()=>{
+    showStep(0,4);
+    const vis=document.getElementById('p0s4Visual');
+    vis.innerHTML=`<div style="text-align:center;margin:10px 0">
+      <div style="font-size:4em">🦊🥕</div>
+      <div style="font-size:1.2em;color:#f44336;font-weight:bold">就是你!狐狸偷了胡萝卜!</div>
+    </div>`;
+    speak('狐狸说不是我偷的,这是假话,反过来就是我偷的!','zh-CN',1.0,ttsGeneration);
+  },600);
+}
+
+function p0ShowPractice(){showStep(0,5)}
+
+// Hint for puzzle 0 practice
+function p0ShowHint(){
+  const btn=document.getElementById('p0HintBtn');
+  btn.disabled=true;
+  const area=document.getElementById('p0HintArea');
+  area.innerHTML='<div class="teacher-msg show" style="background:#fff3e0;border-left-color:#ff9800"><span class="icon">💡</span> 想想：甲和乙说的话矛盾吗？</div>';
+  speak('想想：甲和乙说的话矛盾吗？','zh-CN',1.0,ttsGeneration);
+}
+
+let p0PracticeDone=false;
+async function p0Practice(btn,ans){
+  if(p0PracticeDone) return;
+  const fb=document.getElementById('p0practiceFb');
+  const gen=ttsGeneration;
+  if(ans!=='yi'){
+    btn.classList.add('wrong');
+    fb.innerHTML='<div class="teacher-msg show" style="background:#ffebee;border-left-color:#f44336">🤔 再想想!甲说"是乙做的",乙说"不是我做的"——他们矛盾!真话在甲和乙之间。丙说了假话……等等,只有一人说假话!</div>';
+    await speak('再想想!甲和乙矛盾,真话在他们之间!','zh-CN',1.0,gen);
+    setTimeout(()=>btn.classList.remove('wrong'),800);
+    return;
+  }
+  p0PracticeDone=true;
+  btn.classList.add('correct');
+  fb.innerHTML=`<div class="teacher-msg show" style="background:#e8f5e9;border-left-color:#4caf50">
+    🎉 答对!<br>
+    甲说"是乙做的",乙说"不是我做的"——矛盾!<br>
+    只有一人说假话。如果甲说真话(是乙做的),那乙说"不是我"就是假话(1人),丙说真话。符合!<br>
+    所以是<strong>乙</strong>做了好事!
+  </div>`;
+  await speak('答对啦!甲和乙矛盾,只有一人说假话。甲说真话的话,好事就是乙做的!','zh-CN',1.0,gen);
+}
+
+// ========== PUZZLE 1: Doctor ==========
+let p1Inited=false;
+
+// Grid mark helper
+function gridMark(person,dept,symbol,delay){
+  return new Promise(r=>{
+    setTimeout(()=>{
+      const mark=document.getElementById(`m-${person}-${dept}`);
+      if(mark){
+        mark.textContent=symbol;
+        mark.classList.add('visible');
+      }
+      r();
+    },delay||0);
+  });
+}
+
+async function initPuzzle1(){
+  p1Inited=true;
+  resetStop();
+  const gen=ttsGeneration;
+
+  // Show transition bubble if first time
+  if(p1FirstOpen){
+    p1FirstOpen=false;
+    const transDiv=document.getElementById('p1Transition');
+    transDiv.style.display='block';
+    await showSingleBubble(transDiv,'刚才我们用了矛盾法🔍 现在来学另一招——排除法！✂️',gen);
+    if(!genValid(gen)) return;
+    await new Promise(r=>setTimeout(r,500));
+  }
+
+  const introTexts=[
+    '甲、乙、丙三位医生正在谈话。',
+    '一位是内科医生，一位是外科医生，一位是儿科医生。'
+  ];
+  await showBubbles(document.getElementById('p1introBubbles'),introTexts,gen);
+  if(!genValid(gen)) return;
+  // Show conditions
+  const conds=[
+    '甲医生不是内科医生',
+    '乙医生是外科医生的姐姐',
+    '内科医生是一位非常优秀的男医生'
+  ];
+  const container=document.getElementById('p1conditions');
+  for(let i=0;i<conds.length;i++){
+    if(!genValid(gen)) break;
+    const card=document.createElement('div');
+    card.className='condition-card';
+    card.innerHTML=`<span class="num">${i+1}</span><span>${conds[i]}</span>`;
+    container.appendChild(card);
+    await speak(conds[i],'zh-CN',1.0,gen);
+    if(!genValid(gen)) break;
+    await new Promise(r=>setTimeout(r,300));
+  }
+  if(!genValid(gen)) return;
+  // Show the question
+  await showBubbles(document.getElementById('p1introBubbles'),['那么，你判断一下——谁是外科医生？🤔'],gen);
+  if(!genValid(gen)) return;
+  document.getElementById('p1nextBtn').style.display='inline-block';
+}
+
+async function p1GoStep1(){
+  showStep(1,1);
+  // Show the grid
+  document.getElementById('p1GridContainer').style.display='block';
+  resetStop();
+  const gen=ttsGeneration;
+  await showBubbles(document.getElementById('p1s1Bubbles'),[
+    '内科医生是男的！',
+    '乙是"姐姐"——乙是男的还是女的？'
+  ],gen);
+}
+
+async function p1Step1(btn,ans){
+  const gen=ttsGeneration;
+  if(ans!=='f'){
+    btn.classList.add('wrong');
+    await speak('姐姐是女的呀!','zh-CN',1.0,gen);
+    setTimeout(()=>btn.classList.remove('wrong'),800);
+    return;
+  }
+  btn.classList.add('correct');
+  await speak('没错!乙是姐姐,是女的!','zh-CN',1.0,gen);
+  if(!genValid(gen)) return;
+  // Mark grid: 乙 × 内科 = ❌ (女的不能是男医生)
+  await gridMark('yi','nei','❌',300);
+  setTimeout(()=>{
+    showStep(1,2);
+    resetStop();
+    const gen2=ttsGeneration;
+    showBubbles(document.getElementById('p1s2Bubbles'),[
+      '乙是女的，内科医生是男的。',
+      '所以乙不是内科！❌',
+      '条件①说甲也不是内科。',
+      '那内科医生是谁？'
+    ],gen2).then(()=>{
+      // Mark grid: 甲 × 内科 = ❌
+      if(genValid(gen2)) gridMark('jia','nei','❌',0);
+    });
+  },800);
+}
+
+async function p1Step2(btn,ans){
+  const gen=ttsGeneration;
+  if(ans!=='bing'){
+    btn.classList.add('wrong');
+    await speak('甲不是内科,乙也不是内科,那只能是?','zh-CN',1.0,gen);
+    setTimeout(()=>btn.classList.remove('wrong'),800);
+    return;
+  }
+  btn.classList.add('correct');
+  // Mark grid: 丙 × 内科 = ✅, 丙 × 外科 = ❌, 丙 × 儿科 = ❌
+  await gridMark('bing','nei','✅',0);
+  await gridMark('bing','wai','❌',300);
+  await gridMark('bing','er','❌',300);
+  await speak('对!丙是内科医生!','zh-CN',1.0,gen);
+  if(!genValid(gen)) return;
+  setTimeout(()=>{
+    showStep(1,3);
+    resetStop();
+    showBubbles(document.getElementById('p1s3Bubbles'),[
+      '乙是外科医生的姐姐。',
+      '那姐姐和外科医生是同一个人吗？'
+    ],ttsGeneration);
+  },800);
+}
+
+async function p1Step3(btn,ans){
+  const gen=ttsGeneration;
+  if(ans!=='no'){
+    btn.classList.add('wrong');
+    await speak('姐姐和外科医生是两个不同的人哦!','zh-CN',1.0,gen);
+    setTimeout(()=>btn.classList.remove('wrong'),800);
+    return;
+  }
+  btn.classList.add('correct');
+  // Mark grid: 乙 × 外科 = ❌
+  await gridMark('yi','wai','❌',0);
+  await speak('对!所以乙不是外科医生!','zh-CN',1.0,gen);
+  if(!genValid(gen)) return;
+  setTimeout(()=>{
+    showStep(1,4);
+    resetStop();
+    showBubbles(document.getElementById('p1s4Bubbles'),[
+      '丙是内科，乙不是外科。',
+      '那外科医生是谁？'
+    ],ttsGeneration);
+  },800);
+}
+
+async function p1Step4(btn,ans){
+  const gen=ttsGeneration;
+  if(ans!=='jia'){
+    btn.classList.add('wrong');
+    await speak('丙已经是内科了,乙不是外科,那只剩?','zh-CN',1.0,gen);
+    setTimeout(()=>btn.classList.remove('wrong'),800);
+    return;
+  }
+  btn.classList.add('correct');
+  // Mark remaining grid cells
+  await gridMark('jia','wai','✅',0);
+  await gridMark('jia','er','❌',300);
+  await gridMark('yi','er','✅',300);
+  await speak('答对啦!甲是外科医生!','zh-CN',1.0,gen);
+  if(!genValid(gen)) return;
+  setTimeout(()=>{
+    showStep(1,5);
+    speak('甲是外科,乙是儿科,丙是内科。用排除法一个一个排除就行!','zh-CN',1.0,ttsGeneration);
+  },600);
+}
+
+function p1ShowPractice(){showStep(1,6)}
+
+// Hint for puzzle 1 practice
+function p1ShowHint(){
+  const btn=document.getElementById('p1HintBtn');
+  btn.disabled=true;
+  const area=document.getElementById('p1HintArea');
+  area.innerHTML='<div class="teacher-msg show" style="background:#fff3e0;border-left-color:#ff9800"><span class="icon">💡</span> 小华戴眼镜，班长不戴眼镜……</div>';
+  speak('小华戴眼镜，班长不戴眼镜……','zh-CN',1.0,ttsGeneration);
+}
+
+let p1PracticeDone=false;
+async function p1Practice(btn,ans){
+  if(p1PracticeDone) return;
+  const fb=document.getElementById('p1practiceFb');
+  const gen=ttsGeneration;
+  if(ans!=='ming'){
+    btn.classList.add('wrong');
+    fb.innerHTML='<div class="teacher-msg show" style="background:#ffebee;border-left-color:#f44336">🤔 用排除法!小华戴眼镜→班长不戴眼镜→小华不是班长。小红不是班长。那班长是?</div>';
+    await speak('用排除法!小华戴眼镜不能当班长,小红也不是,那只剩谁?','zh-CN',1.0,gen);
+    setTimeout(()=>btn.classList.remove('wrong'),800);
+    return;
+  }
+  p1PracticeDone=true;
+  btn.classList.add('correct');
+  fb.innerHTML=`<div class="teacher-msg show" style="background:#e8f5e9;border-left-color:#4caf50">
+    🎉 答对!<br>
+    小华戴眼镜 → 班长不戴眼镜 → 小华不是班长 ❌<br>
+    小红不是班长 ❌<br>
+    所以<strong>小明</strong>是班长! ✅
+  </div>`;
+  await speak('答对啦!小明是班长!排除法就是这么好用!','zh-CN',1.0,gen);
+}
+</script>
+</body>
+</html>

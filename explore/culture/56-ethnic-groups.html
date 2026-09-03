@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🇨🇳 中国56个民族 - Coco的学习园地</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #8B0000 0%, #DC143C 25%, #FF6347 50%, #FFD700 75%, #FFA500 100%);
+  min-height: 100vh;
+  padding: 16px;
+  color: #333;
+}
+.container { max-width: 1200px; margin: 0 auto; }
+header {
+  text-align: center;
+  padding: 20px 0;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+header h1 { font-size: 2em; margin-bottom: 8px; }
+header p { font-size: 1em; opacity: 0.9; }
+.controls {
+  background: rgba(255,255,255,0.95);
+  border-radius: 16px;
+  padding: 16px;
+  margin: 16px 0;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+.search-box {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #FFD700;
+  border-radius: 25px;
+  font-size: 16px;
+  outline: none;
+  margin-bottom: 12px;
+}
+.search-box:focus { border-color: #DC143C; }
+.filter-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.filter-btn {
+  padding: 8px 14px;
+  border: 2px solid #DC143C;
+  border-radius: 20px;
+  background: #fff;
+  color: #DC143C;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 600;
+}
+.filter-btn.active, .filter-btn:hover {
+  background: #DC143C;
+  color: #fff;
+}
+.voice-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+.voice-controls label { font-size: 13px; font-weight: 600; color: #666; }
+.voice-controls select, .voice-controls input {
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 13px;
+}
+.voice-controls input[type="range"] { width: 80px; }
+.action-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+.action-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.action-btn:hover { transform: scale(1.05); }
+.btn-random { background: #FFD700; color: #8B0000; }
+.btn-play { background: #4CAF50; color: #fff; }
+.btn-quiz { background: #9C27B0; color: #fff; }
+.btn-stop { background: #f44336; color: #fff; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.card-container { perspective: 1000px; height: 220px; }
+.card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  border-radius: 16px;
+}
+.card.flipped { transform: rotateY(180deg); }
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.card-front {
+  background: linear-gradient(145deg, #fff 0%, #FFF8E7 100%);
+  border: 2px solid #FFD700;
+}
+.card-back {
+  background: linear-gradient(145deg, #FFF0F0 0%, #FFFAF0 100%);
+  border: 2px solid #DC143C;
+  transform: rotateY(180deg);
+  font-size: 12px;
+  text-align: center;
+  overflow-y: auto;
+  justify-content: flex-start;
+  padding-top: 16px;
+}
+.card-emoji { font-size: 36px; margin-bottom: 6px; }
+.card-name { font-size: 18px; font-weight: 700; color: #8B0000; }
+.card-pinyin { font-size: 11px; color: #999; margin: 2px 0; }
+.card-pop { font-size: 11px; color: #666; }
+.card-region { font-size: 11px; color: #DC143C; margin: 2px 0; }
+.card-feature { font-size: 12px; color: #333; margin-top: 4px; text-align: center; line-height: 1.3; }
+.card-speak {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 10;
+}
+.card-back p { margin: 4px 0; line-height: 1.4; }
+.card-back .detail-title { font-weight: 700; color: #8B0000; font-size: 14px; margin-bottom: 6px; }
+/* Modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.show { display: flex; }
+.modal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  animation: popIn 0.3s ease;
+}
+@keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #999;
+  background: none;
+  border: none;
+}
+.modal-emoji { font-size: 60px; margin: 10px 0; }
+.modal-name { font-size: 28px; font-weight: 700; color: #8B0000; }
+.modal-pinyin { color: #999; margin: 5px 0; }
+.modal-info { text-align: left; margin-top: 15px; font-size: 14px; line-height: 1.8; }
+.modal-info strong { color: #DC143C; }
+/* Quiz */
+.quiz-container {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 1001;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.quiz-container.show { display: flex; }
+.quiz-box {
+  background: #fff;
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+.quiz-emoji { font-size: 50px; margin: 10px 0; }
+.quiz-hint { font-size: 14px; color: #666; margin: 10px 0; }
+.quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+.quiz-opt {
+  padding: 12px;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: #fff;
+}
+.quiz-opt:hover { border-color: #DC143C; background: #FFF0F0; }
+.quiz-opt.correct { background: #4CAF50; color: #fff; border-color: #4CAF50; }
+.quiz-opt.wrong { background: #f44336; color: #fff; border-color: #f44336; }
+.quiz-score { margin-top: 15px; font-size: 14px; color: #666; }
+.quiz-close {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #DC143C;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.confetti {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 2000;
+}
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  animation: confettiFall 3s linear forwards;
+}
+@keyframes confettiFall {
+  to { top: 110vh; transform: rotate(720deg); }
+}
+.counter {
+  text-align: center;
+  color: #fff;
+  font-size: 14px;
+  margin-top: 8px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+@media (max-width: 480px) {
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .card-container { height: 200px; }
+  header h1 { font-size: 1.5em; }
+}
+</style>
+</head>
+<body><nav aria-label="页面导航" style="position:relative;z-index:999;padding:10px 16px;background:#10152b;color:#fff;font:14px/1.4 system-ui"><a href="../../index.html" style="color:#fff;margin-right:16px">← 网站首页</a><a href="index.html" style="color:#fff">文化主题索引</a></nav>
+<div class="container">
+  <header>
+    <h1>🇨🇳 中国56个民族</h1>
+    <p>Coco的民族知识学习卡 🌸</p>
+  </header>
+  <div class="controls">
+    <input type="text" class="search-box" id="searchBox" placeholder="🔍 搜索民族名称或拼音...">
+    <div class="filter-btns">
+      <button class="filter-btn active" data-filter="all">全部</button>
+      <button class="filter-btn" data-filter="pop">按人口排序</button>
+      <button class="filter-btn" data-filter="东北">东北</button>
+      <button class="filter-btn" data-filter="华北">华北</button>
+      <button class="filter-btn" data-filter="西北">西北</button>
+      <button class="filter-btn" data-filter="西南">西南</button>
+      <button class="filter-btn" data-filter="华南">华南</button>
+      <button class="filter-btn" data-filter="华东">华东</button>
+      <button class="filter-btn" data-filter="中南">中南</button>
+    </div>
+    <div class="voice-controls">
+      <label>语音：</label>
+      <select id="voiceSelect"></select>
+      <label>语速：</label>
+      <input type="range" id="rateRange" min="0.5" max="2" step="0.1" value="0.9">
+      <span id="rateVal">0.9</span>
+    </div>
+  </div>
+  <div class="action-btns">
+    <button class="action-btn btn-random" onclick="randomCard()">🎲 随机认识一个民族</button>
+    <button class="action-btn btn-play" onclick="playAll()">▶️ 连续播放</button>
+    <button class="action-btn btn-stop" onclick="stopPlay()">⏹ 停止</button>
+    <button class="action-btn btn-quiz" onclick="startQuiz()">🧠 小测验</button>
+  </div>
+  <div class="counter" id="counter"></div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div class="modal-emoji" id="modalEmoji"></div>
+    <div class="modal-name" id="modalName"></div>
+    <div class="modal-pinyin" id="modalPinyin"></div>
+    <div class="modal-info" id="modalInfo"></div>
+    <button class="action-btn btn-play" style="margin-top:15px" onclick="speakModal()">🔊 朗读</button>
+  </div>
+</div>
+
+<div class="quiz-container" id="quizContainer">
+  <div class="quiz-box">
+    <h3>🧠 猜猜这是哪个民族？</h3>
+    <div class="quiz-emoji" id="quizEmoji"></div>
+    <div class="quiz-hint" id="quizHint"></div>
+    <div class="quiz-options" id="quizOptions"></div>
+    <div class="quiz-score" id="quizScore"></div>
+    <button class="quiz-close" onclick="closeQuiz()">关闭测验</button>
+  </div>
+</div>
+
+<script>
+const ethnicGroups = [
+  {name:"汉族",pinyin:"Hàn zú",emoji:"🏮",pop:"约12.86亿",region:"华北",area:"全国各地",feature:"灯笼春联庆春节",detail:"汉族是中国人口最多的民族。春节贴春联、放鞭炮、吃饺子是最重要的传统。服饰以汉服为代表，有襦裙、深衣等形制。代表美食：饺子、月饼、粽子。"},
+  {name:"蒙古族",pinyin:"Měnggǔ zú",emoji:"🐎🏹",pop:"约629万",region:"东北",area:"内蒙古、辽宁、新疆",feature:"骑马射箭住蒙古包",detail:"蒙古族是马背上的民族，那达慕大会是最盛大的节日，有赛马、摔跤、射箭三项比赛。住蒙古包，喝奶茶，吃手扒肉。服饰华丽，长袍配腰带。"},
+  {name:"回族",pinyin:"Huí zú",emoji:"🕌",pop:"约1138万",region:"西北",area:"宁夏、甘肃、青海、新疆",feature:"清真美食文化丰富",detail:"回族信仰伊斯兰教，饮食讲究清真。开斋节和古尔邦节是重要节日。擅长制作牛肉面、馓子、油香等美食。男子戴白帽，女子戴盖头。"},
+  {name:"藏族",pinyin:"Zàng zú",emoji:"🏔️🙏",pop:"约706万",region:"西南",area:"西藏、四川、青海、甘肃",feature:"雪域高原信仰虔诚",detail:"藏族生活在世界屋脊，藏历新年和雪顿节是重要节日。哈达是最珍贵的礼物。喝酥油茶、吃糌粑。布达拉宫是藏族文化的象征。"},
+  {name:"维吾尔族",pinyin:"Wéiwú'ěr zú",emoji:"🍇🎵",pop:"约1177万",region:"西北",area:"新疆",feature:"能歌善舞瓜果飘香",detail:"维吾尔族热情好客，古尔邦节载歌载舞。擅长十二木卡姆艺术（世界非遗）。盛产葡萄、哈密瓜。馕是主食，手抓饭是名菜。花帽和艾德莱斯绸很有特色。"},
+  {name:"苗族",pinyin:"Miáo zú",emoji:"💎🎭",pop:"约1107万",region:"西南",area:"贵州、湖南、云南、广西",feature:"银饰璀璨苗绣精美",detail:"苗族以银饰闻名天下，姑娘节日盛装银饰可重数公斤。苗年和姊妹节热闹非凡。蜡染和苗绣是国家级非遗。酸汤鱼是代表美食。"},
+  {name:"彝族",pinyin:"Yí zú",emoji:"🔥",pop:"约983万",region:"西南",area:"四川、云南、贵州",feature:"火把节热情似火",detail:"彝族崇拜火，火把节是最盛大的节日，人们举着火把载歌载舞。服饰以黑色为尊，搭配精美刺绣。坨坨肉和荞麦饭是传统美食。"},
+  {name:"壮族",pinyin:"Zhuàng zú",emoji:"🎋🎶",pop:"约1957万",region:"华南",area:"广西、云南、广东",feature:"三月三对歌壮锦美",detail:"壮族是少数民族中人口最多的。三月三歌圩节对山歌，刘三姐是歌仙代表。壮锦与蜀锦齐名。五色糯米饭是节日美食。铜鼓是文化象征。"},
+  {name:"布依族",pinyin:"Bùyī zú",emoji:"🌾🎶",pop:"约358万",region:"西南",area:"贵州",feature:"依山傍水善种稻",detail:"布依族多居住在贵州山水之间，擅长种植水稻。六月六是重要节日。蜡染工艺精湛，石板房是特色建筑。五色花米饭和酸笋鱼是传统美食。"},
+  {name:"朝鲜族",pinyin:"Cháoxiǎn zú",emoji:"🥁🎎",pop:"约183万",region:"东北",area:"吉林延边、辽宁、黑龙江",feature:"长鼓舞泡菜香",detail:"朝鲜族能歌善舞，长鼓舞和农乐舞热烈欢快。泡菜、打糕、冷面是代表美食。尊师重教，重视子女教育。服饰色彩明亮，女子穿七彩长裙。"},
+  {name:"满族",pinyin:"Mǎn zú",emoji:"👘🏯",pop:"约1042万",region:"东北",area:"辽宁、吉林、黑龙江、河北",feature:"旗袍发源八旗劲旅",detail:"满族建立了清朝，旗袍源于满族服饰。颁金节是满族传统节日。萨其马、火锅是满族美食。满族剪纸精美细腻。"},
+  {name:"侗族",pinyin:"Dòng zú",emoji:"🌉🎵",pop:"约288万",region:"华南",area:"贵州、湖南、广西",feature:"侗族大歌风雨桥",detail:"侗族大歌是无指挥无伴奏的多声部合唱，被列入世界非遗。风雨桥和鼓楼是标志性建筑。酸鱼酸肉是特色美食。侗布制作工艺独特。"},
+  {name:"瑶族",pinyin:"Yáo zú",emoji:"🌿🎭",pop:"约331万",region:"华南",area:"广西、湖南、云南、广东",feature:"盘王节长鼓翩翩",detail:"瑶族崇拜盘王，盘王节是最重要的节日。长鼓舞热情奔放。瑶族医药享有盛名（瑶浴）。服饰刺绣精美，头饰华丽。油茶是日常饮品。"},
+  {name:"白族",pinyin:"Bái zú",emoji:"🦋🏠",pop:"约209万",region:"西南",area:"云南大理",feature:"蝴蝶泉三道茶",detail:"白族主要居住在云南大理，三月街和火把节是重要节日。三道茶一苦二甜三回味。白族民居照壁精美。扎染工艺是国家级非遗。蝴蝶泉是浪漫传说。"},
+  {name:"土家族",pinyin:"Tǔjiā zú",emoji:"🏔️💃",pop:"约835万",region:"中南",area:"湖北、湖南、重庆、贵州",feature:"摆手舞吊脚楼",detail:"土家族的摆手舞欢快热烈。吊脚楼依山而建，通风防潮。社巴节是盛大节日。土家织锦西兰卡普精美。腊肉和合渣是传统美食。"},
+  {name:"哈尼族",pinyin:"Hāní zú",emoji:"🌾🏞️",pop:"约173万",region:"西南",area:"云南",feature:"梯田奇观云中居",detail:"哈尼族创造了举世闻名的哈尼梯田（世界文化遗产）。十月年（扎勒特）是最隆重的节日。蘑菇房是传统民居。长街宴是独特习俗。"},
+  {name:"哈萨克族",pinyin:"Hāsàkè zú",emoji:"🦅🐎",pop:"约159万",region:"西北",area:"新疆、甘肃",feature:"猎鹰骑马游牧乐",detail:"哈萨克族是游牧民族，擅长驯鹰捕猎和骑术。纳吾热孜节是春天的庆典。毡房是移动的家。奶疙瘩和马肉是传统美食。冬不拉是代表乐器。"},
+  {name:"傣族",pinyin:"Dǎi zú",emoji:"💧🦚",pop:"约133万",region:"西南",area:"云南西双版纳、德宏",feature:"泼水节孔雀舞",detail:"傣族的泼水节是最欢乐的节日，互泼清水送祝福。孔雀舞优美灵动。竹楼是传统民居。菠萝饭和酸笋鸡是美味佳肴。贝叶经记录文化。"},
+  {name:"黎族",pinyin:"Lí zú",emoji:"🌺🏝️",pop:"约160万",region:"华南",area:"海南",feature:"黎锦精美住船屋",detail:"黎族是海南岛最早的居民。三月三是传统节日。黎锦织造技艺被列入世界非遗名录。船型屋是特色建筑。竹竿舞欢快热闹。"},
+  {name:"傈僳族",pinyin:"Lìsù zú",emoji:"⚔️🏔️",pop:"约76万",region:"西南",area:"云南怒江",feature:"刀杆节勇攀刀梯",detail:"傈僳族的刀杆节惊险刺激，勇士赤脚攀爬烧红的铁刀。阔时节是新年。生活在怒江峡谷地带。漆油茶和手抓饭是美食。弩弓是传统武器。"},
+  {name:"佤族",pinyin:"Wǎ zú",emoji:"🪘🌿",pop:"约43万",region:"西南",area:"云南临沧、普洱",feature:"木鼓催春甩发舞",detail:"佤族崇拜木鼓，认为木鼓能通神灵。新米节和木鼓节是重要节日。甩发舞奔放热烈。水酒是待客佳品。寨桩和牛头是佤族标志。"},
+  {name:"畲族",pinyin:"Shē zú",emoji:"🌈👗",pop:"约75万",region:"华东",area:"福建、浙江、江西、广东",feature:"凤凰装三月三",detail:"畲族女子穿凤凰装，头饰似凤冠。三月三是传统节日，对歌比赛热闹。乌米饭是节日美食。畲族彩带编织精美。自称山哈（山里的客人）。"},
+  {name:"高山族",pinyin:"Gāoshān zú",emoji:"🏝️🎵",pop:"约4009人(大陆)",region:"华东",area:"台湾、福建",feature:"丰年祭歌舞欢",detail:"高山族主要居住在台湾山区和平原。丰年祭是最重要的节日，感恩丰收。歌舞文化丰富，有杵音、竹竿舞等。飞鱼是部分族群的神圣食物。"},
+  {name:"拉祜族",pinyin:"Lāhù zú",emoji:"🎯🏔️",pop:"约49万",region:"西南",area:"云南普洱、临沧",feature:"芦笙恋歌猎虎人",detail:"拉祜族意为猎虎的民族。扩塔节（春节）是最大节日。葫芦是民族象征，芦笙舞优美。火烤茶和烤肉是美食。织锦和刺绣工艺精湛。"},
+  {name:"水族",pinyin:"Shuǐ zú",emoji:"📅🐟",pop:"约41万",region:"西南",area:"贵州三都",feature:"水书古老鱼包韭菜香",detail:"水族有自己的文字水书，被称为活化石。端节（水年）比春节还隆重。鱼包韭菜是节日必备菜。马尾绣精美绝伦。铜鼓舞热烈欢快。"},
+  {name:"东乡族",pinyin:"Dōngxiāng zú",emoji:"🐑🕌",pop:"约78万",region:"西北",area:"甘肃临夏",feature:"手抓羊肉美名扬",detail:"东乡族信仰伊斯兰教。东乡手抓羊肉是西北名菜。开斋节和古尔邦节是重要节日。东乡族民歌（花儿）高亢嘹亮。油炸馃馃是节日食品。"},
+  {name:"纳西族",pinyin:"Nàxī zú",emoji:"📜🏔️",pop:"约33万",region:"西南",area:"云南丽江",feature:"东巴文活象形字",detail:"纳西族创造了至今仍在使用的象形文字东巴文。三朵节是最大节日。古城丽江是世界文化遗产。纳西古乐古朴悠远。丽江粑粑是传统美食。"},
+  {name:"景颇族",pinyin:"Jǐngpō zú",emoji:"⚔️💃",pop:"约15万",region:"西南",area:"云南德宏",feature:"目瑙纵歌万人舞",detail:"景颇族的目瑙纵歌节是万人参与的盛大歌舞活动。银泡衣物光彩夺目。绿叶宴是传统宴席（用绿叶包食物）。景颇刀闻名遐迩。"},
+  {name:"柯尔克孜族",pinyin:"Kē'ěrkèzī zú",emoji:"🦅🎵",pop:"约20万",region:"西北",area:"新疆克孜勒苏",feature:"玛纳斯史诗传千年",detail:"柯尔克孜族拥有英雄史诗《玛纳斯》，是世界非遗。诺鲁孜节庆祝新年。擅长驯鹰狩猎。毡帽和白毡房是标志。马奶酒和手抓肉是美食。"},
+  {name:"土族",pinyin:"Tǔ zú",emoji:"🌈👗",pop:"约29万",region:"西北",area:"青海、甘肃",feature:"彩虹袖轮子秋",detail:"土族女子服饰袖子有彩虹般的色带。纳顿节被称为世界上最长的狂欢节。轮子秋是独特的体育项目。安召舞欢快热闹。酥油花制作精美。"},
+  {name:"达斡尔族",pinyin:"Dáwò'ěr zú",emoji:"🏑🎣",pop:"约13万",region:"东北",area:"内蒙古、黑龙江",feature:"曲棍球鼻祖民族",detail:"达斡尔族是中国曲棍球运动的发源地。阿涅节是传统新年。哈尼卡（纸偶）是独特手工艺。柳蒿芽是传统野菜美食。"},
+  {name:"仫佬族",pinyin:"Mùlǎo zú",emoji:"🪨🎶",pop:"约22万",region:"华南",area:"广西罗城",feature:"依饭节走坡对歌",detail:"仫佬族的依饭节祈求风调雨顺。走坡节是青年男女对歌定情的节日。煤砂罐制作是传统工艺。酸菜和腊肉是日常美食。"},
+  {name:"羌族",pinyin:"Qiāng zú",emoji:"🏰🐑",pop:"约31万",region:"西南",area:"四川阿坝",feature:"碉楼耸立云朵上",detail:"羌族是古老的民族，碉楼是标志性建筑。羌历年是最重要的节日。释比（巫师）文化独特。羌笛悠扬动听。洋芋糍粑和腊肉是美食。"},
+  {name:"布朗族",pinyin:"Bùlǎng zú",emoji:"🍵🌿",pop:"约12万",region:"西南",area:"云南西双版纳",feature:"最早种茶的民族",detail:"布朗族是最早栽培茶树的民族之一，被称为茶的祖先。桑康节（泼水节）是重要节日。竹楼是传统民居。酸茶和竹筒饭是特色美食。"},
+  {name:"撒拉族",pinyin:"Sālā zú",emoji:"🕌🌊",pop:"约17万",region:"西北",area:"青海循化、甘肃",feature:"黄河岸边骆驼泉",detail:"撒拉族祖先从中亚骑骆驼迁来，骆驼泉是民族传说。信仰伊斯兰教。古尔邦节隆重庆祝。面食种类丰富，油搅团是特色美食。"},
+  {name:"毛南族",pinyin:"Máonán zú",emoji:"🎭🪭",pop:"约10万",region:"华南",area:"广西环江",feature:"花竹帽编织精巧",detail:"毛南族的花竹帽（顶卡花）编织工艺精湛，是定情信物。分龙节是最大节日，祈雨求丰。五香酸肉是传统美食。傩面具制作精美。"},
+  {name:"仡佬族",pinyin:"Gēlǎo zú",emoji:"🏔️🎶",pop:"约55万",region:"西南",area:"贵州遵义、铜仁",feature:"古夜郎后裔吃新节",detail:"仡佬族被认为是古夜郎国后裔。吃新节尝新粮感恩天地。三月三祭山神。红稗粑和油团是美食。仡佬毛龙舞是国家级非遗。"},
+  {name:"锡伯族",pinyin:"Xībó zú",emoji:"🏹📖",pop:"约19万",region:"西北",area:"新疆察布查尔、辽宁",feature:"西迁戍边保满文",detail:"锡伯族保留了满文传统。西迁节纪念1764年从东北迁往新疆戍边。射箭是传统强项。发面饼和鱼是美食。贝伦舞优美。"},
+  {name:"阿昌族",pinyin:"Āchāng zú",emoji:"⚔️🌾",pop:"约4万",region:"西南",area:"云南德宏",feature:"户撒刀锋利天下知",detail:"阿昌族打制的户撒刀闻名全国。阿露窝罗节是最大节日。水稻种植技术高超。过手米线是特色美食。舞蹈蹬窝罗欢快热烈。"},
+  {name:"普米族",pinyin:"Pǔmǐ zú",emoji:"🔥🏔️",pop:"约4.3万",region:"西南",area:"云南兰坪、宁蒗",feature:"敬锅庄围火歌舞",detail:"普米族崇拜火塘和锅庄。大过年是最隆重的节日，成人礼在13岁举行。搓蹉舞围火而跳。猪膘肉可保存数年。四弦琴是伴奏乐器。"},
+  {name:"塔吉克族",pinyin:"Tǎjíkè zú",emoji:"🦅🏔️",pop:"约5.1万",region:"西北",area:"新疆塔什库尔干",feature:"高原雄鹰帕米尔",detail:"塔吉克族生活在帕米尔高原，被称为云端上的民族。肖贡巴哈尔节庆祝春天。鹰舞模仿雄鹰展翅。奶茶和馕是主食。热情好客以吻礼待人。"},
+  {name:"怒族",pinyin:"Nù zú",emoji:"🌊🎵",pop:"约3.7万",region:"西南",area:"云南怒江",feature:"怒江峡谷溜索过",detail:"怒族居住在怒江大峡谷，曾以溜索过江。仙女节是重要节日，纪念创造发明的仙女阿茸。达比亚（四弦琴）是传统乐器。漆油茶和烤乳猪是美食。"},
+  {name:"乌孜别克族",pinyin:"Wūzībiékè zú",emoji:"🎵🍞",pop:"约1万",region:"西北",area:"新疆",feature:"能歌善舞手工精",detail:"乌孜别克族擅长歌舞和手工艺。诺鲁孜节庆祝新年。馕和抓饭是主食。小花帽刺绣精美。传统乐器有弹布尔和热瓦普。"},
+  {name:"俄罗斯族",pinyin:"Éluósī zú",emoji:"🎻🏠",pop:"约1.6万",region:"西北",area:"新疆、内蒙古、黑龙江",feature:"手风琴面包巴斯克",detail:"俄罗斯族保留了东正教传统。巴斯克节（复活节）是重要节日。面包、果酱是日常食品。手风琴和巴拉莱卡琴是传统乐器。木刻楞房屋有特色。"},
+  {name:"鄂温克族",pinyin:"Èwēnkè zú",emoji:"🦌❄️",pop:"约3.4万",region:"东北",area:"内蒙古呼伦贝尔",feature:"驯鹿民族森林人",detail:"鄂温克族是中国唯一饲养驯鹿的民族。米阔鲁节庆祝丰收。瑟宾节是传统盛会。桦树皮制品工艺独特。手抓肉和奶茶是美食。"},
+  {name:"德昂族",pinyin:"Dé'áng zú",emoji:"🍵🪘",pop:"约2.1万",region:"西南",area:"云南德宏",feature:"古老茶农浇花节",detail:"德昂族是最古老的种茶民族之一。浇花节（泼水节）是最大节日。水鼓舞独具特色。酸茶制作工艺独特。腰箍是女子特有的装饰。"},
+  {name:"保安族",pinyin:"Bǎo'ān zú",emoji:"🗡️🌙",pop:"约2.4万",region:"西北",area:"甘肃积石山",feature:"保安腰刀美名传",detail:"保安族的保安腰刀工艺精湛，是国家级非遗。信仰伊斯兰教。圣纪节、开斋节是重要节日。全羊席和手抓肉是美食。花儿唱腔独特。"},
+  {name:"裕固族",pinyin:"Yùgù zú",emoji:"🐪🎵",pop:"约1.5万",region:"西北",area:"甘肃肃南",feature:"祁连山下歌声扬",detail:"裕固族生活在祁连山下的草原。剪马鬃节是传统活动。民歌曲调悠扬。酥油奶茶和手抓肉是美食。头面是已婚女子的标志性饰品。"},
+  {name:"京族",pinyin:"Jīng zú",emoji:"🎸🌊",pop:"约3.3万",region:"华南",area:"广西东兴",feature:"独弦琴唱哈节",detail:"京族是中国唯一的海洋民族。哈节是最隆重的节日，祭祀海神。独弦琴音色优美独特。鱼露和海鲜是美食。生活在北部湾海边。"},
+  {name:"塔塔尔族",pinyin:"Tǎtǎ'ěr zú",emoji:"🎵🏠",pop:"约3500人",region:"西北",area:"新疆",feature:"善办教育重文化",detail:"塔塔尔族重视教育，最早创办新式学校。撒班节是传统节日。面食种类多，古拜底埃和切克切克是美食。传统歌舞优美。"},
+  {name:"独龙族",pinyin:"Dúlóng zú",emoji:"🌿🏔️",pop:"约7000人",region:"西南",area:"云南怒江贡山",feature:"独龙毯纹面记忆",detail:"独龙族生活在独龙江峡谷。卡雀哇节是新年。独龙毯色彩鲜艳。曾有纹面习俗（已消失）。竹筒饭和烤肉是传统食物。"},
+  {name:"鄂伦春族",pinyin:"Èlúnchūn zú",emoji:"🏹🌲",pop:"约9000人",region:"东北",area:"内蒙古、黑龙江",feature:"兴安岭上猎林人",detail:"鄂伦春族世代在大小兴安岭狩猎。古伦木沓节是篝火盛会。桦树皮用品制作精美。仙人柱是传统住所。狍子肉和柳蒿芽是美食。"},
+  {name:"赫哲族",pinyin:"Hèzhé zú",emoji:"🐟🛶",pop:"约5400人",region:"东北",area:"黑龙江同江、饶河",feature:"鱼皮衣冬捕忙",detail:"赫哲族是中国人口较少的民族之一。以渔猎为生，会用鱼皮制作衣服。乌日贡节是传统盛会。杀生鱼（塔拉哈）是特色美食。伊玛堪说唱是非遗。"},
+  {name:"门巴族",pinyin:"Ménbā zú",emoji:"🏔️🍵",pop:"约1.1万",region:"西南",area:"西藏门隅、墨脱",feature:"喜马拉雅南坡居",detail:"门巴族生活在喜马拉雅山南坡。曲科节（望果节）祈祷丰收。擅长竹编和木碗制作。酥油茶和荞麦饼是主食。门巴戏是传统艺术。"},
+  {name:"珞巴族",pinyin:"Luòbā zú",emoji:"⚔️🌿",pop:"约4000人",region:"西南",area:"西藏米林、墨脱",feature:"深山密林狩猎人",detail:"珞巴族是中国人口最少的民族之一。昂德林节是传统新年。擅长狩猎和竹藤编织。男子佩戴长刀，女子戴银饰。达谐舞热烈奔放。"},
+  {name:"基诺族",pinyin:"Jīnuò zú",emoji:"🪘☀️",pop:"约2.6万",region:"西南",area:"云南西双版纳",feature:"太阳鼓舞最后确认",detail:"基诺族是最后一个被确认的民族（1979年）。特懋克节是盛大年节。太阳鼓是神圣之物。竹筒烤肉和凉拌菜是美食。大鼓舞热烈欢快。"}
+];
+
+let currentList = [...ethnicGroups];
+let isPlaying = false;
+let playIndex = 0;
+let quizScore = 0;
+let quizTotal = 0;
+let currentModalData = null;
+
+// Voice
+const voiceSelect = document.getElementById('voiceSelect');
+const rateRange = document.getElementById('rateRange');
+const rateVal = document.getElementById('rateVal');
+let voices = [];
+
+function loadVoices() {
+  voices = speechSynthesis.getVoices();
+  voiceSelect.innerHTML = '';
+  const zhVoices = voices.filter(v => (v.lang.startsWith('zh-CN')||v.lang==='zh')&&!v.lang.startsWith('zh-HK')&&!v.lang.startsWith('zh-TW'));
+  // Edge high-fidelity: sort Online (Natural) to top
+  zhVoices.sort((a, b) => {
+    const aS = a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Online') && a.name.includes('Natural') ? 2 : a.name.includes('Microsoft') ? 1 : 0;
+    const bS = b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Online') && b.name.includes('Natural') ? 2 : b.name.includes('Microsoft') ? 1 : 0;
+    return bS - aS;
+  });
+  const list = zhVoices.length > 0 ? zhVoices : voices;
+  list.forEach((v, i) => {
+    const opt = document.createElement('option');
+    opt.value = voices.indexOf(v);
+    opt.textContent = v.name + ' (' + v.lang + ')';
+    voiceSelect.appendChild(opt);
+  });
+}
+speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+rateRange.addEventListener('input', () => { rateVal.textContent = rateRange.value; });
+
+function speak(text, cb) {
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  u.rate = parseFloat(rateRange.value);
+  if (voiceSelect.value && voices[voiceSelect.value]) u.voice = voices[voiceSelect.value];
+  if (cb) u.onend = cb;
+  speechSynthesis.speak(u);
+}
+
+// Render
+function renderGrid(list) {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  document.getElementById('counter').textContent = `显示 ${list.length} / 56 个民族`;
+  list.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'card-container';
+    div.innerHTML = `
+      <div class="card" onclick="flipCard(this, event)">
+        <div class="card-front">
+          <button class="card-speak" onclick="event.stopPropagation();speak('${item.name}，${item.feature}')">🔊</button>
+          <div class="card-emoji">${item.emoji}</div>
+          <div class="card-name">${item.name}</div>
+          <div class="card-pinyin">${item.pinyin}</div>
+          <div class="card-pop">👥 ${item.pop}</div>
+          <div class="card-region">📍 ${item.area.split('、')[0]}</div>
+          <div class="card-feature">${item.feature}</div>
+        </div>
+        <div class="card-back">
+          <div class="detail-title">${item.emoji} ${item.name}</div>
+          <p><strong>人口：</strong>${item.pop}</p>
+          <p><strong>分布：</strong>${item.area}</p>
+          <p><strong>特色：</strong>${item.feature}</p>
+          <p style="margin-top:6px">${item.detail}</p>
+        </div>
+      </div>`;
+    grid.appendChild(div);
+  });
+}
+
+function flipCard(card, e) {
+  if (e.target.classList.contains('card-speak')) return;
+  card.classList.toggle('flipped');
+}
+
+// Search
+document.getElementById('searchBox').addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  if (!q) { renderGrid(currentList); return; }
+  const filtered = currentList.filter(item =>
+    item.name.includes(q) || item.pinyin.toLowerCase().includes(q) || item.area.includes(q)
+  );
+  renderGrid(filtered);
+});
+
+// Filters
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const f = this.dataset.filter;
+    if (f === 'all') {
+      currentList = [...ethnicGroups];
+    } else if (f === 'pop') {
+      currentList = [...ethnicGroups].sort((a, b) => {
+        const na = parseFloat(a.pop.replace(/[^0-9.]/g, ''));
+        const nb = parseFloat(b.pop.replace(/[^0-9.]/g, ''));
+        return nb - na;
+      });
+    } else {
+      currentList = ethnicGroups.filter(item => item.region === f);
+    }
+    document.getElementById('searchBox').value = '';
+    renderGrid(currentList);
+  });
+});
+
+// Random
+function randomCard() {
+  const item = ethnicGroups[Math.floor(Math.random() * ethnicGroups.length)];
+  showModal(item);
+}
+
+function showModal(item) {
+  currentModalData = item;
+  document.getElementById('modalEmoji').textContent = item.emoji;
+  document.getElementById('modalName').textContent = item.name;
+  document.getElementById('modalPinyin').textContent = item.pinyin;
+  document.getElementById('modalInfo').innerHTML = `
+    <p><strong>👥 人口：</strong>${item.pop}</p>
+    <p><strong>📍 分布：</strong>${item.area}</p>
+    <p><strong>✨ 特色：</strong>${item.feature}</p>
+    <p style="margin-top:10px">${item.detail}</p>`;
+  document.getElementById('modalOverlay').classList.add('show');
+  speak(item.name + '。' + item.detail);
+}
+
+function speakModal() {
+  if (currentModalData) speak(currentModalData.name + '。' + currentModalData.detail);
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modalOverlay')) {
+    document.getElementById('modalOverlay').classList.remove('show');
+    speechSynthesis.cancel();
+  }
+}
+
+// Play All
+function playAll() {
+  if (isPlaying) return;
+  isPlaying = true;
+  playIndex = 0;
+  playNext();
+}
+function playNext() {
+  if (!isPlaying || playIndex >= currentList.length) { isPlaying = false; return; }
+  const item = currentList[playIndex];
+  speak(item.name + '，' + item.feature, () => {
+    playIndex++;
+    if (isPlaying) setTimeout(playNext, 500);
+  });
+}
+function stopPlay() { isPlaying = false; speechSynthesis.cancel(); }
+
+// Quiz
+function startQuiz() {
+  quizScore = 0;
+  quizTotal = 0;
+  document.getElementById('quizContainer').classList.add('show');
+  nextQuestion();
+}
+function closeQuiz() {
+  document.getElementById('quizContainer').classList.remove('show');
+  speechSynthesis.cancel();
+}
+function nextQuestion() {
+  const correct = ethnicGroups[Math.floor(Math.random() * ethnicGroups.length)];
+  const options = [correct];
+  while (options.length < 4) {
+    const r = ethnicGroups[Math.floor(Math.random() * ethnicGroups.length)];
+    if (!options.includes(r)) options.push(r);
+  }
+  options.sort(() => Math.random() - 0.5);
+  document.getElementById('quizEmoji').textContent = correct.emoji;
+  document.getElementById('quizHint').textContent = '提示：' + correct.feature;
+  const optsDiv = document.getElementById('quizOptions');
+  optsDiv.innerHTML = '';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = opt.name;
+    btn.onclick = () => checkAnswer(btn, opt === correct, correct.name);
+    optsDiv.appendChild(btn);
+  });
+  document.getElementById('quizScore').textContent = `得分：${quizScore} / ${quizTotal}`;
+}
+function checkAnswer(btn, isCorrect, correctName) {
+  quizTotal++;
+  const btns = document.querySelectorAll('.quiz-opt');
+  btns.forEach(b => {
+    b.onclick = null;
+    if (b.textContent === correctName) b.classList.add('correct');
+  });
+  if (isCorrect) {
+    quizScore++;
+    btn.classList.add('correct');
+    speak('答对了！是' + correctName);
+    showConfetti();
+  } else {
+    btn.classList.add('wrong');
+    speak('不对哦，正确答案是' + correctName);
+  }
+  document.getElementById('quizScore').textContent = `得分：${quizScore} / ${quizTotal}`;
+  setTimeout(nextQuestion, 2500);
+}
+function showConfetti() {
+  const c = document.createElement('div');
+  c.className = 'confetti';
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.background = ['#f44336','#ffeb3b','#4caf50','#2196f3','#9c27b0','#ff9800'][Math.floor(Math.random()*6)];
+    p.style.animationDelay = Math.random() * 0.5 + 's';
+    p.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+    c.appendChild(p);
+  }
+  document.body.appendChild(c);
+  setTimeout(() => c.remove(), 3500);
+}
+
+// Init
+renderGrid(currentList);
+</script>
+</body>
+</html>

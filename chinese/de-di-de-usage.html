@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>的·地·得 用法讲解</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+
+.slide-container {
+  width: 100%; height: 100%; position: relative; overflow: hidden;
+  touch-action: pan-y;
+}
+
+.slide {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 30px 24px; text-align: center; transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+/* 封面 */
+.slide-0 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
+.slide-0 .big-chars { font-size: 56px; font-weight: 900; letter-spacing: 12px; margin-bottom: 20px; text-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+.slide-0 .subtitle { font-size: 18px; opacity: 0.9; margin-bottom: 30px; }
+.slide-0 .hint { font-size: 14px; opacity: 0.6; position: absolute; bottom: 40px; }
+
+/* 的 */
+.slide-1 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: #fff; }
+/* 地 */
+.slide-2 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: #fff; }
+/* 得 */
+.slide-3 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: #fff; }
+/* 口诀 */
+.slide-4 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: #fff; }
+/* 对比练习 */
+.slide-5 { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); color: #fff; }
+.slide-6 { background: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%); color: #fff; }
+/* 总结 */
+.slide-7 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
+
+.char-hero {
+  font-size: 80px; font-weight: 900; margin-bottom: 10px;
+  text-shadow: 0 6px 30px rgba(0,0,0,0.15);
+  animation: bounceIn 0.6s ease-out;
+}
+@keyframes bounceIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.char-label {
+  font-size: 16px; opacity: 0.85; margin-bottom: 16px;
+  background: rgba(255,255,255,0.2); padding: 6px 16px; border-radius: 20px;
+}
+
+.formula {
+  font-size: 20px; font-weight: 700; margin: 16px 0;
+  background: rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 14px;
+  line-height: 1.6;
+}
+.formula .highlight { 
+  background: rgba(255,255,255,0.3); padding: 2px 8px; border-radius: 6px;
+  font-size: 22px;
+}
+
+.examples {
+  margin-top: 16px; text-align: left; width: 100%; max-width: 320px;
+}
+.example-item {
+  background: rgba(255,255,255,0.15); border-radius: 12px; padding: 12px 16px;
+  margin: 8px 0; font-size: 17px; line-height: 1.6; backdrop-filter: blur(5px);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.example-item .de-mark {
+  display: inline-block; background: rgba(255,255,255,0.4); padding: 1px 6px;
+  border-radius: 4px; font-weight: 800; margin: 0 2px;
+}
+.example-item .note { font-size: 13px; opacity: 0.75; margin-top: 4px; }
+
+.mnemo {
+  font-size: 22px; font-weight: 700; line-height: 2; margin: 20px 0;
+  text-align: left; max-width: 300px;
+}
+.mnemo-line { 
+  background: rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 10px;
+  margin: 6px 0;
+}
+
+.quiz-item {
+  background: rgba(255,255,255,0.15); border-radius: 14px; padding: 16px 20px;
+  margin: 10px 0; font-size: 18px; text-align: left; width: 100%; max-width: 320px;
+  border: 2px solid rgba(255,255,255,0.2);
+}
+.quiz-item .blank { 
+  display: inline-block; width: 40px; height: 28px; border-bottom: 3px solid rgba(255,255,255,0.6);
+  text-align: center; font-weight: 900; vertical-align: middle; margin: 0 4px;
+}
+.quiz-item .answer { font-size: 14px; opacity: 0; margin-top: 6px; transition: opacity 0.3s; }
+.quiz-item.revealed .answer { opacity: 0.85; }
+.quiz-item.revealed .blank { border-bottom-color: #fff; }
+
+/* 导航 */
+.nav-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 20px; background: rgba(0,0,0,0.2); backdrop-filter: blur(10px);
+}
+.nav-dots {
+  display: flex; gap: 6px;
+}
+.nav-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4);
+  transition: all 0.3s;
+}
+.nav-dot.active { background: #fff; width: 20px; border-radius: 4px; }
+
+.nav-btn {
+  padding: 8px 16px; border: none; border-radius: 18px;
+  background: rgba(255,255,255,0.25); color: #fff; font-size: 14px;
+  font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.nav-btn:hover { background: rgba(255,255,255,0.4); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn.auto { background: rgba(255,255,255,0.35); }
+.nav-btn.auto.playing { background: rgba(255,200,0,0.5); }
+
+/* 页码 */
+.page-num {
+  position: fixed; top: 16px; right: 16px; z-index: 100;
+  font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 600;
+}
+
+/* 语音状态 */
+.speak-indicator {
+  position: fixed; top: 16px; left: 16px; z-index: 100;
+  font-size: 20px; opacity: 0; transition: opacity 0.3s;
+}
+.speak-indicator.active { opacity: 1; animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+@media (max-width: 380px) {
+  .char-hero { font-size: 60px; }
+  .formula { font-size: 17px; padding: 10px 14px; }
+  .example-item { font-size: 15px; }
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../index.html">首页</a><a href="../grade1-down/index.html">一年级</a><a href="../grade2-up/index.html">二年级</a><a href="../explore/science/index.html">科普</a><a href="../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="speak-indicator" id="speakIndicator">🔊</div>
+<div class="page-num" id="pageNum">1/8</div>
+
+<div class="slide-container" id="slideContainer">
+
+  <!-- Slide 0: 封面 -->
+  <div class="slide slide-0" data-speech="的、地、得，用法讲解。这三个字都读de，但用法完全不同。左滑开始学习，或者点击自动播放，我来为你一页一页讲解。">
+    <div class="big-chars">的 地 得</div>
+    <div class="subtitle">三个"de"，用法大不同</div>
+    <p style="font-size:15px; opacity:0.8; max-width:280px; line-height:1.6;">它们读音一样，但位置不同、搭配不同、意思不同</p>
+    <div class="hint">← 左滑翻页 · 点下方▶️自动讲解 →</div>
+  </div>
+
+  <!-- Slide 1: 的 -->
+  <div class="slide slide-1" data-speech="第一个：白勺的。的，左边一个白，右边一个勺。它用在名词前面。公式是：形容词，加，的，加，名词。比如：美丽的花朵。红色的书包。妈妈的手。记住口诀：的，修饰名词用白勺。名词前面，想一想，是谁的？什么样的？答案就用白勺的。">
+    <div class="char-hero">的</div>
+    <div class="char-label">白勺「的」· de</div>
+    <div class="formula">形容词/名词 + <span class="highlight">的</span> + 名词</div>
+    <div class="examples">
+      <div class="example-item">🌸 美丽<span class="de-mark">的</span>花朵<div class="note">→ 什么样的花朵？美丽的</div></div>
+      <div class="example-item">🎒 红色<span class="de-mark">的</span>书包<div class="note">→ 什么颜色的书包？红色的</div></div>
+      <div class="example-item">🤲 妈妈<span class="de-mark">的</span>手<div class="note">→ 谁的手？妈妈的</div></div>
+    </div>
+  </div>
+
+  <!-- Slide 2: 地 -->
+  <div class="slide slide-2" data-speech="第二个：土也地。地，左边一个土，右边一个也。它用在动词前面。公式是：副词或形容词，加，地，加，动词。比如：快乐地跳舞。认真地写字。大声地朗读。记住口诀：地，修饰动词用土也。动词前面，想一想，怎样做的？答案就用土也地。">
+    <div class="char-hero">地</div>
+    <div class="char-label">土也「地」· de</div>
+    <div class="formula">副词/形容词 + <span class="highlight">地</span> + 动词</div>
+    <div class="examples">
+      <div class="example-item">💃 快乐<span class="de-mark">地</span>跳舞<div class="note">→ 怎样跳舞？快乐地</div></div>
+      <div class="example-item">✍️ 认真<span class="de-mark">地</span>写字<div class="note">→ 怎样写字？认真地</div></div>
+      <div class="example-item">📢 大声<span class="de-mark">地</span>朗读<div class="note">→ 怎样朗读？大声地</div></div>
+    </div>
+  </div>
+
+  <!-- Slide 3: 得 -->
+  <div class="slide slide-3" data-speech="第三个：双人得。得，左边双人旁，右边一个寸。它用在动词后面，表示结果或程度。公式是：动词，加，得，加，补语。比如：跑得快。写得好。笑得肚子疼。记住口诀：得，补充动词用双人。动词后面，想一想，做得怎么样？答案就用双人得。">
+    <div class="char-hero">得</div>
+    <div class="char-label">双人「得」· de</div>
+    <div class="formula">动词 + <span class="highlight">得</span> + 补语（结果/程度）</div>
+    <div class="examples">
+      <div class="example-item">🏃 跑<span class="de-mark">得</span>快<div class="note">→ 跑的结果怎样？快</div></div>
+      <div class="example-item">✅ 写<span class="de-mark">得</span>好<div class="note">→ 写的程度怎样？好</div></div>
+      <div class="example-item">😂 笑<span class="de-mark">得</span>肚子疼<div class="note">→ 笑到什么程度？肚子疼</div></div>
+    </div>
+  </div>
+
+  <!-- Slide 4: 口诀总结 -->
+  <div class="slide slide-4" data-speech="记住这个口诀！名词前面白勺的。动词前面土也地。动词后面双人得。三句话搞定！再简单一点：的，修饰东西。地，修饰动作。得，补充结果。">
+    <div style="font-size:36px; margin-bottom:16px;">📝</div>
+    <div style="font-size:22px; font-weight:800; margin-bottom:20px;">记住口诀</div>
+    <div class="mnemo">
+      <div class="mnemo-line">🌸 名词前面 → 白勺<b>的</b></div>
+      <div class="mnemo-line">💃 动词前面 → 土也<b>地</b></div>
+      <div class="mnemo-line">🏃 动词后面 → 双人<b>得</b></div>
+    </div>
+    <div style="font-size:15px; opacity:0.85; margin-top:16px; max-width:280px; line-height:1.8;">
+      简单说：<br>
+      <b>的</b> → 修饰<b>东西</b>（名词）<br>
+      <b>地</b> → 修饰<b>动作</b>（动词）<br>
+      <b>得</b> → 补充<b>结果</b>（程度）
+    </div>
+  </div>
+
+  <!-- Slide 5: 对比 -->
+  <div class="slide slide-5" data-speech="来看对比练习。同一个句子，用不同的de，意思完全不一样。第一组：高兴的孩子，说的是一个高兴的孩子，修饰名词。高兴地跳，说的是高兴地跳起来，修饰动词。跳得高，说的是跳的结果是高，补充结果。">
+    <div style="font-size:22px; font-weight:800; margin-bottom:16px;">🔍 对比一下</div>
+    <div class="examples" style="max-width:320px;">
+      <div class="example-item">
+        😊 高兴<span class="de-mark">的</span>孩子
+        <div class="note">→ 什么样的孩子？（修饰名词）</div>
+      </div>
+      <div class="example-item">
+        😊 高兴<span class="de-mark">地</span>跳
+        <div class="note">→ 怎样跳？（修饰动词）</div>
+      </div>
+      <div class="example-item">
+        😊 跳<span class="de-mark">得</span>高
+        <div class="note">→ 跳的结果？（补充程度）</div>
+      </div>
+    </div>
+    <div style="margin-top:16px; font-size:15px; opacity:0.8;">看！同样和"高兴/跳"相关<br>三个de各管各的位置 👆</div>
+  </div>
+
+  <!-- Slide 6: 填空练习 -->
+  <div class="slide slide-6" data-speech="动动脑，填一填！第一题：明亮，什么de，教室。教室是名词，所以用白勺的。第二题：轻轻，什么de，走。走是动词，前面修饰怎样走，所以用土也地。第三题：唱，什么de，真好听。唱是动词，后面补充结果好听，所以用双人得。第四题：蓝蓝，什么de，天空。天空是名词，所以用白勺的。你答对了几个？">
+    <div style="font-size:22px; font-weight:800; margin-bottom:16px;">🧠 动动脑，填一填</div>
+    <div class="quiz-item" onclick="this.classList.add('revealed')">
+      明亮（<span class="blank"></span>）教室
+      <div class="answer">✅ 白勺「的」→ 修饰名词"教室"</div>
+    </div>
+    <div class="quiz-item" onclick="this.classList.add('revealed')">
+      轻轻（<span class="blank"></span>）走
+      <div class="answer">✅ 土也「地」→ 修饰动词"走"</div>
+    </div>
+    <div class="quiz-item" onclick="this.classList.add('revealed')">
+      唱（<span class="blank"></span>）真好听
+      <div class="answer">✅ 双人「得」→ 补充动词"唱"的结果</div>
+    </div>
+    <div class="quiz-item" onclick="this.classList.add('revealed')">
+      蓝蓝（<span class="blank"></span>）天空
+      <div class="answer">✅ 白勺「的」→ 修饰名词"天空"</div>
+    </div>
+    <div style="margin-top:12px; font-size:13px; opacity:0.7;">点击每题查看答案 👆</div>
+  </div>
+
+  <!-- Slide 7: 总结 -->
+  <div class="slide slide-7" data-speech="恭喜你！的、地、得的用法已经学完了！记住最简单的判断方法：看后面跟的是什么词。后面是名词，用白勺的。后面是动词，用土也地。前面是动词，后面是程度补语，用双人得。多读多写，很快就能熟练运用了！">
+    <div style="font-size:48px; margin-bottom:16px;">🎉</div>
+    <div style="font-size:24px; font-weight:800; margin-bottom:20px;">学完啦！</div>
+    <div style="font-size:16px; line-height:2; max-width:280px; text-align:left;">
+      <div>🔑 <b>最简判断法：</b></div>
+      <div style="margin-top:8px; background:rgba(255,255,255,0.15); padding:12px 16px; border-radius:12px;">
+        后面是<b>名词</b> → 白勺「的」<br>
+        后面是<b>动词</b> → 土也「地」<br>
+        前面是<b>动词</b> → 双人「得」
+      </div>
+    </div>
+    <div style="margin-top:24px; font-size:15px; opacity:0.8;">多读多写，熟能生巧 💪</div>
+  </div>
+
+</div>
+
+<!-- 底部导航 -->
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="prevSlide()">‹ 上页</button>
+  <div class="nav-dots" id="navDots"></div>
+  <button class="nav-btn auto" id="autoBtn" onclick="toggleAuto()">▶️ 自动</button>
+  <button class="nav-btn" id="nextBtn" onclick="nextSlide()">下页 ›</button>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+let currentSlide = 0;
+let isAutoPlaying = false;
+let selectedVoice = null;
+let currentUtterance = null;
+
+// 初始化导航点
+function initDots() {
+  const dotsContainer = document.getElementById('navDots');
+  for (let i = 0; i < totalSlides; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goToSlide(i);
+    dotsContainer.appendChild(dot);
+  }
+}
+
+function updateUI() {
+  // 位移
+  slides.forEach((slide, i) => {
+    slide.style.transform = `translateX(${(i - currentSlide) * 100}%)`;
+  });
+  // 导航点
+  document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === currentSlide);
+  });
+  // 页码
+  document.getElementById('pageNum').textContent = `${currentSlide + 1}/${totalSlides}`;
+  // 按钮
+  document.getElementById('prevBtn').disabled = currentSlide === 0;
+  document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+}
+
+function goToSlide(idx) {
+  if (idx < 0 || idx >= totalSlides) return;
+  currentSlide = idx;
+  updateUI();
+  if (isAutoPlaying) speakCurrent();
+}
+
+function nextSlide() { goToSlide(currentSlide + 1); }
+function prevSlide() { goToSlide(currentSlide - 1); }
+
+// 触摸滑动
+let touchStartX = 0, touchEndX = 0;
+const container = document.getElementById('slideContainer');
+container.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+container.addEventListener('touchend', e => {
+  touchEndX = e.changedTouches[0].screenX;
+  const diff = touchStartX - touchEndX;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) nextSlide();
+    else prevSlide();
+  }
+});
+
+// TTS
+function loadVoices() {
+  const voices = speechSynthesis.getVoices();
+  const cnVoices = voices.filter(v => v.lang.startsWith('zh'));
+  // 优先 Microsoft Xiaoxiao Online Natural
+  const xiaoxiao = cnVoices.find(v => v.name.includes('Xiaoxiao') && v.name.includes('Online'));
+  const online = cnVoices.find(v => v.name.includes('Online') && v.name.includes('Natural'));
+  selectedVoice = xiaoxiao || online || cnVoices[0] || null;
+}
+
+function speak(text, onEnd) {
+  speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = 0.85;
+  utter.pitch = 1.05;
+  if (selectedVoice) utter.voice = selectedVoice;
+  utter.onend = () => {
+    document.getElementById('speakIndicator').classList.remove('active');
+    if (onEnd) onEnd();
+  };
+  utter.onerror = () => {
+    document.getElementById('speakIndicator').classList.remove('active');
+    if (onEnd) onEnd();
+  };
+  document.getElementById('speakIndicator').classList.add('active');
+  currentUtterance = utter;
+  speechSynthesis.speak(utter);
+}
+
+function speakCurrent() {
+  const slide = slides[currentSlide];
+  const text = slide.dataset.speech;
+  if (!text) return;
+  speak(text, () => {
+    if (isAutoPlaying && currentSlide < totalSlides - 1) {
+      setTimeout(() => {
+        nextSlide();
+        speakCurrent();
+      }, 800);
+    } else if (isAutoPlaying && currentSlide === totalSlides - 1) {
+      stopAuto();
+    }
+  });
+}
+
+function toggleAuto() {
+  if (isAutoPlaying) {
+    stopAuto();
+  } else {
+    startAuto();
+  }
+}
+
+function startAuto() {
+  isAutoPlaying = true;
+  const btn = document.getElementById('autoBtn');
+  btn.textContent = '⏸ 暂停';
+  btn.classList.add('playing');
+  speakCurrent();
+}
+
+function stopAuto() {
+  isAutoPlaying = false;
+  speechSynthesis.cancel();
+  const btn = document.getElementById('autoBtn');
+  btn.textContent = '▶️ 自动';
+  btn.classList.remove('playing');
+  document.getElementById('speakIndicator').classList.remove('active');
+}
+
+// 初始化
+speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+initDots();
+updateUI();
+
+// 页面可见性 - 切走暂停
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && isAutoPlaying) stopAuto();
+});
+</script>
+
+</body>
+</html>

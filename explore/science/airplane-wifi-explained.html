@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>飞机 Wi-Fi 工作原理</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(180deg, #0a0e27 0%, #1a1a4e 30%, #2d1b69 60%, #1a1a4e 100%);
+  min-height: 100vh;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 1.8em;
+  margin: 30px 0 10px;
+  background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  text-align: center;
+  color: #8892b0;
+  margin-bottom: 30px;
+  font-size: 1.05em;
+}
+
+/* ===== WeChat Simulation ===== */
+.wechat-sim {
+  margin: 30px auto;
+  max-width: 360px;
+  background: #ededed;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  border: 3px solid #333;
+}
+
+.wechat-header {
+  background: #2e2e2e;
+  color: #fff;
+  padding: 12px 16px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  position: relative;
+}
+
+.wechat-header::before {
+  content: '✈️ 飞行模式 · Wi-Fi';
+  position: absolute;
+  left: 12px;
+  font-size: 10px;
+  color: #aaa;
+  top: 14px;
+}
+
+.wechat-chat {
+  padding: 16px;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.msg-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s ease;
+}
+
+.msg-row.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.msg-row.sent {
+  flex-direction: row-reverse;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.avatar.me { background: #95ec69; }
+.avatar.friend { background: #f5a623; }
+
+.bubble {
+  max-width: 220px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #000;
+  line-height: 1.5;
+  position: relative;
+}
+
+.msg-row.sent .bubble {
+  background: #95ec69;
+  border-top-right-radius: 2px;
+}
+
+.msg-row.received .bubble {
+  background: #fff;
+  border-top-left-radius: 2px;
+}
+
+.bubble-img {
+  width: 160px;
+  height: 120px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #1a0a3e 0%, #2d1b69 30%, #4a2c8a 50%, #f4a460 80%, #ff6b35 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.bubble-img::after {
+  content: '☁️';
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  font-size: 20px;
+  opacity: 0.8;
+}
+
+.bubble-img::before {
+  content: '🌅';
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 24px;
+}
+
+.sending-indicator {
+  position: absolute;
+  top: 50%;
+  left: -24px;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+}
+
+.sending-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ddd;
+  border-top-color: #09b83e;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.wechat-input {
+  background: #f7f7f7;
+  border-top: 1px solid #ddd;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wechat-input .input-box {
+  flex: 1;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 12px;
+  color: #999;
+}
+
+.camera-btn {
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.camera-btn:hover { transform: scale(1.2); }
+
+/* ===== START BUTTON ===== */
+.start-btn {
+  display: block;
+  margin: 20px auto;
+  padding: 14px 36px;
+  background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+  border: none;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(0,212,255,0.3);
+}
+
+.start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px rgba(0,212,255,0.5);
+}
+
+.start-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ===== FULL LINK ANIMATION ===== */
+.link-section {
+  margin: 40px 0;
+}
+
+.link-section h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #ccd6f6;
+  font-size: 1.3em;
+}
+
+.link-subtitle {
+  text-align: center;
+  color: #8892b0;
+  margin-bottom: 24px;
+  font-size: 0.9em;
+}
+
+.link-flow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px 10px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+  min-height: 160px;
+}
+
+.link-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 10;
+  min-width: 60px;
+}
+
+.link-node .icon {
+  font-size: 28px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.5s;
+}
+
+.link-node .icon.active {
+  background: rgba(0,212,255,0.15);
+  border-color: #00d4ff;
+  box-shadow: 0 0 20px rgba(0,212,255,0.3);
+}
+
+.link-node .label {
+  font-size: 10px;
+  color: #8892b0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Connection lines between nodes */
+.link-conn {
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,0.1);
+  position: relative;
+  margin: 0 -5px;
+  margin-bottom: 20px;
+}
+
+.link-conn .progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%;
+  border-radius: 3px;
+  transition: width 0.8s ease;
+}
+
+.link-conn:nth-of-type(2) .progress { background: linear-gradient(90deg, #00d4ff, #0066ff); }
+.link-conn:nth-of-type(4) .progress { background: linear-gradient(90deg, #0066ff, #7b2ff7); }
+.link-conn:nth-of-type(6) .progress { background: linear-gradient(90deg, #7b2ff7, #ff2f97); }
+.link-conn:nth-of-type(8) .progress { background: linear-gradient(90deg, #ff2f97, #ff6b2f); }
+.link-conn:nth-of-type(10) .progress { background: linear-gradient(90deg, #ff6b2f, #00ff88); }
+.link-conn:nth-of-type(12) .progress { background: linear-gradient(90deg, #00ff88, #00d4ff); }
+
+/* Packet visualization */
+.packet-section {
+  margin: 40px 0;
+  padding: 24px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.packet-section h3 {
+  margin-bottom: 16px;
+  color: #ccd6f6;
+  font-size: 1.1em;
+  text-align: center;
+}
+
+.packet-vis {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.packet-stage {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(255,255,255,0.02);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.05);
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.5s ease;
+}
+
+.packet-stage.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.packet-stage .stage-icon {
+  font-size: 24px;
+  min-width: 36px;
+  text-align: center;
+}
+
+.packet-stage .stage-info h4 {
+  font-size: 0.9em;
+  color: #e0e0e0;
+  margin-bottom: 4px;
+}
+
+.packet-stage .stage-info p {
+  font-size: 0.8em;
+  color: #8892b0;
+  line-height: 1.4;
+}
+
+/* Packet blocks animation */
+.packet-blocks {
+  display: flex;
+  gap: 3px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.pkt {
+  width: 20px;
+  height: 14px;
+  border-radius: 3px;
+  font-size: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.7);
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.3s ease;
+}
+
+.pkt.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.pkt.header { background: #ff6b2f; }
+.pkt.data { background: #00d4ff; }
+.pkt.tail { background: #7b2ff7; }
+
+/* Timeline */
+.timeline {
+  margin: 40px 0;
+}
+
+.timeline h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #ccd6f6;
+}
+
+.tl-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-left: 2px solid rgba(255,255,255,0.1);
+  margin-left: 20px;
+  padding-left: 20px;
+  position: relative;
+  opacity: 0;
+  transition: all 0.5s;
+}
+
+.tl-item.show {
+  opacity: 1;
+}
+
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -7px;
+  top: 20px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #333;
+  border: 2px solid #00d4ff;
+  transition: all 0.3s;
+}
+
+.tl-item.active::before {
+  background: #00d4ff;
+  box-shadow: 0 0 10px #00d4ff;
+}
+
+.tl-time {
+  min-width: 60px;
+  font-size: 12px;
+  color: #00d4ff;
+  font-weight: 600;
+}
+
+.tl-content h4 {
+  font-size: 0.95em;
+  color: #e0e0e0;
+  margin-bottom: 4px;
+}
+
+.tl-content p {
+  font-size: 0.85em;
+  color: #8892b0;
+  line-height: 1.5;
+}
+
+/* Scene (main visual) */
+.scene {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background: linear-gradient(180deg, #000015 0%, #000030 35%, #001050 55%, #002060 70%, #003080 82%, #2d8a4e 92%, #1a5c32 100%);
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 30px 0;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.stars { position: absolute; width: 100%; height: 40%; }
+.star {
+  position: absolute;
+  width: 2px; height: 2px;
+  background: #fff; border-radius: 50%;
+  animation: twinkle 2s infinite alternate;
+}
+@keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 1; } }
+
+.layer-label {
+  position: absolute;
+  font-size: 10px;
+  color: rgba(255,255,255,0.35);
+  z-index: 2;
+}
+
+/* Satellite - top center */
+.sat {
+  position: absolute; top: 35px; left: 50%; transform: translateX(-50%);
+  font-size: 42px; animation: satFloat 4s ease-in-out infinite; z-index: 10;
+}
+@keyframes satFloat { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-6px); } }
+
+.sat-tag {
+  position: absolute; top: 80px; left: 50%; transform: translateX(-50%);
+  font-size: 11px; color: #ccc; text-align: center; white-space: nowrap;
+  background: rgba(0,0,0,0.6); padding: 3px 8px; border-radius: 6px; z-index: 11;
+}
+.sat-tag span { font-size: 9px; color: #888; }
+
+/* Airplane - middle left */
+.plane {
+  position: absolute; top: 220px; left: 22%; font-size: 48px; z-index: 10;
+  animation: planeF 3s ease-in-out infinite;
+}
+@keyframes planeF { 0%,100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-4px) rotate(0deg); } }
+
+.plane-antenna {
+  position: absolute; top: 208px; left: 28%; font-size: 16px; z-index: 11;
+  animation: planeF 3s ease-in-out infinite;
+}
+
+.plane-tag-left {
+  position: absolute; top: 270px; left: 12%;
+  font-size: 11px; color: #ccc; text-align: center;
+  background: rgba(0,0,0,0.6); padding: 3px 8px; border-radius: 6px; z-index: 11;
+}
+.plane-tag-left span { font-size: 9px; color: #888; }
+
+.plane-tag-right {
+  position: absolute; top: 195px; left: 30%;
+  font-size: 11px; color: #ccc; text-align: center;
+  background: rgba(0,0,0,0.6); padding: 3px 8px; border-radius: 6px; z-index: 11;
+}
+.plane-tag-right span { font-size: 9px; color: #888; }
+
+/* Ground elements - bottom, left to right */
+.gs {
+  position: absolute; bottom: 55px; left: 55%; font-size: 34px; z-index: 10;
+}
+.gs-tag {
+  position: absolute; bottom: 25px; left: 53%;
+  font-size: 10px; color: #ccc; text-align: center;
+  background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 6px; z-index: 11;
+}
+.gs-tag span { font-size: 9px; color: #888; }
+
+.inet {
+  position: absolute; bottom: 55px; left: 73%; font-size: 30px; z-index: 10;
+}
+.inet-tag {
+  position: absolute; bottom: 25px; left: 70%;
+  font-size: 10px; color: #ccc; text-align: center;
+  background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 6px; z-index: 11;
+}
+.inet-tag span { font-size: 9px; color: #888; }
+
+.friend-phone {
+  position: absolute; bottom: 55px; left: 88%; font-size: 28px; z-index: 10;
+}
+.friend-tag {
+  position: absolute; bottom: 25px; left: 85%;
+  font-size: 10px; color: #ccc; text-align: center;
+  background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 6px; z-index: 11;
+}
+.friend-tag span { font-size: 9px; color: #888; }
+
+/* Animated beams */
+.beam-up {
+  position: absolute; top: 75px; left: 33%; width: 3px; height: 155px;
+  background: linear-gradient(180deg, rgba(0,212,255,0.9), rgba(0,212,255,0.1));
+  transform: rotate(8deg); transform-origin: bottom;
+  animation: beamP 2s ease-in-out infinite;
+  z-index: 5;
+}
+.beam-down {
+  position: absolute; top: 75px; left: 58%; width: 3px; height: 310px;
+  background: linear-gradient(180deg, rgba(123,47,247,0.8), rgba(123,47,247,0.05));
+  transform: rotate(-5deg); transform-origin: top;
+  animation: beamP 2s ease-in-out infinite 0.5s;
+  z-index: 5;
+}
+@keyframes beamP { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+.ground-fiber {
+  position: absolute; bottom: 72px; left: 60%; width: 28%; height: 2px;
+  background: linear-gradient(90deg, rgba(0,255,136,0.7), rgba(0,255,136,0.2));
+  animation: beamP 1.5s ease-in-out infinite 0.3s;
+  z-index: 5;
+}
+
+/* Floating packets */
+.fly-pkt {
+  position: absolute; width: 7px; height: 7px;
+  border-radius: 50%; z-index: 15;
+  box-shadow: 0 0 10px currentColor;
+}
+.fly-pkt.up { color: #00d4ff; background: #00d4ff; animation: flyUp 2.8s linear infinite; }
+.fly-pkt.down { color: #7b2ff7; background: #7b2ff7; animation: flyDown 2.8s linear infinite 1.4s; }
+.fly-pkt.ground-pkt { color: #00ff88; background: #00ff88; animation: flyGround 2s linear infinite; }
+
+@keyframes flyUp {
+  0% { top: 240px; left: 30%; opacity: 1; }
+  40% { top: 150px; left: 40%; }
+  100% { top: 50px; left: 50%; opacity: 0; }
+}
+@keyframes flyDown {
+  0% { top: 55px; left: 52%; opacity: 0; }
+  30% { opacity: 1; }
+  100% { top: 380px; left: 58%; opacity: 0.3; }
+}
+@keyframes flyGround {
+  0% { bottom: 70px; left: 60%; opacity: 1; }
+  100% { bottom: 70px; left: 88%; opacity: 0; }
+}
+
+/* SVG flow arrows */
+.flow-arrows {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  z-index: 4; pointer-events: none;
+}
+
+/* Audio narration */
+.audio-section {
+  margin: 30px 0;
+  text-align: center;
+}
+
+.audio-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #00d4ff22, #7b2ff722);
+  border: 1px solid rgba(0,212,255,0.3);
+  border-radius: 30px;
+  color: #00d4ff;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.audio-btn:hover {
+  background: linear-gradient(135deg, #00d4ff33, #7b2ff733);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,212,255,0.2);
+}
+
+.audio-btn.playing {
+  background: linear-gradient(135deg, #ff2f9722, #ff6b2f22);
+  border-color: rgba(255,47,151,0.4);
+  color: #ff2f97;
+}
+
+.audio-btn .icon { font-size: 20px; }
+
+.audio-progress {
+  margin-top: 12px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.audio-progress.show { display: flex; }
+
+.audio-progress-bar {
+  width: 260px;
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.audio-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #00d4ff, #7b2ff7);
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+
+.audio-step-text {
+  font-size: 12px;
+  color: #8892b0;
+  min-height: 18px;
+}
+
+/* Speed control */
+.speed-control {
+  margin-top: 8px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.speed-control.show { display: flex; }
+
+.speed-btn {
+  padding: 3px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: transparent;
+  color: #8892b0;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.speed-btn.active {
+  background: rgba(0,212,255,0.2);
+  border-color: #00d4ff;
+  color: #00d4ff;
+}
+
+/* Footer */
+.footer { text-align: center; padding: 30px 0; color: #4a5568; font-size: 0.8em; }
+
+@media (max-width: 600px) {
+  h1 { font-size: 1.4em; }
+  .link-flow { flex-wrap: wrap; justify-content: center; gap: 8px; padding: 20px; }
+  .link-conn { display: none; }
+  .wechat-sim { max-width: 100%; }
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="container">
+  <h1>✈️ 飞机 Wi-Fi 工作原理</h1>
+  <p class="subtitle">一张天空照片从万米高空到朋友手机，信号飞了 72,000 公里</p>
+
+  <!-- Scene (main animation - moved to top) -->
+  <div class="scene" id="mainScene">
+    <div class="stars" id="stars2"></div>
+    <!-- Layer labels -->
+    <div class="layer-label" style="top:8px;right:10px;">🌌 太空 · 36,000km</div>
+    <div class="layer-label" style="top:195px;right:10px;">☁️ 万米高空</div>
+    <div class="layer-label" style="bottom:55px;right:10px;">🏞️ 地面</div>
+    <!-- Satellite -->
+    <div class="sat">🛰️</div>
+    <div class="sat-tag">③ 通信卫星<br><span>转发信号</span></div>
+    <!-- Airplane -->
+    <div class="plane">✈️</div>
+    <div class="plane-antenna">📡</div>
+    <div class="plane-tag-left">① 📱 你的手机<br><span>拍照 → 连Wi-Fi</span></div>
+    <div class="plane-tag-right">② 机顶天线<br><span>上行发射</span></div>
+    <!-- Ground -->
+    <div class="gs">📡</div>
+    <div class="gs-tag">④ 地面站<br><span>接收卫星信号</span></div>
+    <div class="inet">🌐</div>
+    <div class="inet-tag">⑤ 微信服务器<br><span>重组图片</span></div>
+    <div class="friend-phone">📱</div>
+    <div class="friend-tag">⑥ 朋友手机<br><span>收到照片！</span></div>
+    <!-- Beams -->
+    <div class="beam-up"></div>
+    <div class="beam-down"></div>
+    <div class="ground-fiber"></div>
+    <!-- Packets -->
+    <div class="fly-pkt up"></div>
+    <div class="fly-pkt up" style="animation-delay:1s"></div>
+    <div class="fly-pkt up" style="animation-delay:2s"></div>
+    <div class="fly-pkt down" style="animation-delay:0.5s"></div>
+    <div class="fly-pkt down" style="animation-delay:1.8s"></div>
+    <div class="fly-pkt ground-pkt"></div>
+    <div class="fly-pkt ground-pkt" style="animation-delay:0.6s"></div>
+    <!-- Flow arrows -->
+    <svg class="flow-arrows" viewBox="0 0 900 500" preserveAspectRatio="none">
+      <defs>
+        <marker id="arrowUp" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,6 L3,0 L6,6" fill="#00d4ff" />
+        </marker>
+        <marker id="arrowDown" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L3,6 L6,0" fill="#7b2ff7" />
+        </marker>
+        <marker id="arrowRight" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6" fill="#00ff88" />
+        </marker>
+      </defs>
+      <!-- Up arrow: plane to satellite -->
+      <path d="M 300 260 Q 350 150 450 75" stroke="#00d4ff" stroke-width="1.5" fill="none" stroke-dasharray="6,4" marker-end="url(#arrowUp)" opacity="0.6"/>
+      <!-- Down arrow: satellite to ground -->
+      <path d="M 500 75 Q 580 200 620 390" stroke="#7b2ff7" stroke-width="1.5" fill="none" stroke-dasharray="6,4" marker-end="url(#arrowDown)" opacity="0.6"/>
+      <!-- Ground: station to server to friend -->
+      <path d="M 650 410 L 720 410" stroke="#00ff88" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arrowRight)" opacity="0.6"/>
+      <path d="M 760 410 L 830 410" stroke="#00ff88" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arrowRight)" opacity="0.6"/>
+    </svg>
+  </div>
+
+  <!-- Audio Narration -->
+  <div class="audio-section">
+    <button class="audio-btn" id="audioBtn" onclick="toggleNarration()">
+      <span class="icon">🔊</span>
+      <span id="audioBtnText">语音讲解</span>
+    </button>
+    <div class="audio-progress" id="audioProgress">
+      <div class="audio-progress-bar"><div class="audio-progress-fill" id="audioFill"></div></div>
+      <div class="audio-step-text" id="audioStepText"></div>
+    </div>
+    <div class="speed-control" id="speedControl">
+      <span style="font-size:11px;color:#666;">语速：</span>
+      <button class="speed-btn" onclick="setRate(0.8)">慢</button>
+      <button class="speed-btn active" onclick="setRate(1)">正常</button>
+      <button class="speed-btn" onclick="setRate(1.3)">快</button>
+    </div>
+  </div>
+
+  <!-- WeChat Simulation -->
+  <div class="wechat-sim">
+    <div class="wechat-header">小明</div>
+    <div class="wechat-chat" id="chatArea">
+      <div class="msg-row received" id="msg1">
+        <div class="avatar friend">🧑</div>
+        <div class="bubble">在干嘛呀？</div>
+      </div>
+      <div class="msg-row sent" id="msg2">
+        <div class="avatar me">😊</div>
+        <div class="bubble">在飞机上！窗外超美 ✈️</div>
+      </div>
+      <div class="msg-row sent" id="msg3">
+        <div class="avatar me">😊</div>
+        <div class="bubble" style="padding:4px;">
+          <div class="bubble-img"></div>
+          <div class="sending-indicator" id="sendingDot"><div class="sending-spinner"></div></div>
+        </div>
+      </div>
+      <div class="msg-row received" id="msg4">
+        <div class="avatar friend">🧑</div>
+        <div class="bubble">哇！好漂亮！你们有Wi-Fi？😮</div>
+      </div>
+    </div>
+    <div class="wechat-input">
+      <div class="input-box">发消息...</div>
+      <div class="camera-btn" id="cameraBtn">📷</div>
+    </div>
+  </div>
+
+  <button class="start-btn" id="startBtn" onclick="startDemo()">▶️ 点击模拟发送过程</button>
+
+  <!-- Full Link Flow -->
+  <div class="link-section">
+    <h2>📡 完整信号链路</h2>
+    <p class="link-subtitle">你的照片走过的完整路径（往返 ~72,000km）</p>
+    <div class="link-flow" id="linkFlow">
+      <div class="link-node"><div class="icon" id="n1">📱</div><div class="label">你的手机</div></div>
+      <div class="link-conn"><div class="progress" id="p1"></div></div>
+      <div class="link-node"><div class="icon" id="n2">📶</div><div class="label">机舱AP</div></div>
+      <div class="link-conn"><div class="progress" id="p2"></div></div>
+      <div class="link-node"><div class="icon" id="n3">📡</div><div class="label">机顶天线</div></div>
+      <div class="link-conn"><div class="progress" id="p3"></div></div>
+      <div class="link-node"><div class="icon" id="n4">🛰️</div><div class="label">通信卫星</div></div>
+      <div class="link-conn"><div class="progress" id="p4"></div></div>
+      <div class="link-node"><div class="icon" id="n5">📡</div><div class="label">地面站</div></div>
+      <div class="link-conn"><div class="progress" id="p5"></div></div>
+      <div class="link-node"><div class="icon" id="n6">🌐</div><div class="label">微信服务器</div></div>
+      <div class="link-conn"><div class="progress" id="p6"></div></div>
+      <div class="link-node"><div class="icon" id="n7">📱</div><div class="label">朋友手机</div></div>
+    </div>
+  </div>
+
+  <!-- Packet Split & Merge -->
+  <div class="packet-section">
+    <h3>📦 分包传输 → 重组还原</h3>
+    <p style="text-align:center;color:#8892b0;font-size:0.85em;margin-bottom:16px;">
+      一张 2MB 照片不能一次性塞进卫星链路，必须切成小包逐个发送
+    </p>
+    <div class="packet-vis">
+      <div class="packet-stage" id="ps1">
+        <div class="stage-icon">📸</div>
+        <div class="stage-info">
+          <h4>1. 原始图片（~2MB）</h4>
+          <p>拍摄的天空照片，JPEG 压缩后约 2MB</p>
+          <div class="packet-blocks" id="origBlock">
+            <div style="width:100%;height:20px;background:linear-gradient(90deg,#1a0a3e,#4a2c8a,#f4a460,#ff6b35);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;">📷 完整图片 2,048 KB</div>
+          </div>
+        </div>
+      </div>
+      <div class="packet-stage" id="ps2">
+        <div class="stage-icon">✂️</div>
+        <div class="stage-info">
+          <h4>2. TCP 分段（~1,460 字节/段）</h4>
+          <p>TCP 按 MSS 切割，2MB ≈ 1,400+ 个数据段，每段加上包头</p>
+          <div class="packet-blocks" id="splitBlocks"></div>
+        </div>
+      </div>
+      <div class="packet-stage" id="ps3">
+        <div class="stage-icon">🚀</div>
+        <div class="stage-info">
+          <h4>3. 逐包通过卫星链路发送</h4>
+          <p>每个包独立经过：Wi-Fi → 机顶天线 → 卫星 → 地面站，可能乱序到达</p>
+          <div class="packet-blocks" id="flyBlocks"></div>
+        </div>
+      </div>
+      <div class="packet-stage" id="ps4">
+        <div class="stage-icon">🧩</div>
+        <div class="stage-info">
+          <h4>4. 接收端重组还原</h4>
+          <p>微信服务器按序号重组所有分段，校验完整性，还原出原始照片</p>
+          <div class="packet-blocks" id="mergeBlock">
+            <div style="width:100%;height:20px;background:linear-gradient(90deg,#1a0a3e,#4a2c8a,#f4a460,#ff6b35);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;opacity:0;transition:opacity 0.5s;" id="mergedImg">✅ 图片完整还原</div>
+          </div>
+        </div>
+      </div>
+      <div class="packet-stage" id="ps5">
+        <div class="stage-icon">📨</div>
+        <div class="stage-info">
+          <h4>5. 推送给朋友</h4>
+          <p>微信服务器通过朋友的 4G/5G/Wi-Fi 推送图片，朋友看到「图片消息」</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="timeline">
+    <h2>⏱ 时间线：从按下快门到朋友看到</h2>
+    <div class="tl-item" id="tl1">
+      <div class="tl-time">0 ms</div>
+      <div class="tl-content">
+        <h4>📸 按下快门</h4>
+        <p>手机拍摄照片，JPEG 编码压缩</p>
+      </div>
+    </div>
+    <div class="tl-item" id="tl2">
+      <div class="tl-time">50 ms</div>
+      <div class="tl-content">
+        <h4>📶 连接机舱 Wi-Fi AP</h4>
+        <p>手机通过 Wi-Fi 将数据发到机载路由器（几毫秒）</p>
+      </div>
+    </div>
+    <div class="tl-item" id="tl3">
+      <div class="tl-time">100 ms</div>
+      <div class="tl-content">
+        <h4>📡 机顶天线调制上行</h4>
+        <p>数据包转换为 Ku/Ka 波段射频信号，通过相控阵天线发射向卫星</p>
+      </div>
+    </div>
+    <div class="tl-item" id="tl4">
+      <div class="tl-time">370 ms</div>
+      <div class="tl-content">
+        <h4>🛰️ 信号到达卫星</h4>
+        <p>电磁波以光速飞行 36,000km（~120ms），卫星转发器变频转发</p>
+      </div>
+    </div>
+    <div class="tl-item" id="tl5">
+      <div class="tl-time">490 ms</div>
+      <div class="tl-content">
+        <h4>📡 地面站接收</h4>
+        <p>卫星下行信号被地面站大口径天线接收，解调还原为 IP 数据包</p>
+      </div>
+    </div>
+    <div class="tl-item" id="tl6">
+      <div class="tl-time">520 ms</div>
+      <div class="tl-content">
+        <h4>🌐 进入互联网骨干网</h4>
+        <p>数据通过光纤到达微信腾讯云服务器，开始重组图片</p>
+      </div>
+    </div>
+    <div class="tl-item" id="tl7">
+      <div class="tl-time">2-8 秒</div>
+      <div class="tl-content">
+        <h4>🧩 所有分包传输完成</h4>
+        <p>2MB 照片的 1400+ 个包全部到达并重组（受卫星带宽限制，不是延迟）</p>
+      </div>
+    </div>
+    <div class="tl-item" id="tl8">
+      <div class="tl-time">2-8 秒</div>
+      <div class="tl-content">
+        <h4>📨 朋友收到照片</h4>
+        <p>微信通过 Push 通知推送，朋友手机显示「图片消息」</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">🦎 Coco · 飞机 Wi-Fi + 微信发图全链路动画讲解</div>
+</div>
+
+<script>
+// Stars
+['stars2'].forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  for (let i = 0; i < 50; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100+'%';
+    s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = Math.random()*2+'s';
+    el.appendChild(s);
+  }
+});
+
+// Demo animation
+let running = false;
+
+function startDemo() {
+  if (running) return;
+  running = true;
+  const btn = document.getElementById('startBtn');
+  btn.disabled = true;
+  btn.textContent = '⏳ 传输中...';
+
+  // Reset
+  document.querySelectorAll('.msg-row').forEach(m => m.classList.remove('show'));
+  document.querySelectorAll('.link-node .icon').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('[id^=p]').forEach(p => { if(p.classList.contains('progress')) p.style.width='0%'; });
+  document.querySelectorAll('.packet-stage').forEach(p => p.classList.remove('show'));
+  document.querySelectorAll('.tl-item').forEach(t => { t.classList.remove('show'); t.classList.remove('active'); });
+  document.getElementById('sendingDot').style.display = 'none';
+  document.getElementById('mergedImg').style.opacity = '0';
+
+  const delay = (ms) => new Promise(r => setTimeout(r, ms));
+
+  async function run() {
+    // Chat messages - fast
+    document.getElementById('msg1').classList.add('show');
+    await delay(80);
+    document.getElementById('msg2').classList.add('show');
+    await delay(80);
+    document.getElementById('msg3').classList.add('show');
+    document.getElementById('sendingDot').style.display = 'block';
+
+    // Link flow animation - rapid
+    await delay(100);
+    const nodes = ['n1','n2','n3','n4','n5','n6','n7'];
+    const progresses = document.querySelectorAll('.link-conn .progress');
+    for (let i = 0; i < nodes.length; i++) {
+      document.getElementById(nodes[i]).classList.add('active');
+      if (i > 0 && progresses[i-1]) progresses[i-1].style.width = '100%';
+      await delay(120);
+    }
+
+    // Packet stages - snappy
+    await delay(80);
+    const stages = ['ps1','ps2','ps3','ps4','ps5'];
+    for (let i = 0; i < stages.length; i++) {
+      document.getElementById(stages[i]).classList.add('show');
+      await delay(150);
+      if (i === 1) {
+        const splitEl = document.getElementById('splitBlocks');
+        splitEl.innerHTML = '';
+        const colors = ['header','data','data','data','data','data','data','data','data','data','data','data','tail'];
+        const labels = ['H','#1','#2','#3','#4','...','#700','...','#1398','#1399','#1400','#1401','E'];
+        for (let j = 0; j < colors.length; j++) {
+          const p = document.createElement('div');
+          p.className = 'pkt ' + colors[j];
+          p.textContent = labels[j];
+          splitEl.appendChild(p);
+          p.classList.add('show');
+        }
+      }
+      if (i === 2) {
+        const flyEl = document.getElementById('flyBlocks');
+        flyEl.innerHTML = '';
+        const order = ['#3','#1','#5','#2','#4','#8','#6','#7','...','#1401'];
+        for (let j = 0; j < order.length; j++) {
+          const p = document.createElement('div');
+          p.className = 'pkt data';
+          p.textContent = order[j];
+          p.style.background = j % 3 === 0 ? '#ff6b2f' : '#00d4ff';
+          flyEl.appendChild(p);
+          p.classList.add('show');
+        }
+      }
+      if (i === 3) {
+        await delay(100);
+        document.getElementById('mergedImg').style.opacity = '1';
+      }
+    }
+
+    // Timeline - all at once with stagger
+    await delay(100);
+    const tls = document.querySelectorAll('.tl-item');
+    for (let i = 0; i < tls.length; i++) {
+      tls[i].classList.add('show');
+      tls[i].classList.add('active');
+      await delay(80);
+    }
+
+    // Done
+    await delay(150);
+    document.getElementById('sendingDot').style.display = 'none';
+    document.getElementById('msg4').classList.add('show');
+
+    btn.textContent = '🔄 重新演示';
+    btn.disabled = false;
+    running = false;
+  }
+
+  run();
+}
+
+// Auto-start on scroll (optional)
+document.getElementById('msg1').classList.add('show');
+
+// ===== Audio Narration (Web Speech API) =====
+const narrationSteps = [
+  { text: '欢迎来到飞机Wi-Fi原理讲解。今天我们用一个实际场景来解释：你在万米高空拍了一张天空照片，通过微信发给朋友，整个过程是怎么完成的。', progress: 8 },
+  { text: '第一步，你的手机连接机舱内的Wi-Fi热点。这和咖啡厅的Wi-Fi没有区别，就是普通的无线局域网连接。', progress: 18 },
+  { text: '第二步，机舱内的路由器把你的数据传给飞机背上的卫星天线。那个飞机背上的鼓包，就是一个相控阵天线，它能在时速900公里的飞行中持续追踪卫星。', progress: 30 },
+  { text: '第三步，天线把信号发射到三万六千公里高空的地球同步轨道卫星。电磁波以光速传播，单程大约120毫秒。卫星收到后进行变频转发。', progress: 43 },
+  { text: '第四步，卫星把信号转发到地面站。地面站用大口径天线接收，解调后还原成IP数据包，然后通过光纤接入互联网骨干网。', progress: 55 },
+  { text: '第五步，数据到达微信服务器。但这里有个关键问题：一张2MB的照片不可能一次性透过卫星链路。TCP协议会把它切成大约1400多个小数据包，每个约1460字节，逐个发送。', progress: 70 },
+  { text: '这些小包可能乱序到达，甚至有的包会丢失需要重传。但没关系，TCP会按序号重新排列，确认所有包都到齐后，重组还原出完整的原始图片。这就是先分段再合并的原理。', progress: 83 },
+  { text: '最后，微信服务器通过你朋友的4G或5G网络推送这张图片。朋友打开微信，看到了你在万米高空拍的美景。整个过程大约2到8秒，信号往返飞了7万2千公里。', progress: 95 },
+  { text: '总结一下：手机连Wi-Fi，机顶天线发射到卫星，卫星转发到地面站，地面站接入互联网。大文件先分包发送，到达后重组还原。这就是飞机Wi-Fi的全部原理。', progress: 100 }
+];
+
+let narrating = false;
+let currentUtterance = null;
+let currentStep = 0;
+let speechRate = 1;
+
+function toggleNarration() {
+  if (narrating) { stopNarration(); } else { startNarration(); }
+}
+
+function startNarration() {
+  if (!('speechSynthesis' in window)) { alert('浏览器不支持语音合成'); return; }
+  narrating = true;
+  currentStep = 0;
+  document.getElementById('audioBtn').classList.add('playing');
+  document.getElementById('audioBtnText').textContent = '停止播放';
+  document.getElementById('audioProgress').classList.add('show');
+  document.getElementById('speedControl').classList.add('show');
+  speakStep(0);
+}
+
+function stopNarration() {
+  narrating = false;
+  speechSynthesis.cancel();
+  document.getElementById('audioBtn').classList.remove('playing');
+  document.getElementById('audioBtnText').textContent = '语音讲解';
+  document.getElementById('audioProgress').classList.remove('show');
+  document.getElementById('speedControl').classList.remove('show');
+  document.getElementById('audioFill').style.width = '0%';
+  document.getElementById('audioStepText').textContent = '';
+}
+
+function speakStep(index) {
+  if (!narrating || index >= narrationSteps.length) {
+    if (index >= narrationSteps.length) stopNarration();
+    return;
+  }
+  currentStep = index;
+  const step = narrationSteps[index];
+  document.getElementById('audioFill').style.width = step.progress + '%';
+  document.getElementById('audioStepText').textContent = '正在讲解第 ' + (index+1) + '/' + narrationSteps.length + ' 步';
+  const utterance = new SpeechSynthesisUtterance(step.text);
+  utterance.lang = 'zh-CN';
+  utterance.rate = speechRate;
+  utterance.pitch = 1;
+  const voices = speechSynthesis.getVoices();
+  const zhVoice = (voices.find(v=>(v.name.includes('Online')&&v.name.includes('Natural')&&/^zh-CN|^zh$|^cmn/i.test(v.lang)&&!/^zh-HK|^zh-TW/i.test(v.lang)))||voices.find(v=>(v.name.includes('Xiaoxiao')))||voices.find(v=>(v.name.includes('Microsoft')&&/^zh-CN|^zh$|^cmn/i.test(v.lang)&&!/^zh-HK|^zh-TW/i.test(v.lang)))||voices.find(v=>/^zh-CN|^zh$|^cmn/i.test(v.lang)&&!/^zh-HK|^zh-TW/i.test(v.lang))) || voices[0];
+  if (zhVoice) utterance.voice = zhVoice;
+  utterance.onend = () => { if (narrating) speakStep(index + 1); };
+  currentUtterance = utterance;
+  speechSynthesis.speak(utterance);
+}
+
+function setRate(rate) {
+  speechRate = rate;
+  document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  if (narrating) { speechSynthesis.cancel(); speakStep(currentStep); }
+}
+
+if ('speechSynthesis' in window) {
+  speechSynthesis.getVoices();
+  speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+}
+</script>
+</body>
+</html>

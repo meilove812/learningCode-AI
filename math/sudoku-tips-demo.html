@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧩 数独解题技巧 · 互动动画演示</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 16px;
+}
+h1 { font-size: 24px; color: #fff; margin: 8px 0; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+.subtitle { color: rgba(255,255,255,0.85); margin-bottom: 12px; font-size: 14px; text-align: center; }
+
+/* Voice Bar */
+.voice-bar {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin: 8px 0 12px; flex-wrap: wrap;
+}
+.voice-toggle {
+  padding: 6px 16px; border-radius: 20px; border: 2px solid #fff;
+  background: rgba(255,255,255,0.2); color: #fff; font-weight: bold; font-size: 13px;
+  cursor: pointer; backdrop-filter: blur(4px);
+}
+.voice-toggle.muted { background: rgba(0,0,0,0.3); }
+.voice-select {
+  padding: 5px 8px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.4);
+  font-size: 12px; max-width: 180px; background: rgba(255,255,255,0.9);
+}
+.speed-control { display: flex; align-items: center; gap: 4px; color: #fff; font-size: 12px; }
+.speed-control input { width: 60px; }
+
+/* Bottom Tabs */
+.tab-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  display: flex; background: rgba(30,20,60,0.95);
+  backdrop-filter: blur(10px); z-index: 100;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.tab-item {
+  flex: 1; padding: 10px 4px 14px; text-align: center;
+  color: rgba(255,255,255,0.5); font-size: 11px; cursor: pointer;
+  transition: all 0.3s; border: none; background: none;
+}
+.tab-item.active { color: #f093fb; }
+.tab-item .tab-icon { font-size: 20px; display: block; margin-bottom: 2px; }
+.tab-item .tab-label { display: block; }
+
+/* Main Scene */
+.scene {
+  width: 100%; max-width: 500px;
+  background: rgba(255,255,255,0.95); border-radius: 24px;
+  padding: 20px 16px; margin-bottom: 80px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.scene-title { font-size: 18px; font-weight: bold; color: #4a148c; text-align: center; margin-bottom: 6px; }
+.scene-desc { font-size: 13px; color: #666; text-align: center; margin-bottom: 16px; line-height: 1.6; }
+
+/* Sudoku Grid */
+.sudoku-container { display: flex; justify-content: center; margin: 12px 0; }
+.sudoku-grid {
+  display: grid;
+  border: 3px solid #1a237e;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.sudoku-grid.grid-9 { grid-template-columns: repeat(9, 1fr); width: 342px; height: 342px; }
+.sudoku-grid.grid-3 { grid-template-columns: repeat(3, 1fr); width: 180px; height: 180px; }
+.sudoku-cell {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: bold; color: #1a237e;
+  border: 1px solid #bbb; position: relative;
+  transition: all 0.4s ease; background: #fff;
+}
+.sudoku-grid.grid-9 .sudoku-cell { width: 38px; height: 38px; font-size: 18px; }
+.sudoku-grid.grid-3 .sudoku-cell { width: 60px; height: 60px; font-size: 28px; }
+.sudoku-cell.given { color: #333; background: #f5f5f5; }
+.sudoku-cell.highlight-row { background: #fff9c4 !important; }
+.sudoku-cell.highlight-col { background: #bbdefb !important; }
+.sudoku-cell.highlight-box { background: #c8e6c9 !important; }
+.sudoku-cell.highlight-target { background: #ffab91 !important; box-shadow: inset 0 0 0 3px #e65100; }
+.sudoku-cell.highlight-error { background: #ffcdd2 !important; animation: shake 0.4s ease; }
+.sudoku-cell.filled-anim { animation: popIn 0.5s ease; background: #e1f5fe !important; }
+.sudoku-cell.excluded { position: relative; }
+.sudoku-cell.excluded::after {
+  content: '✕'; position: absolute; font-size: 24px; color: #e53935;
+  font-weight: bold; opacity: 0.8;
+}
+.sudoku-cell .candidates {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  width: 100%; height: 100%; font-size: 11px; color: #444;
+  padding: 2px;
+  line-height: 1;
+}
+.sudoku-cell .candidates span {
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s;
+  font-weight: 600;
+}
+.sudoku-cell .candidates span.eliminated { color: #e53935; text-decoration: line-through; opacity: 0.5; font-weight: 400; }
+.sudoku-cell .candidates span.survivor { color: #2e7d32; font-weight: bold; font-size: 14px; }
+
+/* Thick box borders for 9x9 - using JS classes instead */
+.sudoku-cell.border-right-thick { border-right: 2.5px solid #1a237e !important; }
+.sudoku-cell.border-bottom-thick { border-bottom: 2.5px solid #1a237e !important; }
+
+/* Step narration */
+.narration-box {
+  background: linear-gradient(135deg, #ede7f6, #e8eaf6);
+  border-radius: 16px; padding: 14px 16px; margin: 12px 0;
+  text-align: center; min-height: 60px;
+  display: flex; align-items: center; justify-content: center;
+}
+.narration-text { font-size: 15px; color: #4a148c; font-weight: 500; line-height: 1.6; }
+
+/* Controls */
+.controls { display: flex; gap: 10px; justify-content: center; margin: 14px 0; flex-wrap: wrap; }
+.btn {
+  padding: 12px 24px; border: none; border-radius: 25px;
+  font-size: 15px; font-weight: bold; cursor: pointer;
+  transition: all 0.3s; color: #fff;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+.btn.primary { background: linear-gradient(135deg, #7c4dff, #e040fb); }
+.btn.secondary { background: linear-gradient(135deg, #78909c, #90a4ae); }
+.btn.autoplay { background: linear-gradient(135deg, #00bcd4, #26c6da); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* Candidate list display */
+.candidate-display {
+  display: flex; justify-content: center; gap: 6px; margin: 10px 0; flex-wrap: wrap;
+}
+.cand-num {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: bold; color: #fff;
+  background: #7c4dff; transition: all 0.4s;
+}
+.cand-num.eliminated { background: #e0e0e0; color: #999; text-decoration: line-through; transform: scale(0.8); }
+.cand-num.answer { background: #4caf50; animation: popIn 0.5s ease; transform: scale(1.2); }
+
+/* Particles */
+.particle {
+  position: fixed; pointer-events: none; font-size: 20px;
+  animation: particleFly 1.5s ease-out forwards; z-index: 999;
+}
+@keyframes particleFly {
+  0% { opacity: 1; transform: translate(0, 0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.3); }
+}
+@keyframes popIn {
+  0% { transform: scale(0.3); } 50% { transform: scale(1.3); } 100% { transform: scale(1); }
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+@keyframes flashRed {
+  0%,100% { background: #ffcdd2; } 50% { background: #f44336; color: #fff; }
+}
+.flash-error { animation: flashRed 0.3s ease 3; }
+
+/* Example selector */
+.example-selector {
+  display: flex; justify-content: center; gap: 8px; margin: 8px 0;
+}
+.example-btn {
+  padding: 6px 14px; border-radius: 14px; border: 2px solid #7c4dff;
+  background: transparent; color: #7c4dff; font-weight: bold; font-size: 12px;
+  cursor: pointer; transition: all 0.3s;
+}
+.example-btn.active { background: #7c4dff; color: #fff; }
+
+/* Progress dots */
+.progress-dots { display: flex; justify-content: center; gap: 6px; margin: 8px 0; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #e0e0e0; transition: all 0.3s; }
+.dot.active { background: #7c4dff; transform: scale(1.3); }
+.dot.done { background: #4caf50; }
+
+@media (max-width: 400px) {
+  .sudoku-grid.grid-9 { width: 315px; height: 315px; }
+  .sudoku-grid.grid-9 .sudoku-cell { width: 35px; height: 35px; font-size: 15px; }
+  .sudoku-cell .candidates { font-size: 10px; }
+  .scene { padding: 16px 10px; }
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../index.html">首页</a><a href="../grade1-down/index.html">一年级</a><a href="../grade2-up/index.html">二年级</a><a href="../explore/science/index.html">科普</a><a href="../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<h1>🧩 数独解题技巧</h1>
+<p class="subtitle">Coco 的数独魔法课 ✨ 看动画学会4种超强技巧！</p>
+
+<div class="voice-bar">
+  <button class="voice-toggle" id="voiceToggle" onclick="toggleVoice()">🔊 语音</button>
+  <select class="voice-select" id="cnVoiceSelect" onchange="selectVoice()"></select>
+  <div class="speed-control">
+    <span>语速</span>
+    <input type="range" min="0.5" max="1.5" step="0.1" value="0.85" id="speedSlider" onchange="updateSpeed()">
+    <span id="speedLabel">0.85</span>
+  </div>
+</div>
+
+<div class="scene" id="scene">
+  <!-- Dynamic content injected here -->
+</div>
+
+<div class="tab-bar">
+  <button class="tab-item active" onclick="switchTab(0)"><span class="tab-icon">🔍</span><span class="tab-label">排除法</span></button>
+  <button class="tab-item" onclick="switchTab(1)"><span class="tab-icon">☝️</span><span class="tab-label">唯一数</span></button>
+  <button class="tab-item" onclick="switchTab(2)"><span class="tab-icon">🔎</span><span class="tab-label">扫列检查</span></button>
+  <button class="tab-item" onclick="switchTab(3)"><span class="tab-icon">📝</span><span class="tab-label">候选数</span></button>
+</div>
+
+<script>
+// ===== Voice Engine =====
+let voiceEnabled = true;
+let selectedVoice = null;
+let speechRate = 0.85;
+let speaking = false;
+let speechQueue = [];
+let currentTab = 0;
+let animating = false;
+let animStep = 0;
+let timeouts = [];
+let currentExample = 0;
+
+const cnPref = ['Microsoft Xiaoxiao','Microsoft Yunxi','Microsoft Xiaoxiao Online (Natural)','Microsoft Yunxi Online (Natural)','Online (Natural)','Tingting','Google 普通话','Enhanced','Premium','Natural'];
+function scoreV(v) {
+  for (let i = 0; i < cnPref.length; i++) if (v.name.includes(cnPref[i])) return cnPref.length - i + 100;
+  let s = 0; if (/enhanced|premium|natural/i.test(v.name)) s += 50; if (/compact/i.test(v.name)) s -= 20; return s;
+}
+function populateVoices() {
+  const vs = speechSynthesis.getVoices().filter(v => (/^zh-CN|^zh$|^cmn/i.test(v.lang))&&!/^zh-HK|^zh-TW/i.test(v.lang));
+  vs.sort((a, b) => scoreV(b) - scoreV(a));
+  const sel = document.getElementById('cnVoiceSelect');
+  sel.innerHTML = vs.map((v, i) => `<option value="${v.name}" ${i === 0 ? 'selected' : ''}>${v.name}</option>`).join('');
+  if (vs.length) selectedVoice = vs[0];
+}
+function selectVoice() { selectedVoice = speechSynthesis.getVoices().find(v => v.name === document.getElementById('cnVoiceSelect').value); }
+function toggleVoice() {
+  voiceEnabled = !voiceEnabled;
+  const b = document.getElementById('voiceToggle');
+  b.textContent = voiceEnabled ? '🔊 语音' : '🔇 静音';
+  b.classList.toggle('muted', !voiceEnabled);
+  if (!voiceEnabled) { speechSynthesis.cancel(); speaking = false; }
+}
+function updateSpeed() {
+  speechRate = parseFloat(document.getElementById('speedSlider').value);
+  document.getElementById('speedLabel').textContent = speechRate.toFixed(2);
+}
+function speak(text, cb) {
+  if (!voiceEnabled) { if (cb) cb(); return; }
+  speechSynthesis.cancel();
+  speaking = true;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN'; u.rate = speechRate; u.pitch = 1.05;
+  if (selectedVoice) u.voice = selectedVoice;
+  u.onend = () => { speaking = false; if (cb) cb(); };
+  u.onerror = () => { speaking = false; if (cb) cb(); };
+  speechSynthesis.speak(u);
+}
+function initVoices() { populateVoices(); if (!speechSynthesis.getVoices().length) speechSynthesis.addEventListener('voiceschanged', populateVoices, { once: true }); }
+initVoices(); setTimeout(initVoices, 500); setTimeout(initVoices, 1500);
+
+// ===== Particles =====
+function spawnParticles(x, y, count = 12) {
+  const emojis = ['✨', '⭐', '🌟', '💫', '🎉', '🎊'];
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    p.style.left = x + 'px';
+    p.style.top = y + 'px';
+    p.style.setProperty('--dx', (Math.random() - 0.5) * 200 + 'px');
+    p.style.setProperty('--dy', (Math.random() - 0.5) * 200 - 50 + 'px');
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 1500);
+  }
+}
+
+// ===== Tab Switching =====
+function switchTab(idx) {
+  stopAnimation();
+  currentTab = idx;
+  currentExample = 0;
+  document.querySelectorAll('.tab-item').forEach((t, i) => t.classList.toggle('active', i === idx));
+  renderTab();
+}
+
+function stopAnimation() {
+  timeouts.forEach(t => clearTimeout(t));
+  timeouts = [];
+  animating = false;
+  animStep = 0;
+  speechSynthesis.cancel();
+  speaking = false;
+}
+
+// ===== Render Tabs =====
+function renderTab() {
+  const scene = document.getElementById('scene');
+  switch (currentTab) {
+    case 0: renderElimination(); break;
+    case 1: renderUniqueNumber(); break;
+    case 2: renderColumnCheck(); break;
+    case 3: renderCandidates(); break;
+  }
+}
+
+// ===== TAB 0: Elimination Method =====
+const elimExamples = [
+  {
+    // A partial 9x9, we focus on cell at row 4, col 4 (0-indexed)
+    grid: [
+      [5,3,0, 0,7,0, 0,0,0],
+      [6,0,0, 1,9,5, 0,0,0],
+      [0,9,8, 0,0,0, 0,6,0],
+      [8,0,0, 0,6,0, 0,0,3],
+      [4,0,0, 8,0,3, 0,0,1],
+      [7,0,0, 0,2,0, 0,0,6],
+      [0,6,0, 0,0,0, 2,8,0],
+      [0,0,0, 4,1,9, 0,0,5],
+      [0,0,0, 0,8,0, 0,7,9]
+    ],
+    targetRow: 4, targetCol: 4,
+    answer: 5,
+    rowNums: [4, 8, 3, 1], // numbers in that row
+    colNums: [7, 9, 6, 2, 1, 8], // numbers in that col
+    boxNums: [8, 6, 3, 2], // numbers in that box
+  },
+  {
+    // Example 2: target at row 3, col 1. More spread across row/col/box.
+    // Row 3: [8,_,9, 7,6,1, 4,2,3] → row has 8,9,7,6,1,4,2,3
+    // Col 1: 3,7,9,_,2,1,6,8,4 → col has 3,7,9,2,1,6,8,4
+    // Box (rows 3-5, cols 0-2): 8,_,9 / 4,2,6 / 7,1,3 → box has 8,9,4,2,6,7,1,3
+    // All eliminate everything except 5! Answer = 5
+    // But show partial per step:
+    // Row unique new: 8,9,7,6,1,4,2,3 (row alone gets all except 5)
+    grid: [
+      [5,3,4, 6,7,8, 9,1,2],
+      [6,7,2, 1,9,5, 3,4,8],
+      [1,9,8, 3,4,2, 5,6,7],
+      [8,0,9, 7,6,1, 4,2,3],
+      [4,2,6, 8,5,3, 7,9,1],
+      [7,1,3, 9,2,4, 8,5,6],
+      [9,6,1, 5,3,7, 2,8,4],
+      [2,8,7, 4,1,9, 6,3,5],
+      [3,4,5, 2,8,6, 1,7,9]
+    ],
+    targetRow: 3, targetCol: 1,
+    answer: 5,
+    rowNums: [8, 9, 7, 6],
+    colNums: [3, 4, 2, 1],
+    boxNums: [8, 9, 4, 2, 6, 7, 1, 3],
+  }
+];
+
+function renderElimination() {
+  const ex = elimExamples[currentExample];
+  const scene = document.getElementById('scene');
+  scene.innerHTML = `
+    <div class="scene-title">🔍 排除法</div>
+    <div class="scene-desc">看看某个空格所在的行、列、宫里已经有哪些数字，<br>把它们排除掉，剩下的就是答案！</div>
+    <div class="example-selector">
+      ${elimExamples.map((_, i) => `<button class="example-btn ${i === currentExample ? 'active' : ''}" onclick="switchExample(${i})">例子${i + 1}</button>`).join('')}
+    </div>
+    <div class="sudoku-container"><div class="sudoku-grid grid-9" id="sudokuGrid"></div></div>
+    <div class="candidate-display" id="candDisplay"></div>
+    <div class="narration-box"><div class="narration-text" id="narrText">点击「开始演示」看魔法排除！🪄</div></div>
+    <div class="progress-dots" id="progressDots"></div>
+    <div class="controls">
+      <button class="btn primary" id="startBtn" onclick="startElimination()">▶️ 开始演示</button>
+      <button class="btn secondary" onclick="stopAnimation(); renderElimination()">🔄 重来</button>
+    </div>
+  `;
+  renderGrid9(ex.grid, ex.targetRow, ex.targetCol);
+  renderCandidateNums([1,2,3,4,5,6,7,8,9], [], null);
+}
+
+function switchExample(idx) {
+  stopAnimation();
+  currentExample = idx;
+  renderElimination();
+}
+
+function addGridBorders(cell, r, c) {
+  if (c === 2 || c === 5) cell.classList.add('border-right-thick');
+  if (r === 2 || r === 5) cell.classList.add('border-bottom-thick');
+}
+
+function renderGrid9(grid, tRow, tCol) {
+  const container = document.getElementById('sudokuGrid');
+  container.innerHTML = '';
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'sudoku-cell';
+      cell.id = `cell-${r}-${c}`;
+      addGridBorders(cell, r, c);
+      if (grid[r][c] !== 0) {
+        cell.textContent = grid[r][c];
+        cell.classList.add('given');
+      }
+      if (r === tRow && c === tCol) {
+        cell.classList.add('highlight-target');
+        cell.textContent = '?';
+        cell.style.color = '#e65100';
+        cell.style.fontSize = '20px';
+      }
+      container.appendChild(cell);
+    }
+  }
+}
+
+function renderCandidateNums(all, eliminated, answer) {
+  const container = document.getElementById('candDisplay');
+  container.innerHTML = all.map(n => {
+    let cls = 'cand-num';
+    if (answer === n) cls += ' answer';
+    else if (eliminated.includes(n)) cls += ' eliminated';
+    return `<div class="${cls}">${n}</div>`;
+  }).join('');
+}
+
+function startElimination() {
+  if (animating) return;
+  animating = true;
+  document.getElementById('startBtn').disabled = true;
+  const ex = elimExamples[currentExample];
+  const steps = buildEliminationSteps(ex);
+  let idx = 0;
+  
+  function next() {
+    if (idx >= steps.length || !animating) { animating = false; document.getElementById('startBtn').disabled = false; return; }
+    const step = steps[idx];
+    step.action();
+    document.getElementById('narrText').textContent = step.text;
+    speak(step.voice, () => {
+      idx++;
+      timeouts.push(setTimeout(next, 600));
+    });
+  }
+  next();
+}
+
+function buildEliminationSteps(ex) {
+  const { grid, targetRow, targetCol, answer, rowNums, colNums, boxNums } = ex;
+  let eliminated = [];
+  const allNums = [1,2,3,4,5,6,7,8,9];
+  
+  const steps = [
+    {
+      text: `🎯 我们要找出第${targetRow + 1}行第${targetCol + 1}列的空格应该填什么！`,
+      voice: `我们来看这个问号的格子，它在第${targetRow + 1}行第${targetCol + 1}列。让我们用排除法找答案！`,
+      action: () => { renderCandidateNums(allNums, [], null); }
+    },
+    {
+      text: `👉 第一步：扫描它所在的行（横着看）→ 找到数字 ${rowNums.join(', ')}`,
+      voice: `第一步，横着看这一行！我找到了数字${rowNums.join('、')}，这些数字已经用过了，排除掉！`,
+      action: () => {
+        // highlight row
+        for (let c = 0; c < 9; c++) {
+          const cell = document.getElementById(`cell-${targetRow}-${c}`);
+          if (c !== targetCol) cell.classList.add('highlight-row');
+        }
+        eliminated = [...new Set([...eliminated, ...rowNums])];
+        renderCandidateNums(allNums, eliminated, null);
+      }
+    },
+    {
+      text: `👉 第二步：扫描它所在的列（竖着看）→ 找到数字 ${colNums.join(', ')}`,
+      voice: `第二步，竖着看这一列！找到数字${colNums.join('、')}，也排除掉！`,
+      action: () => {
+        // clear row highlight, highlight col
+        for (let c = 0; c < 9; c++) {
+          document.getElementById(`cell-${targetRow}-${c}`).classList.remove('highlight-row');
+        }
+        for (let r = 0; r < 9; r++) {
+          const cell = document.getElementById(`cell-${r}-${targetCol}`);
+          if (r !== targetRow) cell.classList.add('highlight-col');
+        }
+        eliminated = [...new Set([...eliminated, ...colNums])];
+        renderCandidateNums(allNums, eliminated, null);
+      }
+    },
+    {
+      text: `👉 第三步：扫描它所在的宫（3×3方块）→ 找到数字 ${boxNums.join(', ')}`,
+      voice: `第三步，看它所在的三乘三宫格！找到数字${boxNums.join('、')}，排除！`,
+      action: () => {
+        // clear col highlight, highlight box
+        for (let r = 0; r < 9; r++) {
+          document.getElementById(`cell-${r}-${targetCol}`).classList.remove('highlight-col');
+        }
+        const boxR = Math.floor(targetRow / 3) * 3;
+        const boxC = Math.floor(targetCol / 3) * 3;
+        for (let r = boxR; r < boxR + 3; r++) {
+          for (let c = boxC; c < boxC + 3; c++) {
+            const cell = document.getElementById(`cell-${r}-${c}`);
+            if (r !== targetRow || c !== targetCol) cell.classList.add('highlight-box');
+          }
+        }
+        eliminated = [...new Set([...eliminated, ...boxNums])];
+        renderCandidateNums(allNums, eliminated, null);
+      }
+    },
+    {
+      text: `🎉 排除完毕！只剩下数字 ${answer}！答案就是 ${answer}！`,
+      voice: `太棒了！全部排除完，只剩下数字${answer}！答案就是${answer}！Coco你真聪明！`,
+      action: () => {
+        // clear box highlight, fill answer
+        const boxR = Math.floor(targetRow / 3) * 3;
+        const boxC = Math.floor(targetCol / 3) * 3;
+        for (let r = boxR; r < boxR + 3; r++) {
+          for (let c = boxC; c < boxC + 3; c++) {
+            document.getElementById(`cell-${r}-${c}`).classList.remove('highlight-box');
+          }
+        }
+        const target = document.getElementById(`cell-${targetRow}-${targetCol}`);
+        target.textContent = answer;
+        target.style.color = '#2e7d32';
+        target.style.fontSize = '22px';
+        target.classList.add('filled-anim');
+        target.classList.remove('highlight-target');
+        renderCandidateNums(allNums, eliminated, answer);
+        // particles
+        const rect = target.getBoundingClientRect();
+        spawnParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 15);
+      }
+    }
+  ];
+  return steps;
+}
+
+// ===== TAB 1: Unique Number in Box (Full 9x9 version) =====
+const uniqueExamples = [
+  {
+    // Full 9x9 grid. We want to place 7 in the top-right box (rows 0-2, cols 6-8)
+    // The box already has: 9,_,2 / 3,_,8 / 5,6,_ → missing 1,4,7
+    // We focus on placing 7. Row 0 has 7 at col 4 → excludes (0,7). Row 1 has 7 at col 3 → excludes (1,7) already filled.
+    // Col 8 has 7 at row 5 → excludes (2,8).
+    // So 7 can only go at... let's design carefully:
+    grid: [
+      [5,3,4, 6,7,8, 9,0,2],
+      [6,7,2, 1,9,5, 3,0,8],
+      [1,9,8, 3,4,2, 5,6,0],
+      [8,5,9, 7,6,1, 4,2,3],
+      [4,2,6, 8,5,3, 7,9,1],
+      [7,1,3, 9,2,4, 8,5,6],
+      [9,6,1, 5,3,7, 2,8,4],
+      [2,8,7, 4,1,9, 6,3,5],
+      [3,4,5, 2,8,6, 1,7,9]
+    ],
+    targetNum: 7,
+    // Box: rows 0-2, cols 6-8. Empty cells: (0,7), (1,7), (2,8)
+    boxRowStart: 0, boxColStart: 6,
+    emptyCells: [[0,7], [1,7], [2,8]],
+    // (0,7): Row 0 already has 7 at col 4 → excluded
+    // (1,7): Col 7 already has 7 at row 8 → excluded  
+    // (2,8): this is the answer!
+    exclusions: [
+      { cell: [0,7], reason: 'row', reasonCell: [0,4], voice: '第1行第5格已经有7了！所以第1行的空格不能放7！' },
+      { cell: [1,7], reason: 'col', reasonCell: [8,7], voice: '第8列第9行已经有7了！所以第8列的空格不能放7！' },
+    ],
+    answerCell: [2,8],
+    answerVoice: '太好了！这个宫里只剩最后一个位置可以放7了！就是这里！',
+  },
+  {
+    // Example 2: place 3 in center box (rows 3-5, cols 3-5)
+    grid: [
+      [5,3,4, 6,7,8, 9,1,2],
+      [6,7,2, 1,9,5, 3,4,8],
+      [1,9,8, 3,4,2, 5,6,7],
+      [8,5,9, 0,6,1, 4,2,3],
+      [4,2,6, 8,5,0, 7,9,1],
+      [7,1,3, 9,2,4, 8,5,6],
+      [9,6,1, 5,3,7, 2,8,4],
+      [2,8,7, 4,1,9, 6,3,5],
+      [3,4,5, 2,8,6, 1,7,9]
+    ],
+    targetNum: 3,
+    boxRowStart: 3, boxColStart: 3,
+    emptyCells: [[3,3], [4,5]],
+    // (4,5): Row 4 has no 3 yet... Col 5 has no 3... but wait let me check
+    // Row 4: 4,2,6,8,5,_,7,9,1 → no 3 in row... but col 5: 8,5,2,1,_,4,7,9,6 → no 3 in col
+    // Hmm need to fix. Let me use a simpler approach:
+    // (3,3): Col 3 has 3 at row 2 → excluded!
+    // (4,5): this is the answer
+    exclusions: [
+      { cell: [3,3], reason: 'col', reasonCell: [2,3], voice: '第4列第3行已经有3了！所以第4列的空格不能放3！' },
+    ],
+    answerCell: [4,5],
+    answerVoice: '只剩一个位置了！数字3一定在这里！',
+  }
+];
+
+function renderUniqueNumber() {
+  const scene = document.getElementById('scene');
+  const ex = uniqueExamples[currentExample];
+  scene.innerHTML = `
+    <div class="scene-title">☝️ 唯一数法</div>
+    <div class="scene-desc">在一个宫里，某个数字只能放在一个位置！<br>因为其他空格都被<b>同行或同列</b>的相同数字排除了 🚫<br>👉 看完整9×9，理解「为什么」被排除！</div>
+    <div class="example-selector">
+      ${uniqueExamples.map((_, i) => `<button class="example-btn ${i === currentExample ? 'active' : ''}" onclick="currentExample=${i};stopAnimation();renderUniqueNumber()">例子${i + 1}</button>`).join('')}
+    </div>
+    <div class="sudoku-container"><div class="sudoku-grid grid-9" id="uniqueGrid"></div></div>
+    <div class="narration-box"><div class="narration-text" id="narrText">点击开始，看数字 ${ex.targetNum} 在这个宫里只能去哪里！</div></div>
+    <div class="controls">
+      <button class="btn primary" id="startBtn" onclick="startUnique()">▶️ 开始演示</button>
+      <button class="btn secondary" onclick="stopAnimation(); renderUniqueNumber()">🔄 重来</button>
+    </div>
+  `;
+  renderUniqueGrid9(ex);
+}
+
+function renderUniqueGrid9(ex) {
+  const container = document.getElementById('uniqueGrid');
+  container.innerHTML = '';
+  const { grid, boxRowStart, boxColStart } = ex;
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'sudoku-cell';
+      cell.id = `ucell-${r}-${c}`;
+      addGridBorders(cell, r, c);
+      // Highlight the target box with a subtle background
+      if (r >= boxRowStart && r < boxRowStart + 3 && c >= boxColStart && c < boxColStart + 3) {
+        cell.style.background = '#ede7f6';
+      }
+      if (grid[r][c] !== 0) {
+        cell.textContent = grid[r][c];
+        cell.classList.add('given');
+      }
+      container.appendChild(cell);
+    }
+  }
+}
+
+function startUnique() {
+  if (animating) return;
+  animating = true;
+  document.getElementById('startBtn').disabled = true;
+  const ex = uniqueExamples[currentExample];
+  const { targetNum, emptyCells, exclusions, answerCell, answerVoice, boxRowStart, boxColStart } = ex;
+  
+  const steps = [
+    {
+      text: `🤔 数字 ${targetNum} 要放在紫色宫格的哪里？先找出所有空格！`,
+      voice: `我们要在这个紫色的宫格里放数字${targetNum}。先看看哪些格子是空的？`,
+      action: () => {
+        emptyCells.forEach(([r, c]) => {
+          const cell = document.getElementById(`ucell-${r}-${c}`);
+          cell.textContent = `${targetNum}?`;
+          cell.style.color = '#7c4dff';
+          cell.style.fontSize = '14px';
+          cell.style.background = '#d1c4e9';
+        });
+      }
+    }
+  ];
+  
+  // Add exclusion steps - show the full row/col reason
+  exclusions.forEach(({ cell: [er, ec], reason, reasonCell: [rr, rc], voice }) => {
+    steps.push({
+      text: reason === 'row' 
+        ? `❌ 第${er+1}行第${ec+1}列不能放${targetNum}！因为第${er+1}行已经有${targetNum}了（看第${rc+1}格）→ 整行不能再有${targetNum}！`
+        : `❌ 第${er+1}行第${ec+1}列不能放${targetNum}！因为第${ec+1}列已经有${targetNum}了（看第${rr+1}行）→ 整列不能再有${targetNum}！`,
+      voice: voice,
+      action: () => {
+        // Highlight the reason cell (the existing number)
+        const reasonCellEl = document.getElementById(`ucell-${rr}-${rc}`);
+        reasonCellEl.style.background = '#ffcdd2';
+        reasonCellEl.style.border = '3px solid #e53935';
+        reasonCellEl.style.borderRadius = '4px';
+        
+        // Draw a line: highlight the connecting row or column
+        if (reason === 'row') {
+          for (let c = 0; c < 9; c++) {
+            const lineCell = document.getElementById(`ucell-${er}-${c}`);
+            if (!lineCell.classList.contains('given') || c === rc) {
+              lineCell.style.background = c === rc ? '#ffcdd2' : '#fff9c4';
+            }
+            if (c !== rc && c !== ec) lineCell.classList.add('highlight-row');
+          }
+        } else {
+          for (let r = 0; r < 9; r++) {
+            const lineCell = document.getElementById(`ucell-${r}-${ec}`);
+            if (!lineCell.classList.contains('given') || r === rr) {
+              lineCell.style.background = r === rr ? '#ffcdd2' : '#bbdefb';
+            }
+            if (r !== rr && r !== er) lineCell.classList.add('highlight-col');
+          }
+        }
+        
+        // Mark the excluded cell
+        const exCell = document.getElementById(`ucell-${er}-${ec}`);
+        exCell.textContent = '✕';
+        exCell.style.color = '#e53935';
+        exCell.style.fontSize = '20px';
+        exCell.style.background = '#ffcdd2';
+        exCell.classList.add('highlight-error');
+        setTimeout(() => exCell.classList.remove('highlight-error'), 400);
+      }
+    });
+    
+    // Clear highlights step
+    steps.push({
+      text: `（清除高亮，继续看下一个空格...）`,
+      voice: '',
+      action: () => {
+        for (let r = 0; r < 9; r++) {
+          for (let c = 0; c < 9; c++) {
+            const cell = document.getElementById(`ucell-${r}-${c}`);
+            cell.classList.remove('highlight-row', 'highlight-col');
+            // Reset non-box cells background
+            if (r >= boxRowStart && r < boxRowStart + 3 && c >= boxColStart && c < boxColStart + 3) {
+              if (!(r === er && c === ec)) {
+                cell.style.background = '#ede7f6';
+              }
+            } else {
+              cell.style.background = '';
+              cell.style.border = '';
+            }
+          }
+        }
+        // Keep excluded cells marked
+        const exCell = document.getElementById(`ucell-${er}-${ec}`);
+        exCell.textContent = '✕';
+        exCell.style.color = '#e53935';
+        exCell.style.background = '#ffebee';
+      }
+    });
+  });
+  
+  // Final step: answer!
+  steps.push({
+    text: `🎉 只剩一个位置！数字 ${targetNum} 一定在第${answerCell[0]+1}行第${answerCell[1]+1}列！`,
+    voice: answerVoice,
+    action: () => {
+      const cell = document.getElementById(`ucell-${answerCell[0]}-${answerCell[1]}`);
+      cell.textContent = targetNum;
+      cell.style.color = '#2e7d32';
+      cell.style.fontSize = '22px';
+      cell.style.background = '#c8e6c9';
+      cell.classList.add('filled-anim');
+      const rect = cell.getBoundingClientRect();
+      spawnParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 15);
+    }
+  });
+  
+  let idx = 0;
+  function next() {
+    if (idx >= steps.length || !animating) { animating = false; document.getElementById('startBtn').disabled = false; return; }
+    const step = steps[idx];
+    step.action();
+    document.getElementById('narrText').textContent = step.text;
+    if (step.voice) {
+      speak(step.voice, () => {
+        idx++;
+        timeouts.push(setTimeout(next, 600));
+      });
+    } else {
+      idx++;
+      timeouts.push(setTimeout(next, 800));
+    }
+  }
+  next();
+}
+
+// ===== TAB 2: Column Check =====
+const checkGrid = [
+  [5,3,4, 6,7,8, 9,1,2],
+  [6,7,2, 1,9,5, 3,4,8],
+  [1,9,8, 3,4,2, 5,6,7],
+  [8,5,9, 7,6,1, 4,2,3],
+  [4,2,6, 8,5,3, 7,9,1],
+  [7,1,3, 9,2,4, 8,5,6],
+  [9,6,1, 5,3,7, 2,8,4],
+  [2,8,7, 4,1,9, 6,3,5],
+  [3,4,5, 2,8,6, 1,7,9]
+];
+// Introduce an error: column 3 has duplicate 6 (row 0 and row 7 both have something... let's put error)
+// Actually let's make row 7 col 3 = 2 → duplicate with row 8 col 3 ... no
+// Let's just swap: make [7][3] = 6 (was 4) and [7][5] = 4 (was 9) → col 3 has two 6s
+const errorGrid = JSON.parse(JSON.stringify(checkGrid));
+errorGrid[7][3] = 6; // duplicate 6 in column 3 (row 0 has 6, row 7 now also 6)
+// error positions: (0,3) and (7,3)
+const errorCol = 3;
+const errorRows = [0, 7];
+
+function renderColumnCheck() {
+  const scene = document.getElementById('scene');
+  scene.innerHTML = `
+    <div class="scene-title">🔎 扫列检查法（防错）</div>
+    <div class="scene-desc">填完数独后，竖着一列一列检查！<br>发现重复数字就说明哪里填错了 🚨</div>
+    <div class="sudoku-container"><div class="sudoku-grid grid-9" id="checkGrid"></div></div>
+    <div class="narration-box"><div class="narration-text" id="narrText">这个数独「看起来」填完了...但有个错误藏在里面！🕵️</div></div>
+    <div class="controls">
+      <button class="btn primary" id="startBtn" onclick="startColumnCheck()">▶️ 开始扫描</button>
+      <button class="btn secondary" onclick="stopAnimation(); renderColumnCheck()">🔄 重来</button>
+    </div>
+  `;
+  renderCheckGrid();
+}
+
+function renderCheckGrid() {
+  const container = document.getElementById('checkGrid');
+  container.innerHTML = '';
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'sudoku-cell given';
+      cell.id = `chk-${r}-${c}`;
+      addGridBorders(cell, r, c);
+      cell.textContent = errorGrid[r][c];
+      container.appendChild(cell);
+    }
+  }
+}
+
+function startColumnCheck() {
+  if (animating) return;
+  animating = true;
+  document.getElementById('startBtn').disabled = true;
+  
+  let col = 0;
+  const steps = [];
+  
+  // Scan columns 0-3 (find error at col 3)
+  for (let c = 0; c <= errorCol; c++) {
+    if (c < errorCol) {
+      steps.push({
+        text: `✅ 第${c + 1}列：1-9都有，没有重复！`,
+        voice: c === 0 ? `开始检查！第一列，一、二、三...九，都有了，没问题！` : `第${c + 1}列也没问题！`,
+        action: ((col) => () => {
+          // Clear previous column highlight
+          for (let r = 0; r < 9; r++) {
+            for (let cc = 0; cc < 9; cc++) {
+              document.getElementById(`chk-${r}-${cc}`).classList.remove('highlight-col', 'highlight-error', 'flash-error');
+            }
+          }
+          // Highlight current column
+          for (let r = 0; r < 9; r++) {
+            document.getElementById(`chk-${r}-${col}`).classList.add('highlight-col');
+          }
+        })(c)
+      });
+    } else {
+      // Error column!
+      steps.push({
+        text: `🔍 第${c + 1}列：扫描中...1...2...3...`,
+        voice: `第${c + 1}列，我来仔细看看...`,
+        action: ((col) => () => {
+          for (let r = 0; r < 9; r++) {
+            for (let cc = 0; cc < 9; cc++) {
+              document.getElementById(`chk-${r}-${cc}`).classList.remove('highlight-col');
+            }
+          }
+          for (let r = 0; r < 9; r++) {
+            document.getElementById(`chk-${r}-${col}`).classList.add('highlight-col');
+          }
+        })(c)
+      });
+      steps.push({
+        text: `🚨 发现问题！第${c + 1}列有两个 6！第1行和第8行都是6！`,
+        voice: `等一下！这里有两个六！第一行是六，第八行也是六！数字重复了！这说明有一个填错了！`,
+        action: () => {
+          errorRows.forEach(r => {
+            const cell = document.getElementById(`chk-${r}-${errorCol}`);
+            cell.classList.add('flash-error');
+            cell.style.fontWeight = '900';
+          });
+        }
+      });
+      steps.push({
+        text: `💡 教训：填完后一定要逐列扫一遍！防止粗心错误！`,
+        voice: `记住了吗Coco？填完数独后，一定要竖着一列一列检查，这样就能发现重复的错误啦！养成好习惯，就不怕粗心！`,
+        action: () => {
+          errorRows.forEach(r => {
+            const cell = document.getElementById(`chk-${r}-${errorCol}`);
+            cell.style.border = '3px solid #e53935';
+            cell.style.borderRadius = '4px';
+          });
+        }
+      });
+    }
+  }
+  
+  let idx = 0;
+  function next() {
+    if (idx >= steps.length || !animating) { animating = false; document.getElementById('startBtn').disabled = false; return; }
+    const step = steps[idx];
+    step.action();
+    document.getElementById('narrText').textContent = step.text;
+    speak(step.voice, () => {
+      idx++;
+      timeouts.push(setTimeout(next, 600));
+    });
+  }
+  next();
+}
+
+// ===== TAB 3: Candidate Notation =====
+const candExample = {
+  // A cell where candidates narrow down to exactly ONE number
+  // R0C0: Row has 2,5,7,8,9 → Col has 1,3,6 → Only 4 remains!
+  grid: [
+    [0,2,0, 5,7,8, 0,9,0],
+    [1,0,0, 0,0,0, 0,0,0],
+    [0,0,0, 0,0,0, 0,0,0],
+    [3,0,0, 0,0,0, 0,0,0],
+    [0,0,0, 0,0,0, 0,0,0],
+    [6,0,0, 0,0,0, 0,0,0],
+    [0,0,0, 0,0,0, 0,0,0],
+    [0,0,0, 0,0,0, 0,0,0],
+    [0,0,0, 0,0,0, 0,0,0]
+  ],
+  targetRow: 0, targetCol: 0,
+  allCandidates: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+  // Step-by-step: show candidates shrinking
+  eliminationSteps: [
+    { source: '行', nums: [2, 5, 7, 8, 9], voice: '横着看第1行！有2、5、7、8、9，这些排除掉！候选数从9个变成4个！' },
+    { source: '列', nums: [1, 3, 6], voice: '竖着看第1列！有1、3、6，再排除掉！只剩一个数了！' },
+  ],
+  remaining: [4],
+  finalAnswer: 4,
+  finalVoice: '太棒了！行排除5个、列再排除3个，9个候选数最后只剩4！答案就是4！这就是候选数标注法的威力！'
+};
+
+function renderCandidates() {
+  const scene = document.getElementById('scene');
+  scene.innerHTML = `
+    <div class="scene-title">📝 候选数标注法</div>
+    <div class="scene-desc">在空格的角落写上所有可能的小数字，<br>然后一步步排除，最后只剩一个就是答案！</div>
+    <div class="sudoku-container"><div class="sudoku-grid grid-9" id="candGrid"></div></div>
+    <div class="candidate-display" id="candDisplay"></div>
+    <div class="narration-box"><div class="narration-text" id="narrText">先在空格里标上所有候选数字（1-9），然后开始排除！</div></div>
+    <div class="controls">
+      <button class="btn primary" id="startBtn" onclick="startCandidates()">▶️ 开始演示</button>
+      <button class="btn secondary" onclick="stopAnimation(); renderCandidates()">🔄 重来</button>
+    </div>
+  `;
+  renderCandGrid();
+  renderCandidateNums([1,2,3,4,5,6,7,8,9], [], null);
+}
+
+function renderCandGrid() {
+  const container = document.getElementById('candGrid');
+  container.innerHTML = '';
+  const { grid, targetRow, targetCol } = candExample;
+  for (let r = 0; r < 9; r++) {
+    for (let c = 0; c < 9; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'sudoku-cell';
+      cell.id = `cand-${r}-${c}`;
+      addGridBorders(cell, r, c);
+      if (grid[r][c] !== 0) {
+        cell.textContent = grid[r][c];
+        cell.classList.add('given');
+      }
+      if (r === targetRow && c === targetCol) {
+        cell.classList.add('highlight-target');
+      }
+      container.appendChild(cell);
+    }
+  }
+}
+
+function startCandidates() {
+  if (animating) return;
+  animating = true;
+  document.getElementById('startBtn').disabled = true;
+  const { targetRow, targetCol, eliminationSteps, remaining, finalAnswer, finalVoice, allCandidates } = candExample;
+  
+  let eliminated = [];
+  const steps = [
+    {
+      text: '📝 第一步：在空格角落写上候选数 1-9',
+      voice: '首先，在这个空格的角落写上所有可能的数字，从1到9。这就是候选数标注法！',
+      action: () => {
+        const cell = document.getElementById(`cand-${targetRow}-${targetCol}`);
+        cell.innerHTML = '<div class="candidates">' + 
+          [1,2,3,4,5,6,7,8,9].map(n => `<span id="cand-n-${n}">${n}</span>`).join('') + '</div>';
+        cell.classList.remove('highlight-target');
+        cell.style.background = '#fff8e1';
+        renderCandidateNums(allCandidates, [], null);
+      }
+    }
+  ];
+  
+  eliminationSteps.forEach((es, idx) => {
+    steps.push({
+      text: `🔍 看${es.source}：排除 ${es.nums.join(', ')}`,
+      voice: es.voice,
+      action: () => {
+        eliminated = [...new Set([...eliminated, ...es.nums])];
+        // Update cell candidates
+        eliminated.forEach(n => {
+          const span = document.getElementById(`cand-n-${n}`);
+          if (span) span.classList.add('eliminated');
+        });
+        renderCandidateNums(allCandidates, eliminated, null);
+        // Highlight source
+        if (idx === 0) { // row
+          for (let c = 0; c < 9; c++) {
+            if (c !== targetCol) document.getElementById(`cand-${targetRow}-${c}`).classList.add('highlight-row');
+          }
+        } else if (idx === 1) { // col
+          for (let c = 0; c < 9; c++) document.getElementById(`cand-${targetRow}-${c}`).classList.remove('highlight-row');
+          for (let r = 0; r < 9; r++) {
+            if (r !== targetRow) document.getElementById(`cand-${r}-${targetCol}`).classList.add('highlight-col');
+          }
+        } else { // box
+          for (let r = 0; r < 9; r++) document.getElementById(`cand-${r}-${targetCol}`).classList.remove('highlight-col');
+          const boxR = Math.floor(targetRow / 3) * 3;
+          const boxC = Math.floor(targetCol / 3) * 3;
+          for (let r = boxR; r < boxR + 3; r++) {
+            for (let c = boxC; c < boxC + 3; c++) {
+              if (r !== targetRow || c !== targetCol) document.getElementById(`cand-${r}-${c}`).classList.add('highlight-box');
+            }
+          }
+        }
+      }
+    });
+  });
+  
+  steps.push({
+    text: `🎉 全部排除完毕！只剩数字 ${finalAnswer}！答案就是 ${finalAnswer}！`,
+    voice: finalVoice,
+    action: () => {
+      // clear highlights
+      for (let r = 0; r < 9; r++) for (let c = 0; c < 9; c++) {
+        const cell = document.getElementById(`cand-${r}-${c}`);
+        cell.classList.remove('highlight-row', 'highlight-col', 'highlight-box');
+      }
+      remaining.forEach(n => {
+        const span = document.getElementById(`cand-n-${n}`);
+        if (span) span.classList.add('survivor');
+      });
+      const cell = document.getElementById(`cand-${targetRow}-${targetCol}`);
+      cell.innerHTML = '';
+      cell.textContent = finalAnswer;
+      cell.style.color = '#2e7d32';
+      cell.style.fontSize = '22px';
+      cell.style.background = '#e8f5e9';
+      cell.classList.add('filled-anim');
+      renderCandidateNums(allCandidates, allCandidates.filter(n => n !== finalAnswer), finalAnswer);
+      const rect = cell.getBoundingClientRect();
+      spawnParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 15);
+    }
+  });
+  
+  let idx = 0;
+  function next() {
+    if (idx >= steps.length || !animating) { animating = false; document.getElementById('startBtn').disabled = false; return; }
+    const step = steps[idx];
+    step.action();
+    document.getElementById('narrText').textContent = step.text;
+    speak(step.voice, () => {
+      idx++;
+      timeouts.push(setTimeout(next, 600));
+    });
+  }
+  next();
+}
+
+// ===== Auto-play all =====
+function autoPlayAll() {
+  // Start from tab 0, play through all tabs
+  switchTab(0);
+  // After tab 0 animation... this is complex, skip for MVP
+}
+
+// ===== Init =====
+renderTab();
+</script>
+</body>
+</html>

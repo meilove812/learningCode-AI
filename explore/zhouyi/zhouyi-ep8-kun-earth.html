@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco传统文化讲解：坤卦">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>周易讲解 · 第八期：坤卦</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'PingFang SC', 'Noto Serif SC', serif;
+  background: #0a0a0f;
+  color: #e8e0d0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.pages-wrapper { width: 100%; height: 100%; position: relative; }
+.page {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 40px 24px;
+  opacity: 0; transform: translateX(100%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none; overflow: hidden;
+}
+.page.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.page.prev { opacity: 0; transform: translateX(-100%); }
+
+/* Backgrounds */
+.bg-void { background: radial-gradient(ellipse at center, #080808 0%, #000 70%); }
+.bg-cosmos { background: radial-gradient(ellipse at center, #0f0a1e 0%, #060410 70%); }
+.bg-dawn { background: linear-gradient(180deg, #0a0820 0%, #1a1545 50%, #0f0d25 100%); }
+.bg-light { background: linear-gradient(135deg, #1a1508 0%, #0f0d05 50%, #080604 100%); }
+.bg-dual { background: linear-gradient(135deg, #0a0a18 0%, #080812 100%); }
+.bg-nature { background: linear-gradient(180deg, #050a10 0%, #0a1520 50%, #050a0f 100%); }
+.bg-flow { background: radial-gradient(ellipse at 50% 60%, #0a1020 0%, #060810 70%); }
+.bg-balance { background: radial-gradient(ellipse at center, #100a18 0%, #080510 70%); }
+.bg-final { background: radial-gradient(ellipse at center, #0f0818 0%, #060410 70%); }
+.bg-earth { background: linear-gradient(180deg, #0a0808 0%, #15100a 50%, #0a0805 100%); }
+.bg-deep { background: radial-gradient(ellipse at 50% 70%, #0a0a05 0%, #050505 70%); }
+
+/* Typography */
+.title-main {
+  font-size: clamp(2.2em, 8vw, 3.5em);
+  font-weight: 900;
+  background: linear-gradient(135deg, #e8d5a0 0%, #a08040 50%, #ffd700 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-align: center; line-height: 1.3;
+  animation: textGlow 4s ease-in-out infinite;
+}
+@keyframes textGlow {
+  0%,100% { filter: brightness(1) drop-shadow(0 0 8px rgba(255,255,255,0.1)); }
+  50% { filter: brightness(1.15) drop-shadow(0 0 20px rgba(255,215,0,0.3)); }
+}
+.subtitle { font-size: clamp(0.85em, 3.2vw, 1.1em); color: #5a5040; margin-top: 12px; text-align: center; letter-spacing: 4px; }
+.page-title {
+  font-size: clamp(1.4em, 5.5vw, 2em); font-weight: 800;
+  color: #ffd700; text-align: center; margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(255,215,0,0.15);
+}
+.page-text {
+  font-size: clamp(0.95em, 3.8vw, 1.15em); line-height: 2;
+  text-align: center; color: #c8bca0; max-width: 560px;
+}
+.page-text .em { color: #ffd700; font-weight: bold; }
+.page-text .light { color: #f0f0f0; font-weight: bold; }
+.page-text .dark { color: #6a7a8a; }
+.fact-card {
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15);
+  border-radius: 12px; padding: 14px 18px; margin-top: 18px;
+  max-width: 480px; text-align: left; font-size: 0.88em; line-height: 1.8; color: #a89878;
+}
+.fact-card .label { color: #ffd700; font-weight: bold; margin-bottom: 4px; }
+
+/* Animations */
+.ani { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.page.active .ani { opacity: 1; transform: translateY(0); }
+.page.active .ani:nth-child(2) { transition-delay: 0.15s; }
+.page.active .ani:nth-child(3) { transition-delay: 0.3s; }
+.page.active .ani:nth-child(4) { transition-delay: 0.45s; }
+.page.active .ani:nth-child(5) { transition-delay: 0.6s; }
+.page.active .ani:nth-child(6) { transition-delay: 0.75s; }
+
+/* Particles */
+.particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.particle {
+  position: absolute; border-radius: 50%; opacity: 0;
+  animation: floatUp 7s ease-in-out infinite;
+}
+.particle-gold { background: radial-gradient(circle, #ffd700, transparent); }
+.particle-white { background: radial-gradient(circle, rgba(255,255,255,0.8), transparent); }
+.particle-earth { background: radial-gradient(circle, rgba(160,128,64,0.8), transparent); }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(100vh) scale(0.3); }
+  15% { opacity: 0.7; } 85% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(0.8); }
+}
+
+/* Stars */
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.star {
+  position: absolute; background: #fff; border-radius: 50%;
+  animation: twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.85; transform: scale(1.2); } }
+
+/* Navigation */
+.nav-hint {
+  position: fixed; bottom: 18px; left: 0; right: 0;
+  text-align: center; color: rgba(255,255,255,0.25); font-size: 0.75em;
+  pointer-events: none; transition: opacity 0.5s; z-index: 100;
+}
+.nav-dots {
+  position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 7px; z-index: 100;
+}
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); transition: all 0.3s; cursor: pointer;
+}
+.nav-dot.active { background: #ffd700; box-shadow: 0 0 6px rgba(255,215,0,0.5); transform: scale(1.4); }
+
+.audio-btn {
+  position: fixed; top: 14px; right: 14px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: #ffd700; font-size: 1.1em;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 200; backdrop-filter: blur(10px); transition: all 0.3s;
+}
+.audio-btn:active { transform: scale(0.9); }
+.audio-btn.playing { background: rgba(255,215,0,0.15); box-shadow: 0 0 12px rgba(255,215,0,0.2); }
+.page-num { position: fixed; top: 16px; left: 16px; font-size: 0.7em; color: rgba(255,255,255,0.2); z-index: 100; }
+
+/* Voice panel */
+.voice-panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(10,10,15,0.96); backdrop-filter: blur(20px);
+  padding: 20px; border-top: 1px solid rgba(255,215,0,0.15);
+  transform: translateY(100%); transition: transform 0.3s; z-index: 300;
+  border-radius: 18px 18px 0 0;
+}
+.voice-panel.show { transform: translateY(0); }
+.voice-panel label { display: block; color: #7a6a5a; font-size: 0.82em; margin-bottom: 6px; }
+.voice-panel select, .voice-panel input[type="range"] {
+  width: 100%; padding: 10px; border-radius: 8px;
+  border: 1px solid rgba(255,215,0,0.15); background: rgba(255,255,255,0.04);
+  color: #d4c8b0; font-size: 0.95em; margin-bottom: 12px;
+}
+.voice-panel .close-panel { text-align: center; color: #ffd700; cursor: pointer; padding: 8px; }
+
+/* Kun hexagram style */
+@keyframes earthPulse {
+  0%,100% { filter: drop-shadow(0 0 4px rgba(160,128,64,0.2)); }
+  50% { filter: drop-shadow(0 0 10px rgba(160,128,64,0.5)); }
+}
+.kun-svg { animation: earthPulse 4s ease-in-out infinite; }
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
+<div class="page-num" id="pageNum">1 / 10</div>
+<div class="nav-dots" id="navDots"></div>
+<div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
+
+<div class="pages-wrapper">
+
+  <!-- Page 1: Cover -->
+  <div class="page bg-earth active" data-page="0">
+    <div class="particles" id="p0"></div>
+    <div class="ani">
+      <svg class="kun-svg" width="180" height="220" viewBox="0 0 180 220">
+        <defs>
+          <linearGradient id="gYin" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#4a3a1a"/>
+            <stop offset="30%" stop-color="#a08040"/>
+            <stop offset="70%" stop-color="#a08040"/>
+            <stop offset="100%" stop-color="#4a3a1a"/>
+          </linearGradient>
+          <filter id="earthGlow">
+            <feGaussianBlur stdDeviation="2" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- Six yin yao lines (broken) from bottom to top -->
+        <!-- Yao 1 (bottom) -->
+        <rect x="20" y="180" width="58" height="12" rx="6" fill="url(#gYin)" filter="url(#earthGlow)" opacity="0.9">
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" begin="0s" repeatCount="indefinite"/>
+        </rect>
+        <rect x="102" y="180" width="58" height="12" rx="6" fill="url(#gYin)" filter="url(#earthGlow)" opacity="0.9">
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" begin="0s" repeatCount="indefinite"/>
+        </rect>
+        <!-- Yao 2 -->
+        <rect x="20" y="148" width="58" height="12" rx="6" fill="url(#gYin)" filter="url(#earthGlow)" opacity="0.9">
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" begin="0.4s" repeatCount="indefinite"/>
+        </rect>
+        <rect x="102" y="148" width="58" height="12" rx="6" fill="url(#gYin)" filter="url(#earthGlow)" opacity="0.9">
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" begin="0.4s" repeatCount="indefinite"/>
+        </rect>
+        <!-- Yao 3 -->
+        <rect x="20" y="116" width="58" height="12" rx="6" fill="url(#gYin)" filter="url(#earthGlow)" opacity="0.9">
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" begin="0.8s" repeatCount="indefinite"/>
+        </rect>
+        <rect x="102" y="116" width="58" height="12" rx="6" fill="url(#gYin)" filter="url(#earthGlow)" opacity="0.9">
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" begin="0.8s" repeatCount="indefinite"/>
+        </rect>
+        <!-- Yao 4 -->
+        <rect x="20" y="84" width="58" height="12" rx="6" fill="url(#gYin)" filter="url(#earthGlow)" opacity="0.9">
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" begin="1.2s" repeatCount="indefinite"/>
+        </rect>
+        <rect x="102" y="84" width="58" height="12" rx="6" fill="url(#gYin)" filter="url(#earthGlow)" opacity="0.9">
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" begin="1.2s" repeatCount="indefinite"/>
+        </rect>
+        <!-- Yao 5 -->
+        <rect x="20" y="52" width="58" height="12" rx="6" fill="url(#gYin)" filter="url(#earthGlow)" opacity="0.9">
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" begin="1.6s" repeatCount="indefinite"/>
+        </rect>
+        <rect x="102" y="52" width="58" height="12" rx="6" fill="url(#gYin)" filter="url(#earthGlow)" opacity="0.9">
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" begin="1.6s" repeatCount="indefinite"/>
+        </rect>
+        <!-- Yao 6 (top) -->
+        <rect x="20" y="20" width="58" height="12" rx="6" fill="url(#gYin)" filter="url(#earthGlow)" opacity="0.9">
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" begin="2s" repeatCount="indefinite"/>
+        </rect>
+        <rect x="102" y="20" width="58" height="12" rx="6" fill="url(#gYin)" filter="url(#earthGlow)" opacity="0.9">
+          <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" begin="2s" repeatCount="indefinite"/>
+        </rect>
+        <!-- Outer earth circle -->
+        <circle cx="90" cy="110" r="105" fill="none" stroke="rgba(160,128,64,0.08)" stroke-width="1">
+          <animate attributeName="r" values="100;108;100" dur="5s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+    </div>
+    <div class="title-main ani">坤 卦</div>
+    <div class="subtitle ani">第八期 · 地势坤，君子以厚德载物</div>
+  </div>
+
+  <!-- Page 2: Overview -->
+  <div class="page bg-deep" data-page="1">
+    <div class="stars" id="s1"></div>
+    <div class="ani">
+      <svg width="160" height="120" viewBox="0 0 160 120">
+        <defs>
+          <radialGradient id="gEarth" cx="50%" cy="60%" r="50%">
+            <stop offset="0%" stop-color="#3a2a10"/>
+            <stop offset="50%" stop-color="#201508"/>
+            <stop offset="100%" stop-color="#0a0805"/>
+          </radialGradient>
+          <linearGradient id="gSurface" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#5a8a3a"/>
+            <stop offset="100%" stop-color="#2a4a1a"/>
+          </linearGradient>
+        </defs>
+        <!-- Earth body -->
+        <ellipse cx="80" cy="75" rx="70" ry="40" fill="url(#gEarth)" stroke="rgba(160,128,64,0.2)" stroke-width="1"/>
+        <!-- Green surface -->
+        <path d="M15,60 Q40,50 80,52 Q120,50 145,60 Q130,55 80,54 Q30,55 15,60" fill="url(#gSurface)" opacity="0.4"/>
+        <!-- Trees/life on surface -->
+        <line x1="45" y1="52" x2="45" y2="40" stroke="#4a8a4a" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="45" cy="38" r="5" fill="rgba(74,138,74,0.4)"/>
+        <line x1="80" y1="50" x2="80" y2="35" stroke="#4a8a4a" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="80" cy="32" r="7" fill="rgba(74,138,74,0.5)"/>
+        <line x1="115" y1="52" x2="115" y2="42" stroke="#4a8a4a" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="115" cy="40" r="4" fill="rgba(74,138,74,0.4)"/>
+        <!-- Rivers inside -->
+        <path d="M40,70 Q60,75 80,70 Q100,65 120,70" fill="none" stroke="rgba(100,150,200,0.2)" stroke-width="1"/>
+        <!-- Minerals -->
+        <circle cx="55" cy="85" r="2" fill="rgba(255,215,0,0.3)"/>
+        <circle cx="100" cy="80" r="1.5" fill="rgba(255,215,0,0.2)"/>
+        <text x="80" y="115" text-anchor="middle" font-size="9" fill="rgba(160,128,64,0.5)">承载万物</text>
+      </svg>
+    </div>
+    <div class="page-title ani">纯阴之卦，六十四卦第二</div>
+    <div class="page-text ani">
+      坤卦，由<span class="em">六条阴爻</span>组成，<br>
+      是六十四卦中<span class="em">第二卦</span>。<br><br>
+      它代表着：<br>
+      <span class="em">地</span> — 广袤无垠的大地<br>
+      <span class="em">柔顺</span> — 温柔而坚韧的力量<br>
+      <span class="em">承载</span> — 包容一切的胸怀<br><br>
+      <span class="dark">大地从不挑拣，什么都托得住。</span>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">📌 卦辞</div>
+      "坤：元，亨，利牝马之贞。"<br>
+      母马温顺而有耐力，象征坤卦的品质：<br>
+      柔顺、坚韧、默默承载。
+    </div>
+  </div>
+
+  <!-- Page 3: 初六·履霜坚冰至 -->
+  <div class="page bg-void" data-page="2">
+    <div class="ani">
+      <svg width="200" height="150" viewBox="0 0 200 150">
+        <defs>
+          <linearGradient id="gFrost" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="rgba(180,200,255,0.1)"/>
+            <stop offset="100%" stop-color="rgba(100,120,180,0.05)"/>
+          </linearGradient>
+        </defs>
+        <!-- Ground with frost -->
+        <rect x="10" y="90" width="180" height="50" fill="url(#gFrost)" rx="5"/>
+        <!-- Frost crystals -->
+        <g opacity="0.6">
+          <line x1="40" y1="88" x2="40" y2="82" stroke="#a0c0e0" stroke-width="1" stroke-linecap="round">
+            <animate attributeName="opacity" values="0.3;0.8;0.3" dur="3s" repeatCount="indefinite"/>
+          </line>
+          <line x1="37" y1="85" x2="43" y2="85" stroke="#a0c0e0" stroke-width="1" stroke-linecap="round"/>
+          <line x1="80" y1="87" x2="80" y2="80" stroke="#a0c0e0" stroke-width="1" stroke-linecap="round">
+            <animate attributeName="opacity" values="0.3;0.8;0.3" dur="3s" begin="1s" repeatCount="indefinite"/>
+          </line>
+          <line x1="77" y1="83" x2="83" y2="83" stroke="#a0c0e0" stroke-width="1" stroke-linecap="round"/>
+          <line x1="130" y1="88" x2="130" y2="81" stroke="#a0c0e0" stroke-width="1" stroke-linecap="round">
+            <animate attributeName="opacity" values="0.3;0.8;0.3" dur="3s" begin="2s" repeatCount="indefinite"/>
+          </line>
+          <line x1="127" y1="84" x2="133" y2="84" stroke="#a0c0e0" stroke-width="1" stroke-linecap="round"/>
+        </g>
+        <!-- Foot stepping on frost -->
+        <ellipse cx="100" cy="92" rx="15" ry="5" fill="rgba(180,200,255,0.15)" stroke="rgba(180,200,255,0.3)" stroke-width="1">
+          <animate attributeName="rx" values="14;16;14" dur="2s" repeatCount="indefinite"/>
+        </ellipse>
+        <!-- Arrow to future ice -->
+        <path d="M130,95 L160,95" fill="none" stroke="rgba(100,150,200,0.4)" stroke-width="1.5" stroke-dasharray="3 3">
+          <animate attributeName="stroke-dashoffset" values="6;0" dur="1s" repeatCount="indefinite"/>
+        </path>
+        <polygon points="162,91 172,95 162,99" fill="rgba(100,150,200,0.4)"/>
+        <!-- Ice block (future) -->
+        <rect x="175" y="80" width="20" height="25" rx="3" fill="rgba(150,200,255,0.15)" stroke="rgba(150,200,255,0.3)" stroke-width="1"/>
+        <text x="185" y="97" text-anchor="middle" font-size="8" fill="rgba(150,200,255,0.5)">冰</text>
+        <!-- Labels -->
+        <text x="100" y="75" text-anchor="middle" font-size="9" fill="rgba(180,200,255,0.5)">踩到霜...</text>
+        <text x="185" y="75" text-anchor="middle" font-size="8" fill="rgba(150,200,255,0.4)">冰要来了</text>
+        <!-- Magnifying glass effect -->
+        <circle cx="55" cy="50" r="18" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="1.5"/>
+        <line x1="68" y1="63" x2="78" y2="73" stroke="rgba(255,215,0,0.3)" stroke-width="2" stroke-linecap="round"/>
+        <text x="55" y="54" text-anchor="middle" font-size="8" fill="rgba(255,215,0,0.5)">见微</text>
+        <text x="55" y="43" text-anchor="middle" font-size="8" fill="rgba(255,215,0,0.5)">知著</text>
+      </svg>
+    </div>
+    <div class="page-title ani">初六 · 履霜坚冰至</div>
+    <div class="page-text ani">
+      脚踩到<span class="em">薄霜</span>的时候，<br>
+      就知道<span class="em">结冰的日子</span>要来了。<br><br>
+      这叫<span class="em">「见微知著」</span>——<br>
+      从很小的迹象，<br>
+      就能预判大的变化。<br><br>
+      <span class="dark">秋天落叶时，要开始准备冬衣。</span><br>
+      <span class="dark">小问题出现时，要及时解决。</span>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">🔍 生活比喻</div>
+      作业上出现小错误，不改正的话，<br>
+      考试时就会出大错。<br>
+      从小事看到大趋势，是聪明人的本领！
+    </div>
+  </div>
+
+  <!-- Page 4: 六二·直方大 -->
+  <div class="page bg-nature" data-page="3">
+    <div class="particles" id="p3"></div>
+    <div class="ani">
+      <svg width="200" height="140" viewBox="0 0 200 140">
+        <defs>
+          <linearGradient id="gLand" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#3a5a20"/>
+            <stop offset="100%" stop-color="#1a2a10"/>
+          </linearGradient>
+        </defs>
+        <!-- Vast flat land -->
+        <rect x="0" y="70" width="200" height="60" fill="url(#gLand)" rx="3"/>
+        <!-- Horizon line -->
+        <line x1="0" y1="70" x2="200" y2="70" stroke="rgba(100,180,100,0.3)" stroke-width="1"/>
+        <!-- Things growing on land (trees, houses, flowers) -->
+        <rect x="30" y="55" width="12" height="15" fill="rgba(160,100,50,0.3)" rx="1"/>
+        <polygon points="26,55 36,40 46,55" fill="rgba(100,60,30,0.3)"/>
+        <line x1="80" y1="70" x2="80" y2="50" stroke="#4a8a4a" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="80" cy="46" r="8" fill="rgba(74,138,74,0.4)"/>
+        <circle cx="120" cy="65" r="3" fill="rgba(255,150,150,0.3)"/>
+        <circle cx="125" cy="67" r="2" fill="rgba(255,200,100,0.3)"/>
+        <line x1="150" y1="70" x2="150" y2="55" stroke="#4a8a4a" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="150" cy="50" r="10" fill="rgba(74,138,74,0.5)"/>
+        <!-- Person walking peacefully -->
+        <circle cx="100" cy="60" r="4" fill="rgba(200,180,150,0.4)"/>
+        <line x1="100" y1="64" x2="100" y2="75" stroke="rgba(200,180,150,0.4)" stroke-width="1.5"/>
+        <!-- Three virtue labels -->
+        <text x="40" y="125" text-anchor="middle" font-size="10" fill="rgba(255,215,0,0.5)">直</text>
+        <text x="100" y="125" text-anchor="middle" font-size="10" fill="rgba(255,215,0,0.5)">方</text>
+        <text x="160" y="125" text-anchor="middle" font-size="10" fill="rgba(255,215,0,0.5)">大</text>
+      </svg>
+    </div>
+    <div class="page-title ani">六二 · 直方大</div>
+    <div class="page-text ani">
+      <span class="em">直</span> — 正直，不弯不绕<br>
+      <span class="em">方</span> — 方正，有原则有规矩<br>
+      <span class="em">大</span> — 宽大，包容万物<br><br>
+      大地不用刻意学习，<br>
+      <span class="em">自然而然</span>就能承载一切。<br><br>
+      山川河流、花草树木，<br>
+      它全都<span class="em">默默托住</span>，从不抱怨。
+    </div>
+    <div class="fact-card ani">
+      <div class="label">🌍 比喻</div>
+      大地无需刻意努力就承载万物。<br>
+      做人也一样：正直、有原则、心胸宽广，<br>
+      自然就会得到别人的信任和尊重。
+    </div>
+  </div>
+
+  <!-- Page 5: 六三·含章可贞 -->
+  <div class="page bg-dawn" data-page="4">
+    <div class="stars" id="s4"></div>
+    <div class="ani">
+      <svg width="200" height="140" viewBox="0 0 200 140">
+        <!-- Beautiful flower hidden behind leaves -->
+        <defs>
+          <radialGradient id="gLeafGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(100,200,100,0.2)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+        <!-- Stem and leaves -->
+        <line x1="100" y1="130" x2="100" y2="60" stroke="#3a6a3a" stroke-width="3" stroke-linecap="round"/>
+        <ellipse cx="82" cy="90" rx="15" ry="7" fill="rgba(60,120,60,0.5)" transform="rotate(-20 82 90)"/>
+        <ellipse cx="118" cy="85" rx="15" ry="7" fill="rgba(60,120,60,0.5)" transform="rotate(20 118 85)"/>
+        <ellipse cx="85" cy="75" rx="13" ry="6" fill="rgba(60,120,60,0.4)" transform="rotate(-15 85 75)"/>
+        <ellipse cx="115" cy="72" rx="13" ry="6" fill="rgba(60,120,60,0.4)" transform="rotate(15 115 72)"/>
+        <!-- Hidden glow (talent within) -->
+        <circle cx="100" cy="70" r="12" fill="url(#gLeafGlow)">
+          <animate attributeName="r" values="10;14;10" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="100" cy="70" r="5" fill="rgba(255,215,0,0.3)">
+          <animate attributeName="opacity" values="0.3;0.7;0.3" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <!-- Subtle sparkles from within -->
+        <circle cx="95" cy="65" r="1" fill="rgba(255,215,0,0.5)">
+          <animate attributeName="opacity" values="0;0.8;0" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="105" cy="67" r="1" fill="rgba(255,215,0,0.5)">
+          <animate attributeName="opacity" values="0;0.8;0" dur="2s" begin="0.7s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="100" cy="62" r="1" fill="rgba(255,215,0,0.5)">
+          <animate attributeName="opacity" values="0;0.8;0" dur="2s" begin="1.4s" repeatCount="indefinite"/>
+        </circle>
+        <text x="100" y="20" text-anchor="middle" font-size="9" fill="rgba(255,215,0,0.4)">含而不露 · 默默发光</text>
+      </svg>
+    </div>
+    <div class="page-title ani">六三 · 含章可贞</div>
+    <div class="page-text ani">
+      <span class="em">「含章」</span>= 有才华但藏起来<br>
+      <span class="em">「可贞」</span>= 坚守正道也能成功<br><br>
+      有本事不一定要炫耀，<br>
+      默默做好自己的事，<br>
+      跟随团队一起前进，<br>
+      照样能<span class="em">发光发热</span>。<br><br>
+      <span class="dark">绿叶不争花的风头，</span><br>
+      <span class="dark">但花离不开绿叶的陪伴。</span>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">🍃 比喻</div>
+      班里的"好帮手"，不一定总是第一名，<br>
+      但大家都离不开他。<br>
+      有实力 + 低调 = 最安稳的成功。
+    </div>
+  </div>
+
+  <!-- Page 6: 六四·括囊无咎 -->
+  <div class="page bg-flow" data-page="5">
+    <div class="ani">
+      <svg width="200" height="160" viewBox="0 0 200 160">
+        <!-- Bag/pouch tied shut -->
+        <path d="M70,100 Q70,50 100,45 Q130,50 130,100 Q130,120 100,125 Q70,120 70,100" fill="rgba(160,120,60,0.15)" stroke="rgba(160,120,60,0.4)" stroke-width="2"/>
+        <!-- Tie at top -->
+        <path d="M85,50 Q100,40 115,50" fill="none" stroke="rgba(200,150,50,0.6)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="100" cy="42" r="4" fill="rgba(200,150,50,0.4)"/>
+        <!-- X mark on mouth (sealed) -->
+        <line x1="92" y1="55" x2="108" y2="65" stroke="rgba(255,100,100,0.3)" stroke-width="1.5"/>
+        <line x1="108" y1="55" x2="92" y2="65" stroke="rgba(255,100,100,0.3)" stroke-width="1.5"/>
+        <!-- Turtle shell below -->
+        <ellipse cx="100" cy="140" rx="20" ry="10" fill="rgba(80,100,60,0.2)" stroke="rgba(80,100,60,0.3)" stroke-width="1"/>
+        <path d="M85,137 Q100,130 115,137" fill="none" stroke="rgba(80,100,60,0.3)" stroke-width="1"/>
+        <!-- Turtle head peeking -->
+        <circle cx="82" cy="140" r="4" fill="rgba(80,100,60,0.2)" stroke="rgba(80,100,60,0.3)" stroke-width="0.5"/>
+        <!-- Peace symbol -->
+        <text x="100" y="95" text-anchor="middle" font-size="20" fill="rgba(100,180,100,0.3)">☮</text>
+        <text x="100" y="155" text-anchor="middle" font-size="8" fill="rgba(100,180,100,0.4)">谨慎低调 · 平安无事</text>
+        <!-- Shield indicator -->
+        <text x="155" y="50" font-size="9" fill="rgba(100,200,100,0.5)">✓ 无咎</text>
+      </svg>
+    </div>
+    <div class="page-title ani">六四 · 括囊无咎</div>
+    <div class="page-text ani">
+      <span class="em">「括囊」</span>= 扎紧口袋<br>
+      <span class="em">「无咎」</span>= 不会犯错<br><br>
+      有时候<span class="em">少说话</span>是最聪明的。<br>
+      把嘴巴管好，不乱发言，<br>
+      <span class="em">谨慎低调</span>，就不会惹祸。<br><br>
+      就像乌龟把头缩进壳里，<br>
+      外面再危险，<span class="em">它都安然无恙</span>。
+    </div>
+    <div class="fact-card ani">
+      <div class="label">🐢 关键时机</div>
+      当形势不好的时候，别逞强。<br>
+      闭嘴、低调、保护自己。<br>
+      等危险过去了，再出来。
+    </div>
+  </div>
+
+  <!-- Page 7: 六五·黄裳元吉 -->
+  <div class="page bg-light" data-page="6">
+    <div class="particles" id="p6"></div>
+    <div class="ani">
+      <svg width="200" height="160" viewBox="0 0 200 160">
+        <defs>
+          <radialGradient id="gYellow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(255,215,0,0.3)"/>
+            <stop offset="100%" stop-color="rgba(200,160,0,0.05)"/>
+          </radialGradient>
+        </defs>
+        <!-- Yellow garment (裳 = lower garment) -->
+        <path d="M75,50 L65,130 Q100,140 135,130 L125,50 Q100,45 75,50" fill="url(#gYellow)" stroke="rgba(255,215,0,0.4)" stroke-width="1.5"/>
+        <!-- Belt -->
+        <path d="M75,50 Q100,45 125,50" fill="none" stroke="rgba(255,215,0,0.6)" stroke-width="2"/>
+        <!-- Pattern on garment -->
+        <circle cx="100" cy="80" r="8" fill="none" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+        <circle cx="100" cy="80" r="3" fill="rgba(255,215,0,0.15)"/>
+        <!-- Center/middle indicator -->
+        <line x1="100" y1="20" x2="100" y2="35" stroke="rgba(255,215,0,0.3)" stroke-width="1" stroke-dasharray="2 2"/>
+        <text x="100" y="16" text-anchor="middle" font-size="9" fill="rgba(255,215,0,0.5)">中</text>
+        <!-- Balance scale concept -->
+        <line x1="60" y1="30" x2="140" y2="30" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+        <circle cx="60" cy="30" r="3" fill="rgba(255,215,0,0.2)"/>
+        <circle cx="140" cy="30" r="3" fill="rgba(255,215,0,0.2)"/>
+        <polygon points="97,28 103,28 100,25" fill="rgba(255,215,0,0.3)"/>
+        <!-- Label -->
+        <text x="100" y="155" text-anchor="middle" font-size="9" fill="rgba(255,215,0,0.4)">黄色 = 中色 · 不偏不倚</text>
+      </svg>
+    </div>
+    <div class="page-title ani">六五 · 黄裳元吉</div>
+    <div class="page-text ani">
+      <span class="em">黄</span> — 五色中居中的颜色<br>
+      <span class="em">裳</span> — 下身的衣裳，谦卑<br>
+      <span class="em">元吉</span> — 大吉大利！<br><br>
+      穿黄色下裳，意思是：<br>
+      居中不偏 + 谦逊低调 = <span class="em">最好的状态</span><br><br>
+      <span class="dark">不争第一，不做最后，</span><br>
+      <span class="dark">恰好在中间，温和而有力。</span>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">💛 为什么黄色最好？</div>
+      五行中黄色属土，居中央。<br>
+      不红不白不黑不青，<br>
+      恰好是最平衡的位置。<br>
+      做人不激进也不退缩，刚刚好！
+    </div>
+  </div>
+
+  <!-- Page 8: 上六·龙战于野 -->
+  <div class="page bg-balance" data-page="7">
+    <div class="ani">
+      <svg width="220" height="150" viewBox="0 0 220 150">
+        <defs>
+          <linearGradient id="gConflict" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="rgba(100,120,200,0.5)"/>
+            <stop offset="100%" stop-color="rgba(255,215,0,0.5)"/>
+          </linearGradient>
+        </defs>
+        <!-- Battlefield -->
+        <rect x="10" y="100" width="200" height="40" fill="rgba(60,40,20,0.2)" rx="5"/>
+        <!-- Two dragons clashing -->
+        <!-- Yin dragon (blue/dark) -->
+        <path d="M40,70 Q55,50 70,55 Q85,60 90,75" fill="none" stroke="rgba(100,120,200,0.6)" stroke-width="2.5" stroke-linecap="round">
+          <animate attributeName="d" values="M40,70 Q55,50 70,55 Q85,60 90,75;M40,65 Q55,45 70,50 Q85,55 90,70;M40,70 Q55,50 70,55 Q85,60 90,75" dur="2s" repeatCount="indefinite"/>
+        </path>
+        <circle cx="90" cy="75" r="6" fill="rgba(100,120,200,0.3)" stroke="rgba(100,120,200,0.5)" stroke-width="1"/>
+        <!-- Yang dragon (gold) -->
+        <path d="M180,70 Q165,50 150,55 Q135,60 130,75" fill="none" stroke="rgba(255,215,0,0.6)" stroke-width="2.5" stroke-linecap="round">
+          <animate attributeName="d" values="M180,70 Q165,50 150,55 Q135,60 130,75;M180,65 Q165,45 150,50 Q135,55 130,70;M180,70 Q165,50 150,55 Q135,60 130,75" dur="2s" repeatCount="indefinite"/>
+        </path>
+        <circle cx="130" cy="75" r="6" fill="rgba(255,215,0,0.3)" stroke="rgba(255,215,0,0.5)" stroke-width="1"/>
+        <!-- Clash sparks in middle -->
+        <circle cx="110" cy="72" r="3" fill="rgba(255,100,100,0.5)">
+          <animate attributeName="r" values="2;5;2" dur="1s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.3;0.8;0.3" dur="1s" repeatCount="indefinite"/>
+        </circle>
+        <line x1="105" y1="67" x2="102" y2="62" stroke="rgba(255,100,100,0.4)" stroke-width="1">
+          <animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite"/>
+        </line>
+        <line x1="115" y1="67" x2="118" y2="62" stroke="rgba(255,100,100,0.4)" stroke-width="1">
+          <animate attributeName="opacity" values="0;1;0" dur="1.5s" begin="0.5s" repeatCount="indefinite"/>
+        </line>
+        <!-- Labels -->
+        <text x="60" y="95" text-anchor="middle" font-size="9" fill="rgba(100,120,200,0.5)">阴(坤)</text>
+        <text x="160" y="95" text-anchor="middle" font-size="9" fill="rgba(255,215,0,0.5)">阳(乾)</text>
+        <text x="110" y="55" text-anchor="middle" font-size="9" fill="rgba(255,100,100,0.5)">⚡冲突</text>
+        <text x="110" y="140" text-anchor="middle" font-size="8" fill="rgba(255,100,100,0.4)">物极必反 · 阴极则阳来</text>
+      </svg>
+    </div>
+    <div class="page-title ani">上六 · 龙战于野</div>
+    <div class="page-text ani">
+      阴走到了<span class="em">最极端</span>的位置，<br>
+      就会和阳发生<span class="em">冲突</span>。<br><br>
+      这叫<span class="em">「物极必反」</span>——<br>
+      太过柔顺、太过退让，<br>
+      反而会引发<span class="em">激烈的反弹</span>。<br><br>
+      <span class="dark">忍耐有度，退让有底线。</span><br>
+      <span class="dark">过度压抑，终究会爆发。</span>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">⚠️ 教训</div>
+      总是忍气吞声，最后会忍不住大爆发。<br>
+      有话好好说，不要积累到极点。<br>
+      柔顺是美德，但要有原则底线。
+    </div>
+  </div>
+
+  <!-- Page 9: Life Wisdom -->
+  <div class="page bg-dual" data-page="8">
+    <div class="particles" id="p8"></div>
+    <div class="ani">
+      <svg width="240" height="100" viewBox="0 0 240 100">
+        <defs>
+          <linearGradient id="gQianKun" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="rgba(255,215,0,0.5)"/>
+            <stop offset="50%" stop-color="rgba(200,180,100,0.3)"/>
+            <stop offset="100%" stop-color="rgba(100,120,200,0.5)"/>
+          </linearGradient>
+        </defs>
+        <!-- Qian (heaven) above -->
+        <rect x="20" y="15" width="80" height="5" rx="2" fill="rgba(255,215,0,0.5)"/>
+        <rect x="20" y="25" width="80" height="5" rx="2" fill="rgba(255,215,0,0.5)"/>
+        <rect x="20" y="35" width="80" height="5" rx="2" fill="rgba(255,215,0,0.5)"/>
+        <text x="60" y="55" text-anchor="middle" font-size="9" fill="rgba(255,215,0,0.6)">☰ 乾·天</text>
+        <!-- Kun (earth) below -->
+        <rect x="140" y="15" width="35" height="5" rx="2" fill="rgba(160,128,64,0.5)"/>
+        <rect x="185" y="15" width="35" height="5" rx="2" fill="rgba(160,128,64,0.5)"/>
+        <rect x="140" y="25" width="35" height="5" rx="2" fill="rgba(160,128,64,0.5)"/>
+        <rect x="185" y="25" width="35" height="5" rx="2" fill="rgba(160,128,64,0.5)"/>
+        <rect x="140" y="35" width="35" height="5" rx="2" fill="rgba(160,128,64,0.5)"/>
+        <rect x="185" y="35" width="35" height="5" rx="2" fill="rgba(160,128,64,0.5)"/>
+        <text x="180" y="55" text-anchor="middle" font-size="9" fill="rgba(160,128,64,0.6)">☷ 坤·地</text>
+        <!-- Connection -->
+        <path d="M100,35 Q120,50 140,35" fill="none" stroke="url(#gQianKun)" stroke-width="1.5" stroke-dasharray="3 3">
+          <animate attributeName="stroke-dashoffset" values="6;0" dur="2s" repeatCount="indefinite"/>
+        </path>
+        <text x="120" y="65" text-anchor="middle" font-size="8" fill="rgba(200,180,100,0.5)">配合</text>
+        <!-- Bottom: combined wisdom -->
+        <text x="120" y="85" text-anchor="middle" font-size="10" fill="rgba(255,215,0,0.5)">天地合 · 万物生</text>
+      </svg>
+    </div>
+    <div class="page-title ani">坤卦的人生智慧</div>
+    <div class="page-text ani">
+      坤卦教会我们三件事：<br><br>
+      <span class="em">① 承载</span> — 包容别人，托起团队<br>
+      <span class="em">② 包容</span> — 心胸宽广，不斤斤计较<br>
+      <span class="em">③ 厚积薄发</span> — 默默积累，等待时机<br><br>
+      <span class="light">乾是创造的力量，坤是承载的力量。</span><br>
+      <span class="light">乾坤配合 = 天地之道。</span><br><br>
+      <span class="dark">天负责开创，地负责养育。</span><br>
+      <span class="dark">两个缺一不可。</span>
+    </div>
+  </div>
+
+  <!-- Page 10: Summary -->
+  <div class="page bg-final" data-page="9">
+    <div class="particles" id="p9"></div>
+    <div class="ani">
+      <svg width="80" height="100" viewBox="0 0 80 100">
+        <defs>
+          <linearGradient id="gYinFinal" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#4a3a1a"/>
+            <stop offset="50%" stop-color="#a08040"/>
+            <stop offset="100%" stop-color="#4a3a1a"/>
+          </linearGradient>
+        </defs>
+        <rect x="5" y="75" width="28" height="7" rx="3" fill="url(#gYinFinal)" opacity="0.8"/>
+        <rect x="47" y="75" width="28" height="7" rx="3" fill="url(#gYinFinal)" opacity="0.8"/>
+        <rect x="5" y="62" width="28" height="7" rx="3" fill="url(#gYinFinal)" opacity="0.8"/>
+        <rect x="47" y="62" width="28" height="7" rx="3" fill="url(#gYinFinal)" opacity="0.8"/>
+        <rect x="5" y="49" width="28" height="7" rx="3" fill="url(#gYinFinal)" opacity="0.8"/>
+        <rect x="47" y="49" width="28" height="7" rx="3" fill="url(#gYinFinal)" opacity="0.8"/>
+        <rect x="5" y="36" width="28" height="7" rx="3" fill="url(#gYinFinal)" opacity="0.8"/>
+        <rect x="47" y="36" width="28" height="7" rx="3" fill="url(#gYinFinal)" opacity="0.8"/>
+        <rect x="5" y="23" width="28" height="7" rx="3" fill="url(#gYinFinal)" opacity="0.8"/>
+        <rect x="47" y="23" width="28" height="7" rx="3" fill="url(#gYinFinal)" opacity="0.8"/>
+        <rect x="5" y="10" width="28" height="7" rx="3" fill="url(#gYinFinal)" opacity="0.8"/>
+        <rect x="47" y="10" width="28" height="7" rx="3" fill="url(#gYinFinal)" opacity="0.8"/>
+        <text x="40" y="96" text-anchor="middle" font-size="8" fill="rgba(160,128,64,0.5)">☷ 坤</text>
+      </svg>
+    </div>
+    <div class="page-title ani">小结</div>
+    <div class="page-text ani">
+      <span class="em">坤卦</span> = 纯阴、地、柔顺<br><br>
+      核心精神：<br>
+      <span class="em">地势坤，君子以厚德载物。</span><br><br>
+      大地的六个教诲：<br>
+      见微知著、正直宽大、<br>
+      含蓄内敛、谨慎守口、<br>
+      中正谦逊、刚柔有度。<br><br>
+      <span class="dark">乾为父，坤为母。</span><br>
+      <span class="dark">有天的刚健，有地的包容，</span><br>
+      <span class="dark">才是完整的天地之道。</span>
+    </div>
+    <div class="ani" style="margin-top:20px;padding:12px 20px;border:1px solid rgba(255,215,0,0.15);border-radius:10px;text-align:center;">
+      <div style="color:#ffd700;font-size:1em;font-weight:bold;">下一期预告</div>
+      <div style="color:#6a5a4a;margin-top:5px;">第九期 · 变卦与动爻 — 易之为书，不可远</div>
+    </div>
+    <div class="ani" style="margin-top:12px;color:#3a3a3a;font-size:0.72em;">— 周易讲解 · 第八期 完 —</div>
+  </div>
+
+</div>
+
+<!-- Voice Panel -->
+<div class="voice-panel" id="voicePanel">
+  <label>🗣️ 声音 <select id="voiceSelect"></select></label>
+  <label>🔊 语速: <span id="rateVal">0.9</span>x <input type="range" id="rateRange" min="0.5" max="1.5" step="0.1" value="0.9"></label>
+  <div class="close-panel" onclick="toggleVoicePanel()">✕ 关闭</div>
+</div>
+
+<script>
+let cur = 0;
+const pages = document.querySelectorAll('.page');
+const total = pages.length;
+let animating = false, speaking = false;
+
+const navDots = document.getElementById('navDots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => go(i);
+  navDots.appendChild(d);
+}
+
+function go(idx) {
+  if (idx < 0 || idx >= total || idx === cur || animating) return;
+  animating = true;
+  window.speechSynthesis.cancel();
+  const old = pages[cur], nw = pages[idx], dir = idx > cur ? 1 : -1;
+  old.classList.remove('active'); old.classList.add('prev');
+  if (dir < 0) { old.style.transform = 'translateX(100%)'; old.style.opacity = '0'; }
+  nw.style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+  nw.classList.remove('prev');
+  requestAnimationFrame(() => {
+    nw.classList.add('active'); nw.style.transform = '';
+    cur = idx; updateUI();
+    setTimeout(() => {
+      animating = false;
+      old.classList.remove('prev'); old.style.transform = ''; old.style.opacity = '';
+      if (speaking) speakPage(cur);
+    }, 650);
+  });
+}
+
+function updateUI() {
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.getElementById('pageNum').textContent = `${cur + 1} / ${total}`;
+  document.getElementById('navHint').style.opacity = '0';
+}
+
+let tx = 0, ty = 0, tt = 0;
+document.addEventListener('touchstart', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY; tt = Date.now();
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty, dt = Date.now() - tt;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 500) { dx < 0 ? go(cur+1) : go(cur-1); return; }
+  if (dt < 300 && Math.abs(dx) < 15 && Math.abs(dy) < 15) {
+    e.changedTouches[0].clientX > window.innerWidth * 0.4 ? go(cur+1) : go(cur-1);
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur+1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur-1); }
+});
+
+// TTS
+const narrations = [
+  "坤卦。第八期，地势坤，君子以厚德载物。",
+  "坤卦，由六条阴爻组成，是六十四卦中的第二卦。它代表地、柔顺和承载。大地从不挑拣，什么都托得住。卦辞说：元，亨，利牝马之贞。母马温顺而有耐力，象征坤卦柔顺、坚韧、默默承载的品质。",
+  "初六，履霜坚冰至。脚踩到薄霜的时候，就知道结冰的日子要来了。这叫见微知著，从很小的迹象，就能预判大的变化。作业上出现小错误不改正，考试时就会出大错。从小事看到大趋势，是聪明人的本领。",
+  "六二，直方大。直是正直，方是方正，大是宽大。大地不用刻意学习，自然而然就能承载一切。山川河流、花草树木，它全都默默托住，从不抱怨。做人正直、有原则、心胸宽广，自然就会得到别人的信任和尊重。",
+  "六三，含章可贞。含章就是有才华但藏起来，可贞就是坚守正道也能成功。有本事不一定要炫耀，默默做好自己的事，跟随团队一起前进，照样能发光发热。绿叶不争花的风头，但花离不开绿叶的陪伴。",
+  "六四，括囊无咎。括囊就是扎紧口袋，无咎就是不会犯错。有时候少说话是最聪明的。把嘴巴管好，不乱发言，谨慎低调，就不会惹祸。就像乌龟把头缩进壳里，外面再危险，它都安然无恙。",
+  "六五，黄裳元吉。黄是五色中居中的颜色，裳是下身的衣裳代表谦卑，元吉就是大吉大利。穿黄色下裳的意思是，居中不偏加上谦逊低调，等于最好的状态。不争第一不做最后，恰好在中间，温和而有力。",
+  "上六，龙战于野。阴走到了最极端的位置，就会和阳发生冲突。太过柔顺、太过退让，反而会引发激烈的反弹。忍耐有度，退让有底线。过度压抑，终究会爆发。有话好好说，不要积累到极点。",
+  "坤卦的人生智慧。坤卦教会我们三件事：承载，包容别人，托起团队。包容，心胸宽广，不斤斤计较。厚积薄发，默默积累，等待时机。乾是创造的力量，坤是承载的力量。乾坤配合，就是天地之道。",
+  "小结。坤卦代表纯阴、地、柔顺。核心精神是地势坤，君子以厚德载物。大地的六个教诲：见微知著、正直宽大、含蓄内敛、谨慎守口、中正谦逊、刚柔有度。乾为父，坤为母。有天的刚健，有地的包容，才是完整的天地之道。下一期，我们来讲变卦与动爻。"
+];
+
+let voices = [];
+function loadVoices() {
+  voices = window.speechSynthesis.getVoices();
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+  const zh = voices.filter(v => (v.lang.startsWith('zh-CN')||v.lang==='zh')&&!v.lang.startsWith('zh-HK')&&!v.lang.startsWith('zh-TW'));
+  // Sort: Edge Online (Natural) first
+  zh.sort((a, b) => {
+    const aOnline = a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Online') && a.name.includes('Natural') ? 2 : a.name.includes('Microsoft') ? 1 : 0;
+    const bOnline = b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Online') && b.name.includes('Natural') ? 2 : b.name.includes('Microsoft') ? 1 : 0;
+    return bOnline - aOnline;
+  });
+  (zh.length ? zh : voices.slice(0, 8)).forEach(v => {
+    const o = document.createElement('option');
+    o.value = voices.indexOf(v);
+    o.textContent = v.name.replace(/Microsoft |Google |Apple /g, '');
+    sel.appendChild(o);
+  });
+}
+window.speechSynthesis.onvoiceschanged = loadVoices;
+setTimeout(loadVoices, 300);
+document.getElementById('rateRange').addEventListener('input', function() {
+  document.getElementById('rateVal').textContent = this.value;
+});
+
+function speakPage(idx) {
+  window.speechSynthesis.cancel();
+  if (!narrations[idx]) return;
+  const u = new SpeechSynthesisUtterance(narrations[idx]);
+  u.lang = 'zh-CN'; u.rate = parseFloat(document.getElementById('rateRange').value);
+  const sv = document.getElementById('voiceSelect');
+  if (sv.value && voices[sv.value]) u.voice = voices[sv.value];
+  u.onend = () => {
+    if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
+    else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
+  };
+  window.speechSynthesis.speak(u);
+}
+
+function toggleAudio() {
+  if (speaking) { speaking = false; window.speechSynthesis.cancel(); }
+  else { speaking = true; speakPage(cur); }
+  updateAudioBtn();
+}
+function updateAudioBtn() {
+  const b = document.getElementById('audioBtn');
+  b.textContent = speaking ? '🔊' : '🔇';
+  b.classList.toggle('playing', speaking);
+}
+
+let lpt;
+document.getElementById('audioBtn').addEventListener('touchstart', e => {
+  lpt = setTimeout(() => { toggleVoicePanel(); e.preventDefault(); }, 600);
+}, { passive: false });
+document.getElementById('audioBtn').addEventListener('touchend', () => clearTimeout(lpt));
+function toggleVoicePanel() { document.getElementById('voicePanel').classList.toggle('show'); }
+
+// Particles & Stars
+function mkParticles(id, n=15) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div');
+    const types = ['particle-gold', 'particle-white', 'particle-earth'];
+    p.className = 'particle ' + types[Math.floor(Math.random()*3)];
+    p.style.left = Math.random()*100+'%';
+    p.style.animationDelay = Math.random()*7+'s';
+    p.style.animationDuration = (5+Math.random()*4)+'s';
+    const s = 2+Math.random()*4; p.style.width = s+'px'; p.style.height = s+'px';
+    c.appendChild(p);
+  }
+}
+function mkStars(id, n=35) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = Math.random()*4+'s';
+    const sz = 1+Math.random()*2; s.style.width = sz+'px'; s.style.height = sz+'px';
+    c.appendChild(s);
+  }
+}
+
+mkParticles('p0', 18); mkParticles('p3', 14); mkParticles('p6', 16); mkParticles('p8', 12); mkParticles('p9', 12);
+mkStars('s1', 35); mkStars('s4', 30);
+
+setTimeout(() => { document.getElementById('navHint').style.opacity = '0'; }, 4500);
+document.addEventListener('dblclick', e => e.preventDefault());
+</script>
+<script src="../../assets/site.js"></script></body>
+</html>

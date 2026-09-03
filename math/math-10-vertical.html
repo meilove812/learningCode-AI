@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>100以内加减混合练习（16题·竖式计算）</title>
+<style>
+@page {
+  size: A4;
+  margin: 10mm 12mm;
+}
+@media print {
+  body { margin: 0; padding: 0; }
+  .no-print { display: none; }
+  .page { height: calc(297mm - 20mm); padding: 0 10px; box-sizing: border-box; page-break-after: always; overflow: hidden; }
+  .page:last-of-type { page-break-after: auto; }
+  .page-header h1 { font-size: 16px; margin: 0 0 2px 0; }
+  .page-header .info { font-size: 11px; margin-bottom: 4px; }
+  .problems-grid { height: calc(297mm - 20mm - 32px); }
+  .problem-card { padding: 4px 8px; }
+  .problem-num { font-size: 13px; }
+  .problem-expr { font-size: 14px; }
+}
+body {
+  font-family: "KaiTi", "楷体", serif;
+  font-size: 15px;
+  padding: 10px 15px;
+  max-width: 210mm;
+  margin: 0 auto;
+}
+.back-link {
+  display: inline-block;
+  margin-bottom: 5px;
+  font-size: 13px;
+  color: #4CAF50;
+  text-decoration: none;
+}
+.back-link:hover { text-decoration: underline; }
+.page-header h1 {
+  text-align: center;
+  font-size: 18px;
+  margin: 0 0 3px 0;
+}
+.page-header .info {
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 6px;
+}
+.page-header .info span { margin: 0 8px; }
+.problems-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(4, 1fr);
+  gap: 6px 14px;
+  height: calc(100vh - 80px);
+}
+.problem-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 6px 10px;
+  display: flex;
+  flex-direction: column;
+}
+.problem-top {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 3px;
+}
+.problem-num {
+  font-weight: bold;
+  font-size: 14px;
+  color: #4CAF50;
+  min-width: 24px;
+}
+.problem-expr {
+  font-size: 15px;
+  white-space: nowrap;
+}
+.answer-blank {
+  display: inline-block;
+  font-size: 15px;
+  margin-left: 6px;
+  min-width: 50px;
+  text-align: center;
+}
+.answer-blank::before { content: "（"; }
+.answer-blank::after { content: "）"; }
+.answer-inner {
+  display: inline-block;
+  min-width: 40px;
+}
+.vertical-space {
+  flex: 1;
+  border-top: 1px dashed #e0e0e0;
+  padding-top: 3px;
+}
+.vertical-label {
+  font-size: 10px;
+  color: #ccc;
+}
+.tips {
+  margin-top: 20px;
+  padding: 15px 18px;
+  background: linear-gradient(135deg, #f0fff0, #e8f5e9);
+  border: 1px solid #a5d6a7;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.tips h3 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: #2e7d32;
+}
+.tips ol {
+  margin: 0;
+  padding-left: 20px;
+}
+.tips li {
+  margin-bottom: 6px;
+}
+.tips .example {
+  color: #555;
+  font-size: 13px;
+  margin-left: 4px;
+}
+.tips .highlight {
+  color: #d32f2f;
+  font-weight: bold;
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../index.html">首页</a><a href="../grade1-down/index.html">一年级</a><a href="../grade2-up/index.html">二年级</a><a href="../explore/science/index.html">科普</a><a href="../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+<a href="index.html" class="back-link no-print">← 返回首页</a>
+
+<!-- 第一页：第1-8题 -->
+<div class="page">
+<div class="page-header">
+  <h1>🧮 100以内加减混合（竖式计算）</h1>
+  <div class="info">
+    <span>姓名：___________</span>
+    <span>日期：___________</span>
+    <span>得分：____/16</span>
+  </div>
+</div>
+<div class="problems-grid">
+  <div class="problem-card">
+    <div class="problem-top">
+      <span class="problem-num">1.</span>
+      <span class="problem-expr">13 + 31 - 13 = <span class="answer-blank"><span class="answer-inner">&nbsp;</span></span></span>
+    </div>
+    <div class="vertical-space"><span class="vertical-label">竖式计算</span></div>
+  </div>
+  <div class="problem-card">
+    <div class="problem-top">
+      <span class="problem-num">2.</span>
+      <span class="problem-expr">15 + 11 + 49 = <span class="answer-blank"><span class="answer-inner">&nbsp;</span></span></span>
+    </div>
+    <div class="vertical-space"><span class="vertical-label">竖式计算</span></div>
+  </div>
+  <div class="problem-card">
+    <div class="problem-top">
+      <span class="problem-num">3.</span>
+      <span class="problem-expr">74 - 49 + 2 + 29 = <span class="answer-blank"><span class="answer-inner">&nbsp;</span></span></span>
+    </div>
+    <div class="vertical-space"><span class="vertical-label">竖式计算</span></div>
+  </div>
+  <div class="problem-card">
+    <div class="problem-top">
+      <span class="problem-num">4.</span>
+      <span class="problem-expr">55 + 32 - 50 - 9 = <span class="answer-blank"><span class="answer-inner">&nbsp;</span></span></span>
+    </div>
+    <div class="vertical-space"><span class="vertical-label">竖式计算</span></div>
+  </div>
+  <div class="problem-card">
+    <div class="problem-top">
+      <span class="problem-num">5.</span>
+      <span class="problem-expr">70 - 10 - 26 = <span class="answer-blank"><span class="answer-inner">&nbsp;</span></span></span>
+    </div>
+    <div class="vertical-space"><span class="vertical-label">竖式计算</span></div>
+  </div>
+  <div class="problem-card">
+    <div class="problem-top">
+      <span class="problem-num">6.</span>
+      <span class="problem-expr">40 - 27 - 6 = <span class="answer-blank"><span class="answer-inner">&nbsp;</span></span></span>
+    </div>
+    <div class="vertical-space"><span class="vertical-label">竖式计算</span></div>
+  </div>
+  <div class="problem-card">
+    <div class="problem-top">
+      <span class="problem-num">7.</span>
+      <span class="problem-expr">17 - 14 + 27 = <span class="answer-blank"><span class="answer-inner">&nbsp;</span></span></span>
+    </div>
+    <div class="vertical-space"><span class="vertical-label">竖式计算</span></div>
+  </div>
+  <div class="problem-card">
+    <div class="problem-top">
+      <span class="problem-num">8.</span>
+      <span class="problem-expr">70 + 2 - 2 - 31 = <span class="answer-blank"><span class="answer-inner">&nbsp;</span></span></span>
+    </div>
+    <div class="vertical-space"><span class="vertical-label">竖式计算</span></div>
+  </div>
+</div>
+</div>
+
+<!-- 第二页：第9-16题 -->
+<div class="page">
+<div class="page-header">
+  <h1>🧮 100以内加减混合（竖式计算）续</h1>
+  <div class="info">
+    <span>姓名：___________</span>
+    <span>日期：___________</span>
+  </div>
+</div>
+<div class="problems-grid">
+  <div class="problem-card">
+    <div class="problem-top">
+      <span class="problem-num">9.</span>
+      <span class="problem-expr">15 - 15 + 42 = <span class="answer-blank"><span class="answer-inner">&nbsp;</span></span></span>
+    </div>
+    <div class="vertical-space"><span class="vertical-label">竖式计算</span></div>
+  </div>
+  <div class="problem-card">
+    <div class="problem-top">
+      <span class="problem-num">10.</span>
+      <span class="problem-expr">34 - 28 - 5 = <span class="answer-blank"><span class="answer-inner">&nbsp;</span></span></span>
+    </div>
+    <div class="vertical-space"><span class="vertical-label">竖式计算</span></div>
+  </div>
+  <div class="problem-card">
+    <div class="problem-top">
+      <span class="problem-num">11.</span>
+      <span class="problem-expr">45 + 23 - 18 = <span class="answer-blank"><span class="answer-inner">&nbsp;</span></span></span>
+    </div>
+    <div class="vertical-space"><span class="vertical-label">竖式计算</span></div>
+  </div>
+  <div class="problem-card">
+    <div class="problem-top">
+      <span class="problem-num">12.</span>
+      <span class="problem-expr">62 - 35 + 14 = <span class="answer-blank"><span class="answer-inner">&nbsp;</span></span></span>
+    </div>
+    <div class="vertical-space"><span class="vertical-label">竖式计算</span></div>
+  </div>
+  <div class="problem-card">
+    <div class="problem-top">
+      <span class="problem-num">13.</span>
+      <span class="problem-expr">28 + 47 - 39 = <span class="answer-blank"><span class="answer-inner">&nbsp;</span></span></span>
+    </div>
+    <div class="vertical-space"><span class="vertical-label">竖式计算</span></div>
+  </div>
+  <div class="problem-card">
+    <div class="problem-top">
+      <span class="problem-num">14.</span>
+      <span class="problem-expr">81 - 56 + 12 = <span class="answer-blank"><span class="answer-inner">&nbsp;</span></span></span>
+    </div>
+    <div class="vertical-space"><span class="vertical-label">竖式计算</span></div>
+  </div>
+  <div class="problem-card">
+    <div class="problem-top">
+      <span class="problem-num">15.</span>
+      <span class="problem-expr">33 + 29 - 44 = <span class="answer-blank"><span class="answer-inner">&nbsp;</span></span></span>
+    </div>
+    <div class="vertical-space"><span class="vertical-label">竖式计算</span></div>
+  </div>
+  <div class="problem-card">
+    <div class="problem-top">
+      <span class="problem-num">16.</span>
+      <span class="problem-expr">96 - 58 - 21 = <span class="answer-blank"><span class="answer-inner">&nbsp;</span></span></span>
+    </div>
+    <div class="vertical-space"><span class="vertical-label">竖式计算</span></div>
+  </div>
+</div>
+</div>
+
+<div class="tips no-print">
+<h3>💡 竖式计算技巧总结</h3>
+<ol>
+  <li><strong>对齐数位：</strong>个位对个位，十位对十位，从右往左算。<span class="example">（先算个位，再算十位）</span></li>
+  <li><strong>进位加法：</strong>个位相加 ≥10，向十位<span class="highlight">进1</span>，别忘了加上进的1！<span class="example">（如 15+49：5+9=14，写4进1）</span></li>
+  <li><strong>退位减法：</strong>个位不够减，从十位<span class="highlight">借1当10</span>。<span class="example">（如 74-49：4不够减9，借1变14-9=5）</span></li>
+  <li><strong>多步计算：</strong>按顺序从左到右，每两个数算一步竖式，把结果带入下一步。<span class="example">（如 a+b-c：先算a+b=x，再算x-c）</span></li>
+  <li><strong>验算习惯：</strong>做完用反向运算检查。加法用减法验，减法用加法验。</li>
+  <li><strong>凑整技巧：</strong>看到能凑成整十的数优先算。<span class="example">（如 13+31-13，发现+13和-13抵消，直接得31）</span></li>
+  <li><strong>书写规范：</strong>等号对齐、横线用尺画直、数字写清楚，避免6和0、1和7混淆。</li>
+</ol>
+</div>
+
+</body>
+</html>

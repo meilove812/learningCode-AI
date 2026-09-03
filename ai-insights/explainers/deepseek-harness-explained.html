@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>🔬 DeepSeek Harness 深度解析（讲解版）</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; font-family: "Segoe UI", system-ui, -apple-system, sans-serif; background: #0a0a0f; color: #e0e0e0; }
+
+.slides { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+.slide { min-height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column; justify-content: center; padding: 24px 20px 80px; position: relative; overflow: hidden; }
+.slide::after { content: ''; position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); width: 40px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; }
+.slide:nth-child(odd) { background: linear-gradient(160deg, #0f1629, #1a0a2e); }
+.slide:nth-child(even) { background: linear-gradient(160deg, #0a1628, #0f1629); }
+
+h1 { font-size: 1.8em; font-weight: 800; background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 12px; line-height: 1.3; }
+h2 { font-size: 1.4em; font-weight: 700; color: #f1f5f9; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+h3 { font-size: 1.05em; color: #e2e8f0; margin-bottom: 8px; }
+p { color: #94a3b8; line-height: 1.7; font-size: 0.92em; }
+strong { color: #e2e8f0; }
+
+.badges { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+.badge { padding: 4px 10px; border-radius: 14px; font-size: 0.75em; font-weight: 600; }
+.badge.green { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+.badge.blue { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+.badge.yellow { background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+.badge.purple { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
+
+.card { background: rgba(30,41,59,0.7); border: 1px solid rgba(148,163,184,0.12); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; }
+.card h3 { font-size: 0.95em; margin-bottom: 6px; }
+.card p { font-size: 0.84em; color: #94a3b8; }
+
+.hl { background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.06)); border: 1px solid rgba(99,102,241,0.25); border-radius: 10px; padding: 14px 16px; margin: 12px 0; }
+.hl h4 { color: #a5b4fc; font-size: 0.92em; margin-bottom: 6px; }
+.hl p { color: #c7d2fe; font-size: 0.85em; }
+
+.flow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: center; margin: 8px 0; }
+.fn { padding: 6px 12px; border-radius: 8px; font-size: 0.75em; font-weight: 600; white-space: nowrap; }
+.fn.a { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+.fn.b { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+.fn.c { background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+.fn.d { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.3); }
+.fa { color: #475569; font-size: 0.9em; }
+
+.code { background: #1e293b; border-radius: 8px; padding: 12px 14px; font-family: "SF Mono", "Fira Code", monospace; font-size: 0.78em; margin: 10px 0; overflow-x: auto; color: #e2e8f0; line-height: 1.6; white-space: pre-wrap; }
+.code .k { color: #c084fc; } .code .s { color: #34d399; } .code .c { color: #64748b; }
+
+.tbl { width: 100%; border-collapse: collapse; font-size: 0.78em; margin: 10px 0; }
+.tbl th { background: rgba(30,41,59,0.8); color: #f1f5f9; padding: 8px 6px; text-align: left; border-bottom: 2px solid rgba(99,102,241,0.3); }
+.tbl td { padding: 7px 6px; border-bottom: 1px solid rgba(148,163,184,0.08); color: #cbd5e1; }
+.tbl .y { color: #4ade80; } .tbl .n { color: #f87171; } .tbl .m { color: #fbbf24; }
+
+.stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 14px 0; }
+.st { text-align: center; padding: 12px; background: rgba(30,41,59,0.6); border: 1px solid rgba(148,163,184,0.1); border-radius: 10px; }
+.st .num { font-size: 1.6em; font-weight: 800; background: linear-gradient(135deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.st .lbl { font-size: 0.7em; color: #94a3b8; margin-top: 2px; }
+
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+@media (max-width: 380px) { .g2 { grid-template-columns: 1fr; } }
+
+/* Page indicator */
+.page-ind { position: fixed; right: 10px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 6px; z-index: 100; }
+.page-ind .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: all 0.3s; }
+.page-ind .dot.active { background: #6366f1; transform: scale(1.5); }
+
+/* Subtitle overlay */
+.subtitle-bar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 300; background: linear-gradient(transparent, rgba(0,0,0,0.85) 30%); padding: 20px 16px 24px; pointer-events: none; min-height: 80px; display: flex; align-items: flex-end; justify-content: center; opacity: 0; transition: opacity 0.3s; }
+.subtitle-bar.visible { opacity: 1; }
+.subtitle-text { color: #fff; font-size: 0.95em; line-height: 1.6; text-align: center; max-width: 90%; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
+
+/* Control panel */
+.ctrl-panel { position: fixed; bottom: 16px; left: 16px; z-index: 400; display: flex; gap: 8px; align-items: center; }
+.ctrl-btn { width: 44px; height: 44px; border-radius: 50%; border: none; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; font-size: 1.1em; cursor: pointer; box-shadow: 0 4px 16px rgba(99,102,241,0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s; }
+.ctrl-btn:active { transform: scale(0.9); }
+.ctrl-btn.on { animation: pls 1.5s infinite; }
+.ctrl-btn.skip { background: linear-gradient(135deg, #475569, #64748b); box-shadow: 0 2px 8px rgba(0,0,0,0.3); width: 36px; height: 36px; font-size: 0.9em; }
+@keyframes pls { 0%,100%{box-shadow:0 4px 16px rgba(99,102,241,0.4)} 50%{box-shadow:0 4px 24px rgba(99,102,241,0.7)} }
+
+/* Progress bar */
+.progress-wrap { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 500; background: rgba(255,255,255,0.05); }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #6366f1, #a78bfa); width: 0%; transition: width 0.3s; }
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="../index.html" style="color:#dce7ff">返回栏目目录</a></div>
+<div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+<div class="slides" id="slides">
+<!-- PAGE 1: COVER -->
+<div class="slide" id="s0">
+  <div style="text-align:center;">
+    <div style="font-size:3em; margin-bottom:12px;">🔬</div>
+    <h1>DeepSeek Harness</h1>
+    <p style="font-size:1.1em; color:#cbd5e1; margin-bottom:16px;">Everything is a Plugin</p>
+    <p style="color:#64748b; font-size:0.85em;">DeepSeek 官方开源 Agent 框架深度解析</p>
+    <div class="badges" style="justify-content:center; margin-top:16px;">
+      <span class="badge green">MIT 开源</span>
+      <span class="badge blue">TypeScript + Python</span>
+      <span class="badge yellow">Developer Preview</span>
+    </div>
+    <p style="color:#475569; font-size:0.75em; margin-top:24px;">↑ 上滑翻页 ↑</p>
+  </div>
+</div>
+
+<!-- PAGE 2: WHAT IS IT -->
+<div class="slide" id="s1">
+  <h2>🔭 它是什么？</h2>
+  <div class="hl">
+    <h4>一句话</h4>
+    <p><strong>DeepSeek Harness (dsh)</strong> 是让 AI 模型变成能读写文件、执行代码、使用工具、自主规划的 Agent 的<strong>开源运行框架</strong>。</p>
+  </div>
+  <div class="stats">
+    <div class="st"><div class="num">MIT</div><div class="lbl">开源协议</div></div>
+    <div class="st"><div class="num">3种</div><div class="lbl">使用方式</div></div>
+    <div class="st"><div class="num">∞</div><div class="lbl">可接模型</div></div>
+    <div class="st"><div class="num">100%</div><div class="lbl">插件化</div></div>
+  </div>
+  <p style="font-size:0.84em;">不是模型，是"Agent 操作系统"：模型适配器、工具注册、会话管理、Agent 循环<strong>全部是可替换插件</strong>。</p>
+</div>
+
+<!-- PAGE 3: CORE IDEA -->
+<div class="slide" id="s2">
+  <h2>💡 核心理念</h2>
+  <div class="card">
+    <h3>🎯 Everything is a Plugin</h3>
+    <p>没有特权核心，没有硬编码。你不是在用一个框架的"扩展接口"，而是<strong>框架本身就是插件的组合</strong>。</p>
+  </div>
+  <div class="card">
+    <h3>⚡ Cordis 框架</h3>
+    <p>基于"时空可组合性"学术论文的插件范式。五大理念：<br>① 插件=Service ② Context=仓库 ③ inject=依赖 ④ Event=通信 ⑤ Effect=可逆</p>
+  </div>
+  <div class="card">
+    <h3>🌐 模型无关</h3>
+    <p>DeepSeek V4 · Claude · GPT · Gemini · Ollama 本地 — 任何兼容端点一键接入。</p>
+  </div>
+  <div class="card">
+    <h3>🛠️ 三种入口</h3>
+    <p>Web UI · CLI · Python SDK — 从个人到企业全覆盖。</p>
+  </div>
+</div>
+
+<!-- PAGE 4: ARCHITECTURE -->
+<div class="slide" id="s3">
+  <h2>🏗️ 三层架构</h2>
+  <div class="flow" style="margin-bottom:14px;">
+    <span class="fn d">Profile</span><span class="fa">→</span>
+    <span class="fn b">Bundle</span><span class="fa">→</span>
+    <span class="fn a">Plugin</span>
+  </div>
+  <div class="card">
+    <h3>📦 Profile（组合配置）</h3>
+    <p>命名的插件组合，存储在 Home 目录。web / headless 两个模板。</p>
+  </div>
+  <div class="card">
+    <h3>📚 Bundle（功能层）</h3>
+    <p><strong>dsh-base</strong>：模型适配+工具+持久化+沙箱+凭证<br><strong>dsh-web-app</strong>：浏览器应用<br><strong>dsh-headless</strong>：无服务器一次性运行</p>
+  </div>
+  <div class="card">
+    <h3>🧩 Plugin（具体能力）</h3>
+    <p>每个功能=一个插件。加载顺序由 inject 依赖声明决定，不用手动排序。</p>
+  </div>
+</div>
+
+<!-- PAGE 5: CORE PACKAGES -->
+<div class="slide" id="s4">
+  <h2>🧩 6大核心包</h2>
+  <div class="g2">
+    <div class="card"><h3>📋 session</h3><p>Append-only 事件日志，一切真相源</p></div>
+    <div class="card"><h3>🧠 agent</h3><p>Agent 接口+注册表+生命周期事件</p></div>
+    <div class="card"><h3>🔄 agent-loop</h3><p>Turn/Step 循环驱动器</p></div>
+    <div class="card"><h3>🛠️ tools</h3><p>作用域工具注册+执行管线</p></div>
+    <div class="card"><h3>📝 system-prompt</h3><p>Prompt section 自动组装</p></div>
+    <div class="card"><h3>🤖 llm</h3><p>统一多协议模型适配器</p></div>
+  </div>
+  <div class="hl" style="margin-top:12px;">
+    <p><strong>能力接缝</strong>：每个能力 = 接口声明 + 实现 + 消费者。换一个 Provider ⇒ 整个执行环境跟着切换。</p>
+  </div>
+</div>
+
+<!-- PAGE 6: TURN FLOW -->
+<div class="slide" id="s5">
+  <h2>🔄 请求流转</h2>
+  <div class="hl" style="margin-bottom:12px;">
+    <p><strong>Step</strong> = 1次模型请求 + 工具调用<br><strong>Turn</strong> = 0~N 个 Step（从输入到完成）</p>
+  </div>
+  <div class="flow"><span class="fn a">输入</span><span class="fa">→</span><span class="fn b">turn/start</span><span class="fa">→</span><span class="fn c">pre-step</span></div>
+  <div class="flow"><span class="fn b">组装Prompt</span><span class="fa">→</span><span class="fn d">LLM流式</span><span class="fa">→</span><span class="fn b">assistant/msg</span></div>
+  <div class="flow"><span class="fn c">tool/call</span><span class="fa">→</span><span class="fn d">execute</span><span class="fa">→</span><span class="fn a">tool/result</span></div>
+  <div class="flow"><span class="fn b">step/end</span><span class="fa">→</span><span class="fn c">还有工具?</span><span class="fa">→</span><span class="fn a">turn/end</span></div>
+  <div class="card" style="margin-top:12px;">
+    <p><strong>关键设计</strong>：模型看到的一切都从 Session Log 重建。Waterfall 事件让插件能拦截/改写/短路任何步骤。</p>
+  </div>
+</div>
+
+<!-- PAGE 7: QUICK START -->
+<div class="slide" id="s6">
+  <h2>🚀 30秒上手</h2>
+  <div class="card">
+    <h3>🖥️ Web UI（最快）</h3>
+    <div class="code"><span class="c"># 一行启动</span>
+<span class="k">npx</span> @deepseek-ai/dsh web
+<span class="c"># → http://127.0.0.1:3080</span></div>
+  </div>
+  <div class="card">
+    <h3>🐍 Python SDK</h3>
+    <div class="code"><span class="k">from</span> deepseek_harness <span class="k">import</span> DeepSeekHarness
+<span class="k">with</span> DeepSeekHarness(model=<span class="s">"deepseek-v4-flash"</span>) <span class="k">as</span> h:\n  h.run(<span class="s">"Fix failing tests"</span>)</div>
+  </div>
+  <p style="font-size:0.82em; color:#64748b; margin-top:8px;">支持任意模型，Settings 加 Provider 即可切换</p>
+</div>
+
+<!-- PAGE 8: COMPARISON -->
+<div class="slide" id="s7">
+  <h2>⚖️ 框架对比</h2>
+  <table class="tbl">
+    <tr><th></th><th>dsh</th><th>Claude Code</th><th>Codex</th></tr>
+    <tr><td><strong>开源</strong></td><td class="y">✅ MIT</td><td class="n">❌</td><td class="m">⚠️</td></tr>
+    <tr><td><strong>多模型</strong></td><td class="y">✅ 全部</td><td class="n">❌ Claude</td><td class="n">❌ GPT</td></tr>
+    <tr><td><strong>全插件化</strong></td><td class="y">✅</td><td class="n">❌</td><td class="m">⚠️</td></tr>
+    <tr><td><strong>自托管</strong></td><td class="y">✅</td><td class="n">❌</td><td class="m">⚠️</td></tr>
+    <tr><td><strong>定价</strong></td><td class="y">免费</td><td class="m">按量</td><td class="m">按量</td></tr>
+  </table>
+  <div class="hl">
+    <p><strong>差异化</strong>：不是"支持插件"，是"自身=插件组合"。学术论文驱动架构。</p>
+  </div>
+</div>
+
+<!-- PAGE 9: EXTENSION MAP -->
+<div class="slide" id="s8">
+  <h2>🧬 扩展指南</h2>
+  <div class="g2">
+    <div class="card"><h3>🤖 接新模型</h3><p>ctx.llm 注册适配器</p></div>
+    <div class="card"><h3>🛠️ 加工具</h3><p>ctx.tools 注册</p></div>
+    <div class="card"><h3>🐚 加Shell</h3><p>ctx.shell 后端</p></div>
+    <div class="card"><h3>📁 文件策略</h3><p>ctx.fs / fs/* 事件</p></div>
+    <div class="card"><h3>🏖️ 沙箱</h3><p>ctx.sandbox 后端</p></div>
+    <div class="card"><h3>🎯 拦截请求</h3><p>agent/* / tools/*</p></div>
+    <div class="card"><h3>🧵 子Agent</h3><p>ctx.subagent</p></div>
+    <div class="card"><h3>🖥️ UI集成</h3><p>session/event 流</p></div>
+  </div>
+</div>
+
+<!-- PAGE 10: WHY IT MATTERS -->
+<div class="slide" id="s9">
+  <h2>🌟 为什么重要？</h2>
+  <div class="card">
+    <h3>📖 开源全栈升级</h3>
+    <p>模型→基础设施→<strong>Agent框架</strong>：完整AI技术栈开源</p>
+  </div>
+  <div class="card">
+    <h3>⚔️ 闭源 Agent 替代品</h3>
+    <p>可自托管、可定制、模型无关。数据不出境</p>
+  </div>
+  <div class="card">
+    <h3>🔬 学术驱动工程</h3>
+    <p>Cordis 论文《Spatiotemporal Composability》，理论验证的设计</p>
+  </div>
+  <div class="hl">
+    <h4>🎯 启发</h4>
+    <p>Agent框架进入<strong>"平台化"阶段</strong>：不再比"谁家Agent好"，而是"在哪构建自己的Agent"。插件生态的飞轮效应，价值指数级增长。</p>
+  </div>
+</div>
+
+<!-- PAGE 11: LINKS -->
+<div class="slide" id="s10">
+  <h2>🔗 资源链接</h2>
+  <div class="card"><h3>📦 GitHub</h3><p><a href="https://github.com/deepseek-ai/deepseek-harness" style="color:#60a5fa;">deepseek-ai/deepseek-harness</a></p></div>
+  <div class="card"><h3>📖 文档</h3><p><a href="https://deepseek-harness.github.io/deepseek-harness/en/guide/quickstart" style="color:#60a5fa;">官方 Guide</a></p></div>
+  <div class="card"><h3>💬 社区</h3><p><a href="https://discord.gg/Ycq5dCaS4" style="color:#60a5fa;">Discord</a> · <a href="https://github.com/topics/dsh-plugin" style="color:#60a5fa;">#dsh-plugin</a></p></div>
+  <div style="text-align:center; margin-top:20px; color:#64748b; font-size:0.8em;">
+    <p>📌 🦎 开心的舵手 · 深度解析系列</p>
+  </div>
+</div>
+
+</div><!-- end slides -->
+<!-- Page dots -->
+<div class="page-ind" id="pageInd"></div>
+
+<!-- Subtitle overlay -->
+<div class="subtitle-bar" id="subtitleBar">
+  <div class="subtitle-text" id="subtitleText"></div>
+</div>
+
+<!-- Controls -->
+<div class="ctrl-panel">
+  <button class="ctrl-btn" id="playBtn" onclick="toggleNarration()">▶</button>
+  <button class="ctrl-btn skip" id="prevBtn" onclick="prevSlide()">⏮</button>
+  <button class="ctrl-btn skip" id="nextBtn" onclick="nextSlide()">⏭</button>
+</div>
+
+<script>
+// ============ NARRATION CONTENT (独立讲解词，不照读页面) ============
+const narrations = [
+  // Slide 0 - Cover
+  "今天我们来深度拆解一个重量级开源项目——DeepSeek Harness。它不是一个新模型，而是DeepSeek官方推出的Agent运行框架。为什么说它重量级？因为它代表了AI行业一个重要转折：从比拼模型能力，转向了比拼Agent基础设施。接下来我会带你理解它的核心设计哲学、技术原理，以及对我们每个开发者的启发。",
+
+  // Slide 1 - What is it
+  "先搞清楚一个概念：模型本身只会聊天，但Agent能读文件、写代码、调接口、做规划。Harness就是把模型变成Agent的那个外骨骼。你可以把它想象成一个操作系统——模型是CPU，Harness提供文件系统、进程管理、设备驱动。关键是，这个操作系统里的一切，包括内核本身，都是插件。没有任何硬编码的特权组件。",
+
+  // Slide 2 - Core idea
+  "这里要重点讲Everything is a Plugin这个设计哲学。传统框架怎么做插件？有一个核心引擎，然后暴露扩展点让你挂载插件。但Harness完全不同——它的核心引擎本身就是由插件组装出来的。这源于一个叫Cordis的学术框架，基于一篇关于时空可组合性的论文。五大原则是：插件即服务、Context作为依赖仓库、inject声明依赖、Event实现通信、Effect保证可逆。这意味着你可以替换框架的任何部分，包括Agent循环本身。",
+
+  // Slide 3 - Architecture
+  "架构分三层。Profile是最外层，相当于一套配置方案，比如我要跑Web模式或者无头模式。Bundle是中间层，把相关插件打包成功能模块。Plugin是最底层的原子能力单元。关键设计：插件之间的加载顺序不用你操心，框架通过inject依赖声明自动排序。这就像npm包的依赖解析一样优雅。",
+
+  // Slide 4 - Core packages
+  "六大核心包构成了Agent的完整生命周期。session包管理对话历史，用append-only日志确保可追溯。agent包定义Agent接口和生命周期。agent-loop是驱动引擎。tools包负责工具注册和执行。system-prompt自动组装提示词。llm包统一模型适配。最精妙的是能力接缝设计：每个能力只定义接口，换一个实现就能从本地切换到远程沙箱，上层完全无感知。",
+
+  // Slide 5 - Request flow
+  "请求流转是理解Agent工作原理的关键。一个Turn从用户输入开始，可能包含多个Step。每个Step是一次模型调用加上工具执行。流程通过事件驱动：turn start、pre-step、模型流式输出、tool call、tool result、step end。两个核心设计：第一，所有上下文从Session Log重建，不依赖内存状态。第二，每个步骤都可以被插件通过Waterfall事件拦截、改写甚至短路。这给了开发者极大的控制力。",
+
+  // Slide 6 - Quick start
+  "实际上手非常简单。Web模式一行npx命令就能启动，浏览器打开填个API Key就能用。Python SDK更适合程序化调用，几行代码就能让AI帮你修bug。模型可以随时切换——DeepSeek、Claude、GPT、本地模型都行。这就是模型无关设计的好处：你不被任何一家锁定。",
+
+  // Slide 7 - Comparison
+  "和Claude Code、Codex相比，Harness的差异化不是功能更多，而是架构更开放。Claude Code和Codex都是闭源或半开源，绑定自家模型。Harness是MIT完全开源，支持任何模型，可以部署在自己服务器上。最根本的区别：别人是支持插件扩展，Harness是自身就是插件的组合。这不是程度差异，是设计哲学的根本不同。",
+
+  // Slide 8 - Extension
+  "想接新模型？注册llm适配器。加工具？注册tools。加Shell？实现shell provider。自定义文件策略？监听fs事件。每个扩展点遵循同样的模式：声明接口、提供实现、注册到Context。这种一致性大幅降低了学习曲线。",
+
+  // Slide 9 - Why important
+  "最后说说为什么这件事重要。第一，DeepSeek正在构建完整的开源AI技术栈——从模型到基础设施到Agent框架。第二，企业终于有了不依赖闭源服务的Agent方案，数据完全自控。第三，学术论文驱动的设计说明这不是应急之作。启发是什么？Agent框架进入平台化阶段。未来竞争不是谁的Agent更聪明，而是谁的生态更丰富。插件化让每个开发者都能贡献能力模块，生态的飞轮效应一旦形成，价值是指数级增长的。",
+
+  // Slide 10 - Links
+  "以上就是DeepSeek Harness的深度解析。代码在GitHub完全开放，文档和社区都很活跃。如果你对Agent开发感兴趣，强烈建议clone下来跑一跑，感受纯插件化架构的优雅。感谢观看，我们下期见。"
+];
+
+// ============ STATE ============
+const synth = window.speechSynthesis;
+let isPlaying = false;
+let currentSlideIdx = 0;
+let currentUtterance = null;
+
+// ============ PAGE INDICATOR ============
+const slidesEl = document.querySelectorAll('.slide');
+const indEl = document.getElementById('pageInd');
+slidesEl.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  indEl.appendChild(d);
+});
+const dots = indEl.querySelectorAll('.dot');
+const container = document.getElementById('slides');
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = [...slidesEl].indexOf(e.target);
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      currentSlideIdx = idx;
+      updateProgress();
+    }
+  });
+}, { root: container, threshold: 0.6 });
+slidesEl.forEach(s => obs.observe(s));
+
+function updateProgress() {
+  const pct = ((currentSlideIdx) / (slidesEl.length - 1)) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+// ============ NAVIGATION ============
+function scrollToSlide(idx) {
+  if (idx < 0 || idx >= slidesEl.length) return;
+  slidesEl[idx].scrollIntoView({ behavior: 'smooth' });
+}
+
+function nextSlide() {
+  if (currentSlideIdx < slidesEl.length - 1) {
+    scrollToSlide(currentSlideIdx + 1);
+  }
+}
+
+function prevSlide() {
+  if (currentSlideIdx > 0) {
+    scrollToSlide(currentSlideIdx - 1);
+  }
+}
+
+// ============ TTS + SUBTITLE ============
+function getVoice() {
+  const voices = synth.getVoices();
+  // Prefer Microsoft Online Natural voices
+  let v = voices.find(x => x.name.includes('Xiaoxiao') && x.name.includes('Online'));
+  if (!v) v = voices.find(x => x.name.includes('Online') && x.name.includes('Natural') && x.lang.startsWith('zh'));
+  if (!v) v = voices.find(x => x.lang.startsWith('zh-CN'));
+  if (!v) v = voices.find(x => x.lang.startsWith('zh'));
+  return v;
+}
+
+function showSubtitle(text) {
+  const bar = document.getElementById('subtitleBar');
+  const el = document.getElementById('subtitleText');
+  el.textContent = text;
+  bar.classList.add('visible');
+}
+
+function hideSubtitle() {
+  document.getElementById('subtitleBar').classList.remove('visible');
+}
+
+function speakSlide(idx) {
+  if (idx >= narrations.length) {
+    stopNarration();
+    return;
+  }
+  
+  scrollToSlide(idx);
+  const text = narrations[idx];
+  
+  // Split into sentences for subtitle display
+  const sentences = text.match(/[^。！？.!?]+[。！？.!?]?/g) || [text];
+  let sentenceIdx = 0;
+  
+  // Show first sentence immediately
+  showSubtitle(sentences[0]);
+  
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'zh-CN';
+  utt.rate = 1.05;
+  const voice = getVoice();
+  if (voice) utt.voice = voice;
+  
+  currentUtterance = utt;
+  
+  // Use boundary event to sync subtitles
+  let charCount = 0;
+  utt.onboundary = (e) => {
+    if (e.name === 'sentence' || e.name === 'word') {
+      // Calculate which sentence we're in based on char index
+      let cumLen = 0;
+      for (let i = 0; i < sentences.length; i++) {
+        cumLen += sentences[i].length;
+        if (e.charIndex < cumLen) {
+          if (i !== sentenceIdx) {
+            sentenceIdx = i;
+            showSubtitle(sentences[i]);
+          }
+          break;
+        }
+      }
+    }
+  };
+  
+  utt.onend = () => {
+    if (isPlaying) {
+      // Move to next slide after a brief pause
+      setTimeout(() => {
+        if (isPlaying) {
+          speakSlide(idx + 1);
+        }
+      }, 800);
+    }
+  };
+  
+  utt.onerror = (e) => {
+    if (e.error !== 'canceled' && isPlaying) {
+      setTimeout(() => { if (isPlaying) speakSlide(idx + 1); }, 500);
+    }
+  };
+  
+  synth.speak(utt);
+}
+
+function toggleNarration() {
+  if (isPlaying) {
+    stopNarration();
+  } else {
+    startNarration();
+  }
+}
+
+function startNarration() {
+  isPlaying = true;
+  const btn = document.getElementById('playBtn');
+  btn.textContent = '⏸';
+  btn.classList.add('on');
+  synth.cancel();
+  speakSlide(currentSlideIdx);
+}
+
+function stopNarration() {
+  isPlaying = false;
+  synth.cancel();
+  const btn = document.getElementById('playBtn');
+  btn.textContent = '▶';
+  btn.classList.remove('on');
+  hideSubtitle();
+}
+
+// Preload voices
+if (synth.onvoiceschanged !== undefined) {
+  synth.onvoiceschanged = () => {};
+}
+// Trigger voice load
+synth.getVoices();
+</script>
+</body>
+</html>

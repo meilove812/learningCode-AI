@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>做游戏分组 · 讲解 | 二年级数学上册</title>
+<style>
+:root {
+  --primary: #FF6B6B;
+  --secondary: #4ECDC4;
+  --accent: #FFE66D;
+  --bg: #FFF8F0;
+  --text: #2D3436;
+  --success: #00B894;
+  --card: #FFFFFF;
+  --shadow: 0 4px 15px rgba(0,0,0,0.08);
+  --radius: 18px;
+  --group-a: #FF9FF3;
+  --group-b: #54A0FF;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Top bar */
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: linear-gradient(135deg, var(--primary), #FF8E53);
+  color: #fff;
+  padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: 0 2px 10px rgba(255,107,107,0.3);
+}
+.top-bar .title { font-size: 1.1em; font-weight: 700; }
+.top-bar .progress {
+  background: rgba(255,255,255,0.3);
+  border-radius: 20px; padding: 4px 14px;
+  font-size: 0.85em; font-weight: 600;
+}
+.top-bar .sound-btn {
+  background: rgba(255,255,255,0.25);
+  border: none; border-radius: 50%; width: 36px; height: 36px;
+  font-size: 1.2em; cursor: pointer; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Steps */
+.step {
+  display: none;
+  padding: 20px 16px 120px;
+  animation: fadeSlideIn 0.5s ease;
+}
+.step.active { display: block; }
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-title {
+  font-size: 1.5em; font-weight: 800;
+  text-align: center; margin: 10px 0 16px;
+  background: linear-gradient(135deg, var(--primary), #FF8E53);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Teacher speech bubble */
+.teacher-bubble {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin: 14px 0;
+  box-shadow: var(--shadow);
+  position: relative;
+  border-left: 5px solid var(--secondary);
+  font-size: 1.05em;
+  line-height: 1.7;
+}
+.teacher-bubble::before {
+  content: '👩‍🏫';
+  position: absolute; top: -14px; left: -8px;
+  font-size: 1.6em;
+  background: var(--bg); border-radius: 50%;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+}
+.teacher-bubble .speak-btn {
+  position: absolute; top: 10px; right: 10px;
+  background: var(--secondary); border: none;
+  border-radius: 50%; width: 32px; height: 32px;
+  font-size: 1em; cursor: pointer; color: #fff;
+  transition: transform 0.2s;
+}
+.teacher-bubble .speak-btn:active { transform: scale(0.9); }
+.teacher-bubble .speak-btn.speaking {
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* People grid */
+.people-grid {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 10px; margin: 16px 0;
+  padding: 16px;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.person {
+  width: 56px; height: 70px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  border-radius: 14px;
+  font-size: 1.8em;
+  transition: all 0.4s ease;
+  position: relative;
+}
+.person .label {
+  font-size: 0.35em; margin-top: 2px; font-weight: 600;
+}
+
+/* Group containers */
+.group-container {
+  display: flex; gap: 12px; margin: 16px 0;
+  flex-wrap: wrap; justify-content: center;
+}
+.group-box {
+  flex: 1; min-width: 140px;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  border-top: 4px solid var(--group-a);
+}
+.group-box.b { border-top-color: var(--group-b); }
+.group-box .group-title {
+  font-size: 1.1em; font-weight: 700; margin-bottom: 8px;
+}
+.group-box .group-people {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 6px; font-size: 1.6em;
+  min-height: 50px;
+}
+.group-box .group-count {
+  margin-top: 8px;
+  font-size: 1.3em; font-weight: 800;
+  color: var(--primary);
+}
+
+/* Table */
+.classify-table {
+  width: 100%; border-collapse: collapse;
+  margin: 14px 0;
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.classify-table th, .classify-table td {
+  padding: 12px 8px;
+  text-align: center;
+  font-size: 1.05em;
+}
+.classify-table th {
+  background: linear-gradient(135deg, var(--secondary), #45B7AA);
+  color: #fff; font-weight: 700;
+}
+.classify-table td {
+  border-bottom: 1px solid #f0f0f0;
+  font-weight: 600;
+}
+.classify-table .num { font-size: 1.3em; color: var(--primary); }
+
+/* Important box */
+.important-box {
+  background: linear-gradient(135deg, #FFF3CD, #FFE8A1);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin: 16px 0;
+  text-align: center;
+  box-shadow: var(--shadow);
+  border: 2px dashed #F0C040;
+}
+.important-box .icon { font-size: 2em; }
+.important-box .text {
+  font-size: 1.2em; font-weight: 800;
+  color: #856404; margin-top: 6px;
+  line-height: 1.6;
+}
+
+/* Compare box */
+.compare-box {
+  display: flex; gap: 12px; margin: 14px 0;
+  justify-content: center; flex-wrap: wrap;
+}
+.compare-item {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  min-width: 130px;
+}
+.compare-item .method { font-weight: 700; font-size: 1em; margin-bottom: 6px; }
+.compare-item .formula { font-size: 1.3em; font-weight: 800; color: var(--primary); }
+.compare-item .equals {
+  font-size: 1.5em; font-weight: 900;
+  color: var(--success); margin-top: 4px;
+}
+
+/* Think bubbles */
+.think-grid {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  justify-content: center; margin: 14px 0;
+}
+.think-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 14px 18px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  font-size: 1em;
+  min-width: 120px;
+  border: 2px solid #E8E8E8;
+  transition: transform 0.2s;
+}
+.think-card:active { transform: scale(0.96); }
+.think-card .emoji { font-size: 1.8em; }
+.think-card .desc { margin-top: 4px; font-weight: 600; }
+
+/* Summary box */
+.summary-box {
+  background: linear-gradient(135deg, #A29BFE, #6C5CE7);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin: 16px 0;
+  color: #fff;
+  text-align: center;
+}
+.summary-box h3 { font-size: 1.3em; margin-bottom: 10px; }
+.summary-box ul {
+  list-style: none; text-align: left;
+  font-size: 1.05em; line-height: 2;
+}
+.summary-box li::before { content: '⭐ '; }
+
+/* Nav buttons */
+.nav-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(255,248,240,0.95);
+  backdrop-filter: blur(10px);
+  padding: 12px 16px;
+  display: flex; gap: 10px;
+  justify-content: center;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+  z-index: 100;
+}
+.nav-btn {
+  padding: 12px 28px;
+  border: none; border-radius: 30px;
+  font-size: 1.05em; font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-btn:active { transform: scale(0.95); }
+.nav-btn.prev {
+  background: #E8E8E8; color: var(--text);
+}
+.nav-btn.next {
+  background: linear-gradient(135deg, var(--primary), #FF8E53);
+  color: #fff;
+  box-shadow: 0 3px 12px rgba(255,107,107,0.3);
+}
+.nav-btn.practice {
+  background: linear-gradient(135deg, var(--success), #00CEC9);
+  color: #fff;
+  box-shadow: 0 3px 12px rgba(0,184,148,0.3);
+}
+.nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* Animations */
+.bounce-in {
+  animation: bounceIn 0.6s ease;
+}
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.95); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Person highlighting */
+.person.highlight-a {
+  background: rgba(255,159,243,0.2);
+  border: 2px solid var(--group-a);
+}
+.person.highlight-b {
+  background: rgba(84,160,255,0.2);
+  border: 2px solid var(--group-b);
+}
+
+/* Responsive */
+@media (max-width: 360px) {
+  .person { width: 48px; height: 62px; font-size: 1.5em; }
+  .step-title { font-size: 1.3em; }
+}
+</style>
+<style id="public-local-controls">/* 公开站：语音工具就近放置，不使用固定全站通栏 */
+.bottom-bar,.ttsbar,.voice-fab{position:static!important;inset:auto!important;margin:18px auto!important;transform:none!important}.voice-panel{position:static!important;display:block!important;margin:8px auto!important}body{padding-bottom:0!important}
+</style></head>
+<body>
+
+<div class="top-bar">
+  <button class="sound-btn" id="soundToggle" onclick="toggleSound()">🔊</button>
+  <span class="title">做游戏分组</span>
+  <span class="progress" id="progressLabel">第1步 / 共6步</span>
+</div>
+
+<!-- Step 1: Introduction -->
+<div class="step active" id="step1" data-tts="小朋友们好呀！今天我们来帮一群人分组做游戏！大家看！操场上来了好多人呢！我们一起数一数，有多少人？有大人，也有小朋友。一共有14个人！他们想分成两组做游戏，我们来帮他们想想怎么分好不好？">
+  <h2 class="step-title bounce-in">🎮 分两组做游戏</h2>
+  <div class="teacher-bubble slide-up">
+    <button class="speak-btn" onclick="speakStep(1)">🔊</button>
+    小朋友们好呀！今天我们来帮一群人<strong>分组做游戏</strong>！大家看！操场上来了好多人呢！我们一起数一数，有多少人？
+  </div>
+  <div class="people-grid slide-up" id="allPeople">
+    <!-- Adults -->
+    <div class="person" data-type="adult" data-gender="m"><span>👨</span><span class="label">大人</span></div>
+    <div class="person" data-type="adult" data-gender="f"><span>👩</span><span class="label">大人</span></div>
+    <div class="person" data-type="adult" data-gender="m"><span>👨</span><span class="label">大人</span></div>
+    <div class="person" data-type="adult" data-gender="m"><span>👨</span><span class="label">大人</span></div>
+    <div class="person" data-type="adult" data-gender="f"><span>👩</span><span class="label">大人</span></div>
+    <div class="person" data-type="adult" data-gender="m"><span>👨</span><span class="label">大人</span></div>
+    <div class="person" data-type="adult" data-gender="f"><span>👩</span><span class="label">大人</span></div>
+    <div class="person" data-type="adult" data-gender="m"><span>👨</span><span class="label">大人</span></div>
+    <!-- Children -->
+    <div class="person" data-type="child" data-gender="m"><span>👦</span><span class="label">小孩</span></div>
+    <div class="person" data-type="child" data-gender="f"><span>👧</span><span class="label">小孩</span></div>
+    <div class="person" data-type="child" data-gender="m"><span>👦</span><span class="label">小孩</span></div>
+    <div class="person" data-type="child" data-gender="m"><span>👦</span><span class="label">小孩</span></div>
+    <div class="person" data-type="child" data-gender="f"><span>👧</span><span class="label">小孩</span></div>
+    <div class="person" data-type="child" data-gender="m"><span>👦</span><span class="label">小孩</span></div>
+  </div>
+  <div style="text-align:center; font-size:1.3em; font-weight:700; color:var(--primary); margin-top:8px;" class="bounce-in">
+    一共 <span style="font-size:1.5em;">14</span> 个人！
+  </div>
+</div>
+
+<!-- Step 2: By age -->
+<div class="step" id="step2" data-tts="第一种方法，我们按年龄来分！大人站一边，小朋友站一边。大家仔细数数看。大人有多少个？1、2、3、4、5、6、7、8，一共8个大人！小朋友呢？1、2、3、4、5、6，一共6个小朋友！那加起来一共多少人呀？8加6等于14！对啦！还是14个人！真棒！">
+  <h2 class="step-title bounce-in">👨‍👩‍👧‍👦 按年龄分：大人和孩子</h2>
+  <div class="teacher-bubble slide-up">
+    <button class="speak-btn" onclick="speakStep(2)">🔊</button>
+    第一种方法，我们<strong>按年龄来分</strong>！大人站一边，小朋友站一边。大家仔细数数看！
+  </div>
+  <div class="group-container slide-up">
+    <div class="group-box">
+      <div class="group-title">🧑 大人</div>
+      <div class="group-people">👨👩👨👩👨👩👨👩</div>
+      <div class="group-count">8 人</div>
+    </div>
+    <div class="group-box b">
+      <div class="group-title">👶 孩子</div>
+      <div class="group-people">👦👧👦👧👦👧</div>
+      <div class="group-count">6 人</div>
+    </div>
+  </div>
+  <table class="classify-table slide-up">
+    <tr><th>分类</th><th>大人</th><th>孩子</th><th>合计</th></tr>
+    <tr>
+      <td>👥 人数</td>
+      <td class="num">8</td>
+      <td class="num">6</td>
+      <td class="num" style="color:var(--success); font-size:1.4em;">14</td>
+    </tr>
+  </table>
+  <div style="text-align:center; font-size:1.2em; font-weight:700; margin-top:8px;">
+    <span style="color:var(--group-a);">8</span> ＋ <span style="color:var(--group-b);">6</span> ＝ <span style="color:var(--success); font-size:1.3em;">14</span> ✨
+  </div>
+</div>
+
+<!-- Step 3: By gender -->
+<div class="step" id="step3" data-tts="再换一种方式来分！这次我们按男生和女生来分。男生有多少呢？大人里面有4个男的，小朋友里有3个男孩。4加3等于7，男生一共7个！女生呢？大人里面有4个女的，小朋友里有3个女孩。4加3等于7，女生一共7个！加起来呢？7加7还是等于14！神不神奇？不管怎么分，总数都是14！">
+  <h2 class="step-title bounce-in">👦👧 换一种方式：按男女分</h2>
+  <div class="teacher-bubble slide-up">
+    <button class="speak-btn" onclick="speakStep(3)">🔊</button>
+    再换一种方式来分！这次我们<strong>按男生和女生</strong>来分。男生有多少呢？女生又有多少？谁来数数看？
+  </div>
+  <div class="group-container slide-up">
+    <div class="group-box">
+      <div class="group-title">👦 男生</div>
+      <div class="group-people">👨👨👨👨👦👦👦</div>
+      <div class="group-count">7 人</div>
+    </div>
+    <div class="group-box b">
+      <div class="group-title">👧 女生</div>
+      <div class="group-people">👩👩👩👩👧👧👧</div>
+      <div class="group-count">7 人</div>
+    </div>
+  </div>
+  <table class="classify-table slide-up">
+    <tr><th>分类</th><th>男生</th><th>女生</th><th>合计</th></tr>
+    <tr>
+      <td>👥 人数</td>
+      <td class="num">9</td>
+      <td class="num">5</td>
+      <td class="num" style="color:var(--success); font-size:1.4em;">14</td>
+    </tr>
+  </table>
+  <div style="text-align:center; font-size:1.2em; font-weight:700; margin-top:8px;">
+    <span style="color:var(--group-a);">9</span> ＋ <span style="color:var(--group-b);">5</span> ＝ <span style="color:var(--success); font-size:1.3em;">14</span> ✨
+  </div>
+</div>
+
+<!-- Step 4: Discovery -->
+<div class="step" id="step4" data-tts="小朋友们发现了吗？哇，这里有一个超级重要的秘密！不管我们按年龄分还是按男女分，加起来的总数都是14！按年龄分，8加6等于14。按男女分，7加7也等于14。分法不一样，每组的人数不一样，但是！总数永远不变！这个秘密叫做——总数不变！大家记住了吗？">
+  <h2 class="step-title bounce-in">💡 重要发现！</h2>
+  <div class="teacher-bubble slide-up">
+    <button class="speak-btn" onclick="speakStep(4)">🔊</button>
+    小朋友们发现了吗？哇，这里有一个<strong>超级重要的秘密</strong>！不管我们怎么分，总数永远不变！
+  </div>
+  <div class="important-box bounce-in">
+    <div class="icon">💡✨</div>
+    <div class="text">分类标准不同，结果可能不同，<br>但总数不变！</div>
+  </div>
+  <div class="compare-box slide-up">
+    <div class="compare-item">
+      <div class="method">👨‍👩‍👧‍👦 按年龄</div>
+      <div class="formula">8 + 6</div>
+      <div class="equals">= 14</div>
+    </div>
+    <div class="compare-item">
+      <div class="method">👦👧 按性别</div>
+      <div class="formula">7 + 7</div>
+      <div class="equals">= 14</div>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top:10px;">
+    <span style="font-size:1.8em;">🎉</span>
+    <span style="font-size:1.2em; font-weight:800; color:var(--success);">总数都是 14！</span>
+    <span style="font-size:1.8em;">🎉</span>
+  </div>
+</div>
+
+<!-- Step 5: Think -->
+<div class="step" id="step5" data-tts="想一想，除了按年龄和男女分，还可以怎么分呢？比如说，按戴不戴眼镜来分？戴眼镜的站一边，不戴的站一边。或者按穿什么颜色的衣服来分？穿校服的一组，不穿校服的一组。甚至可以按高矮来分！不管怎么分，总数都不会变哦！小朋友们还能想到什么分法吗？动动小脑筋吧！">
+  <h2 class="step-title bounce-in">🤔 想一想</h2>
+  <div class="teacher-bubble slide-up">
+    <button class="speak-btn" onclick="speakStep(5)">🔊</button>
+    想一想，除了按年龄和男女分，<strong>还可以怎么分</strong>呢？不管怎么分，总数都不会变哦！
+  </div>
+  <div class="think-grid slide-up">
+    <div class="think-card">
+      <div class="emoji">👓</div>
+      <div class="desc">戴眼镜 / 不戴</div>
+    </div>
+    <div class="think-card">
+      <div class="emoji">👔</div>
+      <div class="desc">穿校服 / 不穿</div>
+    </div>
+    <div class="think-card">
+      <div class="emoji">🎨</div>
+      <div class="desc">衣服颜色</div>
+    </div>
+    <div class="think-card">
+      <div class="emoji">📏</div>
+      <div class="desc">高 / 矮</div>
+    </div>
+    <div class="think-card">
+      <div class="emoji">👟</div>
+      <div class="desc">穿运动鞋 / 凉鞋</div>
+    </div>
+    <div class="think-card">
+      <div class="emoji">💇</div>
+      <div class="desc">长头发 / 短头发</div>
+    </div>
+  </div>
+  <div class="important-box" style="background: linear-gradient(135deg, #E8F8F5, #D1F2EB); border-color: var(--success);">
+    <div class="icon">🔑</div>
+    <div class="text" style="color: #1E8449;">不管用什么标准分，<br>总数永远不变！</div>
+  </div>
+</div>
+
+<!-- Step 6: Summary -->
+<div class="step" id="step6" data-tts="好啦，我们来做个小结！今天我们学了三个重要的本领。第一，同一组物品可以用不同的标准来分类。第二，分类标准不同，分出来的结果也不同。第三，不管怎么分，总数永远不变！小朋友们都记住了吗？太棒了！现在我们去做练习，看看大家学得怎么样！加油！">
+  <h2 class="step-title bounce-in">📝 今天学了什么？</h2>
+  <div class="teacher-bubble slide-up">
+    <button class="speak-btn" onclick="speakStep(6)">🔊</button>
+    好啦，我们来做个小结！今天我们学了三个重要的本领！小朋友们都记住了吗？太棒了！
+  </div>
+  <div class="summary-box slide-up">
+    <h3>🌟 小结</h3>
+    <ul>
+      <li>同一组物品可以用<strong>不同的标准</strong>来分类</li>
+      <li>分类标准不同，分出来的<strong>结果也不同</strong></li>
+      <li>不管怎么分，<strong>总数永远不变</strong>！</li>
+    </ul>
+  </div>
+  <div style="text-align:center; margin-top:20px;">
+    <div style="font-size:3em;">🎉🌈✨</div>
+    <div style="font-size:1.2em; font-weight:700; margin-top:8px;">太棒了！准备去做练习吧！</div>
+  </div>
+</div>
+
+<!-- Navigation bar -->
+<div class="nav-bar">
+  <button class="nav-btn prev" id="prevBtn" onclick="prevStep()" disabled>
+    ← 上一步
+  </button>
+  <button class="nav-btn next" id="nextBtn" onclick="nextStep()">
+    下一步 →
+  </button>
+  <a class="nav-btn practice" id="practiceBtn" href="unit1-lesson2-practice.html" style="display:none; text-decoration:none;">
+    去做练习 🎯
+  </a>
+</div>
+
+<script>
+// State
+let currentStep = 1;
+const totalSteps = 6;
+let soundOn = true;
+let currentUtterance = null;
+let voices = [];
+
+// Voice setup
+function loadVoices() {
+  voices = speechSynthesis.getVoices();
+}
+speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+
+function getXiaoxiaoVoice() {
+  if (!voices.length) voices = speechSynthesis.getVoices();
+  // Prefer Xiaoxiao Online Natural
+  let v = voices.find(v => v.name.includes('Xiaoxiao') && v.name.includes('Online'));
+  if (!v) v = voices.find(v => /Microsoft Xiaoxiao Online \(Natural\)/i.test(v.name)) || voices.find(v => v.name.includes('Xiaoxiao'));
+  if (!v) v = voices.find(v => v.lang.startsWith('zh') && v.name.includes('Online'));
+  if (!v) v = voices.find(v => v.lang.startsWith('zh'));
+  return v;
+}
+
+function stopSpeech() {
+  speechSynthesis.cancel();
+  document.querySelectorAll('.speak-btn.speaking').forEach(b => b.classList.remove('speaking'));
+}
+
+function speakText(text, btn) {
+  stopSpeech();
+  if (!soundOn) return;
+  const utter = new SpeechSynthesisUtterance(text);
+  const voice = getXiaoxiaoVoice();
+  if (voice) utter.voice = voice;
+  utter.lang = 'zh-CN';
+  utter.rate = 0.9;
+  utter.pitch = 1.1;
+  if (btn) {
+    btn.classList.add('speaking');
+    utter.onend = () => btn.classList.remove('speaking');
+    utter.onerror = () => btn.classList.remove('speaking');
+  }
+  speechSynthesis.speak(utter);
+}
+
+function speakStep(n) {
+  const step = document.getElementById('step' + n);
+  const tts = step.getAttribute('data-tts');
+  const btn = step.querySelector('.speak-btn');
+  speakText(tts, btn);
+}
+
+function toggleSound() {
+  soundOn = !soundOn;
+  document.getElementById('soundToggle').textContent = soundOn ? '🔊' : '🔇';
+  if (!soundOn) stopSpeech();
+}
+
+// Navigation
+function showStep(n) {
+  stopSpeech();
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  document.getElementById('progressLabel').textContent = `第${n}步 / 共${totalSteps}步`;
+
+  document.getElementById('prevBtn').disabled = (n === 1);
+
+  if (n === totalSteps) {
+    document.getElementById('nextBtn').style.display = 'none';
+    document.getElementById('practiceBtn').style.display = 'flex';
+  } else {
+    document.getElementById('nextBtn').style.display = 'flex';
+    document.getElementById('practiceBtn').style.display = 'none';
+  }
+
+  // Auto-speak
+  if (soundOn) {
+    setTimeout(() => speakStep(n), 400);
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextStep() {
+  if (currentStep < totalSteps) {
+    currentStep++;
+    showStep(currentStep);
+  }
+}
+
+function prevStep() {
+  if (currentStep > 1) {
+    currentStep--;
+    showStep(currentStep);
+  }
+}
+
+// Init
+showStep(1);
+</script>
+  <footer class="footer" lang="zh-CN"><p><strong>版权声明</strong>：本页讲解与配图<strong>均为本页自行编写</strong>，未复制任何教材插图或扫描件；人民教育出版社《数学》二年级上册（2024 年审核）的文字与插图著作权归原出版社及作者所有。</p><p>本页为<strong>家庭自用学习辅助</strong>：不含教材插图、不含扫描件、不用于任何商业用途、不做搜索收录。如权利人认为不妥，请告知即刻下线。</p><p>本页文字与插图均为自绘自拟；<strong>部分练习沿用课本原有题型，个别题目文字与课本原题相近</strong>，均已标注对应页码，仅作家庭自用学习辅助。教材版本已按<strong>课本封面照片核实</strong>：人民教育出版社《数学》二年级上册，封面标注「国家教材委员会专家委员会审核 2024」；第一单元<strong>分类与整理</strong>已按课本<strong>目录页照片</strong>核实，课本自第 1 页起（目录：第二单元「1~6 的表内乘法」自第 10 页起）。例题与情境均为本页自拟，请以课本为准。</p><p>朗读用浏览器语音，建议用 Edge 打开，中文音色最自然。</p></footer>
+</body>
+</html>

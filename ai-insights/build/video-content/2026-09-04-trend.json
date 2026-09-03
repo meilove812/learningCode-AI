@@ -1,0 +1,144 @@
+{
+  "page_title": "为什么长流程还是崩 | 2026.9.4",
+  "date": "2026-09-04",
+  "topic": "长流程可靠性",
+  "thesis": "长流程能不能撑住，已经不由单步质量决定，而由依赖步数决定。",
+  "derivation": "由来源1「每步可靠性随规模上升但饱和在1以下，步数足够长必然崩塌」推出；来源2「有工具有指示仍偏离」与来源3「完整任务严格成功率24.69%」佐证同一方向。",
+  "taken_away": "把步骤一步步做完这件事——原先要人盯着逐步推进的部分，现在交给它连着跑；没被拿走的是决定这活该分几步、每段在哪儿验收",
+  "decision": "判断长流程能不能交给它，先数步数，不看单步准确率",
+  "slides": [
+    {
+      "kind": "cover",
+      "eyebrow": "模型一直在变强，长流程没变稳",
+      "title": "为什么长流程还是崩",
+      "accent": "崩在步数，不在单步",
+      "note": "看完你会知道该按什么拆活",
+      "tts": "你有没有发现，模型一年比一年强，可你手上那些多步骤的活，还是照样中途跑偏。"
+    },
+    {
+      "kind": "fact",
+      "eyebrow": "01 · 趋势",
+      "title": "每步可靠性会随规模上升，但停在 1 以下",
+      "metric": "1.2B → 671B",
+      "body": "从小模型到大模型，每步可靠性都在涨，却始终停在 1 以下。只要步数够长，崩塌就是必然。",
+      "tts": "参数差了五百多倍，每步做对的概率一路在涨，却始终没到百分之百。步数一多就必然崩。"
+    },
+    {
+      "kind": "compare",
+      "eyebrow": "02 · 影响",
+      "title": "它拿走了执行，没拿走拆分",
+      "left": {
+        "label": "已经被拿走",
+        "value": "把步骤一步步做完",
+        "tone": "dim"
+      },
+      "right": {
+        "label": "还在你手上",
+        "value": "决定分几步、在哪验收",
+        "tone": "bright"
+      },
+      "tts": "它接手的是把步骤一步步做完；留在你手上的是分几段、在哪儿验收。这才是你该占的位置。"
+    },
+    {
+      "kind": "compare",
+      "eyebrow": "03 · 解决办法",
+      "title": "盯错了对象，投入就白费",
+      "left": {
+        "label": "盯单步质量",
+        "value": "去换更强的模型",
+        "tone": "dim"
+      },
+      "right": {
+        "label": "盯依赖步数",
+        "value": "去缩短这条链",
+        "tone": "bright"
+      },
+      "tts": "解决办法看你盯哪个数。你盯单步质量，就会去换更强的模型；你盯依赖步数，才会去缩短这条链。"
+    },
+    {
+      "kind": "formula",
+      "eyebrow": "04 · 怎么拆",
+      "title": "把长链拆成短链的四步",
+      "items": [
+        "数清这活有几步依赖",
+        "超过 10 步就分段",
+        "每段交一件可验收产物",
+        "段间核对一次状态"
+      ],
+      "result": "＝ 让每段都短到不会崩",
+      "tts": "先数清有几步依赖，超过十步就分段，每段交一件你能验收的产物，段间核对状态。"
+    },
+    {
+      "kind": "conclusion",
+      "eyebrow": "05 · 今日判断",
+      "title": "先数步数，再谈模型",
+      "accent": "崩在长度，不在能力",
+      "note": "被拿走的是执行，留下的是怎么拆",
+      "tts": "所以下次它中途跑偏，先别急着换模型，先数数你让它连着做了多少步。它崩在长度，不在能力。"
+    },
+    {
+      "kind": "action",
+      "eyebrow": "06 · 今天就做",
+      "title": "三步 + 一句直接跟它说的话",
+      "action": [
+        "把这活列成步骤，数出有几步要等上一步的结果",
+        "超过 10 步就切成 3 段，切点选在你得看一眼才能继续的地方",
+        "每段只收一件能一眼验收的东西：一份清单、一张表、一段能跑的代码"
+      ],
+      "action_script": "你可以这么说：「先只做第 1 段，做完停下来，把产出给我看，等我确认再继续」",
+      "tts": "就试这一条：先把这活列成步骤，数出有几步要等上一步的结果。超过十步，就在你得看一眼才能继续的地方切三段。然后跟它说，先只做第一段，做完停下给我看。"
+    },
+    {
+      "kind": "ending",
+      "eyebrow": "",
+      "title": "今日AI洞察",
+      "sources": [
+        {
+          "name": "长流程衰减实测",
+          "url": "https://arxiv.org/abs/2609.01660"
+        },
+        {
+          "name": "长程工具调用实测",
+          "url": "https://arxiv.org/abs/2609.02459"
+        },
+        {
+          "name": "循环控制实测",
+          "url": "https://arxiv.org/abs/2608.28281"
+        }
+      ],
+      "disclaimer": "本内容基于公开研究整理，仅供参考，不构成决策依据。所引研究各有测量范围与样本限制，作者均声明不用于模型排名。",
+      "signature": "开心的舵手",
+      "tts": "这些研究各有测量范围，只讲行为模式，不比较模型。"
+    }
+  ],
+  "sources": [
+    {
+      "title": "How Fast Do Agents Rot? Task Horizon and Agent Degradation",
+      "url": "https://arxiv.org/abs/2609.01660",
+      "date": "2026-08-31",
+      "quotes": [
+        "Task success follows a geometric law governed by a single per-step reliability parameter, which rises with model scale but saturates well below 1 even for the strongest models, guaranteeing eventual collapse at sufficiently long horizons",
+        "six open models from 1.2B to 671B parameters",
+        "Degradation is driven by step count rather than context length"
+      ]
+    },
+    {
+      "title": "CivBench: A Long-Horizon Benchmark for Tool-Mediated Agents",
+      "url": "https://arxiv.org/abs/2609.02459",
+      "date": "2026-09-02",
+      "quotes": [
+        "despite playbook guidance to query victory progress every 20 turns, agents do so only every 30 to 75 turns",
+        "we interpret them as deviations under instruction rather than absences of capability"
+      ]
+    },
+    {
+      "title": "LoopArena: Benchmarking Models as Runtime Controllers",
+      "url": "https://arxiv.org/abs/2608.28281",
+      "date": "2026-08-28",
+      "quotes": [
+        "Even with a capable coding agent, a loop may trust a stale progress note, skip needed verification, spend its budget in the wrong direction, or stop before the task is safe to submit",
+        "leaving substantial room for improvement in long-horizon loop control"
+      ]
+    }
+  ]
+}

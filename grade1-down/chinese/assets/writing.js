@@ -1,0 +1,15 @@
+let writer,tracer,currentCard,paused=false,voices=[],queue=[],q=0;const synth=speechSynthesis;
+function dataLoader(ch,done,fail){fetch('assets/hanzi-data/'+encodeURIComponent(ch)+'.json').then(r=>{if(!r.ok)throw Error('missing');return r.json()}).then(done).catch(fail)}
+function openWriting(card){currentCard=card;const ch=card.dataset.hanzi;document.getElementById('modalTitle').textContent='“'+ch+'”的真实笔顺';document.getElementById('strokeNames').textContent='笔顺：'+card.dataset.strokes;document.getElementById('writer').innerHTML='';document.getElementById('tracer').innerHTML='';document.getElementById('modal').hidden=false;const a=document.getElementById('writer'),b=document.getElementById('tracer'),wa=a.clientWidth||250,wb=b.clientWidth||250;writer=HanziWriter.create(a,ch,{width:wa,height:wa,padding:12,showCharacter:false,showOutline:true,charDataLoader:dataLoader,delayBetweenStrokes:320});tracer=HanziWriter.create(b,ch,{width:wb,height:wb,padding:12,showCharacter:false,showOutline:true,charDataLoader:dataLoader,showHintAfterMisses:1});resetTrace();speakCard(card)}
+function closeWriting(){if(tracer)tracer.cancelQuiz();document.getElementById('modal').hidden=true}
+function animateHanzi(){if(writer)writer.animateCharacter()}
+function pauseHanzi(){if(!writer)return;paused?writer.resumeAnimation():writer.pauseAnimation();paused=!paused;document.getElementById('pauseStroke').textContent=paused?'▶ 继续':'⏸ 暂停'}
+function replayHanzi(){if(!writer)return;writer.cancelAnimation();paused=false;document.getElementById('pauseStroke').textContent='⏸ 暂停';writer.animateCharacter()}
+function resetTrace(){if(!tracer)return;tracer.cancelQuiz();tracer.quiz({showHintAfterMisses:1,highlightOnComplete:true})}
+function loadVoices(){voices=synth.getVoices();const el=document.getElementById('voice');const zh=voices.filter(v=>/^zh/i.test(v.lang));el.innerHTML='';(zh.length?zh:voices).forEach(v=>{const o=document.createElement('option');o.value=voices.indexOf(v);o.textContent=v.name;el.appendChild(o)});const best=[...el.options].find(o=>/Microsoft Xiaoxiao Online \(Natural\)/i.test(o.textContent))||[...el.options].find(o=>/Online \(Natural\)/i.test(o.textContent));if(best)el.value=best.value}
+function speakCard(card,onend){synth.cancel();const u=new SpeechSynthesisUtterance(card.dataset.speak);u.lang='zh-CN';u.rate=Number(document.getElementById('rate').value);u.voice=voices[Number(document.getElementById('voice').value)]||voices.find(v=>/^zh/i.test(v.lang));u.onend=()=>onend&&onend();synth.speak(u)}
+function playAll(){queue=[...document.querySelectorAll('.write-card')];q=0;next()}
+function next(){if(q<queue.length)speakCard(queue[q++],next)}
+function pauseSpeak(){synth.paused?synth.resume():synth.pause()}
+function stopSpeak(){synth.cancel();queue=[]}
+document.addEventListener('click',e=>{const card=e.target.closest('.write-card');if(!card)return;if(e.target.closest('.write-head'))openWriting(card)});loadVoices();if(synth.onvoiceschanged!==undefined)synth.onvoiceschanged=loadVoices;

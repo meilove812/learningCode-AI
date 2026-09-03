@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco传统文化讲解：八卦的象征">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>周易讲解 · 第四期：八卦详解</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'PingFang SC', 'Noto Serif SC', serif;
+  background: #0a0a0f;
+  color: #e8e0d0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.pages-wrapper { width: 100%; height: 100%; position: relative; }
+.page {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 40px 24px;
+  opacity: 0; transform: translateX(100%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none; overflow: hidden;
+}
+.page.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.page.prev { opacity: 0; transform: translateX(-100%); }
+
+/* Backgrounds */
+.bg-void { background: radial-gradient(ellipse at center, #080808 0%, #000 70%); }
+.bg-cosmos { background: radial-gradient(ellipse at center, #0f0a1e 0%, #060410 70%); }
+.bg-dawn { background: linear-gradient(180deg, #0a0820 0%, #1a1545 50%, #0f0d25 100%); }
+.bg-light { background: linear-gradient(135deg, #1a1508 0%, #0f0d05 50%, #080604 100%); }
+.bg-dual { background: linear-gradient(135deg, #0a0a18 0%, #080812 100%); }
+.bg-nature { background: linear-gradient(180deg, #050a10 0%, #0a1520 50%, #050a0f 100%); }
+.bg-flow { background: radial-gradient(ellipse at 50% 60%, #0a1020 0%, #060810 70%); }
+.bg-balance { background: radial-gradient(ellipse at center, #100a18 0%, #080510 70%); }
+.bg-final { background: radial-gradient(ellipse at center, #0f0818 0%, #060410 70%); }
+.bg-sky { background: linear-gradient(180deg, #0a0a20 0%, #080818 50%, #0a0a15 100%); }
+.bg-earth { background: linear-gradient(180deg, #0a0f08 0%, #101a0a 50%, #080f06 100%); }
+.bg-thunder { background: linear-gradient(180deg, #0f0a10 0%, #1a0f20 50%, #0a0810 100%); }
+.bg-wind { background: linear-gradient(180deg, #0a1010 0%, #0f1a1a 50%, #081010 100%); }
+.bg-water { background: linear-gradient(180deg, #050810 0%, #0a1025 50%, #050810 100%); }
+.bg-fire { background: linear-gradient(180deg, #100805 0%, #1a0f08 50%, #100805 100%); }
+.bg-mountain { background: linear-gradient(180deg, #0f0a05 0%, #1a1508 50%, #0f0a05 100%); }
+.bg-lake { background: linear-gradient(180deg, #080a10 0%, #0f1520 50%, #080a10 100%); }
+
+/* Typography */
+.title-main {
+  font-size: clamp(2.2em, 8vw, 3.5em);
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, #c0c0c0 50%, #ffd700 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-align: center; line-height: 1.3;
+  animation: textGlow 4s ease-in-out infinite;
+}
+@keyframes textGlow {
+  0%,100% { filter: brightness(1) drop-shadow(0 0 8px rgba(255,255,255,0.1)); }
+  50% { filter: brightness(1.15) drop-shadow(0 0 20px rgba(255,215,0,0.3)); }
+}
+.subtitle { font-size: clamp(0.85em, 3.2vw, 1.1em); color: #5a5040; margin-top: 12px; text-align: center; letter-spacing: 4px; }
+.page-title {
+  font-size: clamp(1.4em, 5.5vw, 2em); font-weight: 800;
+  color: #ffd700; text-align: center; margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(255,215,0,0.15);
+}
+.page-text {
+  font-size: clamp(0.95em, 3.8vw, 1.15em); line-height: 2;
+  text-align: center; color: #c8bca0; max-width: 560px;
+}
+.page-text .em { color: #ffd700; font-weight: bold; }
+.page-text .light { color: #f0f0f0; font-weight: bold; }
+.page-text .dark { color: #6a7a8a; }
+.fact-card {
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15);
+  border-radius: 12px; padding: 14px 18px; margin-top: 18px;
+  max-width: 480px; text-align: left; font-size: 0.88em; line-height: 1.8; color: #a89878;
+}
+.fact-card .label { color: #ffd700; font-weight: bold; margin-bottom: 4px; }
+
+/* Animations */
+.ani { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.page.active .ani { opacity: 1; transform: translateY(0); }
+.page.active .ani:nth-child(2) { transition-delay: 0.15s; }
+.page.active .ani:nth-child(3) { transition-delay: 0.3s; }
+.page.active .ani:nth-child(4) { transition-delay: 0.45s; }
+.page.active .ani:nth-child(5) { transition-delay: 0.6s; }
+.page.active .ani:nth-child(6) { transition-delay: 0.75s; }
+
+/* Particles */
+.particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.particle {
+  position: absolute; border-radius: 50%; opacity: 0;
+  animation: floatUp 7s ease-in-out infinite;
+}
+.particle-gold { background: radial-gradient(circle, #ffd700, transparent); }
+.particle-white { background: radial-gradient(circle, rgba(255,255,255,0.8), transparent); }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(100vh) scale(0.3); }
+  15% { opacity: 0.7; } 85% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(0.8); }
+}
+
+/* Stars */
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.star {
+  position: absolute; background: #fff; border-radius: 50%;
+  animation: twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.85; transform: scale(1.2); } }
+
+/* Gua detail card */
+.gua-detail {
+  display: grid; grid-template-columns: auto 1fr; gap: 8px 16px;
+  align-items: center; margin: 15px 0; max-width: 380px;
+  padding: 14px 18px; border-radius: 12px;
+  background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
+}
+.gua-detail .item-label { font-size: 0.8em; color: #5a5a5a; text-align: right; }
+.gua-detail .item-value { font-size: 0.92em; color: #c8bca0; }
+.gua-detail .item-value .em { color: #ffd700; font-weight: bold; }
+
+/* Trigram big display */
+.trigram-big {
+  margin: 10px 0; display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.trigram-big .yao {
+  width: clamp(60px, 18vw, 90px); height: 10px; border-radius: 4px; position: relative;
+}
+.trigram-big .yao-yang { background: linear-gradient(90deg, #ffd700, #ffaa00); box-shadow: 0 0 8px rgba(255,215,0,0.3); }
+.trigram-big .yao-yin { display: flex; gap: 10px; }
+.trigram-big .yao-yin span {
+  flex: 1; height: 10px; border-radius: 4px;
+  background: linear-gradient(90deg, #6080c0, #4060a0); box-shadow: 0 0 6px rgba(96,128,192,0.2);
+}
+
+/* Navigation */
+.nav-hint {
+  position: fixed; bottom: 18px; left: 0; right: 0;
+  text-align: center; color: rgba(255,255,255,0.25); font-size: 0.75em;
+  pointer-events: none; transition: opacity 0.5s; z-index: 100;
+}
+.nav-dots {
+  position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 7px; z-index: 100;
+}
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); transition: all 0.3s; cursor: pointer;
+}
+.nav-dot.active { background: #ffd700; box-shadow: 0 0 6px rgba(255,215,0,0.5); transform: scale(1.4); }
+
+.audio-btn {
+  position: fixed; top: 14px; right: 14px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: #ffd700; font-size: 1.1em;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 200; backdrop-filter: blur(10px); transition: all 0.3s;
+}
+.audio-btn:active { transform: scale(0.9); }
+.audio-btn.playing { background: rgba(255,215,0,0.15); box-shadow: 0 0 12px rgba(255,215,0,0.2); }
+.page-num { position: fixed; top: 16px; left: 16px; font-size: 0.7em; color: rgba(255,255,255,0.2); z-index: 100; }
+
+/* Voice panel */
+.voice-panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(10,10,15,0.96); backdrop-filter: blur(20px);
+  padding: 20px; border-top: 1px solid rgba(255,215,0,0.15);
+  transform: translateY(100%); transition: transform 0.3s; z-index: 300;
+  border-radius: 18px 18px 0 0;
+}
+.voice-panel.show { transform: translateY(0); }
+.voice-panel label { display: block; color: #7a6a5a; font-size: 0.82em; margin-bottom: 6px; }
+.voice-panel select, .voice-panel input[type="range"] {
+  width: 100%; padding: 10px; border-radius: 8px;
+  border: 1px solid rgba(255,215,0,0.15); background: rgba(255,255,255,0.04);
+  color: #d4c8b0; font-size: 0.95em; margin-bottom: 12px;
+}
+.voice-panel .close-panel { text-align: center; color: #ffd700; cursor: pointer; padding: 8px; }
+
+/* Gua symbol large */
+.gua-symbol-large {
+  font-size: clamp(3em, 12vw, 5em);
+  margin: 10px 0;
+  filter: drop-shadow(0 0 15px rgba(255,215,0,0.2));
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
+<div class="page-num" id="pageNum">1 / 10</div>
+<div class="nav-dots" id="navDots"></div>
+<div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
+
+<div class="pages-wrapper">
+
+  <!-- Page 1: Cover -->
+  <div class="page bg-cosmos active" data-page="0">
+    <div class="particles" id="p0"></div>
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="220" height="220" viewBox="0 0 440 440">
+        <defs>
+          <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(255,215,0,0.06)"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <filter id="glow"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <circle cx="220" cy="220" r="200" fill="url(#bgGlow)"/>
+        <circle cx="220" cy="220" r="195" fill="none" stroke="rgba(255,215,0,0.12)" stroke-width="1.5">
+          <animateTransform attributeName="transform" type="rotate" values="0 220 220;360 220 220" dur="80s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="220" cy="220" r="180" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4 8"/>
+        <circle cx="220" cy="220" r="130" fill="none" stroke="rgba(255,215,0,0.08)" stroke-width="1"/>
+        <!-- 8 trigrams in circle with labels -->
+        <g filter="url(#glow)">
+          <!-- Qian - top (S in Fuxi) -->
+          <g transform="translate(220,42)">
+            <rect x="-20" y="-12" width="40" height="6" rx="2" fill="#ffd700"/>
+            <rect x="-20" y="-3" width="40" height="6" rx="2" fill="#ffd700"/>
+            <rect x="-20" y="6" width="40" height="6" rx="2" fill="#ffd700"/>
+            <text x="0" y="24" text-anchor="middle" font-size="12" fill="#ffd700">乾 天</text>
+          </g>
+          <!-- Xun - top-right -->
+          <g transform="translate(346,94)">
+            <rect x="-20" y="-12" width="40" height="6" rx="2" fill="#80c0a0"/>
+            <rect x="-20" y="-3" width="40" height="6" rx="2" fill="#80c0a0"/>
+            <rect x="-20" y="6" width="17" height="6" rx="2" fill="#80c0a0"/>
+            <rect x="3" y="6" width="17" height="6" rx="2" fill="#80c0a0"/>
+            <text x="0" y="24" text-anchor="middle" font-size="12" fill="#80c0a0">巽 风</text>
+          </g>
+          <!-- Kan - right -->
+          <g transform="translate(390,220)">
+            <rect x="-20" y="-12" width="17" height="6" rx="2" fill="#4090ff"/>
+            <rect x="3" y="-12" width="17" height="6" rx="2" fill="#4090ff"/>
+            <rect x="-20" y="-3" width="40" height="6" rx="2" fill="#4090ff"/>
+            <rect x="-20" y="6" width="17" height="6" rx="2" fill="#4090ff"/>
+            <rect x="3" y="6" width="17" height="6" rx="2" fill="#4090ff"/>
+            <text x="0" y="24" text-anchor="middle" font-size="12" fill="#4090ff">坎 水</text>
+          </g>
+          <!-- Gen - bottom-right -->
+          <g transform="translate(346,346)">
+            <rect x="-20" y="-12" width="40" height="6" rx="2" fill="#c09040"/>
+            <rect x="-20" y="-3" width="17" height="6" rx="2" fill="#c09040"/>
+            <rect x="3" y="-3" width="17" height="6" rx="2" fill="#c09040"/>
+            <rect x="-20" y="6" width="17" height="6" rx="2" fill="#c09040"/>
+            <rect x="3" y="6" width="17" height="6" rx="2" fill="#c09040"/>
+            <text x="0" y="24" text-anchor="middle" font-size="12" fill="#c09040">艮 山</text>
+          </g>
+          <!-- Kun - bottom -->
+          <g transform="translate(220,398)">
+            <rect x="-20" y="-12" width="17" height="6" rx="2" fill="#8070b0"/>
+            <rect x="3" y="-12" width="17" height="6" rx="2" fill="#8070b0"/>
+            <rect x="-20" y="-3" width="17" height="6" rx="2" fill="#8070b0"/>
+            <rect x="3" y="-3" width="17" height="6" rx="2" fill="#8070b0"/>
+            <rect x="-20" y="6" width="17" height="6" rx="2" fill="#8070b0"/>
+            <rect x="3" y="6" width="17" height="6" rx="2" fill="#8070b0"/>
+            <text x="0" y="24" text-anchor="middle" font-size="12" fill="#8070b0">坤 地</text>
+          </g>
+          <!-- Zhen - bottom-left -->
+          <g transform="translate(94,346)">
+            <rect x="-20" y="-12" width="17" height="6" rx="2" fill="#40c040"/>
+            <rect x="3" y="-12" width="17" height="6" rx="2" fill="#40c040"/>
+            <rect x="-20" y="-3" width="17" height="6" rx="2" fill="#40c040"/>
+            <rect x="3" y="-3" width="17" height="6" rx="2" fill="#40c040"/>
+            <rect x="-20" y="6" width="40" height="6" rx="2" fill="#40c040"/>
+            <text x="0" y="24" text-anchor="middle" font-size="12" fill="#40c040">震 雷</text>
+          </g>
+          <!-- Li - left -->
+          <g transform="translate(50,220)">
+            <rect x="-20" y="-12" width="40" height="6" rx="2" fill="#ff6040"/>
+            <rect x="-20" y="-3" width="17" height="6" rx="2" fill="#ff6040"/>
+            <rect x="3" y="-3" width="17" height="6" rx="2" fill="#ff6040"/>
+            <rect x="-20" y="6" width="40" height="6" rx="2" fill="#ff6040"/>
+            <text x="0" y="24" text-anchor="middle" font-size="12" fill="#ff6040">离 火</text>
+          </g>
+          <!-- Dui - top-left -->
+          <g transform="translate(94,94)">
+            <rect x="-20" y="-12" width="17" height="6" rx="2" fill="#a0a0ff"/>
+            <rect x="3" y="-12" width="17" height="6" rx="2" fill="#a0a0ff"/>
+            <rect x="-20" y="-3" width="40" height="6" rx="2" fill="#a0a0ff"/>
+            <rect x="-20" y="6" width="40" height="6" rx="2" fill="#a0a0ff"/>
+            <text x="0" y="24" text-anchor="middle" font-size="12" fill="#a0a0ff">兑 泽</text>
+          </g>
+        </g>
+        <!-- Center Taiji -->
+        <circle cx="220" cy="220" r="35" fill="#080808" stroke="rgba(255,215,0,0.15)" stroke-width="1"/>
+        <path d="M220,185 A35,35 0 0,1 220,255 A17.5,17.5 0 0,1 220,220 A17.5,17.5 0 0,0 220,185 Z" fill="rgba(255,215,0,0.5)">
+          <animateTransform attributeName="transform" type="rotate" values="0 220 220;360 220 220" dur="20s" repeatCount="indefinite"/>
+        </path>
+        <path d="M220,185 A35,35 0 0,0 220,255 A17.5,17.5 0 0,0 220,220 A17.5,17.5 0 0,1 220,185 Z" fill="rgba(10,10,20,0.9)">
+          <animateTransform attributeName="transform" type="rotate" values="0 220 220;360 220 220" dur="20s" repeatCount="indefinite"/>
+        </path>
+      </svg>
+    </div>
+    <div class="title-main ani">八卦详解</div>
+    <div class="subtitle ani">第四期 · 天地雷风水火山泽</div>
+  </div>
+
+  <!-- Page 2: Qian - Heaven -->
+  <div class="page bg-sky" data-page="1">
+    <div class="stars" id="s1"></div>
+    <div class="gua-symbol-large ani">☰</div>
+    <div class="trigram-big ani">
+      <div class="yao yao-yang"></div>
+      <div class="yao yao-yang"></div>
+      <div class="yao yao-yang"></div>
+    </div>
+    <div class="page-title ani">乾 · 天</div>
+    <div class="page-text ani">
+      三条<span class="em">完整的阳线</span>，<br>
+      纯阳至刚，是<span class="em">天</span>的象征。<br><br>
+      乾代表<span class="em">最强大的力量</span>，<br>
+      像天空一样无穷无尽。
+    </div>
+    <div class="gua-detail ani">
+      <div class="item-label">自然</div><div class="item-value"><span class="em">天</span> ☁️</div>
+      <div class="item-label">家庭</div><div class="item-value"><span class="em">父亲</span></div>
+      <div class="item-label">性格</div><div class="item-value">刚健、进取</div>
+      <div class="item-label">动物</div><div class="item-value">🐴 马</div>
+      <div class="item-label">身体</div><div class="item-value">头</div>
+      <div class="item-label">方位</div><div class="item-value">西北</div>
+      <div class="item-label">五行</div><div class="item-value">金</div>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">💡 为什么是马？</div>
+      马健壮有力，永不停歇地奔跑，<br>
+      正像天道运转，「天行健，君子以自强不息」。
+    </div>
+  </div>
+
+  <!-- Page 3: Kun - Earth -->
+  <div class="page bg-earth" data-page="2">
+    <div class="particles" id="p2"></div>
+    <div class="gua-symbol-large ani">☷</div>
+    <div class="trigram-big ani">
+      <div class="yao yao-yin"><span></span><span></span></div>
+      <div class="yao yao-yin"><span></span><span></span></div>
+      <div class="yao yao-yin"><span></span><span></span></div>
+    </div>
+    <div class="page-title ani">坤 · 地</div>
+    <div class="page-text ani">
+      三条<span class="dark">断开的阴线</span>，<br>
+      纯阴至柔，是<span class="em">地</span>的象征。<br><br>
+      坤代表<span class="em">包容与承载</span>，<br>
+      像大地一样养育万物。
+    </div>
+    <div class="gua-detail ani">
+      <div class="item-label">自然</div><div class="item-value"><span class="em">地</span> 🌍</div>
+      <div class="item-label">家庭</div><div class="item-value"><span class="em">母亲</span></div>
+      <div class="item-label">性格</div><div class="item-value">柔顺、包容</div>
+      <div class="item-label">动物</div><div class="item-value">🐂 牛</div>
+      <div class="item-label">身体</div><div class="item-value">腹</div>
+      <div class="item-label">方位</div><div class="item-value">西南</div>
+      <div class="item-label">五行</div><div class="item-value">土</div>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">💡 为什么是牛？</div>
+      牛任劳任怨，默默耕地，<br>
+      正像大地一样，「地势坤，君子以厚德载物」。
+    </div>
+  </div>
+
+  <!-- Page 4: Zhen - Thunder -->
+  <div class="page bg-thunder" data-page="3">
+    <div class="stars" id="s3"></div>
+    <div class="gua-symbol-large ani">☳</div>
+    <div class="trigram-big ani">
+      <div class="yao yao-yin"><span></span><span></span></div>
+      <div class="yao yao-yin"><span></span><span></span></div>
+      <div class="yao yao-yang"></div>
+    </div>
+    <div class="page-title ani">震 · 雷</div>
+    <div class="page-text ani">
+      最下面一条<span class="em">阳线</span>冲出，<br>
+      上面两条阴线压不住它。<br><br>
+      就像雷从地下<span class="em">轰隆隆</span>炸出来！<br>
+      代表<span class="em">震动、行动、开始</span>。
+    </div>
+    <div class="gua-detail ani">
+      <div class="item-label">自然</div><div class="item-value"><span class="em">雷</span> ⚡</div>
+      <div class="item-label">家庭</div><div class="item-value"><span class="em">长男</span>（大儿子）</div>
+      <div class="item-label">性格</div><div class="item-value">动、奋起</div>
+      <div class="item-label">动物</div><div class="item-value">🐉 龙</div>
+      <div class="item-label">身体</div><div class="item-value">足（脚）</div>
+      <div class="item-label">方位</div><div class="item-value">东</div>
+      <div class="item-label">五行</div><div class="item-value">木</div>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">💡 为什么是龙？</div>
+      龙能腾空而起，震撼天地，<br>
+      春天打雷，万物苏醒——震就是「动起来」！
+    </div>
+  </div>
+
+  <!-- Page 5: Xun - Wind -->
+  <div class="page bg-wind" data-page="4">
+    <div class="particles" id="p4"></div>
+    <div class="gua-symbol-large ani">☴</div>
+    <div class="trigram-big ani">
+      <div class="yao yao-yang"></div>
+      <div class="yao yao-yang"></div>
+      <div class="yao yao-yin"><span></span><span></span></div>
+    </div>
+    <div class="page-title ani">巽 · 风</div>
+    <div class="page-text ani">
+      最下面一条<span class="dark">阴线</span>是入口，<br>
+      上面两条阳线顺势而入。<br><br>
+      就像风一样，<span class="em">无孔不入</span>，<br>
+      看不见摸不着，却无处不在。
+    </div>
+    <div class="gua-detail ani">
+      <div class="item-label">自然</div><div class="item-value"><span class="em">风</span> 🌬️</div>
+      <div class="item-label">家庭</div><div class="item-value"><span class="em">长女</span>（大女儿）</div>
+      <div class="item-label">性格</div><div class="item-value">入、渗透</div>
+      <div class="item-label">动物</div><div class="item-value">🐔 鸡</div>
+      <div class="item-label">身体</div><div class="item-value">股（大腿）</div>
+      <div class="item-label">方位</div><div class="item-value">东南</div>
+      <div class="item-label">五行</div><div class="item-value">木</div>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">💡 为什么是鸡？</div>
+      古人观察到鸡对风特别敏感，<br>
+      风向一变鸡就知道。巽就是「进入」的力量。
+    </div>
+  </div>
+
+  <!-- Page 6: Kan - Water -->
+  <div class="page bg-water" data-page="5">
+    <div class="stars" id="s5"></div>
+    <div class="gua-symbol-large ani">☵</div>
+    <div class="trigram-big ani">
+      <div class="yao yao-yin"><span></span><span></span></div>
+      <div class="yao yao-yang"></div>
+      <div class="yao yao-yin"><span></span><span></span></div>
+    </div>
+    <div class="page-title ani">坎 · 水</div>
+    <div class="page-text ani">
+      中间一条<span class="em">阳线</span>被困住，<br>
+      上下都是阴线，就像<span class="em">水沟</span>。<br><br>
+      水往低处流，掉进坑里很危险！<br>
+      所以坎代表<span class="em">危险、陷阱</span>。
+    </div>
+    <div class="gua-detail ani">
+      <div class="item-label">自然</div><div class="item-value"><span class="em">水</span> 💧</div>
+      <div class="item-label">家庭</div><div class="item-value"><span class="em">中男</span>（二儿子）</div>
+      <div class="item-label">性格</div><div class="item-value">险、智慧</div>
+      <div class="item-label">动物</div><div class="item-value">🐷 猪</div>
+      <div class="item-label">身体</div><div class="item-value">耳</div>
+      <div class="item-label">方位</div><div class="item-value">北</div>
+      <div class="item-label">五行</div><div class="item-value">水</div>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">💡 为什么"坎"是危险？</div>
+      「坎」的字面意思就是坑洞。<br>
+      水流入深坑，进去容易出来难——所以要小心！
+    </div>
+  </div>
+
+  <!-- Page 7: Li - Fire -->
+  <div class="page bg-fire" data-page="6">
+    <div class="particles" id="p6"></div>
+    <div class="gua-symbol-large ani">☲</div>
+    <div class="trigram-big ani">
+      <div class="yao yao-yang"></div>
+      <div class="yao yao-yin"><span></span><span></span></div>
+      <div class="yao yao-yang"></div>
+    </div>
+    <div class="page-title ani">离 · 火</div>
+    <div class="page-text ani">
+      中间一条<span class="dark">阴线</span>是空心，<br>
+      上下两条阳线是外壳。<br><br>
+      就像火苗——<span class="em">外面明亮，中间空虚</span>。<br>
+      火必须<span class="em">附着</span>在别的东西上才能燃烧。
+    </div>
+    <div class="gua-detail ani">
+      <div class="item-label">自然</div><div class="item-value"><span class="em">火</span> 🔥</div>
+      <div class="item-label">家庭</div><div class="item-value"><span class="em">中女</span>（二女儿）</div>
+      <div class="item-label">性格</div><div class="item-value">丽（附着）、光明</div>
+      <div class="item-label">动物</div><div class="item-value">🐦 雉（野鸡）</div>
+      <div class="item-label">身体</div><div class="item-value">目（眼睛）</div>
+      <div class="item-label">方位</div><div class="item-value">南</div>
+      <div class="item-label">五行</div><div class="item-value">火</div>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">💡 「离」是什么意思？</div>
+      「离」= 丽 = 附着。火不能独立存在，<br>
+      必须附着在木头、纸上才能燃烧发光。
+    </div>
+  </div>
+
+  <!-- Page 8: Gen - Mountain -->
+  <div class="page bg-mountain" data-page="7">
+    <div class="stars" id="s7"></div>
+    <div class="gua-symbol-large ani">☶</div>
+    <div class="trigram-big ani">
+      <div class="yao yao-yang"></div>
+      <div class="yao yao-yin"><span></span><span></span></div>
+      <div class="yao yao-yin"><span></span><span></span></div>
+    </div>
+    <div class="page-title ani">艮 · 山</div>
+    <div class="page-text ani">
+      最上面一条<span class="em">阳线</span>像山顶，<br>
+      下面两条阴线是空的山体。<br><br>
+      山不动不摇，稳如磐石。<br>
+      艮代表<span class="em">停止、安静、稳定</span>。
+    </div>
+    <div class="gua-detail ani">
+      <div class="item-label">自然</div><div class="item-value"><span class="em">山</span> ⛰️</div>
+      <div class="item-label">家庭</div><div class="item-value"><span class="em">少男</span>（小儿子）</div>
+      <div class="item-label">性格</div><div class="item-value">止、沉稳</div>
+      <div class="item-label">动物</div><div class="item-value">🐕 狗</div>
+      <div class="item-label">身体</div><div class="item-value">手</div>
+      <div class="item-label">方位</div><div class="item-value">东北</div>
+      <div class="item-label">五行</div><div class="item-value">土</div>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">💡 为什么是狗？</div>
+      狗忠诚守护，蹲在门口一动不动，<br>
+      就像山一样稳固。艮就是「该停就停」。
+    </div>
+  </div>
+
+  <!-- Page 9: Dui - Lake -->
+  <div class="page bg-lake" data-page="8">
+    <div class="particles" id="p8"></div>
+    <div class="gua-symbol-large ani">☱</div>
+    <div class="trigram-big ani">
+      <div class="yao yao-yin"><span></span><span></span></div>
+      <div class="yao yao-yang"></div>
+      <div class="yao yao-yang"></div>
+    </div>
+    <div class="page-title ani">兑 · 泽</div>
+    <div class="page-text ani">
+      最上面一条<span class="dark">阴线</span>是缺口，<br>
+      下面两条阳线是坚实的底。<br><br>
+      就像湖泊——上面<span class="em">开口纳水</span>，<br>
+      带给人<span class="em">喜悦和愉快</span>。
+    </div>
+    <div class="gua-detail ani">
+      <div class="item-label">自然</div><div class="item-value"><span class="em">泽</span>（湖）🏊</div>
+      <div class="item-label">家庭</div><div class="item-value"><span class="em">少女</span>（小女儿）</div>
+      <div class="item-label">性格</div><div class="item-value">悦、喜悦</div>
+      <div class="item-label">动物</div><div class="item-value">🐑 羊</div>
+      <div class="item-label">身体</div><div class="item-value">口</div>
+      <div class="item-label">方位</div><div class="item-value">西</div>
+      <div class="item-label">五行</div><div class="item-value">金</div>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">💡 为什么是「悦」？</div>
+      「兑」和「悦」同源。湖水清澈，<br>
+      人们在水边嬉戏，心情愉悦。
+    </div>
+  </div>
+
+  <!-- Page 10: Summary -->
+  <div class="page bg-final" data-page="9">
+    <div class="particles" id="p9"></div>
+    <div class="ani">
+      <svg width="70" height="70" viewBox="0 0 70 70">
+        <circle cx="35" cy="35" r="30" fill="none" stroke="rgba(255,215,0,0.2)" stroke-width="1">
+          <animateTransform attributeName="transform" type="rotate" values="0 35 35;360 35 35" dur="20s" repeatCount="indefinite"/>
+        </circle>
+        <g>
+          <animateTransform attributeName="transform" type="rotate" values="0 35 35;360 35 35" dur="30s" repeatCount="indefinite"/>
+          <rect x="28" y="6" width="14" height="2.5" rx="1" fill="#ffd700" opacity="0.7"/>
+          <rect x="28" y="61" width="5.5" height="2.5" rx="1" fill="#8070b0" opacity="0.7"/>
+          <rect x="36.5" y="61" width="5.5" height="2.5" rx="1" fill="#8070b0" opacity="0.7"/>
+          <rect x="6" y="34" width="14" height="2.5" rx="1" fill="#ff6040" opacity="0.7"/>
+          <rect x="50" y="34" width="5.5" height="2.5" rx="1" fill="#4090ff" opacity="0.7"/>
+          <rect x="58.5" y="34" width="5.5" height="2.5" rx="1" fill="#4090ff" opacity="0.7"/>
+        </g>
+      </svg>
+    </div>
+    <div class="page-title ani">小结</div>
+    <div class="page-text ani">
+      八卦 = 古人的<span class="em">万物分类系统</span>！<br><br>
+      ☰乾天 ☷坤地 ☳震雷 ☴巽风<br>
+      ☵坎水 ☲离火 ☶艮山 ☱兑泽<br><br>
+      每一卦都有<span class="em">自然象征</span>、<br>
+      <span class="em">家庭角色</span>、<span class="em">性格特点</span>。<br><br>
+      <span class="dark">用三条线就能代表万物，<br>
+      这就是古人的智慧。</span>
+    </div>
+    <div class="ani" style="margin-top:20px;padding:12px 20px;border:1px solid rgba(255,215,0,0.15);border-radius:10px;text-align:center;">
+      <div style="color:#ffd700;font-size:1em;font-weight:bold;">下一期预告</div>
+      <div style="color:#6a5a4a;margin-top:5px;">第五期 · 六十四卦的诞生 — 八卦重叠的奥秘</div>
+    </div>
+    <div class="ani" style="margin-top:12px;color:#3a3a3a;font-size:0.72em;">— 周易讲解 · 第四期 完 —</div>
+  </div>
+
+</div>
+
+<!-- Voice Panel -->
+<div class="voice-panel" id="voicePanel">
+  <label>🗣️ 声音 <select id="voiceSelect"></select></label>
+  <label>🔊 语速: <span id="rateVal">0.9</span>x <input type="range" id="rateRange" min="0.5" max="1.5" step="0.1" value="0.9"></label>
+  <div class="close-panel" onclick="toggleVoicePanel()">✕ 关闭</div>
+</div>
+
+<script>
+let cur = 0;
+const pages = document.querySelectorAll('.page');
+const total = pages.length;
+let animating = false, speaking = false;
+
+const navDots = document.getElementById('navDots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => go(i);
+  navDots.appendChild(d);
+}
+
+function go(idx) {
+  if (idx < 0 || idx >= total || idx === cur || animating) return;
+  animating = true;
+  window.speechSynthesis.cancel();
+  const old = pages[cur], nw = pages[idx], dir = idx > cur ? 1 : -1;
+  old.classList.remove('active'); old.classList.add('prev');
+  if (dir < 0) { old.style.transform = 'translateX(100%)'; old.style.opacity = '0'; }
+  nw.style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+  nw.classList.remove('prev');
+  requestAnimationFrame(() => {
+    nw.classList.add('active'); nw.style.transform = '';
+    cur = idx; updateUI();
+    setTimeout(() => {
+      animating = false;
+      old.classList.remove('prev'); old.style.transform = ''; old.style.opacity = '';
+      if (speaking) speakPage(cur);
+    }, 650);
+  });
+}
+
+function updateUI() {
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.getElementById('pageNum').textContent = `${cur + 1} / ${total}`;
+  document.getElementById('navHint').style.opacity = '0';
+}
+
+let tx = 0, ty = 0, tt = 0;
+document.addEventListener('touchstart', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY; tt = Date.now();
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty, dt = Date.now() - tt;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 500) { dx < 0 ? go(cur+1) : go(cur-1); return; }
+  if (dt < 300 && Math.abs(dx) < 15 && Math.abs(dy) < 15) {
+    e.changedTouches[0].clientX > window.innerWidth * 0.4 ? go(cur+1) : go(cur-1);
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur+1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur-1); }
+});
+
+// TTS
+const narrations = [
+  "八卦详解。第四期，天地雷风水火山泽。",
+  "乾卦，三条完整的阳线，纯阳至刚，是天的象征。乾代表最强大的力量，像天空一样无穷无尽。在家庭中，乾是父亲。乾的动物是马，因为马健壮有力，永不停歇地奔跑，正像天道运转。天行健，君子以自强不息。方位在西北，五行属金。",
+  "坤卦，三条断开的阴线，纯阴至柔，是地的象征。坤代表包容与承载，像大地一样养育万物。在家庭中，坤是母亲。坤的动物是牛，因为牛任劳任怨，默默耕地。地势坤，君子以厚德载物。方位在西南，五行属土。",
+  "震卦，最下面一条阳线冲出来，上面两条阴线压不住它。就像雷从地下轰隆隆炸出来！震代表震动、行动、开始。在家庭中，震是长男，就是大儿子。震的动物是龙，因为龙能腾空而起，震撼天地。春天打雷，万物苏醒。方位在东，五行属木。",
+  "巽卦，最下面一条阴线是入口，上面两条阳线顺势而入。就像风一样，无孔不入，看不见摸不着，却无处不在。在家庭中，巽是长女，就是大女儿。巽的动物是鸡，因为鸡对风特别敏感。方位在东南，五行属木。",
+  "坎卦，中间一条阳线被困住，上下都是阴线，就像水沟。水往低处流，掉进坑里很危险！所以坎代表危险和陷阱。在家庭中，坎是中男，就是二儿子。坎的动物是猪。坎的字面意思就是坑洞，水流入深坑，进去容易出来难。方位在北，五行属水。",
+  "离卦，中间一条阴线是空心，上下两条阳线是外壳。就像火苗，外面明亮，中间空虚。火必须附着在别的东西上才能燃烧。在家庭中，离是中女，就是二女儿。离的动物是雉，就是野鸡，因为野鸡有漂亮的羽毛，就像火焰一样美丽。方位在南，五行属火。",
+  "艮卦，最上面一条阳线像山顶，下面两条阴线是空的山体。山不动不摇，稳如磐石。艮代表停止、安静、稳定。在家庭中，艮是少男，就是小儿子。艮的动物是狗，因为狗忠诚守护，蹲在门口一动不动。方位在东北，五行属土。",
+  "兑卦，最上面一条阴线是缺口，下面两条阳线是坚实的底。就像湖泊，上面开口纳水，带给人喜悦和愉快。在家庭中，兑是少女，就是小女儿。兑的动物是羊，性格温和。兑和悦同源，湖水清澈，人们在水边嬉戏，心情愉悦。方位在西，五行属金。",
+  "小结。八卦就是古人的万物分类系统！乾代表天，坤代表地，震代表雷，巽代表风，坎代表水，离代表火，艮代表山，兑代表泽。每一卦都有自然象征、家庭角色、性格特点。用三条线就能代表万物，这就是古人的智慧。下一期，我们来讲六十四卦是怎么诞生的。"
+];
+
+let voices = [];
+function loadVoices() {
+  voices = window.speechSynthesis.getVoices();
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+  const zh = voices.filter(v => (v.lang.startsWith('zh-CN')||v.lang==='zh')&&!v.lang.startsWith('zh-HK')&&!v.lang.startsWith('zh-TW'));
+  // Sort: Edge Online (Natural) first
+  zh.sort((a, b) => {
+    const aOnline = a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Online') && a.name.includes('Natural') ? 2 : a.name.includes('Microsoft') ? 1 : 0;
+    const bOnline = b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Online') && b.name.includes('Natural') ? 2 : b.name.includes('Microsoft') ? 1 : 0;
+    return bOnline - aOnline;
+  });
+  (zh.length ? zh : voices.slice(0, 8)).forEach(v => {
+    const o = document.createElement('option');
+    o.value = voices.indexOf(v);
+    o.textContent = v.name.replace(/Microsoft |Google |Apple /g, '');
+    sel.appendChild(o);
+  });
+}
+window.speechSynthesis.onvoiceschanged = loadVoices;
+setTimeout(loadVoices, 300);
+document.getElementById('rateRange').addEventListener('input', function() {
+  document.getElementById('rateVal').textContent = this.value;
+});
+
+function speakPage(idx) {
+  window.speechSynthesis.cancel();
+  if (!narrations[idx]) return;
+  const u = new SpeechSynthesisUtterance(narrations[idx]);
+  u.lang = 'zh-CN'; u.rate = parseFloat(document.getElementById('rateRange').value);
+  const sv = document.getElementById('voiceSelect');
+  if (sv.value && voices[sv.value]) u.voice = voices[sv.value];
+  u.onend = () => {
+    if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
+    else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
+  };
+  window.speechSynthesis.speak(u);
+}
+
+function toggleAudio() {
+  if (speaking) { speaking = false; window.speechSynthesis.cancel(); }
+  else { speaking = true; speakPage(cur); }
+  updateAudioBtn();
+}
+function updateAudioBtn() {
+  const b = document.getElementById('audioBtn');
+  b.textContent = speaking ? '🔊' : '🔇';
+  b.classList.toggle('playing', speaking);
+}
+
+let lpt;
+document.getElementById('audioBtn').addEventListener('touchstart', e => {
+  lpt = setTimeout(() => { toggleVoicePanel(); e.preventDefault(); }, 600);
+}, { passive: false });
+document.getElementById('audioBtn').addEventListener('touchend', () => clearTimeout(lpt));
+function toggleVoicePanel() { document.getElementById('voicePanel').classList.toggle('show'); }
+
+// Particles & Stars
+function mkParticles(id, n=15) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle ' + (Math.random() > 0.5 ? 'particle-gold' : 'particle-white');
+    p.style.left = Math.random()*100+'%';
+    p.style.animationDelay = Math.random()*7+'s';
+    p.style.animationDuration = (5+Math.random()*4)+'s';
+    const s = 2+Math.random()*4; p.style.width = s+'px'; p.style.height = s+'px';
+    c.appendChild(p);
+  }
+}
+function mkStars(id, n=35) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = Math.random()*4+'s';
+    const sz = 1+Math.random()*2; s.style.width = sz+'px'; s.style.height = sz+'px';
+    c.appendChild(s);
+  }
+}
+
+mkParticles('p0', 18); mkParticles('p2', 14); mkParticles('p4', 12); mkParticles('p6', 14); mkParticles('p8', 12); mkParticles('p9', 12);
+mkStars('s1', 35); mkStars('s3', 25); mkStars('s5', 30); mkStars('s7', 28);
+
+setTimeout(() => { document.getElementById('navHint').style.opacity = '0'; }, 4500);
+document.addEventListener('dblclick', e => e.preventDefault());
+</script>
+<script src="../../assets/site.js"></script></body>
+</html>

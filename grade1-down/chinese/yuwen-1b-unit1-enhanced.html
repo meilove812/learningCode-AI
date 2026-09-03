@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>一年级下册·第一单元识字卡 | Coco Learning Park</title>
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:linear-gradient(135deg,#fdf2f8,#ede9fe,#e0f2fe,#ecfdf5);min-height:100vh;padding:12px;position:relative}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background-image:radial-gradient(circle,rgba(139,92,246,.06) 1px,transparent 1px);background-size:30px 30px;pointer-events:none;z-index:0}
+h1{text-align:center;font-size:1.4em;margin:8px 0;color:#6b21a8;position:relative;z-index:1}
+.progress{text-align:center;font-size:.95em;color:#7c3aed;margin:4px 0 8px;position:relative;z-index:1}
+.filters{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:10px 0;position:relative;z-index:1}
+.filters button{border:none;border-radius:20px;padding:8px 16px;font-size:1em;cursor:pointer;background:#e2e8f0;color:#475569;transition:.2s}
+.filters button.active{color:#fff;transform:scale(1.05)}
+.controls{display:flex;justify-content:center;align-items:center;gap:10px;margin:8px 0;flex-wrap:wrap;position:relative;z-index:1}
+.start-btn{border:none;border-radius:28px;padding:12px 28px;font-size:1.15em;cursor:pointer;background:linear-gradient(135deg,#8b5cf6,#6366f1);color:#fff;font-weight:700;box-shadow:0 4px 14px rgba(139,92,246,.3)}
+.settings-toggle{border:none;background:none;font-size:1em;cursor:pointer;color:#94a3b8;padding:4px 8px}
+.settings-panel{display:none;justify-content:center;gap:12px;margin:6px 0;position:relative;z-index:1}
+.settings-panel.show{display:flex;flex-wrap:wrap;align-items:center}
+.speed-btn{border:2px solid #e2e8f0;border-radius:16px;padding:6px 14px;font-size:.95em;cursor:pointer;background:#fff;color:#64748b;transition:.2s}
+.speed-btn.active{border-color:#8b5cf6;background:#f5f3ff;color:#7c3aed;font-weight:600}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;max-width:720px;margin:10px auto;padding:0 8px;position:relative;z-index:1}
+/* Card flip */
+.card-container{width:160px;height:250px;perspective:800px;justify-self:center}
+.card{width:100%;height:100%;position:relative;transform-style:preserve-3d;-webkit-transform-style:preserve-3d;transition:transform .5s ease;cursor:pointer;border-radius:14px}
+.card.flipped{transform:rotateY(180deg);-webkit-transform:rotateY(180deg)}
+.card-face{position:absolute;top:0;left:0;width:100%;height:100%;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;overflow:hidden;display:flex;flex-direction:column;align-items:center}
+.card-front{background:#fff;justify-content:center;z-index:2}
+.card.flipped .card-front{z-index:0}
+.card-back{z-index:0}
+.card.flipped .card-back{z-index:2}
+.card-back{background:#fff;transform:rotateY(180deg);-webkit-transform:rotateY(180deg);justify-content:flex-start;padding:12px 8px 10px}
+.card-front .lesson-tag{position:absolute;top:6px;left:6px;font-size:.55em;padding:2px 7px;border-radius:10px;color:#fff;font-weight:600}
+.card-front .tian-wrap{position:relative;width:100px;height:100px;margin-top:6px}
+.card-front .tian-wrap svg{position:absolute;top:0;left:0}
+.card-front .tian-char{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:3.5em;font-family:'KaiTi','STKaiti','楷体',serif;line-height:1;z-index:1;color:#333}
+.card-front .speak-btn{position:absolute;bottom:28px;right:8px;width:36px;height:36px;border-radius:50%;border:none;font-size:1.1em;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.card-front .flip-hint{position:absolute;bottom:6px;font-size:.75em;color:#999;animation:bounce 1.5s infinite}
+/* Back */
+.card-back .pinyin{font-size:1.4em;font-weight:700;margin-bottom:4px}
+.card-back .ciyu{font-size:1.1em;color:#666;margin-bottom:8px}
+.card-back .btns{display:flex;gap:8px;margin-top:auto;flex-wrap:wrap;justify-content:center}
+.card-back .btns button{border:none;border-radius:12px;padding:8px 12px;font-size:.9em;cursor:pointer;color:#fff;min-height:40px}
+.card-back .watermark{position:absolute;bottom:4px;right:8px;font-size:3em;opacity:.06;font-family:'KaiTi','STKaiti','楷体',serif}
+/* Highlight */
+.card-container.highlight .card{box-shadow:0 0 16px 4px rgba(139,92,246,.5);transform:scale(1.08)}
+.card-container.highlight .card.flipped{transform:rotateY(180deg) scale(1.08)}
+/* +1 star float */
+@keyframes starFloat{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-40px) scale(1.3)}}
+.star-float{position:absolute;top:8px;right:8px;font-size:1.1em;pointer-events:none;z-index:10;animation:starFloat .8s ease forwards}
+/* Modal */
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.55);z-index:100;justify-content:center;align-items:center}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:18px;padding:16px;max-width:340px;width:92%;text-align:center;position:relative;max-height:90vh;overflow-y:auto}
+.modal h3{margin-bottom:6px;font-size:1.2em}
+.modal .mode-hint{font-size:.95em;color:#7c3aed;margin-bottom:8px;min-height:1.3em}
+.modal .close-btn{position:absolute;top:8px;right:12px;font-size:1.4em;cursor:pointer;border:none;background:none;color:#999}
+.modal .tian-big{position:relative;width:min(280px,calc(100% - 8px));aspect-ratio:1;margin:0 auto;border:3px solid #e53935;overflow:hidden}
+.modal .tian-big svg{position:absolute;top:0;left:0;width:100%;height:100%}
+.modal .tian-big #hw-target{position:absolute;top:0;left:0;width:100%;height:100%}
+.modal .modal-btns{margin-top:12px;display:flex;gap:8px;justify-content:center}
+.modal .modal-btns button{border:none;border-radius:14px;padding:7px 16px;font-size:.9em;cursor:pointer;color:#fff;background:#8b5cf6}
+/* Reward */
+.reward{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:4em;z-index:200;pointer-events:none;animation:rewardPop .8s ease forwards}
+@keyframes rewardPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}30%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}60%{transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(1) translateY(-40px)}}
+footer{text-align:center;font-size:.75em;color:#94a3b8;margin:16px 0 8px;position:relative;z-index:1}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+<h1>📖 第一单元 · 识字 ✍️</h1>
+<p style="text-align:center;color:#888;font-size:.85em;margin-bottom:4px;position:relative;z-index:1">一年级下册写字表 · 田字格 · 笔顺动画 · 描红练习</p>
+<div class="progress" id="progress">已翻开 <span id="flipCount">0</span>/28 个字 ⭐</div>
+<div class="filters" id="filters"></div>
+<div class="controls">
+  <button class="start-btn" onclick="playAll()">▶️ 开始学习！</button>
+  <button class="settings-toggle" onclick="toggleSettings()">⚙️设置</button>
+</div>
+<div class="settings-panel" id="settingsPanel">
+  <span style="font-size:.85em;color:#64748b">语速：</span>
+  <button class="speed-btn" data-rate="0.5" onclick="setSpeed(this)">🐢慢</button>
+  <button class="speed-btn active" data-rate="0.7" onclick="setSpeed(this)">🐰正常</button>
+  <button class="speed-btn" data-rate="1.0" onclick="setSpeed(this)">🐆快</button>
+</div>
+<div class="grid" id="grid"></div>
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="close-btn" onclick="closeModal()">✕</button>
+    <h3 id="modalTitle"></h3>
+    <div class="mode-hint" id="modeHint"></div>
+    <div class="tian-big">
+      <svg viewBox="0 0 100 100" width="100%" height="100%">
+        <rect x="1" y="1" width="98" height="98" fill="none" stroke="#e53935" stroke-width="1.5"/>
+        <line x1="50" y1="1" x2="50" y2="99" stroke="#ccc" stroke-width=".6" stroke-dasharray="4,3"/>
+        <line x1="1" y1="50" x2="99" y2="50" stroke="#ccc" stroke-width=".6" stroke-dasharray="4,3"/>
+      </svg>
+      <div id="hw-target"></div>
+    </div>
+    <div class="modal-btns">
+      <button onclick="doAnimate()">✏️ 笔顺</button>
+      <button onclick="doQuiz()">🖊 描红</button>
+      <button onclick="doAnimate()">🔄 重播</button>
+    </div>
+  </div>
+</div>
+<footer>🦎 Coco Learning Park · 人教版2024新课标</footer>
+
+<script>
+// Edge High-Fidelity TTS: auto-select best voice
+var _edgeTTSVoice = null;
+function _initEdgeVoice() {
+  var voices = speechSynthesis.getVoices();
+  if (!voices.length) return;
+  var zh = voices.filter(function(v) { return /^zh-CN|^zh$|^cmn/i.test(v.lang)&&!/^zh-HK|^zh-TW/i.test(v.lang); });
+  _edgeTTSVoice = zh.find(function(v){ return v.name.indexOf('Xiaoxiao')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Online')>=0 && v.name.indexOf('Natural')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Yunxi')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Microsoft')>=0; })
+    || zh[0] || null;
+}
+_initEdgeVoice();
+if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = function(){ _initEdgeVoice(); };
+
+var lessons=[
+  {name:'1.春夏秋冬',emoji:'🌸',color:['#FF6B9D','#FF8BA7'],chars:[['春','chūn','春天'],['冬','dōng','冬天'],['花','huā','花朵'],['吹','chuī','吹风'],['飞','fēi','飞鸟'],['入','rù','进入']]},
+  {name:'2.姓氏歌',emoji:'👨‍👩‍👧',color:['#A855F7','#C084FC'],chars:[['什','shén','什么'],['么','me','什么'],['古','gǔ','古代'],['胡','hú','胡说'],['双','shuāng','双手'],['言','yán','语言']]},
+  {name:'3.小青蛙',emoji:'🐸',color:['#3B82F6','#60A5FA'],chars:[['青','qīng','青草'],['清','qīng','清水'],['苗','miáo','禾苗'],['晴','qíng','晴天'],['请','qǐng','请问'],['生','shēng','学生']]},
+  {name:'4.猜字谜',emoji:'🧩',color:['#22C55E','#4ADE80'],chars:[['字','zì','写字'],['红','hóng','红色'],['动','dòng','运动'],['万','wàn','万岁'],['无','wú','无人'],['明','míng','明天']]},
+  {name:'语文园地一',emoji:'🌿',color:['#F97316','#FB923C'],chars:[['文','wén','语文'],['卡','kǎ','卡片'],['片','piàn','卡片'],['合','hé','合唱']]}
+];
+var currentFilter='全部',hw=null,currentChar='',speechRate=0.7;
+var flippedSet=new Set();
+var totalChars=28;
+
+function updateProgress(){
+  var count=flippedSet.size;
+  var el=document.getElementById('flipCount');
+  el.textContent=count;
+  var p=document.getElementById('progress');
+  if(count>=28)p.innerHTML='已翻开 <span id="flipCount">'+count+'</span>/28 个字 🎉全部完成！';
+  else if(count>=20)p.innerHTML='已翻开 <span id="flipCount">'+count+'</span>/28 个字 ⭐⭐';
+  else if(count>=10)p.innerHTML='已翻开 <span id="flipCount">'+count+'</span>/28 个字 🌟';
+  else p.innerHTML='已翻开 <span id="flipCount">'+count+'</span>/28 个字 ⭐';
+}
+function showStarFloat(container){
+  var s=document.createElement('span');
+  s.className='star-float';
+  s.textContent='+1⭐';
+  container.style.position='relative';
+  container.appendChild(s);
+  setTimeout(function(){s.remove()},900);
+}
+function toggleSettings(){
+  var p=document.getElementById('settingsPanel');
+  p.classList.toggle('show');
+}
+function setSpeed(btn){
+  document.querySelectorAll('.speed-btn').forEach(function(b){b.classList.remove('active')});
+  btn.classList.add('active');
+  speechRate=parseFloat(btn.dataset.rate);
+}
+function buildFilters(){
+  var f=document.getElementById('filters');
+  var allBtn=document.createElement('button');
+  allBtn.textContent='📚全部(28)';
+  allBtn.classList.add('active');
+  allBtn.style.background='linear-gradient(135deg,#8b5cf6,#6366f1)';
+  allBtn.style.color='#fff';
+  allBtn.onclick=function(){
+    currentFilter='全部';
+    f.querySelectorAll('button').forEach(function(x){x.classList.remove('active');x.style.background='#e2e8f0';x.style.color='#475569'});
+    allBtn.classList.add('active');
+    allBtn.style.background='linear-gradient(135deg,#8b5cf6,#6366f1)';allBtn.style.color='#fff';
+    buildGrid();
+  };
+  f.appendChild(allBtn);
+  lessons.forEach(function(l){
+    var b=document.createElement('button');
+    b.textContent=l.emoji+l.name.replace(/^\d\./,'')+'('+l.chars.length+')';
+    b.onclick=function(){
+      currentFilter=l.name;
+      f.querySelectorAll('button').forEach(function(x){x.classList.remove('active');x.style.background='#e2e8f0';x.style.color='#475569'});
+      b.classList.add('active');
+      b.style.background='linear-gradient(135deg,'+l.color[0]+','+l.color[1]+')';b.style.color='#fff';
+      buildGrid();
+    };
+    f.appendChild(b);
+  });
+}
+function buildGrid(){
+  var g=document.getElementById('grid');
+  g.innerHTML='';
+  lessons.forEach(function(lesson){
+    if(currentFilter!=='全部'&&currentFilter!==lesson.name)return;
+    lesson.chars.forEach(function(c){
+      var container=document.createElement('div');
+      container.className='card-container';
+      container.dataset.char=c[0];
+      container.dataset.lesson=lesson.name;
+      var card=document.createElement('div');
+      card.className='card';
+      if(flippedSet.has(c[0]))card.classList.add('flipped');
+      card.style.border='3px solid '+lesson.color[0];
+      card.style.borderRadius='14px';
+      // Front
+      var front=document.createElement('div');
+      front.className='card-face card-front';
+      front.style.background='linear-gradient(135deg,'+lesson.color[0]+'12,'+lesson.color[1]+'08)';
+      var speakBtnBg=lesson.color[0]+'20';
+      front.innerHTML='<span class="lesson-tag" style="background:linear-gradient(135deg,'+lesson.color[0]+','+lesson.color[1]+')">'+lesson.name.replace(/^\d\./,'')+'</span>'
+        +'<div class="tian-wrap"><svg viewBox="0 0 100 100" width="100" height="100"><rect x="1" y="1" width="98" height="98" fill="none" stroke="#e53935" stroke-width="2"/><line x1="50" y1="1" x2="50" y2="99" stroke="#ccc" stroke-width="0.8" stroke-dasharray="4,3"/><line x1="1" y1="50" x2="99" y2="50" stroke="#ccc" stroke-width="0.8" stroke-dasharray="4,3"/></svg><span class="tian-char">'+c[0]+'</span></div>'
+        +'<button class="speak-btn" style="background:'+speakBtnBg+'" data-char="'+c[0]+'" data-ciyu="'+c[2]+'">🔊</button>'
+        +'<span class="flip-hint">👆 点我翻转</span>';
+      // Back
+      var back=document.createElement('div');
+      back.className='card-face card-back';
+      back.style.background='linear-gradient(135deg,'+lesson.color[0]+'15,'+lesson.color[1]+'10)';
+      back.innerHTML='<div class="pinyin" style="color:'+lesson.color[0]+'">'+c[1]+'</div>'
+        +'<div class="ciyu">'+c[2]+'</div>'
+        +'<div class="btns">'
+        +'<button style="background:linear-gradient(135deg,'+lesson.color[0]+','+lesson.color[1]+')" data-action="speak" data-char="'+c[0]+'" data-ciyu="'+c[2]+'">🔊 朗读</button>'
+        +'<button style="background:linear-gradient(135deg,'+lesson.color[0]+','+lesson.color[1]+')" data-action="stroke" data-char="'+c[0]+'">✏️ 笔顺</button>'
+        +'<button style="background:linear-gradient(135deg,'+lesson.color[0]+','+lesson.color[1]+')" data-action="quiz" data-char="'+c[0]+'">🖊 写字</button>'
+        +'</div>'
+        +'<span class="watermark">'+c[0]+'</span>';
+      card.appendChild(front);
+      card.appendChild(back);
+      container.appendChild(card);
+      // Events
+      card.onclick=function(e){
+        if(e.target.closest('button'))return;
+        var wasFlipped=card.classList.contains('flipped');
+        card.classList.toggle('flipped');
+        if(!wasFlipped&&!flippedSet.has(c[0])){
+          flippedSet.add(c[0]);
+          updateProgress();
+          showStarFloat(container);
+        }
+      };
+      container.querySelectorAll('button').forEach(function(btn){
+        btn.onclick=function(e){
+          e.stopPropagation();
+          var a=btn.dataset.action;
+          if(!a){speakChar(btn.dataset.char,btn.dataset.ciyu);return}
+          if(a==='speak')speakChar(btn.dataset.char,btn.dataset.ciyu);
+          else if(a==='stroke')openModal(btn.dataset.char,'stroke');
+          else if(a==='quiz')openModal(btn.dataset.char,'quiz');
+        };
+      });
+      g.appendChild(container);
+    });
+  });
+}
+function speakChar(ch,ciyu){
+  if(!window.speechSynthesis)return;
+  window.speechSynthesis.cancel();
+  var r=speechRate;
+  var u1=new SpeechSynthesisUtterance(ch);
+  u1.lang='zh-CN';u1.rate=r;if(_edgeTTSVoice)u1.voice=_edgeTTSVoice;
+  var u2=new SpeechSynthesisUtterance(ciyu);
+  u2.lang='zh-CN';u2.rate=r;if(_edgeTTSVoice)u2.voice=_edgeTTSVoice;
+  u1.onend=function(){window.speechSynthesis.speak(u2)};
+  window.speechSynthesis.speak(u1);
+}
+function openModal(ch,mode){
+  currentChar=ch;
+  document.getElementById('modalTitle').textContent=ch;
+  var hint=document.getElementById('modeHint');
+  if(mode==='stroke')hint.textContent='👀 看老师写';
+  else if(mode==='quiz')hint.textContent='✍️ 用手指跟着写';
+  else hint.textContent='';
+  document.getElementById('modalOverlay').classList.add('show');
+  var target=document.getElementById('hw-target');
+  target.innerHTML='';
+  var tbox=document.querySelector('.tian-big');var bw=tbox.offsetWidth-6;
+  hw=HanziWriter.create(target,ch,{width:bw,height:bw,padding:8,showOutline:true,strokeAnimationSpeed:1,delayBetweenStrokes:300,
+    charDataLoader:function(c,onLoad){fetch('https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0/'+c+'.json').then(function(r){return r.json()}).then(onLoad)}
+  });
+  if(mode==='stroke')setTimeout(function(){hw.animateCharacter()},400);
+  else if(mode==='quiz')setTimeout(function(){startQuiz()},400);
+}
+function doAnimate(){
+  if(hw){
+    document.getElementById('modeHint').textContent='👀 看老师写';
+    hw.hideCharacter();hw.animateCharacter();
+  }
+}
+function doQuiz(){
+  if(hw){
+    document.getElementById('modeHint').textContent='✍️ 用手指跟着写';
+    startQuiz();
+  }
+}
+function startQuiz(){
+  hw.quiz({onComplete:function(){showReward()}});
+}
+function showReward(){
+  var d=document.createElement('div');
+  d.className='reward';
+  d.textContent=['⭐🎉','🌟✨','🎊👏','💪🌈'][Math.floor(Math.random()*4)];
+  document.body.appendChild(d);
+  setTimeout(function(){d.remove()},1500);
+}
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('show');
+  if(hw){hw=null}
+  document.getElementById('hw-target').innerHTML='';
+}
+function playAll(){
+  var cards=document.querySelectorAll('.card-container');
+  var visible=[];
+  cards.forEach(function(c){if(c.offsetParent!==null)visible.push(c)});
+  if(!visible.length)return;
+  var i=0;
+  function next(){
+    if(i>=visible.length)return;
+    visible.forEach(function(c){c.classList.remove('highlight')});
+    var c=visible[i];
+    c.classList.add('highlight');
+    c.scrollIntoView({behavior:'smooth',block:'center'});
+    var ch=c.dataset.char;
+    var lesson=lessons.find(function(l){return l.name===c.dataset.lesson});
+    var charData=lesson?lesson.chars.find(function(x){return x[0]===ch}):null;
+    speakChar(ch,charData?charData[2]:ch);
+    var tempDiv=document.createElement('div');
+    tempDiv.style.cssText='position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;overflow:hidden';
+    document.body.appendChild(tempDiv);
+    try{
+      var w=HanziWriter.create(tempDiv,ch,{width:100,height:100,strokeAnimationSpeed:2,delayBetweenStrokes:200,
+        charDataLoader:function(c2,onLoad){fetch('https://cdn.jsdelivr.net/npm/hanzi-writer-data@2.0/'+c2+'.json').then(function(r){return r.json()}).then(onLoad)}
+      });
+      setTimeout(function(){
+        w.animateCharacter({onComplete:function(){
+          tempDiv.remove();
+          c.classList.remove('highlight');
+          i++;
+          setTimeout(next,300);
+        }});
+      },300);
+    }catch(e){tempDiv.remove();c.classList.remove('highlight');i++;setTimeout(next,300)}
+  }
+  next();
+}
+document.getElementById('modalOverlay').onclick=function(e){if(e.target===this)closeModal()};
+buildFilters();
+buildGrid();
+</script>
+</body>
+</html>

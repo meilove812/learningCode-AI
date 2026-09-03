@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco科学科普讲解：飞机遮光窗原理">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>✈️ 飞机遮光窗户原理</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+  background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+  min-height: 100vh;
+  color: #fff;
+  padding: 15px;
+  padding-bottom: 80px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+h1 { text-align: center; font-size: 1.6em; margin-bottom: 5px; }
+.subtitle { text-align: center; color: #8ec5fc; margin-bottom: 18px; font-size: 0.9em; }
+
+/* Window Demo Section */
+.demo-box {
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  padding: 20px 15px;
+  margin-bottom: 18px;
+  border: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+}
+.demo-label {
+  font-size: 1.1em;
+  color: #74b9ff;
+  margin-bottom: 15px;
+}
+
+/* Airplane Window */
+.window-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.window-frame {
+  position: relative;
+  width: 130px;
+  height: 200px;
+  background: linear-gradient(180deg, #b8c6d4, #8a9bae);
+  border-radius: 55px 55px 40px 40px;
+  padding: 10px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5), inset 0 2px 3px rgba(255,255,255,0.3);
+}
+.window-glass {
+  width: 100%;
+  height: 100%;
+  border-radius: 48px 48px 33px 33px;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.4s ease;
+}
+/* Sky scene behind glass */
+.sky-scene {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(180deg, #4a90d9 0%, #87CEEB 40%, #a8d8ea 100%);
+}
+.sky-scene .s-cloud {
+  position: absolute;
+  background: white;
+  border-radius: 15px;
+  opacity: 0.85;
+  animation: skydrift 12s linear infinite;
+}
+.s-cloud:nth-child(1) { width: 40px; height: 12px; top: 25%; left: -40px; animation-duration: 10s; }
+.s-cloud:nth-child(2) { width: 30px; height: 10px; top: 45%; left: -30px; animation-duration: 14s; animation-delay: 3s; }
+.s-cloud:nth-child(3) { width: 50px; height: 14px; top: 65%; left: -50px; animation-duration: 16s; animation-delay: 6s; }
+.s-sun { position: absolute; top: 15%; right: 15%; width: 25px; height: 25px; background: #ffd700; border-radius: 50%; box-shadow: 0 0 15px #ffd700; }
+@keyframes skydrift {
+  from { transform: translateX(0); }
+  to { transform: translateX(180px); }
+}
+/* Tint overlay */
+.tint-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10, 30, 80, 0);
+  transition: background 0.3s ease;
+  pointer-events: none;
+}
+
+/* Vertical slider */
+.v-slider-track {
+  width: 40px;
+  height: 200px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 20px;
+  position: relative;
+  border: 2px solid rgba(255,255,255,0.2);
+  touch-action: none;
+}
+.v-slider-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(180deg, #0a1e50, #3498db);
+  border-radius: 18px;
+  transition: height 0.1s;
+}
+.v-slider-thumb {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  width: 36px;
+  height: 36px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+.v-slider-labels {
+  position: absolute;
+  right: -35px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #aaa;
+}
+
+/* Percentage display */
+.pct-display {
+  font-size: 2em;
+  font-weight: bold;
+  color: #74b9ff;
+  margin-bottom: 5px;
+}
+.pct-label { color: #888; font-size: 0.85em; }
+
+/* Cross section */
+.cross-section {
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
+  padding: 18px 12px;
+  margin-bottom: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.cross-section h2 { text-align: center; font-size: 1.1em; color: #74b9ff; margin-bottom: 12px; }
+.layers {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 320px;
+  margin: 0 auto;
+}
+.layer {
+  padding: 8px 12px;
+  text-align: center;
+  font-size: 0.8em;
+  border: 1px solid rgba(255,255,255,0.15);
+  position: relative;
+}
+.layer-name { font-weight: bold; }
+.layer-desc { font-size: 0.75em; color: #aaa; margin-top: 2px; }
+.l-glass1 { background: rgba(135,206,250,0.15); border-radius: 8px 8px 0 0; }
+.l-tc { background: rgba(100,100,200,0.15); }
+.l-ec { background: rgba(255,165,0,0.15); transition: background 0.4s; }
+.l-ion { background: rgba(200,200,50,0.15); }
+.l-store { background: rgba(100,200,100,0.15); }
+.l-glass2 { background: rgba(135,206,250,0.15); border-radius: 0 0 8px 8px; }
+/* Active electrochromic layer */
+.l-ec.active { background: rgba(10,30,120,0.5); }
+
+/* Ion animation */
+.ion-flow {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  background: #ffd700;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+}
+.ion-flow.moving {
+  animation: ionMove 1.5s ease-in-out infinite;
+}
+@keyframes ionMove {
+  0% { top: 100%; opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { top: -100%; opacity: 0; }
+}
+
+/* Principle Steps */
+.steps-box {
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
+  padding: 18px 14px;
+  margin-bottom: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.steps-box h2 { text-align: center; font-size: 1.1em; color: #74b9ff; margin-bottom: 14px; }
+.step {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  padding: 10px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+}
+.step-num {
+  width: 24px; height: 24px;
+  background: #3498db;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+.step-text { font-size: 0.85em; color: #ccc; line-height: 1.5; }
+.step-text b { color: #fff; }
+
+/* Fun facts */
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.fact {
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.fact-emoji { font-size: 1.8em; margin-bottom: 4px; }
+.fact-title { font-size: 0.85em; font-weight: bold; margin-bottom: 3px; }
+.fact-desc { font-size: 0.75em; color: #aaa; line-height: 1.4; }
+
+/* Speaker */
+.speaker {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+  z-index: 100;
+}
+.speaker.playing { animation: speakPulse 1s infinite; }
+@keyframes speakPulse {
+  0%,100% { box-shadow: 0 4px 15px rgba(102,126,234,0.4); }
+  50% { box-shadow: 0 4px 25px rgba(102,126,234,0.8); }
+}
+
+/* Hint */
+.hint {
+  text-align: center;
+  color: #666;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<h1>✈️ 飞机遮光窗户原理</h1>
+<p class="subtitle">波音787 电致变色玻璃 — 触摸滑块体验</p>
+
+<!-- Interactive Demo -->
+<div class="demo-box">
+  <div class="demo-label">👆 上下滑动控制窗户明暗</div>
+  <div class="window-container">
+    <div class="window-frame">
+      <div class="window-glass" id="windowGlass">
+        <div class="sky-scene">
+          <div class="s-sun"></div>
+          <div class="s-cloud"></div>
+          <div class="s-cloud"></div>
+          <div class="s-cloud"></div>
+        </div>
+        <div class="tint-overlay" id="tintOverlay"></div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;">
+      <div class="v-slider-track" id="sliderTrack">
+        <div class="v-slider-fill" id="sliderFill"></div>
+        <div class="v-slider-thumb" id="sliderThumb">☀️</div>
+        <div class="v-slider-labels">
+          <span>暗</span>
+          <span>亮</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pct-display" id="pctDisplay">0%</div>
+  <div class="pct-label">遮光程度</div>
+  <div class="hint">← 拖动圆形滑块</div>
+</div>
+
+<!-- Cross Section -->
+<div class="cross-section">
+  <h2>🔬 玻璃截面结构</h2>
+  <div class="layers">
+    <div class="layer l-glass1">
+      <div class="layer-name">外层玻璃</div>
+      <div class="layer-desc">保护 + 隔热</div>
+    </div>
+    <div class="layer l-tc">
+      <div class="layer-name">透明导电层 (ITO)</div>
+      <div class="layer-desc">导电但透光</div>
+    </div>
+    <div class="layer l-ec" id="ecLayer">
+      <div class="layer-name">⭐ 变色层（氧化钨 WO₃）</div>
+      <div class="layer-desc" id="ecDesc">透明状态 → 通电后变蓝</div>
+      <div class="ion-flow" id="ion1"></div>
+      <div class="ion-flow" id="ion2" style="left:30%;animation-delay:0.5s"></div>
+      <div class="ion-flow" id="ion3" style="left:70%;animation-delay:1s"></div>
+    </div>
+    <div class="layer l-ion">
+      <div class="layer-name">电解质层</div>
+      <div class="layer-desc">离子通道（高速公路）</div>
+    </div>
+    <div class="layer l-store">
+      <div class="layer-name">离子储存层</div>
+      <div class="layer-desc">锂离子的家</div>
+    </div>
+    <div class="layer l-glass2">
+      <div class="layer-name">内层玻璃</div>
+      <div class="layer-desc">面向乘客</div>
+    </div>
+  </div>
+</div>
+
+<!-- Steps -->
+<div class="steps-box">
+  <h2>⚡ 工作原理</h2>
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-text"><b>按下调暗按钮</b> — 电路通电，施加约1V微小电压</div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-text"><b>离子搬家</b> — 锂离子从储存层穿过电解质，跑到变色层</div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-text"><b>颜色变深</b> — 离子嵌入氧化钨，WO₃ → LiₓWO₃，透明变深蓝</div>
+  </div>
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-text"><b>遮挡阳光</b> — 深色层吸收光线，窗户变暗，不再刺眼</div>
+  </div>
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-text"><b>恢复透明</b> — 反向电压，离子回家，玻璃变亮！可反复万次</div>
+  </div>
+</div>
+
+<!-- Fun Facts -->
+<div class="facts">
+  <div class="fact">
+    <div class="fact-emoji">🔋</div>
+    <div class="fact-title">超省电</div>
+    <div class="fact-desc">只需1V电压，比一节电池还少</div>
+  </div>
+  <div class="fact">
+    <div class="fact-emoji">✈️</div>
+    <div class="fact-title">波音787首创</div>
+    <div class="fact-desc">梦想客机取消了传统遮阳板</div>
+  </div>
+  <div class="fact">
+    <div class="fact-emoji">♻️</div>
+    <div class="fact-title">可重复使用</div>
+    <div class="fact-desc">切换数万次不衰减</div>
+  </div>
+  <div class="fact">
+    <div class="fact-emoji">⏱️</div>
+    <div class="fact-title">渐变效果</div>
+    <div class="fact-desc">完全变暗约需15-30秒</div>
+  </div>
+</div>
+
+<!-- Speaker -->
+<button class="speaker" id="speakerBtn" onclick="speak()">🔊</button>
+
+<script>
+// Slider logic
+const track = document.getElementById('sliderTrack');
+const fill = document.getElementById('sliderFill');
+const thumb = document.getElementById('sliderThumb');
+const tint = document.getElementById('tintOverlay');
+const pctDisplay = document.getElementById('pctDisplay');
+const ecLayer = document.getElementById('ecLayer');
+const ecDesc = document.getElementById('ecDesc');
+const ions = [document.getElementById('ion1'), document.getElementById('ion2'), document.getElementById('ion3')];
+
+let isDragging = false;
+let value = 0; // 0 = bright, 1 = dark
+
+function updateUI(val) {
+  value = Math.max(0, Math.min(1, val));
+  const pct = Math.round(value * 100);
+  
+  // Slider position (0=bottom=bright, 1=top=dark)
+  const trackH = track.offsetHeight;
+  const pos = (1 - value) * trackH; // inverted: top=dark
+  fill.style.height = (value * 100) + '%';
+  thumb.style.bottom = (value * (trackH - 36)) + 'px';
+  thumb.textContent = pct > 50 ? '🌙' : '☀️';
+  
+  // Tint overlay
+  const alpha = value * 0.85;
+  tint.style.background = `rgba(10, 20, 60, ${alpha})`;
+  
+  // Percentage
+  pctDisplay.textContent = pct + '%';
+  pctDisplay.style.color = pct > 50 ? '#a8b5ff' : '#74b9ff';
+  
+  // Cross-section EC layer
+  if (pct > 20) {
+    ecLayer.classList.add('active');
+    ecLayer.style.background = `rgba(10, 30, 120, ${value * 0.5})`;
+    ecDesc.textContent = `变色中... 深度 ${pct}%`;
+    ions.forEach(ion => ion.classList.add('moving'));
+  } else {
+    ecLayer.classList.remove('active');
+    ecLayer.style.background = '';
+    ecDesc.textContent = '透明状态 → 通电后变蓝';
+    ions.forEach(ion => ion.classList.remove('moving'));
+  }
+}
+
+// Touch & Mouse events on slider
+function getVal(clientY) {
+  const rect = track.getBoundingClientRect();
+  const y = clientY - rect.top;
+  // top = dark (1), bottom = bright (0)
+  return Math.max(0, Math.min(1, y / rect.height));
+}
+
+track.addEventListener('touchstart', e => {
+  e.preventDefault();
+  isDragging = true;
+  updateUI(getVal(e.touches[0].clientY));
+}, { passive: false });
+
+document.addEventListener('touchmove', e => {
+  if (!isDragging) return;
+  e.preventDefault();
+  updateUI(getVal(e.touches[0].clientY));
+}, { passive: false });
+
+document.addEventListener('touchend', () => { isDragging = false; });
+
+track.addEventListener('mousedown', e => {
+  isDragging = true;
+  updateUI(getVal(e.clientY));
+});
+document.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  updateUI(getVal(e.clientY));
+});
+document.addEventListener('mouseup', () => { isDragging = false; });
+
+// Also allow tap/touch directly on window to toggle
+const windowGlass = document.getElementById('windowGlass');
+let autoTimer = null;
+windowGlass.addEventListener('click', () => {
+  // Auto animate toggle
+  if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+  const target = value < 0.5 ? 1 : 0;
+  const step = target > value ? 0.02 : -0.02;
+  autoTimer = setInterval(() => {
+    const next = value + step;
+    if ((step > 0 && next >= target) || (step < 0 && next <= target)) {
+      updateUI(target);
+      clearInterval(autoTimer);
+      autoTimer = null;
+    } else {
+      updateUI(next);
+    }
+  }, 30);
+});
+
+// Init
+updateUI(0);
+
+// TTS
+let speaking = false;
+const speakerBtn = document.getElementById('speakerBtn');
+
+function speak() {
+  if (speaking) {
+    speechSynthesis.cancel();
+    speaking = false;
+    speakerBtn.classList.remove('playing');
+    return;
+  }
+  const text = `你坐过波音787飞机吗？它的窗户很特别，没有传统的遮阳板，而是用一个按钮就能让窗户变暗或变亮。这是怎么做到的呢？
+秘密藏在玻璃里面。窗户其实是好几层玻璃夹在一起的三明治。
+中间最关键的一层叫做变色层，用的材料是氧化钨。
+当你按下调暗按钮，电路通电，只需要大约1伏特的电压，比一节干电池还少。
+这时候，锂离子就像一群小蚂蚁，从储存层出发，穿过电解质这条高速公路，跑到变色层里去。
+离子跑进氧化钨之后，氧化钨的颜色就从透明变成了深蓝色。
+深蓝色的玻璃会吸收大部分阳光，窗户就变暗了，不会刺眼了。
+想让窗户变亮？只要反过来给电，离子就会回到老家，玻璃又变透明了。
+这个过程可以重复几万次都不会坏。是不是很神奇？`;
+
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  u.rate = 0.85;
+  u.pitch = 1.1;
+  const voices = speechSynthesis.getVoices();
+  const zhVoice = voices.find(v => v.name.includes('Xiaoxiao') || (v.name.includes('Microsoft') && v.lang.startsWith('zh'))) || (voices.find(v=>(v.name.includes('Online')&&v.name.includes('Natural')&&/^zh-CN|^zh$|^cmn/i.test(v.lang)&&!/^zh-HK|^zh-TW/i.test(v.lang)))||voices.find(v=>(v.name.includes('Xiaoxiao')))||voices.find(v=>(v.name.includes('Microsoft')&&/^zh-CN|^zh$|^cmn/i.test(v.lang)&&!/^zh-HK|^zh-TW/i.test(v.lang)))||voices.find(v=>/^zh-CN|^zh$|^cmn/i.test(v.lang)&&!/^zh-HK|^zh-TW/i.test(v.lang)));
+  if (zhVoice) u.voice = zhVoice;
+  u.onend = () => { speaking = false; speakerBtn.classList.remove('playing'); };
+  u.onerror = () => { speaking = false; speakerBtn.classList.remove('playing'); };
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+  speaking = true;
+  speakerBtn.classList.add('playing');
+}
+if (speechSynthesis.onvoiceschanged !== undefined) {
+  speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+}
+speechSynthesis.getVoices();
+</script>
+<script src="../../assets/site.js"></script></body>
+</html>

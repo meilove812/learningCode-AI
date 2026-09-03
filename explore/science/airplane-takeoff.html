@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco科学科普讲解：飞机为什么会飞起来">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>✈️ 飞机是怎么飞起来的？</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', sans-serif;
+  background: linear-gradient(180deg, #1a2a6c 0%, #b21f1f 50%, #fdbb2d 100%);
+  min-height: 100vh;
+  padding: 15px;
+  padding-bottom: 80px;
+}
+h1 {
+  text-align: center;
+  font-size: 1.8em;
+  color: #fff;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.subtitle {
+  text-align: center;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 15px;
+  font-size: 1em;
+}
+
+/* Main Scene */
+.scene {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  background: linear-gradient(180deg, #87CEEB 0%, #B0E0E6 60%, #90EE90 92%, #228B22 100%);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+/* Sky elements */
+.sun {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: #FFD700;
+  border-radius: 50%;
+  box-shadow: 0 0 30px #FFD700, 0 0 60px rgba(255,215,0,0.3);
+}
+.cloud {
+  position: absolute;
+  background: white;
+  border-radius: 20px;
+  opacity: 0.9;
+  animation: drift 20s linear infinite;
+}
+.c1 { width: 80px; height: 25px; top: 30px; left: -80px; animation-duration: 25s; }
+.c2 { width: 60px; height: 20px; top: 60px; left: -60px; animation-duration: 30s; animation-delay: 5s; }
+.c3 { width: 90px; height: 28px; top: 90px; left: -90px; animation-duration: 35s; animation-delay: 10s; }
+@keyframes drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(100vw + 200px)); }
+}
+
+/* Runway */
+.runway {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background: #333;
+}
+.runway::before {
+  content: '';
+  position: absolute;
+  top: 13px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: repeating-linear-gradient(90deg, #fff 0px, #fff 25px, transparent 25px, transparent 45px);
+}
+.runway-lights {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: repeating-linear-gradient(90deg, #00ff00 0px, #00ff00 3px, transparent 3px, transparent 30px);
+}
+
+/* Airplane */
+.plane-wrapper {
+  position: absolute;
+  bottom: 35px;
+  left: 30px;
+  transition: all 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
+}
+.plane-wrapper.accelerate {
+  left: 40%;
+}
+.plane-wrapper.takeoff {
+  left: 55%;
+  bottom: 120px;
+  transform: rotate(-12deg);
+}
+.plane-wrapper.flying {
+  left: 50%;
+  bottom: 140px;
+  transform: rotate(-5deg);
+  animation: bob 3s ease-in-out infinite;
+}
+@keyframes bob {
+  0%, 100% { transform: rotate(-5deg) translateY(0); }
+  50% { transform: rotate(-5deg) translateY(-8px); }
+}
+
+.plane {
+  font-size: 55px;
+  filter: drop-shadow(2px 3px 4px rgba(0,0,0,0.3));
+  position: relative;
+}
+
+/* Engine flame */
+.flame {
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 8px;
+  background: linear-gradient(90deg, transparent, #ff6600, #ffcc00);
+  border-radius: 50%;
+  opacity: 0;
+  animation: none;
+}
+.plane-wrapper.accelerate .flame,
+.plane-wrapper.takeoff .flame,
+.plane-wrapper.flying .flame {
+  opacity: 1;
+  animation: flicker 0.1s infinite alternate;
+}
+@keyframes flicker {
+  from { transform: translateY(-50%) scaleX(0.8); opacity: 0.8; }
+  to { transform: translateY(-50%) scaleX(1.2); opacity: 1; }
+}
+
+/* Force arrows */
+.forces {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.forces.show { opacity: 1; }
+.force {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+}
+.force .arrow { font-size: 28px; line-height: 1; }
+.f-lift { color: #e74c3c; top: 60px; left: 50%; transform: translateX(-50%); }
+.f-gravity { color: #8e44ad; bottom: 50px; left: 50%; transform: translateX(-50%); }
+.f-thrust { color: #27ae60; top: 50%; left: 15%; transform: translateY(-50%); }
+.f-drag { color: #f39c12; top: 50%; right: 15%; transform: translateY(-50%); }
+
+/* Controls */
+.controls {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.btn {
+  padding: 14px 10px;
+  border: none;
+  border-radius: 14px;
+  font-size: 0.95em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  color: white;
+}
+.btn:active { transform: scale(0.95); }
+.btn-fly { background: linear-gradient(135deg, #667eea, #764ba2); }
+.btn-force { background: linear-gradient(135deg, #f093fb, #f5576c); }
+.btn-wing { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+.btn-reset { background: linear-gradient(135deg, #a8edea, #fed6e3); color: #333; }
+
+/* Wing Section */
+.wing-panel {
+  display: none;
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+.wing-panel.show { display: block; }
+.wing-panel h2 { text-align: center; margin-bottom: 12px; font-size: 1.2em; color: #2c3e50; }
+
+.wing-demo {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  background: linear-gradient(180deg, #fff5f5 0%, #f0f8ff 100%);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+/* Wing shape via SVG */
+.wing-svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+/* Airflow particles */
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  opacity: 0;
+}
+.p-top {
+  background: #e74c3c;
+  animation: flowTop 1.5s linear infinite;
+}
+.p-bottom {
+  background: #3498db;
+  animation: flowBottom 2.2s linear infinite;
+}
+@keyframes flowTop {
+  0% { left: 10%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: 90%; opacity: 0; }
+}
+@keyframes flowBottom {
+  0% { left: 10%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { left: 90%; opacity: 0; }
+}
+
+.wing-explain {
+  text-align: center;
+  color: #555;
+  line-height: 1.8;
+  font-size: 0.95em;
+}
+.wing-explain strong { color: #e74c3c; }
+.wing-explain .blue { color: #3498db; }
+
+/* Steps */
+.steps {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  margin-bottom: 15px;
+}
+.steps h2 { text-align: center; margin-bottom: 15px; color: #2c3e50; }
+.step {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  align-items: center;
+}
+.step-icon { font-size: 1.8em; flex-shrink: 0; }
+.step-text { font-size: 0.9em; color: #444; line-height: 1.5; }
+.step-text b { color: #2c3e50; }
+
+/* Cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+.card-emoji { font-size: 2em; margin-bottom: 5px; }
+.card-title { font-weight: bold; color: #2c3e50; font-size: 0.95em; margin-bottom: 4px; }
+.card-desc { color: #666; font-size: 0.8em; line-height: 1.4; }
+
+/* Speaker */
+.speaker {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.speaker.playing {
+  animation: pulse 1s infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 4px 15px rgba(102,126,234,0.4); }
+  50% { box-shadow: 0 4px 25px rgba(102,126,234,0.8); }
+}
+
+/* Status bar */
+.status {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(0,0,0,0.7);
+  color: #4facfe;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  z-index: 100;
+  display: none;
+}
+.status.show { display: block; }
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<h1>✈️ 飞机是怎么飞起来的？</h1>
+<p class="subtitle">点按钮探索飞行的秘密！</p>
+
+<!-- Main Scene -->
+<div class="scene">
+  <div class="sun"></div>
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+  <div class="cloud c3"></div>
+  <div class="runway-lights"></div>
+  <div class="runway"></div>
+  
+  <div class="plane-wrapper" id="plane">
+    <div class="flame"></div>
+    <div class="plane">✈️</div>
+  </div>
+
+  <div class="forces" id="forces">
+    <div class="force f-lift"><span class="arrow">⬆️</span><span>升力</span></div>
+    <div class="force f-gravity"><span>重力</span><span class="arrow">⬇️</span></div>
+    <div class="force f-thrust"><span>推力 ➡️</span></div>
+    <div class="force f-drag"><span>⬅️ 阻力</span></div>
+  </div>
+</div>
+
+<!-- Controls -->
+<div class="controls">
+  <button class="btn btn-fly" onclick="doTakeoff()">🛫 看起飞！</button>
+  <button class="btn btn-force" onclick="toggleForces()">💪 四种力</button>
+  <button class="btn btn-wing" onclick="toggleWing()">🪽 机翼秘密</button>
+  <button class="btn btn-reset" onclick="doReset()">🔄 重新开始</button>
+</div>
+
+<!-- Wing Panel -->
+<div class="wing-panel" id="wingPanel">
+  <h2>🪽 机翼的秘密</h2>
+  <div class="wing-demo" id="wingDemo">
+    <svg class="wing-svg" width="180" height="70" viewBox="0 0 180 70">
+      <path d="M10,40 Q30,15 90,20 Q150,25 170,35 Q150,45 90,45 Q30,45 10,40 Z" 
+            fill="#8e9aaf" stroke="#2c3e50" stroke-width="2"/>
+      <text x="90" y="15" text-anchor="middle" font-size="10" fill="#e74c3c">⬆ 速度快 压力小</text>
+      <text x="90" y="63" text-anchor="middle" font-size="10" fill="#3498db">⬇ 速度慢 压力大</text>
+    </svg>
+    <!-- Particles will be generated by JS -->
+  </div>
+  <div class="wing-explain">
+    机翼上面是<strong>弯弯的</strong>，下面是<span class="blue"><b>平的</b></span><br>
+    上面空气走得<strong>远</strong> → 跑得<strong>快</strong> → 压力<strong>变小</strong><br>
+    下面空气走得<span class="blue"><b>近</b></span> → 跑得<span class="blue"><b>慢</b></span> → 压力<span class="blue"><b>大</b></span><br>
+    👆 下面把机翼<b>推上去</b> = 升力！
+  </div>
+</div>
+
+<!-- Four Forces -->
+<div class="cards">
+  <div class="card">
+    <div class="card-emoji">⬆️</div>
+    <div class="card-title">升力</div>
+    <div class="card-desc">机翼的形状让空气把飞机托起来</div>
+  </div>
+  <div class="card">
+    <div class="card-emoji">⬇️</div>
+    <div class="card-title">重力</div>
+    <div class="card-desc">地球把飞机往下拉</div>
+  </div>
+  <div class="card">
+    <div class="card-emoji">🔥</div>
+    <div class="card-title">推力</div>
+    <div class="card-desc">发动机喷气往前冲</div>
+  </div>
+  <div class="card">
+    <div class="card-emoji">💨</div>
+    <div class="card-title">阻力</div>
+    <div class="card-desc">空气摩擦让飞机慢下来</div>
+  </div>
+</div>
+
+<!-- Steps -->
+<div class="steps">
+  <h2>🛫 起飞三步曲</h2>
+  <div class="step">
+    <div class="step-icon">🏃‍♂️</div>
+    <div class="step-text"><b>加速跑！</b><br>发动机全力喷火，飞机在跑道上越跑越快</div>
+  </div>
+  <div class="step">
+    <div class="step-icon">📐</div>
+    <div class="step-text"><b>抬起头！</b><br>速度够快了，机翼产生足够升力，飞行员拉杆抬头</div>
+  </div>
+  <div class="step">
+    <div class="step-icon">☁️</div>
+    <div class="step-text"><b>飞上天！</b><br>升力大过重力，飞机离开地面飞向蓝天！</div>
+  </div>
+</div>
+
+<!-- Status -->
+<div class="status" id="status"></div>
+
+<!-- Speaker -->
+<button class="speaker" id="speakerBtn" onclick="speak()">🔊</button>
+
+<script>
+const plane = document.getElementById('plane');
+const forces = document.getElementById('forces');
+const wingPanel = document.getElementById('wingPanel');
+const status = document.getElementById('status');
+const speakerBtn = document.getElementById('speakerBtn');
+let particleTimer = null;
+let speaking = false;
+
+function showStatus(text) {
+  status.textContent = text;
+  status.classList.add('show');
+  setTimeout(() => status.classList.remove('show'), 2000);
+}
+
+function doTakeoff() {
+  plane.className = 'plane-wrapper';
+  showStatus('发动机启动！加速中...');
+  
+  setTimeout(() => {
+    plane.classList.add('accelerate');
+    showStatus('越来越快！');
+  }, 100);
+  
+  setTimeout(() => {
+    plane.classList.remove('accelerate');
+    plane.classList.add('takeoff');
+    showStatus('抬头！升力超过重力！');
+  }, 2500);
+  
+  setTimeout(() => {
+    plane.classList.remove('takeoff');
+    plane.classList.add('flying');
+    showStatus('飞起来啦！🎉');
+  }, 5000);
+}
+
+function toggleForces() {
+  forces.classList.toggle('show');
+}
+
+function toggleWing() {
+  wingPanel.classList.toggle('show');
+  if (wingPanel.classList.contains('show')) {
+    startParticles();
+  } else {
+    stopParticles();
+  }
+}
+
+function doReset() {
+  plane.className = 'plane-wrapper';
+  forces.classList.remove('show');
+  wingPanel.classList.remove('show');
+  stopParticles();
+  if (speaking) {
+    speechSynthesis.cancel();
+    speaking = false;
+    speakerBtn.classList.remove('playing');
+  }
+  showStatus('重新开始 ✨');
+}
+
+function startParticles() {
+  const demo = document.getElementById('wingDemo');
+  stopParticles();
+  particleTimer = setInterval(() => {
+    // Top particles (fast, red)
+    for (let i = 0; i < 2; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle p-top';
+      p.style.top = (25 + Math.random() * 20) + '%';
+      p.style.animationDelay = (Math.random() * 0.5) + 's';
+      p.style.animationDuration = (1.2 + Math.random() * 0.4) + 's';
+      demo.appendChild(p);
+      setTimeout(() => p.remove(), 2000);
+    }
+    // Bottom particles (slow, blue)
+    for (let i = 0; i < 1; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle p-bottom';
+      p.style.top = (58 + Math.random() * 18) + '%';
+      p.style.animationDelay = (Math.random() * 0.3) + 's';
+      demo.appendChild(p);
+      setTimeout(() => p.remove(), 3000);
+    }
+  }, 300);
+}
+
+function stopParticles() {
+  if (particleTimer) {
+    clearInterval(particleTimer);
+    particleTimer = null;
+  }
+}
+
+function speak() {
+  if (speaking) {
+    speechSynthesis.cancel();
+    speaking = false;
+    speakerBtn.classList.remove('playing');
+    return;
+  }
+  
+  const text = `小朋友，你知道飞机是怎么飞起来的吗？让我来告诉你！
+飞机能飞，靠的是四种力量。
+第一种叫推力，发动机像一个超级大风扇，把飞机往前推。
+第二种叫阻力，空气会摩擦飞机，让它慢下来。
+第三种叫重力，就是地球把飞机往下拉的力。
+第四种，也是最神奇的，叫做升力！
+升力的秘密藏在机翼里。你看，机翼的上面是弯弯的，下面是平平的。
+空气从上面走的路更长，所以跑得更快，压力就变小了。
+下面的空气走的路短，跑得慢，压力就大。
+下面的大压力把机翼往上推，飞机就被托起来了！
+起飞的时候呢，飞机先在跑道上拼命加速。
+跑得越快，流过机翼的空气越多，升力就越大。
+当升力超过飞机的重量，飞行员拉起操纵杆。
+飞机的头抬起来，嗖的一下就飞上天啦！
+是不是很神奇？`;
+
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  u.rate = 0.82;
+  u.pitch = 1.15;
+  
+  // Try to find best Chinese voice
+  const voices = speechSynthesis.getVoices();
+  const zhVoice = voices.find(v => v.name.includes('Xiaoxiao')) || voices.find(v => v.name.includes('Online') && v.name.includes('Natural') && (v.lang.startsWith('zh-CN')||v.lang==='zh')) || voices.find(v => v.name.includes('Microsoft') && (v.lang.startsWith('zh-CN')||v.lang==='zh')) || voices.find(v => v.lang.startsWith('zh-CN')||v.lang==='zh');
+  if (zhVoice) u.voice = zhVoice;
+  
+  u.onstart = () => { speaking = true; speakerBtn.classList.add('playing'); };
+  u.onend = () => { speaking = false; speakerBtn.classList.remove('playing'); };
+  u.onerror = () => { speaking = false; speakerBtn.classList.remove('playing'); };
+  
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+  speaking = true;
+  speakerBtn.classList.add('playing');
+}
+
+// Preload voices
+if (speechSynthesis.onvoiceschanged !== undefined) {
+  speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+}
+speechSynthesis.getVoices();
+</script>
+<script src="../../assets/site.js"></script></body>
+</html>

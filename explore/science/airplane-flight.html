@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco科学科普讲解：飞机起飞与飞行原理">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✈️ 飞机起飞与飞行原理</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #1a1a2e;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+h1 {
+  text-align: center;
+  font-size: 1.8em;
+  color: #fff;
+  padding: 20px 10px 5px;
+  text-shadow: 0 2px 10px rgba(0,150,255,0.3);
+}
+.subtitle { text-align: center; color: #aac; margin-bottom: 15px; font-size: 0.95em; }
+
+/* Main Canvas */
+canvas { display: block; width: 100%; height: 480px; border-radius: 12px; margin: 0 auto 15px; max-width: 900px; }
+
+/* Controls */
+.controls {
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+  padding: 0 15px 15px;
+}
+.btn {
+  padding: 12px 22px; border: none; border-radius: 25px;
+  font-size: 1em; font-weight: bold; cursor: pointer;
+  transition: all 0.2s; color: white;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+.btn:active { transform: scale(0.95); }
+.btn-run { background: linear-gradient(135deg, #f39c12, #e67e22); }
+.btn-takeoff { background: linear-gradient(135deg, #3498db, #2980b9); }
+.btn-fly { background: linear-gradient(135deg, #27ae60, #219a52); }
+.btn-reset { background: linear-gradient(135deg, #7f8c8d, #636e72); }
+
+/* Phase indicator */
+.phase {
+  text-align: center; color: #fff; font-size: 1.3em; font-weight: bold;
+  padding: 10px; min-height: 44px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+/* Wing diagram below */
+.wing-box {
+  max-width: 900px; margin: 0 auto 20px; padding: 0 15px;
+}
+.wing-box h2 { color: #fff; text-align: center; margin-bottom: 10px; }
+.wing-container {
+  background: #fff; border-radius: 16px; padding: 20px; 
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.wing-anim {
+  width: 100%; height: 260px; position: relative;
+  background: linear-gradient(180deg, #fff0f0 0%, #fff 48%, #fff 52%, #f0f0ff 100%);
+  border-radius: 12px; overflow: hidden; border: 1px solid #eee;
+}
+.wing-anim svg { width: 100%; height: 100%; }
+.wing-text {
+  text-align: center; color: #555; line-height: 2.2; margin-top: 14px; font-size: 1.05em;
+}
+.wing-text strong.red { color: #e74c3c; }
+.wing-text strong.blue { color: #3498db; }
+.wing-text strong.green { color: #27ae60; }
+
+/* Speaker */
+.speaker-btn {
+  position: fixed; bottom: 20px; right: 20px;
+  width: 50px; height: 50px; border-radius: 50%;
+  background: #3498db; color: white; border: none;
+  font-size: 24px; cursor: pointer;
+  box-shadow: 0 3px 15px rgba(52,152,219,0.4); z-index: 100;
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+<h1>✈️ 飞机起飞与飞行原理</h1>
+<p class="subtitle">点击按钮观看完整的起飞过程动画</p>
+<div class="phase" id="phase"></div>
+<canvas id="scene" width="900" height="480"></canvas>
+<div class="controls">
+  <button class="btn btn-run" onclick="startPhase('taxi')">1️⃣ 滑跑加速</button>
+  <button class="btn btn-takeoff" onclick="startPhase('takeoff')">2️⃣ 抬头离地</button>
+  <button class="btn btn-fly" onclick="startPhase('climb')">3️⃣ 爬升飞行</button>
+  <button class="btn btn-reset" onclick="startPhase('idle')">🔄 重来</button>
+</div>
+
+<div class="wing-box">
+  <h2 style="color:#fff;">🪽 机翼升力原理</h2>
+  <div class="wing-container">
+    <div class="wing-anim">
+      <svg viewBox="0 0 520 260" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="wg" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#5a6a7a"/><stop offset="100%" stop-color="#8a9aa8"/>
+          </linearGradient>
+          <marker id="aR" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+            <polygon points="0 0,7 2.5,0 5" fill="#e74c3c"/></marker>
+          <marker id="aB" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+            <polygon points="0 0,7 2.5,0 5" fill="#3498db"/></marker>
+        </defs>
+        <!-- bg zones -->
+        <rect x="0" y="0" width="520" height="130" fill="#fff0f0" opacity="0.5"/>
+        <rect x="0" y="130" width="520" height="130" fill="#f0f0ff" opacity="0.5"/>
+        <!-- Wing -->
+        <path d="M 100,133 C 130,133 160,90 255,84 C 345,78 385,100 410,122 L 410,133 Z" fill="url(#wg)" stroke="#333" stroke-width="2"/>
+        <path d="M 100,133 C 130,133 160,90 255,84 C 345,78 385,100 410,122" fill="none" stroke="#e74c3c" stroke-width="2.5" stroke-dasharray="5,3"/>
+        <line x1="100" y1="133" x2="410" y2="133" stroke="#3498db" stroke-width="2.5" stroke-dasharray="5,3"/>
+        <!-- Top fast flow -->
+        <path d="M 20,105 C 80,105 120,68 180,60" fill="none" stroke="#e74c3c" stroke-width="2" marker-end="url(#aR)" opacity="0.85"/>
+        <path d="M 160,62 C 220,54 280,50 340,54" fill="none" stroke="#e74c3c" stroke-width="2" marker-end="url(#aR)" opacity="0.85"/>
+        <path d="M 320,55 C 380,60 420,72 490,82" fill="none" stroke="#e74c3c" stroke-width="2" marker-end="url(#aR)" opacity="0.85"/>
+        <path d="M 20,78 C 100,78 180,42 270,36 C 360,30 430,40 500,52" fill="none" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#aR)" opacity="0.6"/>
+        <!-- Animated red dots (FAST) -->
+        <circle r="5" fill="#e74c3c" opacity="0.9">
+          <animateMotion dur="1.5s" repeatCount="indefinite" path="M 20,105 C 80,105 120,68 180,60 C 240,52 300,50 360,54 C 420,60 450,72 500,82"/>
+        </circle>
+        <circle r="4" fill="#e74c3c" opacity="0.7">
+          <animateMotion dur="1.4s" repeatCount="indefinite" path="M 20,78 C 100,78 180,42 270,36 C 360,30 430,40 500,52" begin="0.3s"/>
+        </circle>
+        <circle r="4" fill="#ff6b6b" opacity="0.8">
+          <animateMotion dur="1.6s" repeatCount="indefinite" path="M 20,105 C 80,105 120,68 180,60 C 240,52 300,50 360,54 C 420,60 450,72 500,82" begin="0.7s"/>
+        </circle>
+        <!-- Bottom slow flow -->
+        <path d="M 20,160 L 160,160" fill="none" stroke="#3498db" stroke-width="2" marker-end="url(#aB)" opacity="0.85"/>
+        <path d="M 190,160 L 340,160" fill="none" stroke="#3498db" stroke-width="2" marker-end="url(#aB)" opacity="0.85"/>
+        <path d="M 365,160 L 500,160" fill="none" stroke="#3498db" stroke-width="2" marker-end="url(#aB)" opacity="0.85"/>
+        <path d="M 20,185 L 500,185" fill="none" stroke="#3498db" stroke-width="1.5" marker-end="url(#aB)" opacity="0.6"/>
+        <!-- Animated blue dots (SLOW) -->
+        <circle r="5" fill="#3498db" opacity="0.9">
+          <animateMotion dur="3s" repeatCount="indefinite" path="M 20,160 L 500,160"/>
+        </circle>
+        <circle r="4" fill="#3498db" opacity="0.7">
+          <animateMotion dur="3.2s" repeatCount="indefinite" path="M 20,185 L 500,185" begin="0.5s"/>
+        </circle>
+        <circle r="4" fill="#74b9ff" opacity="0.8">
+          <animateMotion dur="3.4s" repeatCount="indefinite" path="M 20,160 L 500,160" begin="1.2s"/>
+        </circle>
+        <!-- Labels -->
+        <text x="460" y="30" font-size="12" fill="#e74c3c" font-weight="bold">快 💨💨💨</text>
+        <text x="460" y="210" font-size="12" fill="#3498db" font-weight="bold">慢 🐢</text>
+        <rect x="5" y="38" width="70" height="24" rx="12" fill="#ffe0e0"/>
+        <text x="40" y="55" text-anchor="middle" font-size="11" fill="#c0392b" font-weight="bold">压力小 ↓</text>
+        <rect x="5" y="195" width="70" height="24" rx="12" fill="#e0e0ff"/>
+        <text x="40" y="212" text-anchor="middle" font-size="11" fill="#2980b9" font-weight="bold">压力大 ↑</text>
+        <!-- Lift arrow -->
+        <polygon points="245,245 260,225 275,245" fill="#27ae60">
+          <animate attributeName="opacity" values="0.5;1;0.5" dur="1.2s" repeatCount="indefinite"/>
+        </polygon>
+        <line x1="260" y1="258" x2="260" y2="246" stroke="#27ae60" stroke-width="5"/>
+        <text x="260" y="256" text-anchor="middle" font-size="11" fill="#27ae60" font-weight="bold">⬆ 升力</text>
+        <!-- Wing labels -->
+        <text x="255" y="74" text-anchor="middle" font-size="12" fill="#c0392b" font-weight="bold">弯曲面（路长）</text>
+        <text x="255" y="150" text-anchor="middle" font-size="12" fill="#2980b9" font-weight="bold">平直面（路短）</text>
+      </svg>
+    </div>
+    <p class="wing-text">
+      🔴 上面<strong class="red">弯曲</strong> → 路长 → 空气跑得<strong class="red">快</strong> → 压力<strong class="red">小</strong><br>
+      🔵 下面<strong class="blue">平直</strong> → 路短 → 空气跑得<strong class="blue">慢</strong> → 压力<strong class="blue">大</strong><br>
+      🟢 压力差把机翼<strong class="green">往上推</strong> → 飞机就飞起来了！
+    </p>
+  </div>
+</div>
+
+<button class="speaker-btn" onclick="speak()">🔊</button>
+
+<script>
+const canvas = document.getElementById('scene');
+const ctx = canvas.getContext('2d');
+const phaseEl = document.getElementById('phase');
+
+// High DPI
+function resize() {
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * 2;
+  canvas.height = rect.height * 2;
+  ctx.scale(2, 2);
+}
+resize();
+window.addEventListener('resize', resize);
+
+const W = () => canvas.width / 2;
+const H = () => canvas.height / 2;
+
+// State
+let phase = 'idle';
+let t = 0;
+let planeX = 80, planeY = 0, planeAngle = 0, speed = 0;
+let particles = [];
+let windLines = [];
+let forceArrows = { lift: 0, thrust: 0, drag: 0, gravity: 1 };
+let clouds = [{x:200,y:60,w:80},{x:500,y:40,w:100},{x:700,y:90,w:70},{x:350,y:30,w:60}];
+
+function startPhase(p) {
+  phase = p;
+  t = 0;
+  if (p === 'idle') {
+    planeX = 80; planeY = 0; planeAngle = 0; speed = 0;
+    forceArrows = { lift: 0, thrust: 0, drag: 0, gravity: 1 };
+    phaseEl.textContent = '';
+  } else if (p === 'taxi') {
+    planeX = 80; planeY = 0; planeAngle = 0; speed = 0;
+    phaseEl.textContent = '🏃 阶段1：滑跑加速 — 发动机全力推进！';
+  } else if (p === 'takeoff') {
+    speed = 8;
+    if (planeX < 150) planeX = 150;
+    phaseEl.textContent = '🛫 阶段2：抬头离地 — 升力 > 重力！';
+  } else if (p === 'climb') {
+    speed = 8;
+    if (planeY > -100) planeY = -100;
+    planeAngle = -12;
+    phaseEl.textContent = '🚀 阶段3：爬升飞行 — 冲向高空！';
+  }
+}
+
+function drawSky(w, h) {
+  const grad = ctx.createLinearGradient(0, 0, 0, h);
+  grad.addColorStop(0, '#1a3a6e');
+  grad.addColorStop(0.5, '#4a90d9');
+  grad.addColorStop(0.85, '#87CEEB');
+  grad.addColorStop(0.92, '#6ab04c');
+  grad.addColorStop(1, '#2d5016');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, w, h);
+}
+
+function drawRunway(w, h) {
+  const ry = h * 0.88;
+  ctx.fillStyle = '#333';
+  ctx.fillRect(0, ry, w, 20);
+  // dashes
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 3;
+  ctx.setLineDash([25, 15]);
+  ctx.beginPath();
+  ctx.moveTo(0, ry + 10);
+  ctx.lineTo(w, ry + 10);
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function drawClouds(w, h) {
+  ctx.fillStyle = 'rgba(255,255,255,0.7)';
+  clouds.forEach(c => {
+    // Move clouds
+    c.x -= speed * 0.3;
+    if (c.x < -c.w) c.x = w + c.w;
+    ctx.beginPath();
+    ctx.ellipse(c.x, c.y, c.w/2, 18, 0, 0, Math.PI*2);
+    ctx.ellipse(c.x - c.w*0.2, c.y - 10, c.w*0.3, 15, 0, 0, Math.PI*2);
+    ctx.ellipse(c.x + c.w*0.2, c.y - 8, c.w*0.25, 13, 0, 0, Math.PI*2);
+    ctx.fill();
+  });
+}
+
+function drawPlane(w, h) {
+  const baseY = h * 0.88 - 30;
+  const px = planeX;
+  const py = baseY + planeY;
+  
+  ctx.save();
+  ctx.translate(px, py);
+  ctx.rotate(planeAngle * Math.PI / 180);
+  
+  // === Realistic airplane side view ===
+  const scale = 1.3;
+  ctx.scale(scale, scale);
+
+  // Shadow under fuselage
+  ctx.fillStyle = 'rgba(0,0,0,0.1)';
+  ctx.beginPath();
+  ctx.ellipse(0, 8, 45, 5, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  // Main fuselage (body)
+  const bodyGrad = ctx.createLinearGradient(0, -14, 0, 14);
+  bodyGrad.addColorStop(0, '#ffffff');
+  bodyGrad.addColorStop(0.3, '#f0f0f0');
+  bodyGrad.addColorStop(0.7, '#d5d5d5');
+  bodyGrad.addColorStop(1, '#b0b0b0');
+  ctx.fillStyle = bodyGrad;
+  ctx.strokeStyle = '#888';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(55, 0);
+  ctx.quadraticCurveTo(60, -4, 55, -8);
+  ctx.lineTo(-35, -10);
+  ctx.quadraticCurveTo(-48, -10, -50, -5);
+  ctx.lineTo(-50, 5);
+  ctx.quadraticCurveTo(-48, 10, -35, 10);
+  ctx.lineTo(55, 8);
+  ctx.quadraticCurveTo(60, 4, 55, 0);
+  ctx.closePath();
+  ctx.fill(); ctx.stroke();
+
+  // Nose cone
+  ctx.fillStyle = '#2c3e50';
+  ctx.beginPath();
+  ctx.moveTo(55, -6);
+  ctx.quadraticCurveTo(68, -2, 70, 0);
+  ctx.quadraticCurveTo(68, 2, 55, 6);
+  ctx.closePath();
+  ctx.fill();
+
+  // Cockpit windows
+  ctx.fillStyle = '#74b9ff';
+  ctx.strokeStyle = '#5a9bd4';
+  ctx.lineWidth = 0.8;
+  ctx.beginPath();
+  ctx.moveTo(52, -7);
+  ctx.quadraticCurveTo(58, -6, 60, -3);
+  ctx.lineTo(55, -3);
+  ctx.lineTo(49, -6);
+  ctx.closePath();
+  ctx.fill(); ctx.stroke();
+
+  // Passenger windows
+  ctx.fillStyle = '#74b9ff';
+  for (let i = -30; i < 45; i += 7) {
+    ctx.beginPath();
+    ctx.roundRect(i, -8, 4, 4, 1);
+    ctx.fill();
+  }
+
+  // Red stripe along body
+  ctx.strokeStyle = '#e74c3c';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(-48, 0);
+  ctx.lineTo(55, 0);
+  ctx.stroke();
+
+  // Main wings (big, swept back)
+  const wingGrad = ctx.createLinearGradient(0, -5, 0, 40);
+  wingGrad.addColorStop(0, '#c0c8d0');
+  wingGrad.addColorStop(1, '#8a9aa8');
+  ctx.fillStyle = wingGrad;
+  ctx.strokeStyle = '#6a7a88';
+  ctx.lineWidth = 1;
+  // Bottom wing (visible from side)
+  ctx.beginPath();
+  ctx.moveTo(10, 6);
+  ctx.lineTo(-5, 42);
+  ctx.lineTo(-20, 42);
+  ctx.lineTo(-8, 6);
+  ctx.closePath();
+  ctx.fill(); ctx.stroke();
+  // Top wing hint
+  ctx.beginPath();
+  ctx.moveTo(10, -6);
+  ctx.lineTo(-2, -32);
+  ctx.lineTo(-16, -32);
+  ctx.lineTo(-8, -6);
+  ctx.closePath();
+  ctx.fill(); ctx.stroke();
+
+  // Engine under wing
+  ctx.fillStyle = '#6a7a88';
+  ctx.strokeStyle = '#555';
+  ctx.lineWidth = 0.8;
+  ctx.beginPath();
+  ctx.ellipse(-2, 30, 8, 5, 0, 0, Math.PI*2);
+  ctx.fill(); ctx.stroke();
+  // Engine intake
+  ctx.fillStyle = '#333';
+  ctx.beginPath();
+  ctx.ellipse(6, 30, 4, 4, 0, 0, Math.PI*2);
+  ctx.fill();
+
+  // Tail fin (vertical stabilizer)
+  ctx.fillStyle = '#3498db';
+  ctx.strokeStyle = '#2980b9';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(-42, -10);
+  ctx.lineTo(-52, -32);
+  ctx.lineTo(-58, -32);
+  ctx.lineTo(-55, -10);
+  ctx.closePath();
+  ctx.fill(); ctx.stroke();
+
+  // Horizontal stabilizer (tail wings)
+  ctx.fillStyle = '#a0b0c0';
+  ctx.beginPath();
+  ctx.moveTo(-44, -8);
+  ctx.lineTo(-54, -18);
+  ctx.lineTo(-60, -18);
+  ctx.lineTo(-52, -8);
+  ctx.closePath();
+  ctx.fill(); ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(-44, 8);
+  ctx.lineTo(-54, 16);
+  ctx.lineTo(-60, 16);
+  ctx.lineTo(-52, 8);
+  ctx.closePath();
+  ctx.fill(); ctx.stroke();
+
+  // Engine exhaust / glow
+  if (speed > 0 || phase === 'taxi') {
+    const glowLen = 6 + speed * 1.5;
+    const alpha = 0.4 + Math.random() * 0.3;
+    ctx.fillStyle = `rgba(255, ${150 + Math.random()*80}, 0, ${alpha})`;
+    ctx.beginPath();
+    ctx.ellipse(-10 - Math.random()*3, 30, glowLen, 3, 0, 0, Math.PI*2);
+    ctx.fill();
+    // Main engine trail
+    ctx.fillStyle = `rgba(255, ${80 + Math.random()*100}, 0, ${alpha * 0.7})`;
+    ctx.beginPath();
+    ctx.ellipse(-52 - Math.random()*5, 0, glowLen * 0.8, 2.5, 0, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  ctx.scale(1/scale, 1/scale);
+  
+  ctx.restore();
+  
+  // Draw force arrows when moving
+  if (speed > 0 || forceArrows.lift > 0) {
+    drawForceArrows(px, py);
+  }
+}
+
+function drawForceArrows(px, py) {
+  const arrowLen = 40;
+  ctx.lineWidth = 3;
+  ctx.font = 'bold 12px sans-serif';
+  
+  // Lift (up, red)
+  if (forceArrows.lift > 0) {
+    const len = arrowLen * forceArrows.lift;
+    ctx.strokeStyle = '#e74c3c';
+    ctx.fillStyle = '#e74c3c';
+    drawArrow(px, py - 20, px, py - 20 - len);
+    ctx.fillText('升力 ⬆', px - 18, py - 25 - len);
+  }
+  
+  // Gravity (down, purple)
+  if (forceArrows.gravity > 0) {
+    const len = arrowLen * forceArrows.gravity;
+    ctx.strokeStyle = '#8e44ad';
+    ctx.fillStyle = '#8e44ad';
+    drawArrow(px, py + 20, px, py + 20 + len);
+    ctx.fillText('重力 ⬇', px - 18, py + 35 + len);
+  }
+  
+  // Thrust (right, green)
+  if (forceArrows.thrust > 0) {
+    const len = arrowLen * forceArrows.thrust;
+    ctx.strokeStyle = '#27ae60';
+    ctx.fillStyle = '#27ae60';
+    drawArrow(px + 65, py, px + 65 + len, py);
+    ctx.fillText('推力', px + 70 + len, py - 12);
+  }
+  
+  // Drag (left, orange)
+  if (forceArrows.drag > 0) {
+    const len = arrowLen * forceArrows.drag;
+    ctx.strokeStyle = '#f39c12';
+    ctx.fillStyle = '#f39c12';
+    drawArrow(px - 55, py, px - 55 - len, py);
+    ctx.fillText('阻力', px - 60 - len, py - 12);
+  }
+}
+
+function drawArrow(x1, y1, x2, y2) {
+  const angle = Math.atan2(y2-y1, x2-x1);
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+  // Arrowhead
+  ctx.beginPath();
+  ctx.moveTo(x2, y2);
+  ctx.lineTo(x2 - 10*Math.cos(angle-0.4), y2 - 10*Math.sin(angle-0.4));
+  ctx.lineTo(x2 - 10*Math.cos(angle+0.4), y2 - 10*Math.sin(angle+0.4));
+  ctx.closePath();
+  ctx.fill();
+}
+
+function drawWindParticles(w, h) {
+  if (speed < 1) return;
+  // Add new particles
+  if (Math.random() < speed * 0.15) {
+    const baseY = h * 0.88 - 30 + planeY;
+    particles.push({
+      x: planeX + 70,
+      y: baseY + (Math.random() - 0.5) * 50,
+      vx: speed * 2 + Math.random() * 3,
+      life: 1,
+      size: 1 + Math.random() * 2,
+      isTop: Math.random() > 0.5
+    });
+  }
+  // Draw & update
+  particles.forEach((p, i) => {
+    p.x += p.vx;
+    p.life -= 0.02;
+    if (p.life <= 0) { particles.splice(i, 1); return; }
+    ctx.globalAlpha = p.life * 0.6;
+    ctx.fillStyle = p.isTop ? '#ff7675' : '#74b9ff';
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+  
+  // Wind streaks
+  if (speed > 3) {
+    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 5; i++) {
+      const wx = Math.random() * w;
+      const wy = Math.random() * h * 0.85;
+      ctx.beginPath();
+      ctx.moveTo(wx, wy);
+      ctx.lineTo(wx - speed * 4, wy);
+      ctx.stroke();
+    }
+  }
+}
+
+function drawSpeedometer(w, h) {
+  const sx = 20, sy = 20;
+  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx.roundRect(sx, sy, 140, 55, 8);
+  ctx.fill();
+  ctx.font = 'bold 13px sans-serif';
+  ctx.fillStyle = '#fff';
+  ctx.fillText('速度', sx + 10, sy + 18);
+  // Speed bar
+  const barW = 100, barH = 10;
+  ctx.fillStyle = '#444';
+  ctx.fillRect(sx + 10, sy + 28, barW, barH);
+  const pct = Math.min(speed / 10, 1);
+  const grad = ctx.createLinearGradient(sx+10, 0, sx+10+barW, 0);
+  grad.addColorStop(0, '#2ecc71');
+  grad.addColorStop(0.7, '#f39c12');
+  grad.addColorStop(1, '#e74c3c');
+  ctx.fillStyle = grad;
+  ctx.fillRect(sx + 10, sy + 28, barW * pct, barH);
+  ctx.fillStyle = '#fff';
+  ctx.font = '11px sans-serif';
+  ctx.fillText(`${Math.round(speed * 30)} km/h`, sx + 10, sy + 52);
+}
+
+function drawLiftIndicator(w, h) {
+  if (forceArrows.lift <= 0) return;
+  const sx = 20, sy = 85;
+  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx.roundRect(sx, sy, 140, 45, 8);
+  ctx.fill();
+  ctx.font = 'bold 12px sans-serif';
+  ctx.fillStyle = forceArrows.lift >= forceArrows.gravity ? '#2ecc71' : '#e74c3c';
+  const status = forceArrows.lift >= forceArrows.gravity ? '升力 ≥ 重力 ✓' : '升力 < 重力';
+  ctx.fillText(status, sx + 10, sy + 18);
+  ctx.fillStyle = '#fff';
+  ctx.font = '11px sans-serif';
+  ctx.fillText(`升力: ${(forceArrows.lift*100).toFixed(0)}%  重力: ${(forceArrows.gravity*100).toFixed(0)}%`, sx+10, sy+35);
+}
+
+// Animation loop
+function update() {
+  const w = W(), h = H();
+  t++;
+  
+  if (phase === 'taxi') {
+    speed = Math.min(speed + 0.05, 8);
+    planeX = Math.min(planeX + speed * 0.3, w * 0.45);
+    forceArrows.thrust = Math.min(speed / 5, 1.5);
+    forceArrows.drag = speed / 10;
+    forceArrows.lift = speed / 12;
+    forceArrows.gravity = 1;
+    if (speed >= 8) {
+      phaseEl.textContent = '🏃 速度够了！升力正在增大...准备起飞！';
+    }
+  } else if (phase === 'takeoff') {
+    // Rotate nose up
+    planeAngle = Math.max(planeAngle - 0.2, -15);
+    // Accelerate upward
+    if (t < 60) {
+      planeY -= 0.5; // slow initial lift
+    } else {
+      planeY -= 1.5; // faster climb
+    }
+    planeX = Math.min(planeX + 1, w * 0.5);
+    forceArrows.lift = Math.min(1 + t * 0.005, 1.8);
+    forceArrows.thrust = 1.3;
+    forceArrows.drag = 0.5;
+    forceArrows.gravity = 1;
+    if (planeY < -120) {
+      phaseEl.textContent = '🛫 离地了！升力超过重力，飞机正在爬升！';
+    } else {
+      phaseEl.textContent = '🛫 抬头！机头上扬，升力急剧增大！';
+    }
+    // Auto transition to climb when high enough
+    if (planeY <= -180) {
+      phase = 'climb';
+      t = 0;
+    }
+  } else if (phase === 'climb') {
+    // Dramatic climb: plane rises to top of screen then levels off
+    if (t < 120) {
+      // Climbing phase - nose up, moving up and forward
+      planeAngle += (-12 - planeAngle) * 0.03;
+      planeY -= 1.2 * (1 - t/150);
+      planeX += (w * 0.45 - planeX) * 0.015;
+      forceArrows.lift = 1.4;
+      forceArrows.thrust = 1.2;
+      phaseEl.textContent = '🚀 爬升中！飞机冲向高空！';
+    } else if (t < 200) {
+      // Leveling off
+      planeAngle += (-3 - planeAngle) * 0.03;
+      planeY += (-250 - planeY) * 0.02;
+      planeX += (w * 0.42 - planeX) * 0.01;
+      forceArrows.lift = 1.0 + (200-t)/200 * 0.3;
+      forceArrows.thrust = 0.9;
+      phaseEl.textContent = '✈️ 接近巡航高度，机头逐渐放平...';
+    } else {
+      // Cruising - gentle float
+      planeAngle += (-2 - planeAngle) * 0.02;
+      planeY = -250 + Math.sin(t * 0.02) * 5;
+      planeX = w * 0.42 + Math.sin(t * 0.01) * 3;
+      forceArrows.lift = 1.0 + Math.sin(t*0.04)*0.05;
+      forceArrows.thrust = 0.7;
+      phaseEl.textContent = '☁️ 平稳巡航！升力 = 重力，飞机稳定飞行';
+    }
+    forceArrows.drag = 0.5;
+    forceArrows.gravity = 1;
+    speed = 8;
+  }
+}
+
+function draw() {
+  const w = W(), h = H();
+  ctx.clearRect(0, 0, w, h);
+  drawSky(w, h);
+  drawClouds(w, h);
+  drawRunway(w, h);
+  drawWindParticles(w, h);
+  drawPlane(w, h);
+  drawSpeedometer(w, h);
+  drawLiftIndicator(w, h);
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+loop();
+
+// RoundRect polyfill
+if (!ctx.roundRect) {
+  CanvasRenderingContext2D.prototype.roundRect = function(x,y,w,h,r) {
+    this.beginPath();
+    this.moveTo(x+r,y);
+    this.lineTo(x+w-r,y);
+    this.quadraticCurveTo(x+w,y,x+w,y+r);
+    this.lineTo(x+w,y+h-r);
+    this.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+    this.lineTo(x+r,y+h);
+    this.quadraticCurveTo(x,y+h,x,y+h-r);
+    this.lineTo(x,y+r);
+    this.quadraticCurveTo(x,y,x+r,y);
+    this.closePath();
+  };
+}
+
+function speak() {
+  const text = '飞机起飞分三个阶段。第一阶段，滑跑加速。发动机产生巨大推力，飞机在跑道上越跑越快，速度越快，流过机翼的空气越多。第二阶段，抬头离地。当速度够快时，机翼产生的升力超过飞机重量，飞行员拉起机头，飞机就离开地面了！第三阶段，爬升飞行。飞机继续爬升到预定高度，这时候升力等于重力，飞机稳定飞行。机翼为什么能产生升力呢？因为机翼上面是弯的，下面是平的。空气从上面走的路更长，速度更快，压力就变小。下面的空气走的路短，速度慢，压力大。下面的大压力把机翼推上去，这就是升力！';
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN'; u.rate = 0.85; u.pitch = 1.1;
+  // 优先使用 Edge TTS 语音
+  const voices = speechSynthesis.getVoices();
+  const edgeVoice = voices.find(v => v.name.includes('Xiaoxiao')) || voices.find(v => v.name.includes('Online') && v.name.includes('Natural') && (v.lang.startsWith('zh-CN')||v.lang==='zh')) || voices.find(v => v.name.includes('Microsoft') && (v.lang.startsWith('zh-CN')||v.lang==='zh'));
+  if (edgeVoice) u.voice = edgeVoice;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+// Edge 浏览器需要等 voiceschanged 事件加载语音列表
+if (speechSynthesis.onvoiceschanged !== undefined) {
+  speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+}
+</script>
+<script src="../../assets/site.js"></script></body>
+</html>

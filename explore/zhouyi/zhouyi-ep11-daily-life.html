@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco传统文化讲解：周易与生活">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>周易讲解 · 第十一期：周易与生活</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'PingFang SC', 'Noto Serif SC', serif;
+  background: #0a0a0f;
+  color: #e8e0d0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.pages-wrapper { width: 100%; height: 100%; position: relative; }
+.page {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 40px 24px;
+  opacity: 0; transform: translateX(100%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none; overflow: hidden;
+}
+.page.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.page.prev { opacity: 0; transform: translateX(-100%); }
+
+/* Backgrounds */
+.bg-void { background: radial-gradient(ellipse at center, #080808 0%, #000 70%); }
+.bg-cosmos { background: radial-gradient(ellipse at center, #0f0a1e 0%, #060410 70%); }
+.bg-dawn { background: linear-gradient(180deg, #0a0820 0%, #1a1545 50%, #0f0d25 100%); }
+.bg-light { background: linear-gradient(135deg, #1a1508 0%, #0f0d05 50%, #080604 100%); }
+.bg-dual { background: linear-gradient(135deg, #0a0a18 0%, #080812 100%); }
+.bg-nature { background: linear-gradient(180deg, #050a10 0%, #0a1520 50%, #050a0f 100%); }
+.bg-flow { background: radial-gradient(ellipse at 50% 60%, #0a1020 0%, #060810 70%); }
+.bg-balance { background: radial-gradient(ellipse at center, #100a18 0%, #080510 70%); }
+.bg-final { background: radial-gradient(ellipse at center, #0f0818 0%, #060410 70%); }
+.bg-warm { background: linear-gradient(135deg, #120a05 0%, #0a0805 50%, #080605 100%); }
+
+/* Typography */
+.title-main {
+  font-size: clamp(2.2em, 8vw, 3.5em);
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, #c0c0c0 50%, #ffd700 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-align: center; line-height: 1.3;
+  animation: textGlow 4s ease-in-out infinite;
+}
+@keyframes textGlow {
+  0%,100% { filter: brightness(1) drop-shadow(0 0 8px rgba(255,255,255,0.1)); }
+  50% { filter: brightness(1.15) drop-shadow(0 0 20px rgba(255,215,0,0.3)); }
+}
+.subtitle { font-size: clamp(0.85em, 3.2vw, 1.1em); color: #5a5040; margin-top: 12px; text-align: center; letter-spacing: 4px; }
+.page-title {
+  font-size: clamp(1.4em, 5.5vw, 2em); font-weight: 800;
+  color: #ffd700; text-align: center; margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(255,215,0,0.15);
+}
+.page-text {
+  font-size: clamp(0.95em, 3.8vw, 1.15em); line-height: 2;
+  text-align: center; color: #c8bca0; max-width: 560px;
+}
+.page-text .em { color: #ffd700; font-weight: bold; }
+.page-text .light { color: #f0f0f0; font-weight: bold; }
+.page-text .dark { color: #6a7a8a; }
+.fact-card {
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15);
+  border-radius: 12px; padding: 14px 18px; margin-top: 18px;
+  max-width: 480px; text-align: left; font-size: 0.88em; line-height: 1.8; color: #a89878;
+}
+.fact-card .label { color: #ffd700; font-weight: bold; margin-bottom: 4px; }
+
+/* Animations */
+.ani { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.page.active .ani { opacity: 1; transform: translateY(0); }
+.page.active .ani:nth-child(2) { transition-delay: 0.15s; }
+.page.active .ani:nth-child(3) { transition-delay: 0.3s; }
+.page.active .ani:nth-child(4) { transition-delay: 0.45s; }
+.page.active .ani:nth-child(5) { transition-delay: 0.6s; }
+.page.active .ani:nth-child(6) { transition-delay: 0.75s; }
+
+/* Particles */
+.particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.particle {
+  position: absolute; border-radius: 50%; opacity: 0;
+  animation: floatUp 7s ease-in-out infinite;
+}
+.particle-gold { background: radial-gradient(circle, #ffd700, transparent); }
+.particle-white { background: radial-gradient(circle, rgba(255,255,255,0.8), transparent); }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(100vh) scale(0.3); }
+  15% { opacity: 0.7; } 85% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(0.8); }
+}
+
+/* Stars */
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.star {
+  position: absolute; background: #fff; border-radius: 50%;
+  animation: twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.85; transform: scale(1.2); } }
+
+/* Idiom cards */
+.idiom-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  max-width: 420px; margin: 15px 0;
+}
+.idiom-card {
+  padding: 10px 14px; border-radius: 10px; text-align: center;
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15);
+}
+.idiom-card .idiom-name { color: #ffd700; font-weight: bold; font-size: 1em; margin-bottom: 4px; }
+.idiom-card .idiom-meaning { color: #8a7a6a; font-size: 0.78em; }
+.idiom-card.full { grid-column: 1 / -1; }
+
+/* Decision cards */
+.decision-grid {
+  display: flex; gap: 12px; margin: 15px 0; flex-wrap: wrap; justify-content: center;
+}
+.decision-item {
+  padding: 12px 16px; border-radius: 10px; text-align: center; min-width: 100px;
+  background: rgba(255,215,0,0.05); border: 1px solid rgba(255,215,0,0.12);
+}
+.decision-item .dec-icon { font-size: 1.8em; margin-bottom: 6px; }
+.decision-item .dec-label { color: #ffd700; font-weight: bold; font-size: 0.9em; }
+.decision-item .dec-desc { color: #8a7a6a; font-size: 0.75em; margin-top: 4px; }
+
+/* Season cycle */
+.season-ring {
+  display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; justify-content: center;
+}
+.season-item {
+  width: 70px; height: 70px; border-radius: 50%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; font-size: 0.75em;
+  border: 1px solid rgba(255,215,0,0.15);
+}
+.season-item .s-icon { font-size: 1.5em; }
+.season-item .s-label { color: #c8bca0; margin-top: 2px; }
+
+/* Navigation */
+.nav-hint {
+  position: fixed; bottom: 18px; left: 0; right: 0;
+  text-align: center; color: rgba(255,255,255,0.25); font-size: 0.75em;
+  pointer-events: none; transition: opacity 0.5s; z-index: 100;
+}
+.nav-dots {
+  position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 7px; z-index: 100;
+}
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); transition: all 0.3s; cursor: pointer;
+}
+.nav-dot.active { background: #ffd700; box-shadow: 0 0 6px rgba(255,215,0,0.5); transform: scale(1.4); }
+
+.audio-btn {
+  position: fixed; top: 14px; right: 14px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: #ffd700; font-size: 1.1em;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 200; backdrop-filter: blur(10px); transition: all 0.3s;
+}
+.audio-btn:active { transform: scale(0.9); }
+.audio-btn.playing { background: rgba(255,215,0,0.15); box-shadow: 0 0 12px rgba(255,215,0,0.2); }
+.page-num { position: fixed; top: 16px; left: 16px; font-size: 0.7em; color: rgba(255,255,255,0.2); z-index: 100; }
+
+/* Voice panel */
+.voice-panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(10,10,15,0.96); backdrop-filter: blur(20px);
+  padding: 20px; border-top: 1px solid rgba(255,215,0,0.15);
+  transform: translateY(100%); transition: transform 0.3s; z-index: 300;
+  border-radius: 18px 18px 0 0;
+}
+.voice-panel.show { transform: translateY(0); }
+.voice-panel label { display: block; color: #7a6a5a; font-size: 0.82em; margin-bottom: 6px; }
+.voice-panel select, .voice-panel input[type="range"] {
+  width: 100%; padding: 10px; border-radius: 8px;
+  border: 1px solid rgba(255,215,0,0.15); background: rgba(255,255,255,0.04);
+  color: #d4c8b0; font-size: 0.95em; margin-bottom: 12px;
+}
+.voice-panel .close-panel { text-align: center; color: #ffd700; cursor: pointer; padding: 8px; }
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
+<div class="page-num" id="pageNum">1 / 10</div>
+<div class="nav-dots" id="navDots"></div>
+<div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
+
+<div class="pages-wrapper">
+
+  <!-- Page 1: Cover -->
+  <div class="page bg-cosmos active" data-page="0">
+    <div class="particles" id="p0"></div>
+    <div class="ani">
+      <svg width="220" height="200" viewBox="0 0 220 200">
+        <defs>
+          <linearGradient id="gBamboo" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#8B7355"/><stop offset="100%" stop-color="#5C4033"/>
+          </linearGradient>
+          <linearGradient id="gPhone" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#4a4a5a"/><stop offset="100%" stop-color="#2a2a3a"/>
+          </linearGradient>
+          <filter id="glowGold"><feGaussianBlur stdDeviation="3" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <!-- Left: Bamboo scroll (ancient) -->
+        <g opacity="0.9">
+          <rect x="20" y="40" width="70" height="120" rx="4" fill="url(#gBamboo)" opacity="0.8"/>
+          <!-- Bamboo strips -->
+          <line x1="30" y1="45" x2="30" y2="155" stroke="#A0896A" stroke-width="2"/>
+          <line x1="40" y1="45" x2="40" y2="155" stroke="#A0896A" stroke-width="2"/>
+          <line x1="50" y1="45" x2="50" y2="155" stroke="#A0896A" stroke-width="2"/>
+          <line x1="60" y1="45" x2="60" y2="155" stroke="#A0896A" stroke-width="2"/>
+          <line x1="70" y1="45" x2="70" y2="155" stroke="#A0896A" stroke-width="2"/>
+          <line x1="80" y1="45" x2="80" y2="155" stroke="#A0896A" stroke-width="2"/>
+          <!-- Ancient text on bamboo -->
+          <text x="35" y="75" font-size="10" fill="#3a2a1a" writing-mode="vertical-rl">易有太极</text>
+          <text x="55" y="75" font-size="10" fill="#3a2a1a" writing-mode="vertical-rl">是生两仪</text>
+          <text x="75" y="75" font-size="10" fill="#3a2a1a" writing-mode="vertical-rl">天行健</text>
+          <!-- String binding -->
+          <line x1="22" y1="65" x2="88" y2="65" stroke="#6B4226" stroke-width="1.5"/>
+          <line x1="22" y1="135" x2="88" y2="135" stroke="#6B4226" stroke-width="1.5"/>
+          <text x="55" y="180" text-anchor="middle" font-size="11" fill="#8a7a5a">3000年前</text>
+        </g>
+        <!-- Arrow -->
+        <path d="M100,100 L120,100" fill="none" stroke="#ffd700" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6" filter="url(#glowGold)">
+          <animate attributeName="stroke-dashoffset" values="6;0" dur="1s" repeatCount="indefinite"/>
+        </path>
+        <polygon points="122,95 132,100 122,105" fill="#ffd700" opacity="0.7"/>
+        <!-- Right: Smartphone (modern) -->
+        <g opacity="0.9">
+          <rect x="140" y="45" width="60" height="110" rx="10" fill="url(#gPhone)" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+          <!-- Screen -->
+          <rect x="145" y="55" width="50" height="85" rx="4" fill="#0a0a1a"/>
+          <!-- Taiji on screen -->
+          <circle cx="170" cy="90" r="18" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="1"/>
+          <path d="M170,72 A18,18 0 0,1 170,108 A9,9 0 0,1 170,90 A9,9 0 0,0 170,72 Z" fill="rgba(255,215,0,0.6)"/>
+          <path d="M170,72 A18,18 0 0,0 170,108 A9,9 0 0,0 170,90 A9,9 0 0,1 170,72 Z" fill="rgba(20,20,30,0.9)"/>
+          <circle cx="170" cy="81" r="3" fill="rgba(20,20,30,0.8)"/>
+          <circle cx="170" cy="99" r="3" fill="rgba(255,215,0,0.5)"/>
+          <!-- AI text below taiji -->
+          <text x="170" y="125" text-anchor="middle" font-size="7" fill="rgba(255,215,0,0.6)">智慧 · 应用</text>
+          <!-- Home indicator -->
+          <rect x="158" y="148" width="24" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+          <text x="170" y="180" text-anchor="middle" font-size="11" fill="#ffd700">今天</text>
+        </g>
+        <!-- Connecting dots -->
+        <circle cx="110" cy="80" r="2" fill="#ffd700" opacity="0.4">
+          <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="110" cy="120" r="2" fill="#ffd700" opacity="0.4">
+          <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" repeatCount="indefinite" begin="0.7s"/>
+        </circle>
+      </svg>
+    </div>
+    <div class="title-main ani">周易与生活</div>
+    <div class="subtitle ani">第十一期 · 古老智慧的现代应用</div>
+  </div>
+
+  <!-- Page 2: Zhou Yi is not just an old book -->
+  <div class="page bg-dawn" data-page="1">
+    <div class="stars" id="s1"></div>
+    <div class="page-title ani">周易不只是古书</div>
+    <div class="page-text ani">
+      很多人以为周易只是<br>
+      一本旧旧的古籍，<br>
+      放在书架上落灰。<br><br>
+      其实<span class="em">3000年前</span>的智慧，<br>
+      今天依然<span class="em">非常有用</span>！<br><br>
+      它教我们<span class="em">观察变化</span>，<br>
+      教我们<span class="em">做出选择</span>，<br>
+      教我们<span class="em">面对困难</span>。
+    </div>
+    <div class="fact-card ani">
+      <div class="label">💡 你知道吗？</div>
+      周易的思想藏在我们每天说的话里、<br>
+      做的事里、甚至课本里！<br>
+      接下来，我们一起来发现。
+    </div>
+  </div>
+
+  <!-- Page 3: Idioms from Zhou Yi -->
+  <div class="page bg-light" data-page="2">
+    <div class="particles" id="p2"></div>
+    <div class="page-title ani">成语中的周易</div>
+    <div class="page-text ani" style="margin-bottom:10px;">
+      这些<span class="em">常用成语</span>，全部来自周易：
+    </div>
+    <div class="idiom-grid ani">
+      <div class="idiom-card">
+        <div class="idiom-name">否极泰来</div>
+        <div class="idiom-meaning">坏到极点就会变好</div>
+      </div>
+      <div class="idiom-card">
+        <div class="idiom-name">自强不息</div>
+        <div class="idiom-meaning">天行健，君子以自强不息</div>
+      </div>
+      <div class="idiom-card">
+        <div class="idiom-name">厚德载物</div>
+        <div class="idiom-meaning">地势坤，君子以厚德载物</div>
+      </div>
+      <div class="idiom-card">
+        <div class="idiom-name">变化无常</div>
+        <div class="idiom-meaning">变化是永恒的规律</div>
+      </div>
+      <div class="idiom-card full">
+        <div class="idiom-name">亢龙有悔</div>
+        <div class="idiom-meaning">到了最高处，反而要小心——物极必反</div>
+      </div>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">📌 清华大学校训</div>
+      "自强不息，厚德载物"——直接出自周易！
+    </div>
+  </div>
+
+  <!-- Page 4: Decision wisdom -->
+  <div class="page bg-dual" data-page="3">
+    <div class="page-title ani">决策智慧</div>
+    <div class="page-text ani" style="margin-bottom:12px;">
+      面对选择时，<br>
+      周易教我们看<span class="em">三件事</span>：
+    </div>
+    <div class="decision-grid ani">
+      <div class="decision-item">
+        <div class="dec-icon">⏰</div>
+        <div class="dec-label">时</div>
+        <div class="dec-desc">时机对不对？</div>
+      </div>
+      <div class="decision-item">
+        <div class="dec-icon">📍</div>
+        <div class="dec-label">位</div>
+        <div class="dec-desc">位置合不合？</div>
+      </div>
+      <div class="decision-item">
+        <div class="dec-icon">📈</div>
+        <div class="dec-label">变</div>
+        <div class="dec-desc">趋势往哪走？</div>
+      </div>
+    </div>
+    <div class="page-text ani">
+      比如考试前：<br>
+      <span class="em">时</span> = 还有多少天？<br>
+      <span class="em">位</span> = 我现在什么水平？<br>
+      <span class="em">变</span> = 努力后能提高多少？<br><br>
+      <span class="dark">想清楚这三点，选择自然就明了。</span>
+    </div>
+  </div>
+
+  <!-- Page 5: Relationships -->
+  <div class="page bg-nature" data-page="4">
+    <div class="stars" id="s4"></div>
+    <div class="page-title ani">人际关系</div>
+    <div class="ani">
+      <svg width="220" height="100" viewBox="0 0 220 100">
+        <!-- Complementary pair -->
+        <circle cx="60" cy="50" r="30" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="1.5"/>
+        <circle cx="60" cy="50" r="20" fill="rgba(255,215,0,0.08)"/>
+        <text x="60" y="45" text-anchor="middle" font-size="18" fill="#ffd700">☀️</text>
+        <text x="60" y="62" text-anchor="middle" font-size="8" fill="#ffd700">活泼外向</text>
+        <circle cx="160" cy="50" r="30" fill="none" stroke="rgba(100,130,200,0.3)" stroke-width="1.5"/>
+        <circle cx="160" cy="50" r="20" fill="rgba(100,130,200,0.08)"/>
+        <text x="160" y="45" text-anchor="middle" font-size="18" fill="#6882c8">🌙</text>
+        <text x="160" y="62" text-anchor="middle" font-size="8" fill="#6882c8">安静内敛</text>
+        <!-- Connection -->
+        <path d="M92,50 Q110,35 128,50" fill="none" stroke="rgba(255,215,0,0.4)" stroke-width="1.5" stroke-dasharray="3 3">
+          <animate attributeName="stroke-dashoffset" values="6;0" dur="1.5s" repeatCount="indefinite"/>
+        </path>
+        <path d="M92,50 Q110,65 128,50" fill="none" stroke="rgba(100,130,200,0.4)" stroke-width="1.5" stroke-dasharray="3 3">
+          <animate attributeName="stroke-dashoffset" values="0;6" dur="1.5s" repeatCount="indefinite"/>
+        </path>
+        <text x="110" y="50" text-anchor="middle" font-size="10" fill="rgba(255,255,255,0.5)">互补</text>
+      </svg>
+    </div>
+    <div class="page-text ani">
+      <span class="em">阴阳互补</span> = 团队搭配<br><br>
+      活泼的人 + 安静的人<br>
+      = 最好的组合<br><br>
+      <span class="em">刚柔并济</span> = 处事方式<br><br>
+      有时候要<span class="em">坚定</span>（刚）<br>
+      有时候要<span class="em">温和</span>（柔）<br><br>
+      <span class="dark">最厉害的人，既能刚也能柔。</span>
+    </div>
+  </div>
+
+  <!-- Page 6: Learning method -->
+  <div class="page bg-flow" data-page="5">
+    <div class="page-title ani">学习方法</div>
+    <div class="ani">
+      <svg width="240" height="100" viewBox="0 0 240 100">
+        <defs>
+          <linearGradient id="gGrow" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="rgba(255,215,0,0.2)"/>
+            <stop offset="100%" stop-color="rgba(255,215,0,0.8)"/>
+          </linearGradient>
+        </defs>
+        <!-- Growth stages -->
+        <rect x="20" y="70" width="200" height="3" rx="1.5" fill="rgba(255,255,255,0.08)"/>
+        <!-- Seed -->
+        <circle cx="40" cy="65" r="6" fill="rgba(139,115,85,0.6)"/>
+        <text x="40" y="90" text-anchor="middle" font-size="8" fill="#8a7a5a">种子</text>
+        <!-- Sprout -->
+        <line x1="90" y1="65" x2="90" y2="50" stroke="#4a8a4a" stroke-width="2"/>
+        <circle cx="90" cy="47" r="5" fill="rgba(100,180,100,0.5)"/>
+        <text x="90" y="90" text-anchor="middle" font-size="8" fill="#5a9a5a">发芽</text>
+        <!-- Growing -->
+        <line x1="140" y1="65" x2="140" y2="38" stroke="#5aaa5a" stroke-width="2.5"/>
+        <circle cx="135" cy="35" r="6" fill="rgba(100,200,100,0.4)"/>
+        <circle cx="145" cy="38" r="5" fill="rgba(100,200,100,0.3)"/>
+        <circle cx="140" cy="30" r="7" fill="rgba(100,200,100,0.5)"/>
+        <text x="140" y="90" text-anchor="middle" font-size="8" fill="#6aaa6a">成长</text>
+        <!-- Blooming -->
+        <line x1="190" y1="65" x2="190" y2="30" stroke="#6aba6a" stroke-width="3"/>
+        <circle cx="190" cy="22" r="10" fill="rgba(255,215,0,0.3)" stroke="#ffd700" stroke-width="1"/>
+        <circle cx="183" cy="35" r="6" fill="rgba(100,200,100,0.4)"/>
+        <circle cx="197" cy="35" r="6" fill="rgba(100,200,100,0.4)"/>
+        <circle cx="185" cy="45" r="7" fill="rgba(100,200,100,0.5)"/>
+        <circle cx="195" cy="45" r="7" fill="rgba(100,200,100,0.5)"/>
+        <text x="190" y="90" text-anchor="middle" font-size="8" fill="#ffd700">绽放</text>
+        <!-- Progress arrow -->
+        <path d="M45,70 L185,70" fill="none" stroke="url(#gGrow)" stroke-width="1.5">
+          <animate attributeName="stroke-dashoffset" values="20;0" dur="3s" repeatCount="indefinite"/>
+        </path>
+      </svg>
+    </div>
+    <div class="page-text ani">
+      乾卦初九说：<span class="em">"潜龙勿用"</span><br><br>
+      意思是：<br>
+      在基础阶段，<br>
+      要<span class="em">耐心积累</span>，<br>
+      不着急表现。<br><br>
+      就像种子在土里，<br>
+      看不见它在长，<br>
+      但它正在<span class="em">扎根</span>。<br><br>
+      <span class="dark">扎好根的树，才能长得高。</span>
+    </div>
+  </div>
+
+  <!-- Page 7: Facing setbacks -->
+  <div class="page bg-balance" data-page="6">
+    <div class="particles" id="p6"></div>
+    <div class="page-title ani">面对挫折</div>
+    <div class="ani">
+      <svg width="220" height="90" viewBox="0 0 220 90">
+        <defs>
+          <linearGradient id="gNeg" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#4a4a6a"/><stop offset="100%" stop-color="#ffd700"/>
+          </linearGradient>
+        </defs>
+        <!-- Pi (Stagnation) hexagram simplified -->
+        <g>
+          <rect x="20" y="20" width="40" height="6" rx="2" fill="#4a4a6a"/>
+          <rect x="20" y="30" width="18" height="6" rx="2" fill="#4a4a6a"/>
+          <rect x="42" y="30" width="18" height="6" rx="2" fill="#4a4a6a"/>
+          <rect x="20" y="40" width="40" height="6" rx="2" fill="#4a4a6a"/>
+          <rect x="20" y="52" width="18" height="6" rx="2" fill="#4a4a6a"/>
+          <rect x="42" y="52" width="18" height="6" rx="2" fill="#4a4a6a"/>
+          <rect x="20" y="62" width="18" height="6" rx="2" fill="#4a4a6a"/>
+          <rect x="42" y="62" width="18" height="6" rx="2" fill="#4a4a6a"/>
+          <rect x="20" y="72" width="18" height="6" rx="2" fill="#4a4a6a"/>
+          <rect x="42" y="72" width="18" height="6" rx="2" fill="#4a4a6a"/>
+          <text x="40" y="16" text-anchor="middle" font-size="10" fill="#6a6a8a">否卦</text>
+        </g>
+        <!-- Arrow -->
+        <path d="M75,48 L135,48" fill="none" stroke="url(#gNeg)" stroke-width="2" stroke-dasharray="4 4">
+          <animate attributeName="stroke-dashoffset" values="8;0" dur="1.5s" repeatCount="indefinite"/>
+        </path>
+        <text x="105" y="40" text-anchor="middle" font-size="9" fill="rgba(255,215,0,0.6)">坚持</text>
+        <polygon points="137,43 147,48 137,53" fill="#ffd700" opacity="0.7"/>
+        <!-- Tai (Peace) hexagram simplified -->
+        <g>
+          <rect x="155" y="20" width="18" height="6" rx="2" fill="#ffd700"/>
+          <rect x="177" y="20" width="18" height="6" rx="2" fill="#ffd700"/>
+          <rect x="155" y="30" width="40" height="6" rx="2" fill="#ffd700"/>
+          <rect x="155" y="40" width="18" height="6" rx="2" fill="#ffd700"/>
+          <rect x="177" y="40" width="18" height="6" rx="2" fill="#ffd700"/>
+          <rect x="155" y="52" width="40" height="6" rx="2" fill="#ffd700"/>
+          <rect x="155" y="62" width="40" height="6" rx="2" fill="#ffd700"/>
+          <rect x="155" y="72" width="40" height="6" rx="2" fill="#ffd700"/>
+          <text x="175" y="16" text-anchor="middle" font-size="10" fill="#ffd700">泰卦</text>
+        </g>
+      </svg>
+    </div>
+    <div class="page-text ani">
+      <span class="dark">否卦</span> = 闭塞、困难<br>
+      <span class="em">泰卦</span> = 通泰、顺利<br><br>
+      周易告诉我们：<br>
+      <span class="em">困难是暂时的</span>，<br>
+      只要坚持不放弃，<br>
+      否卦一定会变成泰卦！<br><br>
+      这就是<span class="em">"否极泰来"</span>。<br><br>
+      <span class="dark">冬天再冷，春天一定会来。</span>
+    </div>
+  </div>
+
+  <!-- Page 8: Health and seasons -->
+  <div class="page bg-nature" data-page="7">
+    <div class="stars" id="s7"></div>
+    <div class="page-title ani">健康养生</div>
+    <div class="page-text ani" style="margin-bottom:10px;">
+      周易说：<span class="em">顺应四时</span>，<br>
+      跟着自然的节奏生活：
+    </div>
+    <div class="season-ring ani">
+      <div class="season-item" style="background:rgba(100,200,100,0.08);border-color:rgba(100,200,100,0.3);">
+        <div class="s-icon">🌱</div>
+        <div class="s-label" style="color:#7aba7a;">春·生</div>
+      </div>
+      <div class="season-item" style="background:rgba(255,150,50,0.08);border-color:rgba(255,150,50,0.3);">
+        <div class="s-icon">☀️</div>
+        <div class="s-label" style="color:#e0a040;">夏·长</div>
+      </div>
+      <div class="season-item" style="background:rgba(200,160,80,0.08);border-color:rgba(200,160,80,0.3);">
+        <div class="s-icon">🍂</div>
+        <div class="s-label" style="color:#c8a050;">秋·收</div>
+      </div>
+      <div class="season-item" style="background:rgba(100,130,200,0.08);border-color:rgba(100,130,200,0.3);">
+        <div class="s-icon">❄️</div>
+        <div class="s-label" style="color:#6882c8;">冬·藏</div>
+      </div>
+    </div>
+    <div class="page-text ani">
+      <span class="em">春天</span>：万物萌发，多运动<br>
+      <span class="em">夏天</span>：精力旺盛，多学习<br>
+      <span class="em">秋天</span>：收获果实，多总结<br>
+      <span class="em">冬天</span>：养精蓄锐，多休息<br><br>
+      <span class="dark">顺天时而动，事半功倍。</span>
+    </div>
+  </div>
+
+  <!-- Page 9: Science and Zhou Yi -->
+  <div class="page bg-cosmos" data-page="8">
+    <div class="particles" id="p8"></div>
+    <div class="page-title ani">科学与周易</div>
+    <div class="page-text ani" style="margin-bottom:10px;">
+      周易的思想，<br>
+      启发了很多<span class="em">科学发现</span>：
+    </div>
+    <div class="ani">
+      <svg width="240" height="120" viewBox="0 0 240 120">
+        <!-- Binary / Bagua connection -->
+        <g>
+          <!-- Bagua trigrams -->
+          <rect x="15" y="20" width="20" height="4" rx="1" fill="#ffd700"/>
+          <rect x="15" y="27" width="20" height="4" rx="1" fill="#ffd700"/>
+          <rect x="15" y="34" width="20" height="4" rx="1" fill="#ffd700"/>
+          <text x="25" y="52" text-anchor="middle" font-size="7" fill="#8a7a5a">☰ 乾=111</text>
+          <rect x="15" y="68" width="9" height="4" rx="1" fill="#6882c8"/>
+          <rect x="26" y="68" width="9" height="4" rx="1" fill="#6882c8"/>
+          <rect x="15" y="75" width="9" height="4" rx="1" fill="#6882c8"/>
+          <rect x="26" y="75" width="9" height="4" rx="1" fill="#6882c8"/>
+          <rect x="15" y="82" width="9" height="4" rx="1" fill="#6882c8"/>
+          <rect x="26" y="82" width="9" height="4" rx="1" fill="#6882c8"/>
+          <text x="25" y="100" text-anchor="middle" font-size="7" fill="#6a7a8a">☷ 坤=000</text>
+        </g>
+        <!-- Arrow to binary -->
+        <text x="60" y="50" font-size="9" fill="rgba(255,215,0,0.5)">→</text>
+        <!-- Binary -->
+        <text x="85" y="35" text-anchor="middle" font-size="14" fill="#ffd700" font-family="monospace">1 0 1</text>
+        <text x="85" y="55" text-anchor="middle" font-size="8" fill="#8a7a5a">二进制</text>
+        <text x="85" y="85" text-anchor="middle" font-size="14" fill="#6882c8" font-family="monospace">0 1 0</text>
+        <text x="85" y="100" text-anchor="middle" font-size="7" fill="#6a7a8a">莱布尼茨受启发</text>
+        <!-- DNA double helix -->
+        <g transform="translate(135,10)">
+          <path d="M15,0 Q30,15 15,30 Q0,45 15,60 Q30,75 15,90" fill="none" stroke="#ffd700" stroke-width="1.5" opacity="0.6">
+            <animate attributeName="stroke-dashoffset" values="0;20" dur="3s" repeatCount="indefinite"/>
+          </path>
+          <path d="M35,0 Q20,15 35,30 Q50,45 35,60 Q20,75 35,90" fill="none" stroke="#6882c8" stroke-width="1.5" opacity="0.6">
+            <animate attributeName="stroke-dashoffset" values="0;20" dur="3s" repeatCount="indefinite"/>
+          </path>
+          <!-- Rungs -->
+          <line x1="18" y1="15" x2="32" y2="15" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <line x1="15" y1="30" x2="35" y2="30" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <line x1="18" y1="45" x2="32" y2="45" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <line x1="15" y1="60" x2="35" y2="60" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <line x1="18" y1="75" x2="32" y2="75" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <text x="25" y="108" text-anchor="middle" font-size="7" fill="#8a7a5a">DNA像太极</text>
+        </g>
+        <!-- Computer chip -->
+        <g transform="translate(195,25)">
+          <rect x="5" y="10" width="30" height="30" rx="3" fill="rgba(255,215,0,0.08)" stroke="rgba(255,215,0,0.3)" stroke-width="1"/>
+          <text x="20" y="30" text-anchor="middle" font-size="10" fill="#ffd700" font-family="monospace">01</text>
+          <!-- Pins -->
+          <line x1="10" y1="10" x2="10" y2="3" stroke="rgba(255,215,0,0.3)" stroke-width="1"/>
+          <line x1="20" y1="10" x2="20" y2="3" stroke="rgba(255,215,0,0.3)" stroke-width="1"/>
+          <line x1="30" y1="10" x2="30" y2="3" stroke="rgba(255,215,0,0.3)" stroke-width="1"/>
+          <line x1="10" y1="40" x2="10" y2="47" stroke="rgba(255,215,0,0.3)" stroke-width="1"/>
+          <line x1="20" y1="40" x2="20" y2="47" stroke="rgba(255,215,0,0.3)" stroke-width="1"/>
+          <line x1="30" y1="40" x2="30" y2="47" stroke="rgba(255,215,0,0.3)" stroke-width="1"/>
+          <text x="20" y="65" text-anchor="middle" font-size="7" fill="#8a7a5a">0和1像阴阳</text>
+        </g>
+      </svg>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">🧪 真实故事</div>
+      德国数学家莱布尼茨发明二进制时，<br>
+      发现八卦的阴阳爻排列和二进制完全一致！<br>
+      计算机的 0 和 1，就像阴和阳。<br>
+      DNA双螺旋结构，也像旋转的太极图。
+    </div>
+  </div>
+
+  <!-- Page 10: Summary -->
+  <div class="page bg-final" data-page="9">
+    <div class="particles" id="p9"></div>
+    <div class="ani">
+      <svg width="70" height="70" viewBox="0 0 70 70">
+        <circle cx="35" cy="35" r="30" fill="none" stroke="rgba(255,215,0,0.2)" stroke-width="1">
+          <animateTransform attributeName="transform" type="rotate" values="0 35 35;360 35 35" dur="20s" repeatCount="indefinite"/>
+        </circle>
+        <path d="M35,5 A30,30 0 0,1 35,65 A15,15 0 0,1 35,35 A15,15 0 0,0 35,5 Z" fill="#ffd700" opacity="0.7">
+          <animateTransform attributeName="transform" type="rotate" values="0 35 35;360 35 35" dur="15s" repeatCount="indefinite"/>
+        </path>
+        <path d="M35,5 A30,30 0 0,0 35,65 A15,15 0 0,0 35,35 A15,15 0 0,1 35,5 Z" fill="#0a0a18" opacity="0.9">
+          <animateTransform attributeName="transform" type="rotate" values="0 35 35;360 35 35" dur="15s" repeatCount="indefinite"/>
+        </path>
+        <circle cx="35" cy="20" r="4" fill="#0a0a18"><animateTransform attributeName="transform" type="rotate" values="0 35 35;360 35 35" dur="15s" repeatCount="indefinite"/></circle>
+        <circle cx="35" cy="50" r="4" fill="#ffd700"><animateTransform attributeName="transform" type="rotate" values="0 35 35;360 35 35" dur="15s" repeatCount="indefinite"/></circle>
+      </svg>
+    </div>
+    <div class="page-title ani">小结</div>
+    <div class="page-text ani">
+      周易不是遥远的古书，<br>
+      它就在我们的<span class="em">生活</span>里：<br><br>
+      📖 <span class="em">成语</span>里有周易<br>
+      🤔 <span class="em">决策</span>用得上周易<br>
+      🤝 <span class="em">交友</span>体现周易<br>
+      📚 <span class="em">学习</span>遵循周易<br>
+      💪 <span class="em">困难</span>中想起周易<br>
+      🔬 <span class="em">科学</span>印证周易<br><br>
+      <span class="dark">古老的智慧，永不过时。</span>
+    </div>
+    <div class="ani" style="margin-top:20px;padding:12px 20px;border:1px solid rgba(255,215,0,0.15);border-radius:10px;text-align:center;">
+      <div style="color:#ffd700;font-size:1em;font-weight:bold;">下一期预告</div>
+      <div style="color:#6a5a4a;margin-top:5px;">第十二期 · 总结与展望 — 入门之后的路</div>
+    </div>
+    <div class="ani" style="margin-top:12px;color:#3a3a3a;font-size:0.72em;">— 周易讲解 · 第十一期 完 —</div>
+  </div>
+
+</div>
+
+<!-- Voice Panel -->
+<div class="voice-panel" id="voicePanel">
+  <label>🗣️ 声音 <select id="voiceSelect"></select></label>
+  <label>🔊 语速: <span id="rateVal">0.9</span>x <input type="range" id="rateRange" min="0.5" max="1.5" step="0.1" value="0.9"></label>
+  <div class="close-panel" onclick="toggleVoicePanel()">✕ 关闭</div>
+</div>
+
+<script>
+let cur = 0;
+const pages = document.querySelectorAll('.page');
+const total = pages.length;
+let animating = false, speaking = false;
+
+const navDots = document.getElementById('navDots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => go(i);
+  navDots.appendChild(d);
+}
+
+function go(idx) {
+  if (idx < 0 || idx >= total || idx === cur || animating) return;
+  animating = true;
+  window.speechSynthesis.cancel();
+  const old = pages[cur], nw = pages[idx], dir = idx > cur ? 1 : -1;
+  old.classList.remove('active'); old.classList.add('prev');
+  if (dir < 0) { old.style.transform = 'translateX(100%)'; old.style.opacity = '0'; }
+  nw.style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+  nw.classList.remove('prev');
+  requestAnimationFrame(() => {
+    nw.classList.add('active'); nw.style.transform = '';
+    cur = idx; updateUI();
+    setTimeout(() => {
+      animating = false;
+      old.classList.remove('prev'); old.style.transform = ''; old.style.opacity = '';
+      if (speaking) speakPage(cur);
+    }, 650);
+  });
+}
+
+function updateUI() {
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.getElementById('pageNum').textContent = `${cur + 1} / ${total}`;
+  document.getElementById('navHint').style.opacity = '0';
+}
+
+let tx = 0, ty = 0, tt = 0;
+document.addEventListener('touchstart', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY; tt = Date.now();
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty, dt = Date.now() - tt;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 500) { dx < 0 ? go(cur+1) : go(cur-1); return; }
+  if (dt < 300 && Math.abs(dx) < 15 && Math.abs(dy) < 15) {
+    e.changedTouches[0].clientX > window.innerWidth * 0.4 ? go(cur+1) : go(cur-1);
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur+1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur-1); }
+});
+
+// TTS
+const narrations = [
+  "周易与生活。第十一期，古老智慧的现代应用。",
+  "很多人以为周易只是一本旧旧的古籍，放在书架上落灰。其实3000年前的智慧，今天依然非常有用！它教我们观察变化，教我们做出选择，教我们面对困难。",
+  "这些常用成语，全部来自周易。否极泰来，意思是坏到极点就会变好。自强不息，来自天行健，君子以自强不息。厚德载物，来自地势坤，君子以厚德载物。变化无常，表示变化是永恒的规律。亢龙有悔，意思是到了最高处反而要小心，物极必反。清华大学的校训，自强不息，厚德载物，就直接出自周易。",
+  "面对选择时，周易教我们看三件事。第一是时，时机对不对？第二是位，位置合不合？第三是变，趋势往哪走？比如考试前，时，就是还有多少天。位，就是我现在什么水平。变，就是努力后能提高多少。想清楚这三点，选择自然就明了。",
+  "周易教我们人际关系。阴阳互补等于团队搭配。活泼的人加上安静的人，就是最好的组合。刚柔并济是处事方式，有时候要坚定，这是刚，有时候要温和，这是柔。最厉害的人，既能刚也能柔。",
+  "乾卦初九说，潜龙勿用。意思是在基础阶段，要耐心积累，不着急表现。就像种子在土里，看不见它在长，但它正在扎根。扎好根的树，才能长得高。学习也一样，先把基础打牢。",
+  "否卦代表闭塞和困难，泰卦代表通泰和顺利。周易告诉我们，困难是暂时的，只要坚持不放弃，否卦一定会变成泰卦！这就是否极泰来。冬天再冷，春天一定会来。",
+  "周易说要顺应四时。春天万物萌发，多运动。夏天精力旺盛，多学习。秋天收获果实，多总结。冬天养精蓄锐，多休息。顺着自然的节奏生活，事半功倍。",
+  "周易的思想还启发了很多科学发现。德国数学家莱布尼茨发明二进制时，发现八卦的阴阳爻排列和二进制完全一致。计算机的0和1，就像阴和阳。DNA的双螺旋结构，也像旋转的太极图。古老的智慧和现代科学，竟然暗暗相通。",
+  "小结。周易不是遥远的古书，它就在我们的生活里。成语里有周易，决策用得上周易，交友体现周易，学习遵循周易，困难中想起周易，科学印证周易。古老的智慧，永不过时。下一期，我们来做全系列的总结与展望。"
+];
+
+let voices = [];
+function loadVoices() {
+  voices = window.speechSynthesis.getVoices();
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+  const zh = voices.filter(v => (v.lang.startsWith('zh-CN')||v.lang==='zh')&&!v.lang.startsWith('zh-HK')&&!v.lang.startsWith('zh-TW'));
+  // Sort: Edge Online (Natural) first
+  zh.sort((a, b) => {
+    const aOnline = a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Online') && a.name.includes('Natural') ? 2 : a.name.includes('Microsoft') ? 1 : 0;
+    const bOnline = b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Online') && b.name.includes('Natural') ? 2 : b.name.includes('Microsoft') ? 1 : 0;
+    return bOnline - aOnline;
+  });
+  (zh.length ? zh : voices.slice(0, 8)).forEach(v => {
+    const o = document.createElement('option');
+    o.value = voices.indexOf(v);
+    o.textContent = v.name.replace(/Microsoft |Google |Apple /g, '');
+    sel.appendChild(o);
+  });
+}
+window.speechSynthesis.onvoiceschanged = loadVoices;
+setTimeout(loadVoices, 300);
+document.getElementById('rateRange').addEventListener('input', function() {
+  document.getElementById('rateVal').textContent = this.value;
+});
+
+function speakPage(idx) {
+  window.speechSynthesis.cancel();
+  if (!narrations[idx]) return;
+  const u = new SpeechSynthesisUtterance(narrations[idx]);
+  u.lang = 'zh-CN'; u.rate = parseFloat(document.getElementById('rateRange').value);
+  const sv = document.getElementById('voiceSelect');
+  if (sv.value && voices[sv.value]) u.voice = voices[sv.value];
+  u.onend = () => {
+    if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
+    else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
+  };
+  window.speechSynthesis.speak(u);
+}
+
+function toggleAudio() {
+  if (speaking) { speaking = false; window.speechSynthesis.cancel(); }
+  else { speaking = true; speakPage(cur); }
+  updateAudioBtn();
+}
+function updateAudioBtn() {
+  const b = document.getElementById('audioBtn');
+  b.textContent = speaking ? '🔊' : '🔇';
+  b.classList.toggle('playing', speaking);
+}
+
+let lpt;
+document.getElementById('audioBtn').addEventListener('touchstart', e => {
+  lpt = setTimeout(() => { toggleVoicePanel(); e.preventDefault(); }, 600);
+}, { passive: false });
+document.getElementById('audioBtn').addEventListener('touchend', () => clearTimeout(lpt));
+function toggleVoicePanel() { document.getElementById('voicePanel').classList.toggle('show'); }
+
+// Particles & Stars
+function mkParticles(id, n=15) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle ' + (Math.random() > 0.5 ? 'particle-gold' : 'particle-white');
+    p.style.left = Math.random()*100+'%';
+    p.style.animationDelay = Math.random()*7+'s';
+    p.style.animationDuration = (5+Math.random()*4)+'s';
+    const s = 2+Math.random()*4; p.style.width = s+'px'; p.style.height = s+'px';
+    c.appendChild(p);
+  }
+}
+function mkStars(id, n=35) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = Math.random()*4+'s';
+    const sz = 1+Math.random()*2; s.style.width = sz+'px'; s.style.height = sz+'px';
+    c.appendChild(s);
+  }
+}
+
+mkParticles('p0', 18); mkParticles('p2', 14); mkParticles('p6', 16); mkParticles('p8', 14); mkParticles('p9', 12);
+mkStars('s1', 30); mkStars('s4', 28); mkStars('s7', 32);
+
+setTimeout(() => { document.getElementById('navHint').style.opacity = '0'; }, 4500);
+document.addEventListener('dblclick', e => e.preventDefault());
+</script>
+<script src="../../assets/site.js"></script></body>
+</html>

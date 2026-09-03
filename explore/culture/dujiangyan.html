@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌊 都江堰 — 2000年前的超级工程</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'PingFang SC','Microsoft YaHei',sans-serif;
+  background: #0a1628;
+  min-height: 100vh;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  color: #dfe6e9;
+}
+.header {
+  text-align: center; padding: 12px 10px 8px;
+  background: linear-gradient(180deg, #1e3a5f, #0a1628);
+}
+.header h1 { font-size: 1.3em; color: #74b9ff; }
+.header p { font-size: 0.75em; color: #b2bec3; margin-top: 3px; }
+
+/* ===== MAP ===== */
+.map {
+  position: relative;
+  width: 100%;
+  height: 65vh;
+  min-height: 440px;
+  background: linear-gradient(180deg, #2a5c2a 0%, #3a7a3a 50%, #2a5c2a 100%);
+  overflow: hidden;
+  border-bottom: 3px solid #1e3a5f;
+}
+
+/* 两岸山体 */
+.bank-left {
+  position: absolute; top: 0; left: 0;
+  width: 15%; height: 100%;
+  background: linear-gradient(90deg, #1a4a1a, #2d5a2d, #3a7a3a);
+  z-index: 2;
+}
+.bank-right {
+  position: absolute; top: 0; right: 0;
+  width: 16%; height: 100%;
+  background: linear-gradient(-90deg, #1a4a1a, #2d5a2d, #3a7a3a);
+  z-index: 2;
+}
+
+/* 玉垒山（宝瓶口所在山体，左侧偏下） */
+.yulei-mt {
+  position: absolute;
+  bottom: 10%; left: 10%;
+  width: 20%; height: 22%;
+  background: radial-gradient(ellipse at center, #3d6b3d, #1a4a1a);
+  border-radius: 40% 50% 30% 60%;
+  z-index: 8;
+}
+
+/* 岷江主河道（顶部流入） */
+.minjiang {
+  position: absolute;
+  top: 0; left: 28%; width: 44%; height: 14%;
+  background: linear-gradient(180deg, #1565C0, #1976D2);
+  border-radius: 0 0 5px 5px;
+  z-index: 3;
+  overflow: hidden;
+}
+.minjiang::after {
+  content: '';
+  position: absolute;
+  width: 100%; height: 200%;
+  background: repeating-linear-gradient(180deg, transparent, rgba(255,255,255,0.08) 8px, transparent 16px);
+  animation: flow 1.5s linear infinite;
+}
+@keyframes flow { from{transform:translateY(-50%)} to{transform:translateY(0)} }
+
+/* 鱼嘴 — 金刚堤的尖端，加大更直观 */
+.fish-mouth {
+  position: absolute;
+  top: 1%; left: 37%; width: 26%; height: 22%;
+  z-index: 12;
+  display: flex; align-items: center; justify-content: center;
+}
+.fish-mouth svg {
+  width: 100%; height: 100%;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.7));
+}
+/* 鱼嘴尖端分水浪花 */
+.fish-mouth::before {
+  content: '';
+  position: absolute;
+  top: -6px; left: 44%; width: 12%; height: 12%;
+  background: radial-gradient(ellipse at center bottom, rgba(255,255,255,0.5), transparent);
+  z-index: 13;
+  animation: splash 1.5s ease-in-out infinite;
+}
+@keyframes splash { 0%,100%{opacity:0.7;transform:scaleY(1)} 50%{opacity:0.2;transform:scaleY(0.6)} }
+
+/* 安澜桥 */
+.anlan-bridge {
+  position: absolute;
+  top: 16%; left: 25%; width: 50%; height: 1.2%;
+  background: repeating-linear-gradient(90deg, #8B4513 0px, #8B4513 8px, #5C3317 8px, #5C3317 10px);
+  z-index: 11; opacity: 0.7; border-radius: 2px;
+}
+
+/* 金刚堤/江心岛 — 与鱼嘴尾部对齐，同宽 */
+.jiangxin-island {
+  position: absolute;
+  top: 21%; left: 37%; width: 26%; height: 44%;
+  background: linear-gradient(180deg, #8B7355 0%, #7a6840 4%, #5a7a4a 10%, #4a8c4a 18%, #3d7a3d 50%, #2d6a2d 100%);
+  border-radius: 2px 2px 50% 50%;
+  z-index: 5;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  border: 2px solid #5a4a30;
+  border-top: none;
+}
+.jiangxin-island::after {
+  content: '';
+  position: absolute;
+  top: 8%; left: 10%; right: 10%; bottom: 15%;
+  background: radial-gradient(circle at 30% 20%, #5ca05c 3px, transparent 3px),
+              radial-gradient(circle at 65% 35%, #4a9a4a 4px, transparent 4px),
+              radial-gradient(circle at 35% 60%, #5ca05c 3px, transparent 3px),
+              radial-gradient(circle at 70% 80%, #4a9a4a 3px, transparent 3px);
+  opacity: 0.6;
+}
+
+/* 内江（左侧，带弧度，颜色偏绿=携沙少） */
+.river-inner {
+  position: absolute;
+  top: 14%; left: 15%; width: 30%; height: 66%;
+  z-index: 3; overflow: hidden;
+  transition: width 0.8s ease, opacity 0.5s;
+}
+.river-inner-path {
+  position: absolute;
+  top: 0; left: 25%; width: 75%; height: 100%;
+  background: linear-gradient(180deg, #1E88E5 0%, #26A69A 25%, #2bbbad 50%, #26A69A 75%, #1a9688 100%);
+  border-radius: 20% 10% 5% 5%;
+  overflow: hidden;
+}
+.river-inner-path::after {
+  content: '';
+  position: absolute;
+  width: 100%; height: 200%;
+  background: repeating-linear-gradient(180deg, transparent, rgba(255,255,255,0.06) 5px, transparent 10px);
+  animation: flow 1.2s linear infinite;
+}
+
+/* 外江（右侧，带弧度，颜色偏浑浊=携沙多） */
+.river-outer {
+  position: absolute;
+  top: 14%; right: 14%; width: 28%; height: 70%;
+  z-index: 3; overflow: hidden;
+  transition: width 0.8s ease, opacity 0.5s;
+}
+.river-outer-path {
+  position: absolute;
+  top: 0; left: 0; width: 70%; height: 100%;
+  background: linear-gradient(180deg, #1565C0 0%, #1976D2 30%, #2196F3 60%, #1E88E5 100%);
+  border-radius: 10% 30% 20% 40%;
+  overflow: hidden;
+}
+.river-outer-path::after {
+  content: '';
+  position: absolute;
+  width: 100%; height: 200%;
+  background: repeating-linear-gradient(180deg, transparent, rgba(255,255,255,0.05) 7px, transparent 14px);
+  animation: flow 1.8s linear infinite;
+}
+
+/* 飞沙堰 — 金刚堤尾端低堰
+   左端(内江侧)略高 → 右端(外江侧)略低，表现水从内江流向外江的坪度 */
+.feisha {
+  position: absolute;
+  top: 64%; left: 36%; width: 30%; height: 3.5%;
+  background: repeating-linear-gradient(90deg, #8B7355 0px, #a08050 6px, #c9a96e 8px, #a08050 12px, #8B7355 14px);
+  border-radius: 3px;
+  z-index: 10;
+  transform: rotate(8deg);
+  transform-origin: left center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5), inset 0 -2px 3px rgba(0,0,0,0.3);
+  border-top: 3px solid #c9a96e;
+  border-bottom: 2px solid #5a4030;
+}
+
+/* 飞沙堰溢流（堰体下方，水翻越后向下流入外江） */
+.feisha-flow {
+  position: absolute;
+  top: 67%; left: 38%; width: 26%; height: 6%;
+  background: linear-gradient(180deg, rgba(33,150,243,0.7) 0%, rgba(33,150,243,0.4) 40%, rgba(33,150,243,0.1) 100%);
+  border-radius: 0 0 8px 8px;
+  z-index: 9;
+  opacity: 0;
+  transition: opacity 0.5s;
+  overflow: hidden;
+}
+.feisha-flow::after {
+  content: '';
+  position: absolute;
+  width: 100%; height: 200%;
+  background: repeating-linear-gradient(180deg, transparent, rgba(255,255,255,0.2) 6px, transparent 12px);
+  animation: flow 0.6s linear infinite;
+}
+
+/* 溢洪道（外江右侧通道） */
+.spillway {
+  position: absolute;
+  top: 56%; right: 16%; width: 8%; height: 18%;
+  background: linear-gradient(180deg, rgba(25,118,210,0.4), rgba(33,150,243,0.6));
+  border-left: 2px dashed rgba(255,255,255,0.3);
+  border-right: 2px dashed rgba(255,255,255,0.3);
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+/* 宝瓶口 — 窄口穿山（与漏斗底部对齐） */
+.baopingkou {
+  position: absolute;
+  top: 76%; left: 19%; width: 7%; height: 11%;
+  background: linear-gradient(180deg, #1a9688, #26A69A, #1a9688);
+  border-left: 6px solid #3d2b1a;
+  border-right: 6px solid #3d2b1a;
+  z-index: 12;
+  overflow: hidden;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.4), 0 0 6px rgba(0,0,0,0.5);
+}
+.baopingkou::before {
+  content: '';
+  position: absolute;
+  top: -2px; left: -8px; right: -8px; height: 4px;
+  background: linear-gradient(90deg, #5a4030, #8B7355, #5a4030);
+  border-radius: 2px;
+}
+.baopingkou::after {
+  content: '';
+  position: absolute;
+  width: 100%; height: 200%;
+  background: repeating-linear-gradient(180deg, transparent, rgba(255,255,255,0.18) 3px, transparent 6px);
+  animation: flow 0.6s linear infinite;
+}
+
+/* 内江→宝瓶口 漏斗过渡（明确连接，加大加亮） */
+.bpk-funnel {
+  position: absolute;
+  top: 70%; left: 15%; width: 18%; height: 7%;
+  background: linear-gradient(180deg, #26A69A 0%, #1a9688 50%, #158a7e 100%);
+  clip-path: polygon(10% 0%, 90% 0%, 65% 100%, 35% 100%);
+  z-index: 7;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+.bpk-funnel::after {
+  content: '';
+  position: absolute;
+  width: 100%; height: 200%;
+  background: repeating-linear-gradient(180deg, transparent, rgba(255,255,255,0.12) 4px, transparent 8px);
+  animation: flow 0.7s linear infinite;
+}
+
+/* 宝瓶口→灌溉渠 连接水道（加宽加亮，明确水流） */
+.bpk-channel {
+  position: absolute;
+  top: 85%; left: 16%; width: 14%; height: 11%;
+  background: linear-gradient(180deg, #1a9688 0%, rgba(43,187,173,0.8) 40%, rgba(43,187,173,0.4) 80%, rgba(43,187,173,0.15) 100%);
+  z-index: 5;
+  clip-path: polygon(35% 0%, 65% 0%, 100% 100%, 0% 100%);
+  overflow: hidden;
+}
+.bpk-channel::after {
+  content: '';
+  position: absolute;
+  width: 100%; height: 200%;
+  background: repeating-linear-gradient(180deg, transparent, rgba(255,255,255,0.15) 5px, transparent 10px);
+  animation: flow 0.7s linear infinite;
+}
+
+/* 灌溉支渠（加粗加亮，明确水流） */
+.irr-canal {
+  position: absolute;
+  height: 4px;
+  background: linear-gradient(90deg, rgba(43,187,173,0.9), rgba(43,187,173,0.5), rgba(43,187,173,0.2));
+  border-radius: 2px;
+  z-index: 5;
+  box-shadow: 0 0 4px rgba(43,187,173,0.4);
+}
+
+/* 离堆（加3D石质感） */
+.lidui {
+  position: absolute;
+  top: 73%; left: 27%; width: 8%; height: 9%;
+  background: radial-gradient(ellipse at 40% 35%, #6a9a6a, #3d6b3d, #2d5a2d);
+  border-radius: 45%;
+  z-index: 9;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.5), inset -2px -2px 4px rgba(0,0,0,0.3);
+  border: 1px solid #1a4a1a;
+}
+
+/* 南桥（下游地标） */
+.south-bridge {
+  position: absolute;
+  bottom: 5%; left: 15%; width: 35%; height: 1.5%;
+  background: repeating-linear-gradient(90deg, #6d4c41 0px, #6d4c41 12px, #4E342E 12px, #4E342E 14px);
+  z-index: 11; border-radius: 2px;
+}
+
+/* 灌溉渠系 */
+.irrigation {
+  position: absolute;
+  bottom: 0; left: 0; width: 38%; height: 12%;
+  background: repeating-linear-gradient(90deg, #3a7a3a 0px, #4a9a4a 5px, #3a7a3a 10px);
+  z-index: 2;
+}
+.irr-line {
+  position: absolute; height: 2px;
+  background: rgba(43,187,173,0.6);
+  border-radius: 1px; z-index: 4;
+}
+
+/* 水流粒子 */
+#particles {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 15; pointer-events: none;
+}
+.wp {
+  position: absolute;
+  width: 4px; height: 4px;
+  background: rgba(100,210,255,0.8);
+  border-radius: 50%;
+}
+.sp {
+  position: absolute;
+  width: 4px; height: 4px;
+  background: rgba(210,180,100,0.9);
+  border-radius: 50%;
+}
+
+/* 标注 */
+.lbl {
+  position: absolute;
+  font-size: 0.6em; font-weight: bold;
+  padding: 2px 5px; border-radius: 3px;
+  background: rgba(0,0,0,0.7);
+  z-index: 20; white-space: nowrap;
+  pointer-events: none;
+}
+/* 流向箭头 */
+.arr {
+  position: absolute;
+  color: rgba(255,255,255,0.55);
+  font-size: 1em; z-index: 13;
+  animation: blink 1.5s infinite;
+}
+@keyframes blink { 0%,100%{opacity:0.7} 50%{opacity:0.2} }
+
+/* 弯道旋涡效果（飞沙堰上方内江弯道处，离心力甩沙） */
+.vortex {
+  position: absolute;
+  top: 56%; left: 32%; width: 10%; height: 7%;
+  border: 2px dashed rgba(255,255,255,0.3);
+  border-radius: 50%;
+  z-index: 14;
+  animation: spin 2.5s linear infinite;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+@keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+
+/* 控制面板 */
+.panel {
+  margin: 10px 15px; padding: 12px;
+  background: #1e3a5f; border-radius: 12px; text-align: center;
+}
+.tbtn {
+  flex:1; padding:8px 4px; border:none; border-radius:18px;
+  font-size:0.76em; font-weight:bold; cursor:pointer;
+  background:transparent; color:#b2bec3; white-space:nowrap;
+}
+.tbtn.active {
+  background:linear-gradient(135deg,#0984e3,#74b9ff); color:white;
+}
+.tab-bar {
+  display:flex; gap:0; margin:8px 12px;
+  background:#1e3a5f; border-radius:20px; padding:3px; overflow-x:auto;
+}
+#exp {
+  margin:8px 15px; padding:15px;
+  background:linear-gradient(135deg,#1e3a5f,#2d4a6f);
+  border-radius:14px; min-height:150px;
+  font-size:0.88em; line-height:1.8;
+}
+.card {
+  background:linear-gradient(135deg,#1e3a5f,#2d4a6f);
+  border-radius:12px; padding:12px;
+  border-left:4px solid #74b9ff;
+  margin-bottom:10px;
+}
+.card b { color:#74b9ff; font-size:0.88em; }
+.card p { font-size:0.8em; color:#b2bec3; margin-top:4px; }
+#voiceBtn {
+  position:fixed; bottom:18px; right:18px;
+  width:46px; height:46px; border-radius:50%;
+  background:#6c5ce7; color:white; border:none;
+  font-size:1.4em; cursor:pointer;
+  box-shadow:0 4px 12px rgba(108,92,231,0.4);
+  z-index:100; display:flex; align-items:center; justify-content:center;
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+<div class="header">
+  <h1>🌊 都江堰 — 2000年前的超级工程</h1>
+  <p>按航拍实景还原 | 上=上游（岷江） 下=下游（成都平原）</p>
+</div>
+
+<div class="map" id="map">
+  <div class="bank-left"></div>
+  <div class="bank-right"></div>
+  <div class="yulei-mt"></div>
+
+  <div class="minjiang"></div>
+  <div class="fish-mouth">
+    <svg viewBox="0 0 200 180" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <pattern id="stonePattern" x="0" y="0" width="18" height="14" patternUnits="userSpaceOnUse">
+          <rect width="18" height="14" fill="#a08050"/>
+          <rect x="0" y="0" width="8" height="6" fill="#b8964a" rx="1"/>
+          <rect x="9" y="0" width="8" height="6" fill="#9a7840" rx="1"/>
+          <rect x="4" y="7" width="8" height="6" fill="#c4a055" rx="1"/>
+          <rect x="13" y="7" width="4" height="6" fill="#8B7355" rx="1"/>
+          <rect x="0" y="7" width="3" height="6" fill="#8B7355" rx="1"/>
+        </pattern>
+        <linearGradient id="fishGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#e8c870"/>
+          <stop offset="20%" stop-color="#d4b06a"/>
+          <stop offset="50%" stop-color="#b89050"/>
+          <stop offset="80%" stop-color="#a08050"/>
+          <stop offset="100%" stop-color="#7a6040"/>
+        </linearGradient>
+      </defs>
+      <!-- 宽大船头型鱼嘴：尖端在上，底部宽大擑满 -->
+      <path d="M100 4 C97 4 88 20 76 45 C62 75 42 110 30 140 C24 155 22 168 30 175 C42 180 70 180 100 180 C130 180 158 180 170 175 C178 168 176 155 170 140 C158 110 138 75 124 45 C112 20 103 4 100 4 Z" 
+            fill="url(#fishGrad)" stroke="#5a4020" stroke-width="2"/>
+      <!-- 石块纹理 -->
+      <path d="M100 4 C97 4 88 20 76 45 C62 75 42 110 30 140 C24 155 22 168 30 175 C42 180 70 180 100 180 C130 180 158 180 170 175 C178 168 176 155 170 140 C158 110 138 75 124 45 C112 20 103 4 100 4 Z" 
+            fill="url(#stonePattern)" opacity="0.4"/>
+      <!-- 尖端高亮（劫水点） -->
+      <ellipse cx="100" cy="10" rx="8" ry="12" fill="#f0d080" opacity="0.8"/>
+      <!-- 中脱脊线 -->
+      <line x1="100" y1="6" x2="100" y2="170" stroke="#6b5030" stroke-width="1.5" opacity="0.5" stroke-dasharray="5 3"/>
+      <!-- 两侧护坡 -->
+      <path d="M76 45 C62 75 42 110 30 140" stroke="rgba(0,0,0,0.35)" stroke-width="2.5" fill="none"/>
+      <path d="M124 45 C138 75 158 110 170 140" stroke="rgba(0,0,0,0.35)" stroke-width="2.5" fill="none"/>
+      <!-- 左右分水箭头 -->
+      <path d="M70 50 L55 65 L70 60" fill="rgba(255,255,255,0.4)" />
+      <path d="M130 50 L145 65 L130 60" fill="rgba(255,255,255,0.4)" />
+    </svg>
+  </div>
+  <div class="anlan-bridge"></div>
+  <div class="jiangxin-island"></div>
+
+  <div class="river-inner" id="rInner">
+    <div class="river-inner-path"></div>
+  </div>
+  <div class="river-outer" id="rOuter">
+    <div class="river-outer-path"></div>
+  </div>
+
+  <div class="feisha" id="feisha"></div>
+  <div class="feisha-flow" id="feishaFlow"></div>
+  <div class="spillway" id="spillway"></div>
+  <div class="vortex" id="vortex"></div>
+  <div class="bpk-funnel"></div>
+  <div class="baopingkou" id="bpk"></div>
+  <div class="bpk-channel" id="bpkChannel"></div>
+  <div class="lidui"></div>
+  <div class="south-bridge"></div>
+  <div class="irrigation"></div>
+
+  <!-- 灌溉支渠（从宝瓶口出水处扇形展开，起点对齐bpk-channel底部） -->
+  <div class="irr-canal" style="bottom:6%;left:14%;width:24%;transform:rotate(-10deg)"></div>
+  <div class="irr-canal" style="bottom:4%;left:12%;width:28%;transform:rotate(-3deg)"></div>
+  <div class="irr-canal" style="bottom:2%;left:10%;width:30%;transform:rotate(4deg)"></div>
+  <div class="irr-canal" style="bottom:0.5%;left:8%;width:32%;transform:rotate(10deg)"></div>
+
+  <!-- 标注 -->
+  <div class="lbl" style="top:2%;left:44%;color:#90CAF9">岷江 ⬇️</div>
+  <div class="lbl" style="top:4%;left:43%;color:#ffeaa7;font-size:0.75em;background:rgba(139,115,85,0.85);border:1px solid #ffeaa7;padding:3px 6px;">🐟 鱼嘴分水堤<br><span style="font-size:0.8em;color:#dfe6e9">↑ 尖头朝上游劫水</span></div>
+  <div class="lbl" style="top:14.5%;left:26%;color:#bcaaa4;font-size:0.55em">安澜桥</div>
+  <div class="lbl" style="top:38%;left:46%;color:#a5d6a7;font-size:0.55em">金刚堤<br>(江心岛)</div>
+  <div class="lbl" style="top:30%;left:18%;color:#80cbc4">⬇️ 内江<br><span style="font-size:0.8em;color:#b2bec3">灌溉 · 水清</span></div>
+  <div class="lbl" style="top:30%;right:16%;color:#64B5F6">⬇️ 外江<br><span style="font-size:0.8em;color:#b2bec3">排洪 · 携沙</span></div>
+  <div class="lbl" style="top:60%;left:38%;color:#ffeaa7">⏳ 飞沙堰<br><span style="font-size:0.75em;color:#dfe6e9">↑内江(高) ↓外江(低)</span></div>
+  <div class="lbl" style="top:55%;right:14%;color:#90CAF9;font-size:0.55em" id="lblSpillway">溢洪道</div>
+  <div class="lbl" style="top:69%;left:12%;color:#ffeaa7">🏺 宝瓶口</div>
+  <div class="lbl" style="top:74%;left:28%;color:#a5d6a7;font-size:0.5em">离堆</div>
+  <div class="lbl" style="top:60%;left:3%;color:#a5d6a7;font-size:0.5em">玉垒山</div>
+  <div class="lbl" style="bottom:3.5%;left:34%;color:#bcaaa4;font-size:0.55em">南桥</div>
+  <div class="lbl" style="bottom:1%;left:12%;color:#c8e6c9">🌾 成都平原</div>
+
+  <!-- 流向箭头 -->
+  <div class="arr" style="top:6%;left:49%">⬇</div>
+  <div class="arr" style="top:25%;left:30%">⬇</div>
+  <div class="arr" style="top:45%;left:28%">⬇</div>
+  <div class="arr" style="top:25%;right:27%">⬇</div>
+  <div class="arr" style="top:50%;right:28%">⬇</div>
+  <div class="arr" style="top:68%;left:50%">⬇</div>
+  <div class="arr" style="top:76%;left:23%">⬇</div>
+
+  <div id="particles"></div>
+</div>
+
+<!-- 水量控制 -->
+<div class="panel">
+  <label style="font-size:0.85em;color:#b2bec3;">🌊 拖动模拟：枯水 ← → 洪水</label>
+  <input type="range" id="waterSlider" min="0" max="100" value="50" style="width:85%;margin:8px auto;display:block;accent-color:#0984e3;">
+  <div id="waterStatus" style="font-size:0.85em;color:#74b9ff;font-weight:bold;min-height:1.5em;">💧 正常 — 内江六成灌溉，外江四成排洪</div>
+</div>
+
+<!-- Tab讲解 -->
+<div class="tab-bar">
+  <button class="tbtn active" data-t="overview" onclick="sw('overview')">🏗️整体</button>
+  <button class="tbtn" data-t="fish" onclick="sw('fish')">🐟鱼嘴</button>
+  <button class="tbtn" data-t="feisha" onclick="sw('feisha')">⏳飞沙堰</button>
+  <button class="tbtn" data-t="bottle" onclick="sw('bottle')">🏺宝瓶口</button>
+  <button class="tbtn" data-t="why" onclick="sw('why')">❓厉害</button>
+</div>
+<div id="exp"></div>
+
+<!-- 知识卡 -->
+<div style="margin:12px 15px 30px;display:flex;flex-direction:column;gap:10px;">
+  <div class="card">
+    <b>📅 2000多年仍在工作</b>
+    <p>公元前256年建造，全世界最古老在用水利工程，灌溉1000万亩+</p>
+  </div>
+  <div class="card">
+    <b>🔑 六字真言</b>
+    <p>"深淘滩，低作堰"— 河底淘深保水量，堰顶修低自动溢洪</p>
+  </div>
+  <div class="card">
+    <b>🧠 古人怎么凿山？</b>
+    <p>火烧岩石→浇冷水→热胀冷缩碎裂！竹笼装卵石筑堤。没有炸药水泥也能干大事！</p>
+  </div>
+</div>
+
+<button id="voiceBtn" onclick="toggleVoice()">🔊</button>
+<script>
+// Edge High-Fidelity TTS: auto-select best voice
+var _edgeTTSVoice = null;
+function _initEdgeVoice() {
+  var voices = speechSynthesis.getVoices();
+  if (!voices.length) return;
+  var zh = voices.filter(function(v) { return /^zh-CN|^zh$|^cmn/i.test(v.lang)&&!/^zh-HK|^zh-TW/i.test(v.lang); });
+  _edgeTTSVoice = zh.find(function(v){ return v.name.indexOf('Xiaoxiao')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Online')>=0 && v.name.indexOf('Natural')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Yunxi')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Microsoft')>=0; })
+    || zh[0] || null;
+}
+_initEdgeVoice();
+if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = function(){ _initEdgeVoice(); };
+
+const T={
+overview:{t:'🏗️ 都江堰怎么工作？',h:`<p>岷江从山上冲下来，水大泥沙多。李冰父子设计了<b style="color:#ffeaa7">三级工程</b>：</p>
+<p style="margin:8px 0;padding:10px;background:rgba(0,0,0,0.2);border-radius:8px;font-size:0.9em;text-align:center;">
+岷江 ⬇️<br>
+❶ <span style="color:#ffeaa7">鱼嘴</span> — 把水劈成内江(左)+外江(右)<br>⬇️<br>
+❷ <span style="color:#ffeaa7">飞沙堰</span> — 多余水+泥沙甩到外江<br>⬇️<br>
+❸ <span style="color:#ffeaa7">宝瓶口</span> — 窄口限流，保护平原<br>⬇️<br>
+🌾 成都平原
+</p>
+<p>🌤️ 枯水：六成水→内江灌溉<br>🌧️ 洪水：六成水→外江排洪</p>
+<p style="margin-top:8px;padding:6px 10px;background:rgba(116,185,255,0.1);border-left:3px solid #74b9ff;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 不建大坝！顺水的脾气，让它自己分配。拖上方滑块看效果👆</p>`,
+v:'岷江从山上冲下来水大泥沙多。李冰父子设计了三级工程：第一，鱼嘴把水劈成左边的内江和右边的外江。第二，飞沙堰把多余的水和泥沙排到外江。第三，宝瓶口用窄口限流保护成都平原。枯水时六成水灌溉，洪水时六成水排走，全自动！'},
+
+fish:{t:'🐟 鱼嘴 — 一分为二',h:`<p><b>形状</b>：流线型尖头，像航母舰首🚢，朝上游破水。</p>
+<p><b>作用</b>：把岷江劈成两条——</p>
+<p>⬅️ <span style="color:#80cbc4">内江</span>（左/东）= 灌溉渠，水清</p>
+<p>➡️ <span style="color:#64B5F6">外江</span>（右/西）= 排洪道，携沙</p>
+<p style="margin-top:8px"><b>"四六分水"的秘密：</b></p>
+<p>🌤️ 水少时：弯道主流走深的内侧 → 六成入内江</p>
+<p>🌧️ 水多时：水漫过鱼嘴走宽的外侧 → 六成走外江</p>
+<p style="margin-top:8px;padding:6px 10px;background:rgba(116,185,255,0.1);border-left:3px solid #74b9ff;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 不用开关！水自己会按需分配。利用弯道+深浅差的自然规律。</p>`,
+v:'鱼嘴是流线型的长条尖头，像航母舰首一样朝着上游破水。它把岷江劈成左边的内江和右边的外江。水少时弯道主流走深的内侧，六成水自动进内江灌溉。水多时水漫过鱼嘴走宽的外侧，六成水走外江排洪。不用开关，水自己会分配！'},
+
+feisha:{t:'⏳ 飞沙堰 — 排沙+溢洪',h:`<p><b>位置</b>：金刚堤尾端，<b>斜向</b>连接到右岸（航拍可见）。</p>
+<p><b>两大超能力：</b></p>
+<p>1️⃣ <b>溢洪</b>：水位涨过堰顶 → 自动漫过去排到外江溢洪道</p>
+<p>2️⃣ <b>排沙</b>：弯道产生旋涡🌀 → 离心力把泥沙甩过矮堰</p>
+<p style="margin:8px 0;padding:8px;background:rgba(0,0,0,0.2);border-radius:8px;font-size:0.85em;text-align:center;">
+弯道旋涡🌀 → 重沙被甩向外 → 飞越矮堰 → 经溢洪道排入外江<br>
+<span style="color:#ffeaa7">实测：98%泥沙从这排出！</span></p>
+<p style="padding:6px 10px;background:rgba(116,185,255,0.1);border-left:3px solid #74b9ff;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 搅一杯沙子水试试——重沙会被甩到杯壁！飞沙堰就是这个原理(离心力)。拖滑块到最右看溢洪效果👆</p>`,
+v:'飞沙堰在金刚堤尾端，斜着连接到右岸。航拍照片里清楚可见。它有两个超能力：第一，水位高了自动漫过去排洪，水流进入溢洪道排到外江。第二，利用弯道旋涡的离心力把百分之九十八的泥沙甩出去！就像搅沙子水，重的沙子被甩到杯壁。'},
+
+bottle:{t:'🏺 宝瓶口 — 最后关卡',h:`<p><b>位置</b>：穿过玉垒山的窄口（航拍左上方）。</p>
+<p><b>尺寸</b>：底宽仅14.3米！顶宽28.9米，长36米。</p>
+<p><b>功能</b>：</p>
+<p>✅ 限流：不管洪水多大，只能过这么宽</p>
+<p>✅ 多余水在上游就被飞沙堰排走了</p>
+<p>✅ 过了宝瓶口→分多条渠→灌溉整个成都平原</p>
+<p><b>离堆</b> = 凿下来分离的山丘（宝瓶口右侧）</p>
+<p style="padding:6px 10px;background:rgba(116,185,255,0.1);border-left:3px solid #74b9ff;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 水龙头原理！开口固定了，出水量就稳定。岩壁刻"水则"标尺——中国最早水位计！</p>`,
+v:'宝瓶口是在玉垒山上凿开的窄口子，底宽只有十四米。就像水龙头，不管上游水多大，流进平原的水量固定。多余的水在上游就被飞沙堰排走了。旁边的离堆是凿下来分离的山丘。'},
+
+why:{t:'❓ 为什么2000年还能用？',h:`<p><b>四大智慧：</b></p>
+<p>1️⃣ <span style="color:#ffeaa7">无坝引水</span> — 不堵！顺水流引导</p>
+<p>2️⃣ <span style="color:#ffeaa7">自动调节</span> — 枯水/洪水自动切换比例</p>
+<p>3️⃣ <span style="color:#ffeaa7">自动排沙</span> — 弯道离心力甩沙，永不淤堵</p>
+<p>4️⃣ <span style="color:#ffeaa7">极简维护</span> — "深淘滩，低作堰"六字搞定</p>
+<p style="margin-top:8px"><b>对比现代：</b></p>
+<p>🏗️ 三峡：混凝土硬堵，需电+机器+人工控制</p>
+<p>🌊 都江堰：全自动，不用电，鱼能游过🐟</p>
+<p style="padding:6px 10px;background:rgba(116,185,255,0.1);border-left:3px solid #74b9ff;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 最厉害的工程师不是力气大的，是最懂自然规律的。"道法自然"！</p>`,
+v:'都江堰两千年还能用因为四大智慧：无坝引水不堵水、自动调节分流比例、利用弯道离心力自动排沙、维护只需六个字深淘滩低作堰。最厉害的工程师不是力气最大的而是最懂自然规律的。'}
+};
+
+let cur='overview', speaking=false;
+
+function sw(t){
+  cur=t;
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-t="'+t+'"]').classList.add('active');
+  document.getElementById('exp').innerHTML='<h3 style="color:#74b9ff;margin-bottom:8px;">'+T[t].t+'</h3>'+T[t].h;
+}
+
+// Water level control
+const ws=document.getElementById('waterSlider');
+ws.addEventListener('input',updateW);
+
+function updateW(){
+  const lv=+ws.value;
+  const st=document.getElementById('waterStatus');
+  const ri=document.getElementById('rInner');
+  const ro=document.getElementById('rOuter');
+  const ff=document.getElementById('feishaFlow');
+  const sp=document.getElementById('spillway');
+  const vx=document.getElementById('vortex');
+  const bpk=document.getElementById('bpk');
+  const bpkCh=document.getElementById('bpkChannel');
+
+  if(lv<30){
+    st.textContent='☀️ 枯水 — 主流走弯内侧，六成入内江保灌溉';
+    ri.style.width='32%'; ri.style.opacity='1';
+    ro.style.width='22%'; ro.style.opacity='0.4';
+    ff.style.opacity='0'; sp.style.opacity='0'; vx.style.opacity='0';
+    bpk.style.background='linear-gradient(180deg,#2bbbad,#26A69A,#1a9688)';
+    bpkCh.style.opacity='1';
+  } else if(lv<70){
+    st.textContent='💧 正常 — 内江六成灌溉，外江四成排洪';
+    ri.style.width='30%'; ri.style.opacity='0.9';
+    ro.style.width='28%'; ro.style.opacity='0.7';
+    ff.style.opacity='0'; sp.style.opacity='0'; vx.style.opacity='0.3';
+    bpk.style.background='linear-gradient(180deg,#2bbbad,#26A69A,#1a9688)';
+    bpkCh.style.opacity='1';
+  } else {
+    st.textContent='🌊 洪水！六成走外江 + 飞沙堰溢流排沙 + 溢洪道启动！';
+    ri.style.width='24%'; ri.style.opacity='0.6';
+    ro.style.width='35%'; ro.style.opacity='1';
+    ff.style.opacity='0.95'; sp.style.opacity='0.85'; vx.style.opacity='0.9';
+    bpk.style.background='linear-gradient(180deg,#26A69A,#00897B,#00796B)';
+    bpkCh.style.opacity='1';
+  }
+}
+
+// Particles
+const pc=document.getElementById('particles');
+let pts=[];
+
+function spawn(){
+  const lv=+ws.value;
+  const p=document.createElement('div');
+  const sand=Math.random()<0.18;
+  p.className=sand?'sp':'wp';
+  const sx=36+Math.random()*28;
+  p.style.left=sx+'%'; p.style.top='2%';
+  pc.appendChild(p);
+
+  const innerProb=lv<50?0.6:0.3;
+  const goInner=!sand&&Math.random()<innerProb;
+  const sandOut=sand&&lv>35;
+  let tx, ey;
+
+  if(sandOut){
+    // Sand goes via feisha to outer river
+    tx=56+Math.random()*12; ey=60+Math.random()*10;
+  } else if(goInner){
+    // Water goes to inner river with curve
+    tx=18+Math.random()*10; ey=80+Math.random()*12;
+  } else {
+    // Water goes to outer river
+    tx=64+Math.random()*12; ey=76+Math.random()*16;
+  }
+
+  pts.push({el:p, x:sx, y:2, tx, ey, sp:0.18+lv*0.004+Math.random()*0.12, life:1});
+  setTimeout(()=>{if(p.parentNode)p.remove(); pts=pts.filter(q=>q.el!==p);}, 5000);
+}
+
+function anim(){
+  pts.forEach(p=>{
+    p.y+=p.sp;
+    p.x+=(p.tx-p.x)*0.01;
+    p.life-=0.006;
+    p.el.style.left=p.x+'%';
+    p.el.style.top=p.y+'%';
+    p.el.style.opacity=Math.max(0,p.life);
+  });
+  requestAnimationFrame(anim);
+}
+
+setInterval(spawn, 140);
+anim();
+
+// Voice
+function toggleVoice(){
+  const btn=document.getElementById('voiceBtn');
+  if(speaking){
+    speechSynthesis.cancel();
+    speaking=false;
+    btn.style.background='#6c5ce7';
+    btn.textContent='🔊';
+    return;
+  }
+  const u=new SpeechSynthesisUtterance(T[cur].v);
+  u.lang='zh-CN'; u.rate=0.8;if(_edgeTTSVoice)u.voice=_edgeTTSVoice; u.pitch=1.1;
+  u.onend=()=>{speaking=false;btn.style.background='#6c5ce7';btn.textContent='🔊';};
+  speechSynthesis.speak(u);
+  speaking=true;
+  btn.style.background='#d63031';
+  btn.textContent='⏹️';
+}
+
+sw('overview');
+</script>
+</body>
+</html>

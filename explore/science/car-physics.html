@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco科学科普讲解：汽车为什么会跑">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🚗 汽车为什么会跑？</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: #1a1a2e;
+  min-height: 100vh;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* === SCENE === */
+.scene {
+  position: relative;
+  width: 100%;
+  height: 42vh;
+  min-height: 260px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #4a90d9 0%, #87CEEB 40%, #87CEEB 55%, #7ec850 55%, #4a8c30 100%);
+}
+.sun {
+  position: absolute; top: 12px; right: 25px;
+  width: 40px; height: 40px;
+  background: #FFD700; border-radius: 50%;
+  box-shadow: 0 0 25px #FFD700;
+}
+.clouds { position: absolute; width: 200%; height: 80px; top: 15px; }
+.cloud { position: absolute; background: white; border-radius: 50px; opacity: 0.85; }
+.cloud::before { content:''; position:absolute; background:white; border-radius:50%; }
+.c1 { width:60px; height:22px; top:5px; left:5%; }
+.c1::before { width:30px; height:30px; top:-12px; left:10px; }
+.c2 { width:50px; height:20px; top:35px; left:30%; }
+.c2::before { width:25px; height:25px; top:-10px; left:10px; }
+.c3 { width:70px; height:25px; top:8px; left:55%; }
+.c3::before { width:35px; height:35px; top:-14px; left:15px; }
+.c4 { width:45px; height:18px; top:40px; left:78%; }
+.c4::before { width:22px; height:22px; top:-9px; left:8px; }
+
+.scenery { position: absolute; width: 300%; height: 100%; top: 0; left: 0; }
+.s-tree { position: absolute; bottom: 48%; }
+.s-tree .trunk { width:7px; height:20px; background:#8B4513; margin:0 auto; border-radius:2px; }
+.s-tree .leaves { width:26px; height:26px; background:#228B22; border-radius:50%; margin:0 auto; }
+.s-house { position: absolute; bottom: 48%; }
+.s-house .wall { width:30px; height:24px; background:#f4a460; border-radius:2px; }
+.s-house .roof { width:0; height:0; border-left:18px solid transparent; border-right:18px solid transparent; border-bottom:14px solid #c0392b; margin-left:-3px; }
+
+.road-container { position: absolute; bottom: 15%; width: 100%; height: 60px; }
+.road { width:100%; height:100%; background:#444; border-top:3px solid #666; border-bottom:3px solid #666; }
+.road-lines { position:absolute; top:50%; transform:translateY(-50%); width:300%; height:5px; background:repeating-linear-gradient(90deg,#fff 0px,#fff 35px,transparent 35px,transparent 70px); }
+
+/* Speed lines */
+.speed-lines { position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; overflow:hidden; }
+.speed-line { position:absolute; height:3px; background:rgba(255,255,255,0.6); border-radius:2px; opacity:0; }
+
+/* === CAR === */
+.car-container {
+  position: absolute; bottom: calc(15% + 8px); left: 50%;
+  transform: translateX(-50%); width: 120px; height: 70px;
+}
+.car-body { position:absolute; bottom:16px; left:0; width:120px; height:32px; background:linear-gradient(180deg,#ff6b6b,#ee5a24); border-radius:6px 16px 4px 4px; box-shadow:0 3px 6px rgba(0,0,0,0.3); }
+.car-top { position:absolute; bottom:42px; left:25px; width:65px; height:28px; background:linear-gradient(180deg,#d63031,#c0392b); border-radius:12px 10px 0 0; }
+.car-window { position:absolute; bottom:44px; height:20px; background:linear-gradient(180deg,#74b9ff,#a8d8ff); border-radius:6px 6px 0 0; border:2px solid #2d3436; }
+.car-window.wf { left:60px; width:26px; }
+.car-window.wb { left:32px; width:22px; }
+.driver { position:absolute; bottom:46px; left:63px; width:16px; height:16px; background:#ffeaa7; border-radius:50%; border:2px solid #fdcb6e; }
+.driver::after { content:'😊'; position:absolute; font-size:11px; top:-2px; left:0; }
+.headlight { position:absolute; bottom:24px; right:-2px; width:6px; height:10px; background:#f1c40f; border-radius:0 3px 3px 0; }
+.wheel { position:absolute; bottom:4px; width:24px; height:24px; background:#2d3436; border-radius:50%; border:3px solid #636e72; }
+.wheel::before { content:''; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:6px; height:6px; background:#b2bec3; border-radius:50%; }
+.wheel.wf { right:12px; }
+.wheel.wb { left:12px; }
+.exhaust-box { position:absolute; bottom:18px; left:-6px; }
+.puff { position:absolute; border-radius:50%; background:rgba(200,200,200,0.6); opacity:0; }
+.fire { position:absolute; bottom:22px; left:-14px; font-size:18px; opacity:0; transition:opacity 0.2s; }
+
+/* Force arrows */
+.force-indicator { position:absolute; bottom:calc(15% + 75px); display:flex; align-items:center; opacity:0; transition:opacity 0.3s; pointer-events:none; }
+.force-indicator.df { left:calc(50% + 65px); }
+.force-indicator.bf { right:calc(50% + 65px); }
+.force-indicator svg { width:70px; height:26px; }
+.ftag { font-size:12px; font-weight:bold; padding:2px 7px; border-radius:8px; white-space:nowrap; color:#fff; }
+.ftag.g { background:#00b894; }
+.ftag.r { background:#d63031; }
+
+/* === PRINCIPLE PANEL (SLIDER + ANIMATION) === */
+.principle-panel {
+  background: linear-gradient(180deg, #2d3436, #1e272e);
+  border-radius: 20px 20px 0 0;
+  margin-top: -10px;
+  padding: 12px 15px 5px;
+  position: relative;
+  z-index: 10;
+}
+.panel-title {
+  text-align: center;
+  color: #dfe6e9;
+  font-size: 1em;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.principle-row {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  height: 180px;
+}
+
+/* Slider */
+.slider-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 70px;
+  flex-shrink: 0;
+}
+.slider-label { color: #b2bec3; font-size: 0.75em; margin-bottom: 4px; }
+.slider-track {
+  position: relative;
+  width: 30px;
+  flex: 1;
+  background: #444;
+  border-radius: 15px;
+  overflow: hidden;
+  touch-action: none;
+}
+.slider-fill {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border-radius: 15px;
+  transition: height 0.05s;
+}
+.slider-fill.gas-fill { background: linear-gradient(0deg, #00b894, #55efc4); }
+.slider-fill.brake-fill { background: linear-gradient(0deg, #d63031, #ff7675); }
+.slider-thumb {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 38px;
+  height: 20px;
+  background: #dfe6e9;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  cursor: grab;
+  transition: bottom 0.05s;
+}
+.slider-icon { font-size: 1.5em; margin-top: 4px; }
+
+/* Chain animation */
+.chain-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  overflow: hidden;
+}
+.chain-step {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.05);
+  transition: background 0.3s, transform 0.3s;
+}
+.chain-step.active {
+  background: rgba(0,206,201,0.15);
+  transform: scale(1.02);
+}
+.chain-step .icon { font-size: 1.3em; min-width: 28px; text-align: center; }
+.chain-step .text { color: #dfe6e9; font-size: 0.8em; line-height: 1.3; }
+.chain-step .bar {
+  margin-left: auto;
+  width: 40px;
+  height: 8px;
+  background: #444;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.chain-step .bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  width: 0%;
+  transition: width 0.15s;
+}
+.bar-fuel { background: #fdcb6e; }
+.bar-power { background: #e17055; }
+.bar-force { background: #00b894; }
+.bar-speed { background: #0984e3; }
+
+/* Bottom status */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+}
+.speed-num {
+  font-size: 2.4em;
+  font-weight: 900;
+  color: #00cec9;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 15px rgba(0,206,201,0.4);
+  min-width: 80px;
+  text-align: right;
+}
+.speed-unit { color: #b2bec3; font-size: 0.8em; }
+.status-msg {
+  color: #dfe6e9;
+  font-size: 0.95em;
+  font-weight: bold;
+  flex: 1;
+  text-align: center;
+}
+
+/* === INFO CARDS === */
+.info-section { padding: 8px 12px 30px; background: #1a1a2e; }
+.swipe-hint { text-align:center; color:#636e72; font-size:0.75em; padding:4px; }
+.info-cards {
+  display:flex; gap:10px; overflow-x:auto; padding:8px 0;
+  scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+}
+.info-card {
+  min-width:260px; max-width:280px;
+  background:linear-gradient(135deg,#2d3436,#3d4447);
+  border-radius:14px; padding:14px; scroll-snap-align:start; flex-shrink:0; border:2px solid #444;
+}
+.info-card h3 { color:#00cec9; font-size:1em; margin-bottom:8px; }
+.info-card p { color:#dfe6e9; font-size:0.85em; line-height:1.7; }
+.info-card .kp {
+  background:rgba(0,206,201,0.12); border-left:3px solid #00cec9;
+  padding:6px 10px; margin:8px 0; border-radius:0 8px 8px 0; font-size:0.8em; color:#b2bec3;
+}
+
+/* Info card animations */
+.info-card .mini-anim {
+  height: 50px;
+  margin: 8px 0;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  overflow: hidden;
+}
+.mini-anim .step {
+  display: flex;
+  align-items: center;
+  font-size: 0.9em;
+  animation: fadeFlow 3s ease-in-out infinite;
+}
+.mini-anim .step:nth-child(2) { animation-delay: 0.4s; }
+.mini-anim .step:nth-child(3) { animation-delay: 0.8s; }
+.mini-anim .step:nth-child(4) { animation-delay: 1.2s; }
+.mini-anim .arrow { color: #00cec9; font-size: 0.8em; animation: blink 1s infinite; }
+@keyframes fadeFlow {
+  0%,100% { opacity:0.5; transform:scale(0.95); }
+  50% { opacity:1; transform:scale(1.05); }
+}
+.mini-piston {
+  width: 18px; height: 32px;
+  background: #636e72; border-radius: 3px;
+  position: relative; overflow: hidden; border: 1px solid #b2bec3;
+}
+.mini-piston-head {
+  position: absolute; width: 100%; height: 9px;
+  background: #e17055; animation: pistonMove 0.8s ease-in-out infinite;
+}
+@keyframes pistonMove { 0%,100%{bottom:4px} 50%{bottom:18px} }
+.mini-gear {
+  width: 20px; height: 20px;
+  border: 3px solid #fdcb6e; border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+.mini-wheel {
+  width: 20px; height: 20px;
+  border: 3px solid #636e72; border-radius: 50%;
+  background: #2d3436; animation: spin 0.6s linear infinite;
+}
+.brake-disc {
+  width: 22px; height: 22px;
+  border: 3px solid #d63031; border-radius: 50%;
+  animation: brakeGlow 1s ease-in-out infinite;
+}
+@keyframes brakeGlow {
+  0%,100%{box-shadow:0 0 3px #d63031}
+  50%{box-shadow:0 0 10px #ff7675,0 0 18px rgba(255,118,117,0.3)}
+}
+.wind-lines { display:flex; flex-direction:column; gap:2px; }
+.wind-line {
+  width: 18px; height: 2px; background: #74b9ff;
+  border-radius: 1px; animation: windDrift 1.2s ease-in-out infinite;
+}
+.wind-line:nth-child(2) { width:13px; animation-delay:0.3s; }
+.wind-line:nth-child(3) { width:22px; animation-delay:0.6s; }
+@keyframes windDrift {
+  0%{transform:translateX(8px);opacity:0}
+  50%{opacity:1}
+  100%{transform:translateX(-8px);opacity:0}
+}
+
+/* Voice */
+.voice-btn {
+  position:fixed; bottom:18px; right:18px; width:46px; height:46px; border-radius:50%;
+  background:#6c5ce7; color:white; border:none; font-size:1.4em; cursor:pointer;
+  box-shadow:0 4px 12px rgba(108,92,231,0.4); z-index:100;
+  display:flex; align-items:center; justify-content:center;
+}
+.voice-btn.speaking { background:#d63031; animation:pulse 1s infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+
+@media (max-width:380px) {
+  .scene { min-height:220px; }
+  .principle-row { height:160px; }
+  .chain-step .text { font-size:0.72em; }
+  .speed-num { font-size:2em; }
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<!-- === SCENE === -->
+<div class="scene" id="scene">
+  <div class="sun"></div>
+  <div class="clouds" id="clouds"><div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div><div class="cloud c4"></div></div>
+  <div class="scenery" id="scenery"></div>
+  <div class="road-container"><div class="road"><div class="road-lines" id="roadLines"></div></div></div>
+  <div class="speed-lines" id="speedLines"></div>
+  <div class="force-indicator df" id="driveForce">
+    <svg viewBox="0 0 70 26"><rect x="3" y="9" width="46" height="8" rx="4" fill="#00b894"/><polygon points="50,4 50,22 68,13" fill="#00b894"/></svg>
+    <span class="ftag g">推力💨</span>
+  </div>
+  <div class="force-indicator bf" id="brakeForce">
+    <span class="ftag r">🛑阻力</span>
+    <svg viewBox="0 0 70 26" style="transform:scaleX(-1)"><rect x="3" y="9" width="46" height="8" rx="4" fill="#d63031"/><polygon points="50,4 50,22 68,13" fill="#d63031"/></svg>
+  </div>
+  <div class="car-container" id="car">
+    <div class="car-top"></div><div class="car-window wf"></div><div class="car-window wb"></div>
+    <div class="driver"></div><div class="car-body"></div><div class="headlight"></div>
+    <div class="wheel wf" id="wF"></div><div class="wheel wb" id="wB"></div>
+    <div class="exhaust-box" id="exhaustBox"></div>
+    <div class="fire" id="fire">🔥</div>
+  </div>
+</div>
+
+<!-- === PRINCIPLE PANEL === -->
+<div class="principle-panel">
+  <div class="panel-title">⬇️ 拖动滑块看原理 ⬇️</div>
+  <div class="principle-row">
+    <!-- Gas slider -->
+    <div class="slider-box">
+      <div class="slider-label">油门</div>
+      <div class="slider-track" id="gasTrack">
+        <div class="slider-fill gas-fill" id="gasFill"></div>
+        <div class="slider-thumb" id="gasThumb" style="bottom:0"></div>
+      </div>
+      <div class="slider-icon">⛽</div>
+    </div>
+
+    <!-- Chain animation -->
+    <div class="chain-box" id="chainBox">
+      <div class="chain-step" id="cs1"><span class="icon">⛽</span><span class="text">喝汽油</span><div class="bar"><div class="bar-fill bar-fuel" id="bf1"></div></div></div>
+      <div class="chain-step" id="cs2"><span class="icon">🔥</span><span class="text">汽油燃烧产生力量</span><div class="bar"><div class="bar-fill bar-power" id="bf2"></div></div></div>
+      <div class="chain-step" id="cs3"><span class="icon">⚙️</span><span class="text">推力传到车轮</span><div class="bar"><div class="bar-fill bar-force" id="bf3"></div></div></div>
+      <div class="chain-step" id="cs4"><span class="icon">🚗</span><span class="text">汽车加速前进！</span><div class="bar"><div class="bar-fill bar-speed" id="bf4"></div></div></div>
+    </div>
+
+    <!-- Brake slider -->
+    <div class="slider-box">
+      <div class="slider-label">刹车</div>
+      <div class="slider-track" id="brakeTrack">
+        <div class="slider-fill brake-fill" id="brakeFill"></div>
+        <div class="slider-thumb" id="brakeThumb" style="bottom:0"></div>
+      </div>
+      <div class="slider-icon">🛑</div>
+    </div>
+  </div>
+
+  <!-- Status bar -->
+  <div class="status-bar">
+    <div><span class="speed-num" id="speedNum">0</span><span class="speed-unit"> km/h</span></div>
+    <div class="status-msg" id="statusMsg">👆 向上拖油门滑块出发！</div>
+  </div>
+</div>
+
+<!-- === INFO CARDS === -->
+<div class="info-section">
+  <div class="swipe-hint">👈 左右滑看知识卡</div>
+  <div class="info-cards">
+    <div class="info-card">
+      <h3>🚗 汽车怎么跑？</h3>
+      <div class="mini-anim">
+        <span class="step">⛽</span><span class="arrow">→</span>
+        <span class="step">🔥</span><span class="arrow">→</span>
+        <span class="step"><div class="mini-gear"></div></span><span class="arrow">→</span>
+        <span class="step"><div class="mini-wheel"></div></span><span class="arrow">→</span>
+        <span class="step">🚗💨</span>
+      </div>
+      <p>发动机（心脏❤️）喝汽油→产生力量→转车轮→前进！</p>
+      <div class="kp">💡 就像你骑车踩踏板，发动机是汽车的"腿"！</div>
+    </div>
+    <div class="info-card">
+      <h3>⚡ 油门=加速</h3>
+      <div class="mini-anim">
+        <span class="step">⛽⬆️</span><span class="arrow">→</span>
+        <span class="step">🔥🔥</span><span class="arrow">→</span>
+        <span class="step">💪⬆️</span><span class="arrow">→</span>
+        <span class="step">🚀</span>
+      </div>
+      <p>油门越大→喝更多油→力气更大→车更快！</p>
+      <div class="kp">💡 推力 &gt; 阻力 = 加速！就像用力推秋千🏃</div>
+    </div>
+    <div class="info-card">
+      <h3>🛑 刹车=减速</h3>
+      <div class="mini-anim">
+        <span class="step">🛑</span><span class="arrow">→</span>
+        <span class="step"><div class="brake-disc"></div></span><span class="arrow">→</span>
+        <span class="step">🔥烫</span><span class="arrow">→</span>
+        <span class="step">🐢</span>
+      </div>
+      <p>刹车片夹车轮→大摩擦力→车变慢</p>
+      <div class="kp">💡 能量变成热，刹车盘超烫！像滑梯抓两边✋</div>
+    </div>
+    <div class="info-card">
+      <h3>🌬️ 松油门也变慢</h3>
+      <div class="mini-anim">
+        <span class="step">🚗</span><span class="arrow">←</span>
+        <span class="step"><div class="wind-lines"><div class="wind-line"></div><div class="wind-line"></div><div class="wind-line"></div></div></span><span class="arrow">←</span>
+        <span class="step">🌬️空气</span>
+      </div>
+      <p>空气阻力+地面摩擦一直在"拖"车</p>
+      <div class="kp">💡 球在地上滚，没人推→自己停🏀</div>
+    </div>
+    <div class="info-card">
+      <h3>⚙️ 发动机4步循环</h3>
+      <div class="mini-anim">
+        <span class="step">🌬️吸</span><span class="arrow">→</span>
+        <span class="step"><div class="mini-piston"><div class="mini-piston-head"></div></div></span><span class="arrow">→</span>
+        <span class="step">🔥烧</span><span class="arrow">→</span>
+        <span class="step">💨排</span>
+      </div>
+      <p>1️⃣吸气 2️⃣压紧 3️⃣点火🔥 4️⃣排气</p>
+      <p>一秒重复几十次！每次燃烧都推车前进</p>
+      <div class="kp">💡 迷你燃烧室！嘭嘭嘭地使劲💨</div>
+    </div>
+  </div>
+<button class="voice-btn" id="voiceBtn" onclick="toggleVoice()">🔊</button>
+
+<script>
+// Edge High-Fidelity TTS: auto-select best voice
+var _edgeTTSVoice = null;
+function _initEdgeVoice() {
+  var voices = speechSynthesis.getVoices();
+  if (!voices.length) return;
+  var zh = voices.filter(function(v) { return /^zh-CN|^zh$|^cmn/i.test(v.lang)&&!/^zh-HK|^zh-TW/i.test(v.lang); });
+  _edgeTTSVoice = zh.find(function(v){ return v.name.indexOf('Xiaoxiao')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Online')>=0 && v.name.indexOf('Natural')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Yunxi')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Microsoft')>=0; })
+    || zh[0] || null;
+}
+_initEdgeVoice();
+if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = function(){ _initEdgeVoice(); };
+
+// === STATE ===
+let speed = 0, gasLevel = 0, brakeLevel = 0;
+const MAX = 120;
+let roadOff = 0, wheelA = 0, frame = 0, puffs = [];
+let speaking = false;
+
+// Scenery
+(function(){
+  const c = document.getElementById('scenery'); let h='';
+  for(let i=0;i<15;i++){const x=i*7;
+    if(i%3===0) h+=`<div class="s-house" style="left:${x}%"><div class="roof"></div><div class="wall"></div></div>`;
+    else h+=`<div class="s-tree" style="left:${x}%"><div class="leaves"></div><div class="trunk"></div></div>`;
+  } c.innerHTML=h;
+})();
+// Speed lines
+(function(){
+  const c=document.getElementById('speedLines');
+  for(let i=0;i<10;i++){const l=document.createElement('div');l.className='speed-line';
+    l.style.top=(15+Math.random()*65)+'%';l.style.width=(25+Math.random()*40)+'px';c.appendChild(l);}
+})();
+
+// === SLIDER CONTROL ===
+function setupSlider(trackId, fillId, thumbId, onChange) {
+  const track = document.getElementById(trackId);
+  const fill = document.getElementById(fillId);
+  const thumb = document.getElementById(thumbId);
+  let dragging = false;
+
+  function setVal(clientY) {
+    const rect = track.getBoundingClientRect();
+    let ratio = 1 - (clientY - rect.top) / rect.height;
+    ratio = Math.max(0, Math.min(1, ratio));
+    fill.style.height = (ratio * 100) + '%';
+    thumb.style.bottom = (ratio * (rect.height - 20)) + 'px';
+    onChange(ratio);
+  }
+
+  track.addEventListener('mousedown', e => { dragging = true; setVal(e.clientY); });
+  track.addEventListener('touchstart', e => { dragging = true; setVal(e.touches[0].clientY); }, {passive:false});
+  document.addEventListener('mousemove', e => { if(dragging) setVal(e.clientY); });
+  document.addEventListener('touchmove', e => { if(dragging){ e.preventDefault(); setVal(e.touches[0].clientY); }}, {passive:false});
+  document.addEventListener('mouseup', () => dragging = false);
+  document.addEventListener('touchend', () => dragging = false);
+}
+
+// Slider互相影响：踩刹车时油门自动降低，踩油门时刹车自动松开
+function setSliderVisual(fillId, thumbId, trackId, ratio) {
+  const fill = document.getElementById(fillId);
+  const thumb = document.getElementById(thumbId);
+  const track = document.getElementById(trackId);
+  fill.style.height = (ratio * 100) + '%';
+  thumb.style.bottom = (ratio * (track.getBoundingClientRect().height - 20)) + 'px';
+}
+
+setupSlider('gasTrack','gasFill','gasThumb', v => {
+  gasLevel = v;
+  // 踩油门时刹车自动松开
+  if (v > 0.1 && brakeLevel > 0) {
+    brakeLevel = Math.max(0, brakeLevel - v * 0.5);
+    setSliderVisual('brakeFill','brakeThumb','brakeTrack', brakeLevel);
+  }
+});
+setupSlider('brakeTrack','brakeFill','brakeThumb', v => {
+  brakeLevel = v;
+  // 踩刹车时油门自动降低
+  if (v > 0.1 && gasLevel > 0) {
+    gasLevel = Math.max(0, gasLevel - v * 0.7);
+    setSliderVisual('gasFill','gasThumb','gasTrack', gasLevel);
+  }
+});
+
+// === CHAIN ANIMATION（加速+刹车双模式）===
+function updateChain() {
+  if (brakeLevel > 0.15 && gasLevel < 0.1) {
+    // 刹车模式：显示刹车链条
+    document.getElementById('cs1').querySelector('.icon').textContent = '🛑';
+    document.getElementById('cs1').querySelector('.text').textContent = '踩下刹车';
+    document.getElementById('cs2').querySelector('.icon').textContent = '🔥';
+    document.getElementById('cs2').querySelector('.text').textContent = '刹车片夹住车轮';
+    document.getElementById('cs3').querySelector('.icon').textContent = '✋';
+    document.getElementById('cs3').querySelector('.text').textContent = '摩擦力变大！';
+    document.getElementById('cs4').querySelector('.icon').textContent = '🐢';
+    document.getElementById('cs4').querySelector('.text').textContent = '汽车减速停下';
+    const bpct = brakeLevel * 100;
+    document.getElementById('bf1').style.width = bpct + '%';
+    document.getElementById('bf1').style.background = '#d63031';
+    document.getElementById('bf2').style.width = Math.min(100, bpct * 1.1) + '%';
+    document.getElementById('bf2').style.background = '#e17055';
+    document.getElementById('bf3').style.width = Math.min(100, bpct * 1.0) + '%';
+    document.getElementById('bf3').style.background = '#ff7675';
+    document.getElementById('bf4').style.width = Math.max(0, (1 - brakeLevel) * (speed / MAX) * 100) + '%';
+    document.getElementById('bf4').style.background = '#636e72';
+    ['cs1','cs2','cs3','cs4'].forEach((id, i) => {
+      document.getElementById(id).classList.toggle('active', brakeLevel > 0.1 && i <= Math.floor(brakeLevel * 4));
+    });
+  } else {
+    // 加速模式
+    document.getElementById('cs1').querySelector('.icon').textContent = '⛽';
+    document.getElementById('cs1').querySelector('.text').textContent = '喝汽油';
+    document.getElementById('cs2').querySelector('.icon').textContent = '🔥';
+    document.getElementById('cs2').querySelector('.text').textContent = '汽油燃烧产生力量';
+    document.getElementById('cs3').querySelector('.icon').textContent = '⚙️';
+    document.getElementById('cs3').querySelector('.text').textContent = '推力传到车轮';
+    document.getElementById('cs4').querySelector('.icon').textContent = '🚗';
+    document.getElementById('cs4').querySelector('.text').textContent = '汽车加速前进！';
+    const pct = gasLevel * 100;
+    document.getElementById('bf1').style.width = pct + '%';
+    document.getElementById('bf1').style.background = '#fdcb6e';
+    document.getElementById('bf2').style.width = Math.min(100, pct * 1.1) + '%';
+    document.getElementById('bf2').style.background = '#e17055';
+    document.getElementById('bf3').style.width = Math.min(100, pct * 1.0) + '%';
+    document.getElementById('bf3').style.background = '#00b894';
+    document.getElementById('bf4').style.width = (speed / MAX * 100) + '%';
+    document.getElementById('bf4').style.background = '#0984e3';
+    ['cs1','cs2','cs3','cs4'].forEach((id, i) => {
+      document.getElementById(id).classList.toggle('active', gasLevel > 0.1 && i <= Math.floor(gasLevel * 4));
+    });
+  }
+}
+
+// === PUFFS ===
+function spawnPuff() {
+  if (gasLevel < 0.1 || speed < 3) return;
+  const box = document.getElementById('exhaustBox');
+  const p = document.createElement('div');
+  p.className = 'puff';
+  const s = 6 + Math.random() * 10;
+  Object.assign(p.style, {width:s+'px',height:s+'px',left:'0',bottom:Math.random()*8+'px',opacity:'0.6'});
+  box.appendChild(p);
+  const data = {el:p, x:0, life:1};
+  puffs.push(data);
+  setTimeout(()=>{if(p.parentNode)p.remove(); puffs=puffs.filter(q=>q.el!==p);},1000);
+}
+
+// === STATUS ===
+function getMsg(s,g,b) {
+  if(s===0&&g<0.05) return '👆 向上拖油门出发！';
+  if(g>0.05&&s<15) return '🚀 发动机点火…开始动了！';
+  if(g>0.5&&s<50) return '💨 油门加大→推力变强→加速！';
+  if(g>0.5&&s>=50) return '⚡ 全速前进！推力超大！';
+  if(b>0.3&&s>20) return '🛑 刹车！摩擦力把车拉住！';
+  if(b>0.3&&s>0&&s<=20) return '✋ 快停了…刹车片夹紧车轮';
+  if(b>0.3&&s===0) return '🅿️ 停住了！刹车的力量！';
+  if(g<0.05&&s>30) return '🌬️ 松了油门，空气拖着车变慢';
+  if(g<0.05&&s>0) return '🐢 没推力了…摩擦让它慢下来';
+  return '👆 拖油门滑块试试！';
+}
+
+// === LOOP ===
+function loop() {
+  frame++;
+  // Physics
+  const accel = gasLevel * 0.8 * (1 - speed / MAX);
+  const brake = brakeLevel * 1.8;
+  const friction = 0.15 + speed * 0.003;
+  speed += accel - (speed > 0 ? friction : 0) - (speed > 0 ? brake : 0);
+  speed = Math.max(0, Math.min(MAX, speed));
+
+  // Road
+  roadOff -= speed * 0.7;
+  document.getElementById('roadLines').style.transform = `translateX(${roadOff % 70}px)`;
+  document.getElementById('scenery').style.transform = `translateX(${(roadOff*0.35)%(innerWidth*3)}px)`;
+  document.getElementById('clouds').style.transform = `translateX(${(roadOff*0.04)%(innerWidth*2)}px)`;
+
+  // Wheels
+  wheelA += speed * 3;
+  document.getElementById('wF').style.transform = `rotate(${wheelA}deg)`;
+  document.getElementById('wB').style.transform = `rotate(${wheelA}deg)`;
+
+  // Car tilt/bounce
+  const car = document.getElementById('car');
+  const bounce = speed > 40 ? Math.sin(frame*0.12)*(speed/90) : 0;
+  const tilt = gasLevel > 0.3 ? -1.5*gasLevel : (brakeLevel > 0.3 && speed > 5 ? 2*brakeLevel : 0);
+  car.style.transform = `translateX(-50%) translateY(${bounce}px) rotate(${tilt}deg)`;
+
+  // Force arrows
+  document.getElementById('driveForce').style.opacity = gasLevel > 0.1 ? Math.min(1,gasLevel*1.5) : 0;
+  document.getElementById('brakeForce').style.opacity = (brakeLevel > 0.1 && speed > 0) ? Math.min(1,brakeLevel*1.5) : (gasLevel < 0.05 && speed > 5 ? 0.4 : 0);
+
+  // Speed lines
+  document.querySelectorAll('.speed-line').forEach((l,i)=>{
+    if(speed>35){l.style.opacity=Math.min(0.8,(speed-35)/60);l.style.left=((roadOff*(1+i*0.08))%(innerWidth+80)-80)+'px';}
+    else l.style.opacity='0';
+  });
+
+  // Fire
+  document.getElementById('fire').style.opacity = speed > 85 ? '1' : '0';
+
+  // Puffs
+  if(frame%5===0) spawnPuff();
+  puffs.forEach(p=>{p.x-=2+speed*0.04;p.life-=0.04;
+    p.el.style.transform=`translateX(${p.x}px) scale(${2-p.life})`;p.el.style.opacity=Math.max(0,p.life*0.6);});
+
+  // Chain
+  updateChain();
+
+  // Speed display
+  const si = Math.round(speed);
+  const sn = document.getElementById('speedNum');
+  sn.textContent = si;
+  sn.style.color = speed>85?'#d63031':speed>55?'#fdcb6e':'#00cec9';
+
+  // Status
+  if(frame%8===0) document.getElementById('statusMsg').innerHTML = getMsg(si,gasLevel,brakeLevel);
+
+  requestAnimationFrame(loop);
+}
+
+// === VOICE ===
+const vtexts = [
+  '向上拖动油门滑块，发动机开始工作！你能看到：喝汽油的量变多了，燃烧更猛了，推力变大了，车就越来越快！',
+  '踩油门越大，发动机喝的汽油越多，产生的推力越大。推力大于阻力，车就加速！就像你用力推秋千。',
+  '拖动刹车滑块，刹车片夹住车轮产生摩擦力，阻力大于推力，车就减速了！就像在滑梯上用手抓住两边。',
+  '松开油门，虽然没有刹车，但空气一直在推着车不让它跑，轮胎和地面的摩擦也让车慢下来。就像球在地上滚，没人推就会自己停。',
+  '看右边的条形图，油门越大，喝汽油就越多，燃烧就越旺，传到车轮的推力就越大，速度就越快。这就是汽车加速的原理！'
+];
+let vi = 0;
+function toggleVoice() {
+  const btn = document.getElementById('voiceBtn');
+  if(speaking){speechSynthesis.cancel();speaking=false;btn.classList.remove('speaking');btn.textContent='🔊';return;}
+  const u = new SpeechSynthesisUtterance(vtexts[vi%vtexts.length]);
+  vi++; u.lang='zh-CN'; u.rate=0.8; u.pitch=1.1;
+  u.onend=()=>{speaking=false;btn.classList.remove('speaking');btn.textContent='🔊';};
+  speechSynthesis.speak(u); speaking=true; btn.classList.add('speaking'); btn.textContent='⏹️';
+}
+
+loop();
+</script>
+<script src="../../assets/site.js"></script></body>
+</html>

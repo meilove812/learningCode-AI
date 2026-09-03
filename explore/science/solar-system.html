@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌍 太阳·地球·月亮 — 白天黑夜的秘密</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'PingFang SC','Microsoft YaHei',sans-serif;
+  background: #0a0e1a;
+  min-height: 100vh;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  color: #dfe6e9;
+}
+.header {
+  text-align: center; padding: 14px 10px 10px;
+  background: linear-gradient(180deg, #1a1040, #0a0e1a);
+}
+.header h1 { font-size: 1.3em; color: #ffd700; }
+.header p { font-size: 0.75em; color: #b2bec3; margin-top: 4px; }
+
+/* ===== 太空场景 ===== */
+.space {
+  position: relative;
+  width: 100%; height: 50vh; min-height: 340px;
+  background: radial-gradient(ellipse at center, #0f1535 0%, #050810 100%);
+  overflow: hidden;
+  border-bottom: 2px solid #1a1040;
+}
+
+/* 星星背景 */
+.stars {
+  position: absolute; top:0; left:0; width:100%; height:100%;
+  background: 
+    radial-gradient(1px 1px at 10% 20%, #fff 1px, transparent 1px),
+    radial-gradient(1px 1px at 30% 70%, #fff 1px, transparent 1px),
+    radial-gradient(1px 1px at 50% 10%, #fff 1px, transparent 1px),
+    radial-gradient(1px 1px at 70% 40%, #fff 1px, transparent 1px),
+    radial-gradient(1px 1px at 90% 80%, #fff 1px, transparent 1px),
+    radial-gradient(1px 1px at 15% 55%, #ffd 1px, transparent 1px),
+    radial-gradient(1px 1px at 45% 85%, #ffd 1px, transparent 1px),
+    radial-gradient(1px 1px at 75% 15%, #ffd 1px, transparent 1px),
+    radial-gradient(1px 1px at 85% 65%, #fff 1px, transparent 1px),
+    radial-gradient(1px 1px at 25% 35%, #fff 1px, transparent 1px),
+    radial-gradient(1.5px 1.5px at 60% 50%, #ffa 1px, transparent 1.5px),
+    radial-gradient(1.5px 1.5px at 5% 90%, #aef 1px, transparent 1.5px);
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+@keyframes twinkle { from{opacity:0.6} to{opacity:1} }
+
+/* 太阳 */
+.sun {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 70px; height: 70px;
+  margin: -35px 0 0 -35px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff6d5, #ffd700 40%, #ff8c00 80%, #cc4400);
+  box-shadow: 0 0 40px #ffd700, 0 0 80px rgba(255,165,0,0.5), 0 0 120px rgba(255,100,0,0.3);
+  z-index: 10;
+  animation: pulse 3s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{box-shadow:0 0 40px #ffd700,0 0 80px rgba(255,165,0,0.5)} 50%{box-shadow:0 0 55px #ffd700,0 0 100px rgba(255,165,0,0.6)} }
+.sun-label {
+  position: absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  font-size: 0.7em; font-weight:bold; color:#fff; text-shadow:0 0 4px #000;
+  pointer-events:none; white-space:nowrap;
+}
+
+/* 地球轨道 */
+.earth-orbit {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 260px; height: 260px;
+  margin: -130px 0 0 -130px;
+  border: 1.5px dashed rgba(100,180,255,0.3);
+  border-radius: 50%;
+  z-index: 5;
+  animation: orbit-earth 20s linear infinite;
+}
+@keyframes orbit-earth { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+
+/* 地球容器（在轨道上） */
+.earth-container {
+  position: absolute;
+  top: -18px; left: 50%; margin-left: -18px;
+  width: 36px; height: 36px;
+}
+
+/* 地球本体 */
+.earth {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #4fc3f7 0%, #1565c0 40%, #0d47a1 70%, #1a237e 100%);
+  position: relative;
+  box-shadow: 0 0 12px rgba(79,195,247,0.4);
+  overflow: hidden;
+}
+/* 大陆 */
+.earth::before {
+  content: '';
+  position: absolute;
+  top: 20%; left: 25%; width: 50%; height: 40%;
+  background: #4caf50;
+  border-radius: 40% 60% 50% 40%;
+  opacity: 0.7;
+}
+.earth::after {
+  content: '';
+  position: absolute;
+  top: 55%; left: 45%; width: 30%; height: 25%;
+  background: #66bb6a;
+  border-radius: 50% 40% 60% 30%;
+  opacity: 0.6;
+}
+/* 地球自转（昼夜分界线） */
+.earth-shadow {
+  position: absolute; top:0; left:0;
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(90deg, transparent 45%, rgba(0,0,20,0.85) 55%);
+  animation: earth-rotate 2.5s linear infinite;
+}
+@keyframes earth-rotate { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+
+/* 月球轨道 - 虚线圈表示月球绕地球转的路径 */
+.moon-orbit {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 70px; height: 70px;
+  margin: -35px 0 0 -35px;
+  border: 1px dashed rgba(200,200,200,0.3);
+  border-radius: 50%;
+  animation: orbit-moon 5s linear infinite;
+  z-index: 6;
+}
+@keyframes orbit-moon { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+
+.moon {
+  position: absolute;
+  top: -7px; left: 50%; margin-left: -7px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #f5f5f5, #bdbdbd 60%, #757575);
+  box-shadow: 0 0 4px rgba(255,255,255,0.4);
+}
+
+/* 标签 */
+.obj-label {
+  position: absolute; font-size: 0.6em; font-weight:bold;
+  color: #fff; text-shadow: 0 0 6px #000;
+  white-space: nowrap; pointer-events: none;
+}
+
+/* ===== 昼夜演示区 ===== */
+.daynight-section {
+  margin: 12px 12px; padding: 16px;
+  background: linear-gradient(135deg, #1a1040, #0f1535);
+  border-radius: 16px; position: relative;
+  min-height: 200px;
+}
+.daynight-title {
+  font-size: 1em; color: #ffd700; text-align:center; margin-bottom: 12px;
+}
+.daynight-demo {
+  position: relative; width: 100%; height: 180px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* 太阳光线（左侧射来） */
+.sun-rays {
+  position: absolute; left: 5%; top: 50%; transform: translateY(-50%);
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffd700, #ff8c00);
+  box-shadow: 0 0 30px #ffd700;
+}
+.ray-line {
+  position: absolute; left: 55px; height: 3px;
+  background: linear-gradient(90deg, #ffd700, rgba(255,215,0,0.3), transparent);
+  opacity: 0.7;
+  animation: ray-pulse 2s ease-in-out infinite alternate;
+}
+@keyframes ray-pulse { from{opacity:0.5} to{opacity:0.9} }
+
+/* 大地球（侧视图） */
+.big-earth {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+  width: 120px; height: 120px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 40%, #4fc3f7, #1565c0 50%, #0d47a1 80%);
+  overflow: hidden; box-shadow: 0 0 20px rgba(79,195,247,0.3);
+}
+.big-earth-land1 {
+  position:absolute; top:18%; left:20%; width:35%; height:30%;
+  background:#4caf50; border-radius:40% 60% 50% 40%; opacity:0.7;
+}
+.big-earth-land2 {
+  position:absolute; top:55%; left:50%; width:25%; height:20%;
+  background:#66bb6a; border-radius:50%; opacity:0.6;
+}
+/* 暗面（右半=夜晚） */
+.big-earth-night {
+  position:absolute; top:0; right:0; width:50%; height:100%;
+  background: linear-gradient(90deg, rgba(0,0,20,0) 0%, rgba(0,0,20,0.9) 30%);
+  border-radius: 0 50% 50% 0;
+}
+/* 小人标记 */
+.person {
+  position:absolute; font-size:1.2em;
+  transition: all 1s;
+}
+.person-day { top:15%; left:30%; }
+.person-night { top:20%; right:22%; }
+
+/* 昼夜标签 */
+.dn-label {
+  position:absolute; font-size:0.7em; font-weight:bold;
+  padding:2px 6px; border-radius:4px;
+}
+.label-day { bottom:8%; left:18%; background:rgba(255,215,0,0.2); color:#ffd700; }
+.label-night { bottom:8%; right:15%; background:rgba(50,50,120,0.5); color:#b2bec3; }
+
+/* 控制面板 */
+.panel {
+  margin:10px 12px; padding:12px;
+  background:#1a1040; border-radius:12px; text-align:center;
+}
+.speed-control { display:flex; align-items:center; justify-content:center; gap:10px; margin:8px 0; }
+.speed-control label { font-size:0.8em; color:#b2bec3; }
+.speed-control input { width:60%; accent-color:#ffd700; }
+
+/* Tab按钮 */
+.tab-bar {
+  display:flex; gap:0; margin:8px 12px;
+  background:#1a1040; border-radius:20px; padding:3px; overflow-x:auto;
+}
+.tbtn {
+  flex:1; padding:8px 4px; border:none; border-radius:18px;
+  font-size:0.76em; font-weight:bold; cursor:pointer;
+  background:transparent; color:#b2bec3; white-space:nowrap;
+}
+.tbtn.active { background:linear-gradient(135deg,#ffd700,#ff8c00); color:#1a1040; }
+
+/* 讲解区 */
+#exp {
+  margin:8px 12px; padding:15px;
+  background:linear-gradient(135deg,#1a1040,#1f1850);
+  border-radius:14px; min-height:140px;
+  font-size:0.88em; line-height:1.9;
+}
+
+/* 知识卡 */
+.card {
+  background:linear-gradient(135deg,#1a1040,#1f1850);
+  border-radius:12px; padding:12px;
+  border-left:4px solid #ffd700; margin-bottom:10px;
+}
+.card b { color:#ffd700; font-size:0.88em; }
+.card p { font-size:0.8em; color:#b2bec3; margin-top:4px; }
+
+/* 语音按钮 */
+#voiceBtn {
+  position:fixed; bottom:18px; right:18px;
+  width:46px; height:46px; border-radius:50%;
+  background:#6c5ce7; color:white; border:none;
+  font-size:1.4em; cursor:pointer;
+  box-shadow:0 4px 12px rgba(108,92,231,0.4);
+  z-index:100; display:flex; align-items:center; justify-content:center;
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+<div class="header">
+  <h1>☀️ 太阳·地球·月亮</h1>
+  <p>白天黑夜的秘密 | 给小朋友的太空课</p>
+</div>
+
+<!-- ===== 太空动画 ===== -->
+<div class="space">
+  <div class="stars"></div>
+  
+  <!-- 太阳 -->
+  <div class="sun">
+    <span class="sun-label">☀️太阳</span>
+  </div>
+  
+  <!-- 地球轨道+地球 -->
+  <div class="earth-orbit" id="earthOrbit">
+    <div class="earth-container">
+      <div class="earth">
+        <div class="earth-shadow" id="earthShadow"></div>
+      </div>
+      <!-- 月球轨道+月球 -->
+      <div class="moon-orbit" id="moonOrbit">
+        <div class="moon"><span class="obj-label" style="position:absolute;top:-18px;left:-6px;font-size:0.5em;color:#eee;white-space:nowrap;">🌙月球</span></div>
+      </div>
+      <span class="obj-label" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:0.5em;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.8);white-space:nowrap;z-index:8;">地球🌍</span>
+    </div>
+  </div>
+  
+  <!-- 说明标注 -->
+  <div style="position:absolute;bottom:8px;left:12px;font-size:0.6em;color:#b2bec3;opacity:0.7;">
+    地球绕太阳转=1年 | 月亮绕地球转=1个月 | 地球自转=1天
+  </div>
+</div>
+
+<!-- 速度控制 -->
+<div class="panel">
+  <div class="speed-control">
+    <label>🐢 慢</label>
+    <input type="range" id="speedSlider" min="1" max="5" value="3" step="0.5">
+    <label>🐇 快</label>
+  </div>
+  <div style="font-size:0.75em;color:#ffd700;" id="speedLabel">转速: 正常</div>
+</div>
+
+<!-- ===== 白天黑夜演示 ===== -->
+<div class="daynight-section">
+  <div class="daynight-title">🌓 为什么有白天和黑夜？</div>
+  <div class="daynight-demo">
+    <!-- 太阳光（左侧） -->
+    <div class="sun-rays"></div>
+    <div class="ray-line" style="top:35%;width:35%"></div>
+    <div class="ray-line" style="top:50%;width:40%"></div>
+    <div class="ray-line" style="top:65%;width:35%"></div>
+    <div class="ray-line" style="top:42%;width:32%"></div>
+    <div class="ray-line" style="top:58%;width:32%"></div>
+    
+    <!-- 大地球 -->
+    <div class="big-earth">
+      <div class="big-earth-land1"></div>
+      <div class="big-earth-land2"></div>
+      <div class="big-earth-night"></div>
+      <div class="person person-day">🧒</div>
+      <div class="person person-night">🧒</div>
+    </div>
+    
+    <!-- 昼夜标签 -->
+    <div class="dn-label label-day">☀️ 白天（面朝太阳）</div>
+    <div class="dn-label label-night">🌙 黑夜（背对太阳）</div>
+  </div>
+  <p style="text-align:center;font-size:0.78em;color:#b2bec3;margin-top:8px;">
+    ⬅️ 阳光从左边照来 → 面向太阳的一面是白天，背对太阳的一面是黑夜
+  </p>
+</div>
+
+<!-- Tab讲解 -->
+<div class="tab-bar">
+  <button class="tbtn active" data-t="sun" onclick="sw('sun')">☀️太阳</button>
+  <button class="tbtn" data-t="earth" onclick="sw('earth')">🌍地球</button>
+  <button class="tbtn" data-t="moon" onclick="sw('moon')">🌙月亮</button>
+  <button class="tbtn" data-t="daynight" onclick="sw('daynight')">🌓昼夜</button>
+  <button class="tbtn" data-t="fun" onclick="sw('fun')">🤯有趣</button>
+</div>
+<div id="exp"></div>
+
+<!-- 知识卡 -->
+<div style="margin:12px 12px 30px;display:flex;flex-direction:column;gap:10px;">
+  <div class="card">
+    <b>📏 大小对比</b>
+    <p>如果太阳是篮球🏀，地球只有芝麻粒那么小！月亮比芝麻还小一半。</p>
+  </div>
+  <div class="card">
+    <b>⏰ 时间密码</b>
+    <p>地球自转一圈=1天（24小时）| 月亮绕地球一圈=1个月 | 地球绕太阳一圈=1年（365天）</p>
+  </div>
+  <div class="card">
+    <b>💡 为什么月亮会发光？</b>
+    <p>月亮自己不发光！它是把太阳光反射到我们眼睛里，像镜子一样🪞</p>
+  </div>
+</div>
+
+<button id="voiceBtn" onclick="toggleVoice()">🔊</button>
+<script>
+// Edge High-Fidelity TTS: auto-select best voice
+var _edgeTTSVoice = null;
+function _initEdgeVoice() {
+  var voices = speechSynthesis.getVoices();
+  if (!voices.length) return;
+  var zh = voices.filter(function(v) { return /^zh-CN|^zh$|^cmn/i.test(v.lang)&&!/^zh-HK|^zh-TW/i.test(v.lang); });
+  _edgeTTSVoice = zh.find(function(v){ return v.name.indexOf('Xiaoxiao')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Online')>=0 && v.name.indexOf('Natural')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Yunxi')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Microsoft')>=0; })
+    || zh[0] || null;
+}
+_initEdgeVoice();
+if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = function(){ _initEdgeVoice(); };
+
+const T={
+sun:{t:'☀️ 太阳 — 我们的大火球',h:`<p>太阳是一颗<b style="color:#ffd700">恒星</b>——一个超级大的火球🔥</p>
+<p style="margin:8px 0;padding:10px;background:rgba(0,0,0,0.3);border-radius:8px;">
+📏 有多大？装得下<b style="color:#ffd700">130万个</b>地球！<br>
+🌡️ 有多热？表面5500°C，核心1500万°C！<br>
+💡 有多亮？照亮整个太阳系所有行星！<br>
+📍 有多远？光跑8分钟才到地球（1.5亿公里）
+</p>
+<p>太阳给地球送来<span style="color:#ffd700">光和热</span>：</p>
+<p>☀️ 光→让我们看见东西</p>
+<p>🔥 热→让地球不会冻成冰球</p>
+<p style="margin-top:8px;padding:6px 10px;background:rgba(255,215,0,0.1);border-left:3px solid #ffd700;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 太阳已经燃烧了46亿年了，还能烧50亿年！像个永远不灭的超级火炉。</p>`,
+v:'太阳是一颗恒星，一个超级大的火球！它有多大呢？能装下一百三十万个地球！有多热呢？表面五千五百度，核心一千五百万度！太阳光要跑八分钟才能到地球。太阳给地球送来光和热，让我们看见东西，让地球不会冻成冰球。'},
+
+earth:{t:'🌍 地球 — 我们的家',h:`<p>地球是太阳系的<b style="color:#4fc3f7">第三颗行星</b>，也是我们的家🏠</p>
+<p style="margin:8px 0;padding:10px;background:rgba(0,0,0,0.3);border-radius:8px;">
+🔵 为什么看起来蓝色？→ 70%是海洋！<br>
+🟢 绿色部分？→ 陆地、森林、草原<br>
+☁️ 白色漩涡？→ 云层（大气层）
+</p>
+<p><b>地球做两件事：</b></p>
+<p>1️⃣ <span style="color:#4fc3f7">自转</span> — 像陀螺一样转圈🎡→ 转一圈=1天</p>
+<p>2️⃣ <span style="color:#4fc3f7">公转</span> — 绕太阳飞一大圈🎢→ 转一圈=1年</p>
+<p style="margin-top:8px;padding:6px 10px;background:rgba(79,195,247,0.1);border-left:3px solid #4fc3f7;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 地球自转速度超快！赤道上每秒465米，比高铁还快！但我们感觉不到，因为所有东西都跟着一起转。</p>`,
+v:'地球是太阳系第三颗行星，也是我们的家。它为什么看起来是蓝色的呢？因为百分之七十是海洋！地球做两件事：第一，像陀螺一样自转，转一圈就是一天。第二，绕太阳公转一大圈，转一圈就是一年。'},
+
+moon:{t:'🌙 月亮 — 地球的小伙伴',h:`<p>月亮是地球的<b style="color:#e0e0e0">卫星</b>——永远跟着地球转的小伙伴👯</p>
+<p style="margin:8px 0;padding:10px;background:rgba(0,0,0,0.3);border-radius:8px;">
+📏 大小？地球的四分之一（差不多中国那么大）<br>
+📍 距离？38万公里（坐火箭要3天）<br>
+🪨 表面？全是坑坑洼洼的陨石坑，没有水没有空气<br>
+🌓 月相？它绕地球转，我们看到被太阳照亮的不同角度
+</p>
+<p><b>月亮的秘密：</b></p>
+<p>🔦 自己不发光！反射太阳光（像镜子）</p>
+<p>🔒 永远同一面朝着我们（背面我们看不到！）</p>
+<p>🌊 引力拉动海水→潮涨潮落！</p>
+<p style="margin-top:8px;padding:6px 10px;background:rgba(200,200,200,0.1);border-left:3px solid #bbb;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 1969年人类第一次踏上月球！宇航员阿姆斯特朗说："这是个人的一小步，人类的一大步。"</p>`,
+v:'月亮是地球的卫星，永远跟着地球转的小伙伴。它有多大呢？大约是地球的四分之一，差不多有中国那么大。月亮自己不发光，是反射太阳的光，像镜子一样。月亮永远同一面朝着我们，背面我们永远看不到。'},
+
+daynight:{t:'🌓 白天黑夜的秘密',h:`<p><b style="color:#ffd700">核心原理：地球自转！</b></p>
+<p style="margin:8px 0;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;text-align:center;font-size:0.95em;">
+太阳 ☀️ → 照亮地球的一半<br><br>
+🌍 面向太阳的一面 = <span style="color:#ffd700">☀️ 白天</span><br>
+🌍 背对太阳的一面 = <span style="color:#7986cb">🌙 黑夜</span><br><br>
+地球不停地转 🔄 → 白天黑夜交替！
+</p>
+<p style="margin-top:10px;"><b>想象一下：</b></p>
+<p>🔦 你拿一个手电筒（太阳）照着一个篮球（地球）</p>
+<p>→ 有光的一面=白天 ☀️</p>
+<p>→ 没光的一面=黑夜 🌙</p>
+<p>→ 慢慢转篮球，白天黑夜就交替了！</p>
+<p style="margin-top:8px;padding:6px 10px;background:rgba(255,215,0,0.1);border-left:3px solid #ffd700;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 中国白天的时候，美国是黑夜！因为他们在地球另一边，背对太阳。所以说"倒时差"。</p>`,
+v:'白天黑夜的秘密就是地球在自转！太阳照亮地球的一半，面向太阳的一面是白天，背对太阳的一面是黑夜。地球不停地转，白天黑夜就交替了。就像你拿手电筒照篮球，有光的一面是白天，没光的一面是黑夜。中国白天的时候美国是黑夜，因为他们在地球另一边。'},
+
+fun:{t:'🤯 有趣的事实',h:`<p><b>好玩的数字：</b></p>
+<p>🚀 从地球到太阳：火箭要飞<b style="color:#ffd700">半年</b>！</p>
+<p>🏃 如果能走路去太阳：要走<b style="color:#ffd700">3400年</b>！</p>
+<p>⚽ 太阳系里太阳占了<b style="color:#ffd700">99.86%</b>的重量！</p>
+<p>🦕 地球一天其实在变长！恐龙时代一天只有23小时。</p>
+<p style="margin:10px 0;"><b>好玩的现象：</b></p>
+<p>🌅 <span style="color:#ffd700">日出</span>=你所在的地方转到了面向太阳的一侧</p>
+<p>🌇 <span style="color:#ff8c00">日落</span>=你所在的地方转到了背对太阳的一侧</p>
+<p>🌑 <span style="color:#bbb">日食</span>=月亮跑到了太阳和地球中间，挡住了阳光！</p>
+<p>🌕 <span style="color:#ffa">月食</span>=地球跑到了太阳和月亮中间，地球的影子落在月亮上！</p>
+<p style="margin-top:8px;padding:6px 10px;background:rgba(255,215,0,0.1);border-left:3px solid #ffd700;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 月亮每年离地球远3.8厘米！几十亿年后月亮会跑得很远很远～</p>`,
+v:'好玩的事实！从地球到太阳火箭要飞半年，走路要走三千四百年。太阳系里太阳占了百分之九十九点八六的重量。日出就是你转到了面向太阳的一侧，日落就是你转到了背对太阳的一侧。日食是月亮跑到太阳和地球中间挡住了阳光。'}
+};
+
+let cur='sun', speaking=false;
+
+function sw(t){
+  cur=t;
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('active'));
+  document.querySelector('[data-t="'+t+'"]').classList.add('active');
+  document.getElementById('exp').innerHTML='<h3 style="color:#ffd700;margin-bottom:8px;">'+T[t].t+'</h3>'+T[t].h;
+}
+
+// 速度控制
+const ss=document.getElementById('speedSlider');
+const sl=document.getElementById('speedLabel');
+const eo=document.getElementById('earthOrbit');
+const mo=document.getElementById('moonOrbit');
+const es=document.getElementById('earthShadow');
+
+ss.addEventListener('input',function(){
+  const v=+this.value;
+  const earthTime=20/v;
+  const moonTime=5/v;
+  const rotateTime=2.5/v;
+  eo.style.animationDuration=earthTime+'s';
+  mo.style.animationDuration=moonTime+'s';
+  es.style.animationDuration=rotateTime+'s';
+  
+  if(v<=1.5) sl.textContent='转速: 很慢 🐢';
+  else if(v<=2.5) sl.textContent='转速: 慢';
+  else if(v<=3.5) sl.textContent='转速: 正常';
+  else if(v<=4.5) sl.textContent='转速: 快';
+  else sl.textContent='转速: 很快 🐇';
+});
+
+// 语音
+function toggleVoice(){
+  const btn=document.getElementById('voiceBtn');
+  if(speaking){
+    speechSynthesis.cancel();
+    speaking=false;
+    btn.style.background='#6c5ce7';
+    btn.textContent='🔊';
+    return;
+  }
+  const u=new SpeechSynthesisUtterance(T[cur].v);
+  u.lang='zh-CN'; u.rate=0.8;if(_edgeTTSVoice)u.voice=_edgeTTSVoice; u.pitch=1.1;
+  u.onend=()=>{speaking=false;btn.style.background='#6c5ce7';btn.textContent='🔊';};
+  speechSynthesis.speak(u);
+  speaking=true;
+  btn.style.background='#d63031';
+  btn.textContent='⏹️';
+}
+
+sw('sun');
+</script>
+</body>
+</html>

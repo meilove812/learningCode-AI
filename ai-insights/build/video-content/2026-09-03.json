@@ -1,0 +1,116 @@
+{
+  "page_title": "为什么账单总比预算高 | 2026.9.3",
+  "date": "2026年9月3日（周四）",
+  "topic": "AI任务成本，应该怎么算？",
+  "slides": [
+    {
+      "kind": "cover",
+      "eyebrow": "按单次调用价格估完预算之后",
+      "title": "为什么账单总比预算高",
+      "accent": "成本单位算错了",
+      "note": "看完你会知道该按什么口径算",
+      "tts": "按单次调用的价格估预算，实际花费常常远超预期。问题不在价格贵，在成本单位选错了。这一期讲清该按什么口径算。"
+    },
+    {
+      "kind": "fact",
+      "eyebrow": "01 · 先分清两个概念",
+      "title": "调用价格，不是最终成本",
+      "body": "一次调用只是任务链中的一个环节。复杂任务通常还要经过多轮处理、工具协作、结果验证，才能形成可用成果。",
+      "metric": "调用价格 ≠ 任务成本",
+      "tts": "一次调用，只是任务链中的一个环节。复杂任务还要经过多轮处理、工具协作和结果验证，才能形成可用成果。"
+    },
+    {
+      "kind": "formula",
+      "eyebrow": "02 · 看完整成本结构",
+      "title": "一个结果，要经过四个环节",
+      "items": [
+        "模型处理",
+        "工具协作",
+        "运行时间",
+        "结果复核"
+      ],
+      "result": "＝ 真实任务成本",
+      "tts": "完整任务成本至少包含四部分：模型处理、工具协作、运行时间和结果复核。任何环节增加，都会影响交付效率。"
+    },
+    {
+      "kind": "compare",
+      "eyebrow": "03 · 换一个比较单位",
+      "title": "从“调用一次”到“完成一次”",
+      "left": {
+        "label": "只看调用",
+        "value": "信息不完整",
+        "tone": "dim"
+      },
+      "right": {
+        "label": "看任务结果",
+        "value": "更接近真实价值",
+        "tone": "bright"
+      },
+      "tts": "更合理的方式，是从调用一次，转向完成一次。因为真正需要交付的，是一个能够使用、能够验证的结果。"
+    },
+    {
+      "kind": "metrics",
+      "eyebrow": "04 · 建立任务仪表盘",
+      "title": "重点记录这四项",
+      "items": [
+        {
+          "name": "任务完成率",
+          "icon": "✅"
+        },
+        {
+          "name": "处理轮数",
+          "icon": "🔄"
+        },
+        {
+          "name": "总体时长",
+          "icon": "⏳"
+        },
+        {
+          "name": "复核投入",
+          "icon": "🔍"
+        }
+      ],
+      "tts": "重点记录四项：任务完成率、处理轮数、总体时长和复核投入。放在一起，才能判断一套方案是否真正高效。"
+    },
+    {
+      "kind": "conclusion",
+      "eyebrow": "05 · 今日判断",
+      "title": "别只计算一次调用",
+      "accent": "要计算一个可信结果",
+      "note": "被拿走的是重复的工时，留下的是判断值不值得跑完",
+      "tts": "结论：别只计算一次调用，要计算一个可信结果。被拿走的是重复执行的工时，留下的是判断它值不值得跑完。"
+    },
+    {
+      "kind": "ending",
+      "eyebrow": "",
+      "title": "今日AI洞察",
+      "sources": [
+        {
+          "name": "长流程控制实测 · arXiv 2608.28281",
+          "url": "https://arxiv.org/abs/2608.28281"
+        }
+      ],
+      "disclaimer": "基于通用技术原理整理，仅作知识分享，不涉及具体厂商、产品评价或投资建议。",
+      "signature": "开心的舵手",
+      "tts": "今天就试一条：按一个可信结果结算，重试和复核都算进去。本期基于通用原理整理。",
+      "action": "按「一个可信结果」结算：单次单价 × 平均重试次数 ＋ 人工复核 10 分钟"
+    }
+  ],
+  "thesis": "一个可交付结果的成本，要连校验和重试一起算，不能只看单次调用的价格。",
+  "derivation": "由 sources[1] 推出：该基准把一次端到端结果拆成控制方与执行方两层分别计量，并按执行范围与成本设三种评测设定，说明真实代价必须把校验与重试计入，单次调用价格不构成任务成本。",
+  "sources": [
+    {
+      "title": "LoopArena: Benchmarking Models as Runtime Controllers for Loop Engineering",
+      "url": "https://arxiv.org/abs/2608.28281",
+      "date": "2026-08-28",
+      "evidence": "把一次端到端结果拆成控制方与执行方两层来计量；三种评测设定按执行范围与成本分层，说明一个可交付结果的代价必须连同校验与重试一起算，而不是只看单次调用。",
+      "quotes": [
+        "Even with a capable coding agent, a loop may trust a stale progress note, skip needed verification, spend its budget in the wrong direction, or stop before the task is safe to submit",
+        "Yet the final outcome of one end-to-end run cannot tell whether success or failure reflects the loop's guidance or the coding agent's ability to carry out the task",
+        "leaving substantial room for improvement in long-horizon loop control"
+      ]
+    }
+  ],
+  "taken_away": "重复执行的工时——原先按人的小时数计价的那部分活，现在按步计费；没被拿走的是判断一件事值不值得让它跑完",
+  "decision": "算成本按可交付结果算，把校验和重试一起计入"
+}

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>🏰 海市蜃楼 · 秦始皇求仙记</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,'PingFang SC',sans-serif;background:#0a0a1a;color:#fff;min-height:100vh;overflow-x:hidden}
+.scene{width:100%;max-width:500px;margin:0 auto;aspect-ratio:4/3;position:relative;overflow:hidden;border-radius:0 0 12px 12px}
+canvas{width:100%;height:100%;display:block}
+.header{text-align:center;padding:12px 15px 8px;background:linear-gradient(180deg,#1a1030,#0a0a1a)}
+.header h1{font-size:1.4em;background:linear-gradient(90deg,#ffd700,#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.header p{font-size:0.85em;color:#8888aa;margin-top:4px}
+.chapter-tag{display:inline-block;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);border-radius:20px;padding:4px 14px;font-size:0.8em;color:#ffd700;margin:8px auto;text-align:center}
+.narr{margin:10px 12px;padding:14px 16px;background:rgba(255,255,255,0.05);border-left:3px solid #ffd700;border-radius:0 10px 10px 0;font-size:1em;line-height:1.9;min-height:60px;transition:all 0.4s}
+.narr.speaking{border-left-color:#00b4d8;background:rgba(0,180,216,0.05)}
+.dots{display:flex;justify-content:center;gap:6px;margin:8px 0}
+.dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.2);transition:all 0.3s}
+.dots span.on{background:#ffd700;box-shadow:0 0 6px #ffd700}
+.ctrls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:0 12px;margin:10px 0}
+.btn{padding:13px 8px;border:none;border-radius:10px;font-size:0.95em;font-weight:bold;color:#fff;cursor:pointer;transition:transform 0.12s}
+.btn:active{transform:scale(0.93)}
+.play{grid-column:1/-1;background:linear-gradient(135deg,#b8860b,#daa520);font-size:1.05em;padding:14px}
+.prev{background:linear-gradient(135deg,#4a3080,#6a40b0)}
+.next{background:linear-gradient(135deg,#c0392b,#e74c3c)}
+.voice{background:linear-gradient(135deg,#1a6040,#2d8060)}
+.rate-row{display:flex;justify-content:center;align-items:center;gap:8px;padding:6px 12px;font-size:0.8em;color:#888}
+.rate-row input{width:70px}
+.rate-row select{max-width:130px;padding:3px 6px;border-radius:6px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.08);color:#ccc;font-size:0.85em}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+<div class="header">
+  <h1>🏰 海市蜃楼</h1>
+  <p>秦始皇求仙记 · 动画讲解</p>
+</div>
+<div class="scene"><canvas id="c"></canvas></div>
+<div class="chapter-tag" id="chap">序幕</div>
+<div class="dots" id="dots"></div>
+<div class="narr" id="narr">点击「▶️ 开始」听一个两千年前的故事…</div>
+<div class="ctrls">
+  <button class="btn play" onclick="autoPlay()">▶️ 开始讲故事</button>
+  <button class="btn prev" onclick="go(-1)">⬅️ 上一幕</button>
+  <button class="btn next" onclick="go(1)">下一幕 ➡️</button>
+  <button class="btn voice" id="vbtn" onclick="togV()">🔊 语音</button>
+</div>
+<div class="rate-row">
+  <span>语速</span><input type="range" id="rate" min="0.6" max="1.2" step="0.1" value="0.8">
+  <span>声音</span><select id="vsel"></select>
+</div>
+
+<script>
+const C=document.getElementById('c'),X=C.getContext('2d');
+let W,H;function resize(){const r=C.parentElement.getBoundingClientRect();W=C.width=Math.round(r.width*2);H=C.height=Math.round(r.height*2);}
+resize();window.addEventListener('resize',resize);
+
+const scenes=[
+{ch:'第一幕 · 海上奇景',text:'两千多年前，渤海边的渔民惊恐地看到——海面上凭空出现了金碧辉煌的宫殿！',speech:'两千多年前，渤海边的渔民看到了不可思议的一幕。平静的海面上，凭空出现了金碧辉煌的宫殿和城楼！时隐时现，如梦如幻。'},
+{ch:'第一幕 · 海上奇景',text:'宫殿在云雾间若隐若现，城楼巍峨，甚至能看到人影走动…',speech:'宫殿在云雾间若隐若现，城楼巍峨壮丽，甚至能看到人影在里面走动。渔民吓坏了，跪在地上大喊：那是神仙住的地方！'},
+{ch:'第二幕 · 方士献策',text:'方士徐福跪在秦始皇面前说："陛下！海上有蓬莱、方丈、瀛洲三座仙山，上有长生不老药！"',speech:'消息传到了咸阳宫。方士徐福跪在秦始皇面前说：陛下！海上有三座仙山，蓬莱、方丈、瀛洲。仙人居住其上，藏有长生不老之药！'},
+{ch:'第二幕 · 方士献策',text:'秦始皇一生最怕一件事——死。他统一天下，却无法征服时间。',speech:'秦始皇一生最怕一件事，那就是死。他统一了六国，修筑了万里长城，却无法征服时间。听到有长生药，他激动万分。'},
+{ch:'第三幕 · 出海求仙',text:'始皇帝拨下巨资：三千童男童女、大船数十艘、金银无数，命徐福出海求药。',speech:'始皇帝立刻拨下巨资，三千童男童女、大船数十艘、金银珠宝无数。他命徐福出海，务必找到仙山，带回长生之药。'},
+{ch:'第三幕 · 出海求仙',text:'船队浩浩荡荡驶入大海，追逐那海天之间的幻影…',speech:'船队浩浩荡荡驶入茫茫大海。他们追逐着海天之间的幻影，越追越远，越追越远。那宫殿仿佛永远在前方，却永远够不到。'},
+{ch:'第四幕 · 一去不返',text:'徐福再也没有回来。传说他到了日本，在那里定居。始皇帝至死没有等到仙药。',speech:'徐福再也没有回来。传说他到了日本，在那里定居，再没有回头。始皇帝苦等多年，最终在第五次东巡途中病死，至死也没等到他的长生药。'},
+{ch:'第五幕 · 真相揭开',text:'两千年后，科学家揭开了谜底。那座"仙山"只是一场光的把戏——海市蜃楼。',speech:'两千年后，科学家终于揭开了谜底。那座仙山，那些宫殿，根本不存在。那只是一场光的把戏，叫做海市蜃楼。'},
+{ch:'第五幕 · 真相揭开',text:'太阳加热海面空气，形成冷热不同的气层。光线穿过时会拐弯——折射。',speech:'太阳把靠近海面的空气晒得很热，上面的空气却很冷。当光线穿过这些温度不同的空气层时，它会拐弯，科学家叫它折射。'},
+{ch:'第五幕 · 真相揭开',text:'远处城市的光弯曲着穿过大气层，最终落入人的眼睛。大脑以为光是直着来的——于是"看到"城市浮在天上！',speech:'远处真实城市的光，弯弯曲曲穿过大气层，最后落入人的眼睛。可大脑以为光是直着飞来的，于是就看到城市浮在了天空中。一座真实的城市变成了空中幻影。'},
+{ch:'尾声',text:'一场光学现象，骗了千古一帝，改写了历史。大自然的魔术，玩得最大的一次。🎭',speech:'一场光学现象，骗过了千古一帝，让三千人远渡重洋，改写了历史走向。这是大自然的魔术玩得最大的一次。光能欺骗眼睛，眼睛欺骗大脑，大脑编出了流传千年的神话。'},
+];
+
+let step=-1,vOn=true,timer=null;
+const synth=speechSynthesis;let voices=[];
+const vsel=document.getElementById('vsel');
+function ldV(){voices=synth.getVoices();vsel.innerHTML='';const zh=voices.filter(v => (v.lang.startsWith('zh-CN')||v.lang==='zh')&&!v.lang.startsWith('zh-HK')&&!v.lang.startsWith('zh-TW'));zh.sort((a,b)=>{const as=a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Online') && a.name.includes('Natural') ? 2 : a.name.includes('Microsoft') ? 1:0;const bs=b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Online') && b.name.includes('Natural') ? 2 : b.name.includes('Microsoft') ? 1:0;return bs-as;});const _zh=zh;[...zh,...voices.filter(v=>!v.lang.startsWith('zh'))].forEach(v=>{const o=document.createElement('option');o.value=voices.indexOf(v);o.textContent=v.name.slice(0,18)+'('+v.lang+')';vsel.appendChild(o);})}
+if(synth.onvoiceschanged!==undefined)synth.onvoiceschanged=ldV;setTimeout(ldV,200);
+
+function say(t,cb){synth.cancel();if(!vOn){if(cb)setTimeout(cb,3000);return;}
+const u=new SpeechSynthesisUtterance(t);const i=vsel.value;if(voices[i])u.voice=voices[i];
+u.rate=parseFloat(document.getElementById('rate').value);u.pitch=1.0;
+u.onend=()=>{document.getElementById('narr').classList.remove('speaking');if(cb)cb();};
+u.onerror=()=>{document.getElementById('narr').classList.remove('speaking');if(cb)cb();};
+document.getElementById('narr').classList.add('speaking');synth.speak(u);}
+
+function togV(){vOn=!vOn;document.getElementById('vbtn').textContent=vOn?'🔊 语音':'🔇 静音';}
+
+function mkDots(){const d=document.getElementById('dots');d.innerHTML='';scenes.forEach((_,i)=>{const s=document.createElement('span');s.className=i<=step?'on':'';d.appendChild(s);})}
+
+function show(s){step=Math.max(0,Math.min(s,scenes.length-1));
+document.getElementById('narr').textContent=scenes[step].text;
+document.getElementById('chap').textContent=scenes[step].ch;
+mkDots();say(scenes[step].speech);}
+
+function go(d){synth.cancel();clearTimeout(timer);const ns=step+d;if(ns<0)show(scenes.length-1);else if(ns>=scenes.length)show(0);else show(ns);}
+
+function autoPlay(){synth.cancel();clearTimeout(timer);let i=0;
+const nx=()=>{if(i>=scenes.length)return;show(i);i++;
+const dl=vOn?scenes[i-1].speech.length*150+2500:4000;timer=setTimeout(nx,dl);};nx();}
+
+function reset(){synth.cancel();clearTimeout(timer);step=-1;mkDots();
+document.getElementById('narr').textContent='点击「▶️ 开始」听一个两千年前的故事…';
+document.getElementById('chap').textContent='序幕';}
+
+mkDots();
+
+// === DRAWING ===
+let t=0;
+function draw(){
+t=performance.now()*0.001;
+X.clearRect(0,0,W,H);
+if(step<0){drawIdle();raf();return;}
+if(step<=1)drawSea1();
+else if(step<=3)drawPalace();
+else if(step<=5)drawShips();
+else if(step===6)drawEmpty();
+else if(step<=9)drawScience();
+else drawFinale();
+raf();}
+function raf(){requestAnimationFrame(draw);}
+
+function grad(y1,y2,c1,c2){const g=X.createLinearGradient(0,y1,0,y2);g.addColorStop(0,c1);g.addColorStop(1,c2);return g;}
+
+function drawIdle(){
+X.fillStyle=grad(0,H,'#1a1040','#0a2050');X.fillRect(0,0,W,H);
+X.fillStyle=grad(H*0.65,H,'#0a3060','#041830');X.fillRect(0,H*0.65,W,H*0.35);
+waves(H*0.65,0.3);
+X.fillStyle='rgba(255,215,0,0.6)';X.font=`bold ${W*0.08}px sans-serif`;X.textAlign='center';
+X.fillText('🏰',W/2,H*0.45);
+X.font=`${W*0.035}px sans-serif`;X.fillStyle='rgba(255,255,255,0.4)';
+X.fillText('点击开始',W/2,H*0.58);X.textAlign='left';}
+
+function drawSea1(){
+// Mysterious sea with mirage appearing
+X.fillStyle=grad(0,H*0.6,'#2a1050','#0a2060');X.fillRect(0,0,W,H);
+X.fillStyle=grad(H*0.6,H,'#0a3068','#041830');X.fillRect(0,H*0.6,W,H*0.4);
+waves(H*0.6,0.5);
+// Mirage palace in sky
+const alpha=0.4+Math.sin(t*1.5)*0.25;
+X.globalAlpha=alpha;
+drawMiragePalace(W*0.25,H*0.15,W*0.5,H*0.35);
+X.globalAlpha=1;
+// Glow
+X.fillStyle=`rgba(255,215,0,${0.05+Math.sin(t*2)*0.03})`;X.fillRect(0,0,W,H*0.5);
+// Fisherman
+drawPerson(W*0.15,H*0.58,1.2);}
+
+function drawPalace(){
+// Emperor's palace scene
+X.fillStyle=grad(0,H,'#2a1000','#1a0800');X.fillRect(0,0,W,H);
+// Palace floor
+X.fillStyle='#3a1500';X.fillRect(0,H*0.7,W,H*0.3);
+// Pillars
+for(let i=0;i<5;i++){const x=W*0.15+i*W*0.175;
+X.fillStyle='#8B0000';X.fillRect(x,H*0.25,W*0.03,H*0.45);
+X.fillStyle='#FFD700';X.fillRect(x-W*0.01,H*0.23,W*0.05,H*0.03);}
+// Emperor
+drawEmperor(W*0.5,H*0.55);
+// Xu Fu kneeling
+if(step>=2)drawXuFu(W*0.25,H*0.65);
+// Candles
+for(let i=0;i<3;i++){X.fillStyle='#FF6600';X.beginPath();
+X.arc(W*(0.3+i*0.2),H*0.22,W*0.01+Math.sin(t*4+i)*2,0,Math.PI*2);X.fill();}}
+
+function drawShips(){
+X.fillStyle=grad(0,H*0.55,'#1a1040','#0a2060');X.fillRect(0,0,W,H);
+X.fillStyle=grad(H*0.55,H,'#0a3068','#041830');X.fillRect(0,H*0.55,W,H*0.45);
+waves(H*0.55,0.6);
+// Ships
+for(let i=0;i<3;i++){const x=W*0.2+i*W*0.25+Math.sin(t*0.5+i)*10;const y=H*0.5+Math.sin(t*0.8+i*2)*8;
+drawShip(x,y,0.7-i*0.1);}
+// Mirage fading in distance
+X.globalAlpha=0.2+Math.sin(t)*0.1;
+drawMiragePalace(W*0.3,H*0.02,W*0.4,H*0.2);
+X.globalAlpha=1;}
+
+function drawEmpty(){
+// Empty sea, loneliness
+X.fillStyle=grad(0,H*0.5,'#0a0a20','#0a1840');X.fillRect(0,0,W,H);
+X.fillStyle=grad(H*0.5,H,'#0a2050','#040c20');X.fillRect(0,H*0.5,W,H*0.5);
+waves(H*0.5,0.3);
+// Stars
+for(let i=0;i<30;i++){X.fillStyle=`rgba(255,255,255,${0.3+Math.sin(t+i)*0.3})`;
+X.beginPath();X.arc((i*137)%W,(i*97)%H*0.45,1.5,0,Math.PI*2);X.fill();}
+// Empty throne suggestion
+X.fillStyle='rgba(255,215,0,0.1)';X.font=`${W*0.06}px sans-serif`;X.textAlign='center';
+X.fillText('👑',W/2,H*0.4);X.textAlign='left';}
+
+function drawScience(){
+X.fillStyle=grad(0,H,'#87CEEB','#E0F7FA');X.fillRect(0,0,W,H);
+X.fillStyle=grad(H*0.68,H,'#1976D2','#0D47A1');X.fillRect(0,H*0.68,W,H*0.32);
+waves(H*0.68,0.4);
+// Sun
+X.beginPath();X.arc(W*0.82,H*0.1,W*0.06,0,Math.PI*2);X.fillStyle='#FFD700';X.shadowColor='#FFD700';X.shadowBlur=20;X.fill();X.shadowBlur=0;
+// Air layers
+const colors=['rgba(255,80,40,0.12)','rgba(255,140,50,0.10)','rgba(200,200,80,0.08)','rgba(100,160,255,0.08)','rgba(50,100,220,0.10)'];
+for(let i=0;i<5;i++){const y=H*0.25+i*(H*0.43/5);X.fillStyle=colors[4-i];X.fillRect(0,y,W,H*0.43/5);}
+// City
+city(W*0.05,H*0.67,0.8);
+// Light ray curve
+if(step>=9){
+const sx=W*0.12,sy=H*0.66,ex=W*0.75,ey=H*0.66,cx=W*0.45,cy=H*0.08;
+X.beginPath();X.moveTo(sx,sy);
+for(let i=0;i<=50;i++){const tt=i/50;const px=(1-tt)*(1-tt)*sx+2*(1-tt)*tt*cx+tt*tt*ex;const py=(1-tt)*(1-tt)*sy+2*(1-tt)*tt*cy+tt*tt*ey;X.lineTo(px,py);}
+X.strokeStyle='rgba(255,215,0,0.8)';X.lineWidth=3;X.setLineDash([8,5]);X.stroke();X.setLineDash([]);
+// Eye
+drawPerson(W*0.77,H*0.66,1);
+// Ghost city
+X.globalAlpha=0.4+Math.sin(t*2)*0.15;
+city(W*0.2,H*0.1,0.6);X.globalAlpha=1;
+// Dashed "brain thinks straight" line
+X.beginPath();X.moveTo(W*0.75,H*0.63);X.lineTo(W*0.3,H*0.12);
+X.strokeStyle='rgba(255,255,255,0.4)';X.lineWidth=2;X.setLineDash([4,4]);X.stroke();X.setLineDash([]);}}
+
+function drawFinale(){
+X.fillStyle=grad(0,H,'#0a0a30','#1a1050');X.fillRect(0,0,W,H);
+// Spinning light rays
+for(let i=0;i<8;i++){const a=t*0.3+i*Math.PI/4;
+X.beginPath();X.moveTo(W/2,H/2);X.lineTo(W/2+Math.cos(a)*W*0.5,H/2+Math.sin(a)*H*0.5);
+X.strokeStyle=`rgba(255,215,0,${0.1+Math.sin(t+i)*0.05})`;X.lineWidth=2;X.stroke();}
+// Center text
+X.fillStyle='rgba(255,215,0,0.8)';X.font=`bold ${W*0.04}px sans-serif`;X.textAlign='center';
+X.fillText('光欺骗眼睛',W/2,H*0.38);
+X.fillText('眼睛欺骗大脑',W/2,H*0.48);
+X.fillText('大脑编出千年神话',W/2,H*0.58);
+X.font=`${W*0.07}px sans-serif`;X.fillText('🎭',W/2,H*0.75);
+X.textAlign='left';}
+
+// Helpers
+function waves(y0,op){X.strokeStyle=`rgba(255,255,255,${op*0.4})`;X.lineWidth=1.5;
+for(let row=0;row<5;row++){X.beginPath();const yy=y0+row*H*0.04;
+for(let x=0;x<W;x+=4)X.lineTo(x,yy+Math.sin((x+t*40+row*50)*0.008)*H*0.008);X.stroke();}}
+
+function drawMiragePalace(x,y,w,h){
+X.fillStyle='rgba(255,215,0,0.15)';X.fillRect(x,y,w,h);
+// Towers
+const tw=w*0.12;
+for(let i=0;i<4;i++){const tx=x+w*0.1+i*w*0.25;const th=h*(0.6+i%2*0.25);
+X.fillStyle='rgba(200,170,100,0.6)';X.fillRect(tx,y+h-th,tw,th);
+// Roof
+X.beginPath();X.moveTo(tx-tw*0.2,y+h-th);X.lineTo(tx+tw/2,y+h-th-h*0.15);X.lineTo(tx+tw*1.2,y+h-th);
+X.fillStyle='rgba(180,50,50,0.5)';X.fill();}
+// Glow
+X.fillStyle=`rgba(255,215,0,${0.1+Math.sin(t*3)*0.05})`;X.fillRect(x,y,w,h);}
+
+function drawPerson(x,y,s){
+X.fillStyle='#5D4037';X.fillRect(x-4*s,y-18*s,8*s,18*s);
+X.beginPath();X.arc(x,y-22*s,6*s,0,Math.PI*2);X.fillStyle='#FFCC80';X.fill();}
+
+function drawEmperor(x,y){
+X.fillStyle='#FFD700';X.fillRect(x-15,y-40,30,40);
+X.beginPath();X.arc(x,y-48,12,0,Math.PI*2);X.fillStyle='#FFCC80';X.fill();
+// Crown
+X.fillStyle='#FFD700';X.fillRect(x-14,y-62,28,8);
+for(let i=0;i<5;i++){X.fillRect(x-12+i*6,y-68,3,6);}}
+
+function drawXuFu(x,y){
+// Kneeling figure
+X.fillStyle='#4a4a4a';X.fillRect(x-5,y-10,20,10);
+X.beginPath();X.arc(x,y-16,7,0,Math.PI*2);X.fillStyle='#FFCC80';X.fill();}
+
+function drawShip(x,y,s){
+X.save();X.translate(x,y);X.scale(s,s);
+// Hull
+X.beginPath();X.moveTo(-40,0);X.quadraticCurveTo(-35,20,0,22);X.quadraticCurveTo(35,20,40,0);X.closePath();
+X.fillStyle='#5D3A1A';X.fill();
+// Sail
+X.fillStyle='#DDD';X.beginPath();X.moveTo(0,-50);X.lineTo(15,0);X.lineTo(-15,0);X.closePath();X.fill();
+// Mast
+X.fillStyle='#3E2723';X.fillRect(-1.5,-55,3,55);
+X.restore();}
+
+function city(x,y,s){
+X.save();X.translate(x,y);X.scale(s,s);
+[{x:0,w:25,h:50},{x:30,w:18,h:70},{x:52,w:28,h:42},{x:84,w:20,h:60},{x:108,w:24,h:48}].forEach(b=>{
+X.fillStyle='#455A64';X.fillRect(b.x,-b.h,b.w,b.h);
+X.fillStyle='#FFF9C4';for(let wy=-b.h+6;wy<-3;wy+=10)for(let wx=b.x+3;wx<b.x+b.w-3;wx+=7)X.fillRect(wx,wy,3,5);});
+X.restore();}
+
+draw();
+</script>
+</body>
+</html>

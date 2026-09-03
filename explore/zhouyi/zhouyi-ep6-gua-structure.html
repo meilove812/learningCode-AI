@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco传统文化讲解：卦的结构">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>周易讲解 · 第六期：卦的结构</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'PingFang SC', 'Noto Serif SC', serif;
+  background: #0a0a0f;
+  color: #e8e0d0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.pages-wrapper { width: 100%; height: 100%; position: relative; }
+.page {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 40px 24px;
+  opacity: 0; transform: translateX(100%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none; overflow: hidden;
+}
+.page.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.page.prev { opacity: 0; transform: translateX(-100%); }
+
+/* Backgrounds */
+.bg-void { background: radial-gradient(ellipse at center, #080808 0%, #000 70%); }
+.bg-cosmos { background: radial-gradient(ellipse at center, #0f0a1e 0%, #060410 70%); }
+.bg-dawn { background: linear-gradient(180deg, #0a0820 0%, #1a1545 50%, #0f0d25 100%); }
+.bg-light { background: linear-gradient(135deg, #1a1508 0%, #0f0d05 50%, #080604 100%); }
+.bg-dual { background: linear-gradient(135deg, #0a0a18 0%, #080812 100%); }
+.bg-nature { background: linear-gradient(180deg, #050a10 0%, #0a1520 50%, #050a0f 100%); }
+.bg-flow { background: radial-gradient(ellipse at 50% 60%, #0a1020 0%, #060810 70%); }
+.bg-balance { background: radial-gradient(ellipse at center, #100a18 0%, #080510 70%); }
+.bg-final { background: radial-gradient(ellipse at center, #0f0818 0%, #060410 70%); }
+.bg-deep { background: linear-gradient(180deg, #080510 0%, #0a0818 50%, #060412 100%); }
+
+/* Typography */
+.title-main {
+  font-size: clamp(2.2em, 8vw, 3.5em);
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, #c0c0c0 50%, #ffd700 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-align: center; line-height: 1.3;
+  animation: textGlow 4s ease-in-out infinite;
+}
+@keyframes textGlow {
+  0%,100% { filter: brightness(1) drop-shadow(0 0 8px rgba(255,255,255,0.1)); }
+  50% { filter: brightness(1.15) drop-shadow(0 0 20px rgba(255,215,0,0.3)); }
+}
+.subtitle { font-size: clamp(0.85em, 3.2vw, 1.1em); color: #5a5040; margin-top: 12px; text-align: center; letter-spacing: 4px; }
+.page-title {
+  font-size: clamp(1.4em, 5.5vw, 2em); font-weight: 800;
+  color: #ffd700; text-align: center; margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(255,215,0,0.15);
+}
+.page-text {
+  font-size: clamp(0.95em, 3.8vw, 1.15em); line-height: 2;
+  text-align: center; color: #c8bca0; max-width: 560px;
+}
+.page-text .em { color: #ffd700; font-weight: bold; }
+.page-text .light { color: #f0f0f0; font-weight: bold; }
+.page-text .dark { color: #6a7a8a; }
+.fact-card {
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15);
+  border-radius: 12px; padding: 14px 18px; margin-top: 18px;
+  max-width: 480px; text-align: left; font-size: 0.88em; line-height: 1.8; color: #a89878;
+}
+.fact-card .label { color: #ffd700; font-weight: bold; margin-bottom: 4px; }
+
+/* Animations */
+.ani { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.page.active .ani { opacity: 1; transform: translateY(0); }
+.page.active .ani:nth-child(2) { transition-delay: 0.15s; }
+.page.active .ani:nth-child(3) { transition-delay: 0.3s; }
+.page.active .ani:nth-child(4) { transition-delay: 0.45s; }
+.page.active .ani:nth-child(5) { transition-delay: 0.6s; }
+.page.active .ani:nth-child(6) { transition-delay: 0.75s; }
+
+/* Particles */
+.particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.particle {
+  position: absolute; border-radius: 50%; opacity: 0;
+  animation: floatUp 7s ease-in-out infinite;
+}
+.particle-gold { background: radial-gradient(circle, #ffd700, transparent); }
+.particle-white { background: radial-gradient(circle, rgba(255,255,255,0.8), transparent); }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(100vh) scale(0.3); }
+  15% { opacity: 0.7; } 85% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(0.8); }
+}
+
+/* Stars */
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.star {
+  position: absolute; background: #fff; border-radius: 50%;
+  animation: twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.85; transform: scale(1.2); } }
+
+/* Navigation */
+.nav-hint {
+  position: fixed; bottom: 18px; left: 0; right: 0;
+  text-align: center; color: rgba(255,255,255,0.25); font-size: 0.75em;
+  pointer-events: none; transition: opacity 0.5s; z-index: 100;
+}
+.nav-dots {
+  position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 7px; z-index: 100;
+}
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); transition: all 0.3s; cursor: pointer;
+}
+.nav-dot.active { background: #ffd700; box-shadow: 0 0 6px rgba(255,215,0,0.5); transform: scale(1.4); }
+
+.audio-btn {
+  position: fixed; top: 14px; right: 14px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: #ffd700; font-size: 1.1em;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 200; backdrop-filter: blur(10px); transition: all 0.3s;
+}
+.audio-btn:active { transform: scale(0.9); }
+.audio-btn.playing { background: rgba(255,215,0,0.15); box-shadow: 0 0 12px rgba(255,215,0,0.2); }
+.page-num { position: fixed; top: 16px; left: 16px; font-size: 0.7em; color: rgba(255,255,255,0.2); z-index: 100; }
+
+/* Voice panel */
+.voice-panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(10,10,15,0.96); backdrop-filter: blur(20px);
+  padding: 20px; border-top: 1px solid rgba(255,215,0,0.15);
+  transform: translateY(100%); transition: transform 0.3s; z-index: 300;
+  border-radius: 18px 18px 0 0;
+}
+.voice-panel.show { transform: translateY(0); }
+.voice-panel label { display: block; color: #7a6a5a; font-size: 0.82em; margin-bottom: 6px; }
+.voice-panel select, .voice-panel input[type="range"] {
+  width: 100%; padding: 10px; border-radius: 8px;
+  border: 1px solid rgba(255,215,0,0.15); background: rgba(255,255,255,0.04);
+  color: #d4c8b0; font-size: 0.95em; margin-bottom: 12px;
+}
+.voice-panel .close-panel { text-align: center; color: #ffd700; cursor: pointer; padding: 8px; }
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
+<div class="page-num" id="pageNum">1 / 10</div>
+<div class="nav-dots" id="navDots"></div>
+<div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
+
+<div class="pages-wrapper">
+
+  <!-- Page 1: Cover -->
+  <div class="page bg-cosmos active" data-page="0">
+    <div class="particles" id="p0"></div>
+    <div class="ani">
+      <svg width="200" height="240" viewBox="0 0 200 240">
+        <defs>
+          <linearGradient id="gYao" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#ffd700" stop-opacity="0.9"/>
+            <stop offset="100%" stop-color="#b8860b" stop-opacity="0.5"/>
+          </linearGradient>
+          <filter id="glowLine">
+            <feGaussianBlur stdDeviation="2" result="g"/>
+            <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- Six lines animating in from bottom to top -->
+        <!-- Line 6 (top) - yang -->
+        <rect x="50" y="30" width="100" height="8" rx="3" fill="url(#gYao)" filter="url(#glowLine)">
+          <animate attributeName="opacity" values="0;1" dur="0.5s" begin="2.5s" fill="freeze"/>
+          <animate attributeName="width" values="0;100" dur="0.5s" begin="2.5s" fill="freeze"/>
+        </rect>
+        <!-- Line 5 - yin -->
+        <rect x="50" y="62" width="42" height="8" rx="3" fill="url(#gYao)" filter="url(#glowLine)">
+          <animate attributeName="opacity" values="0;1" dur="0.5s" begin="2s" fill="freeze"/>
+        </rect>
+        <rect x="108" y="62" width="42" height="8" rx="3" fill="url(#gYao)" filter="url(#glowLine)">
+          <animate attributeName="opacity" values="0;1" dur="0.5s" begin="2s" fill="freeze"/>
+        </rect>
+        <!-- Line 4 - yang -->
+        <rect x="50" y="94" width="100" height="8" rx="3" fill="url(#gYao)" filter="url(#glowLine)">
+          <animate attributeName="opacity" values="0;1" dur="0.5s" begin="1.5s" fill="freeze"/>
+        </rect>
+        <!-- Line 3 - yin -->
+        <rect x="50" y="126" width="42" height="8" rx="3" fill="url(#gYao)" filter="url(#glowLine)">
+          <animate attributeName="opacity" values="0;1" dur="0.5s" begin="1s" fill="freeze"/>
+        </rect>
+        <rect x="108" y="126" width="42" height="8" rx="3" fill="url(#gYao)" filter="url(#glowLine)">
+          <animate attributeName="opacity" values="0;1" dur="0.5s" begin="1s" fill="freeze"/>
+        </rect>
+        <!-- Line 2 - yang -->
+        <rect x="50" y="158" width="100" height="8" rx="3" fill="url(#gYao)" filter="url(#glowLine)">
+          <animate attributeName="opacity" values="0;1" dur="0.5s" begin="0.5s" fill="freeze"/>
+        </rect>
+        <!-- Line 1 (bottom) - yang -->
+        <rect x="50" y="190" width="100" height="8" rx="3" fill="url(#gYao)" filter="url(#glowLine)">
+          <animate attributeName="opacity" values="0;1" dur="0.5s" begin="0s" fill="freeze"/>
+        </rect>
+        <!-- Position labels -->
+        <text x="165" y="37" font-size="9" fill="rgba(255,215,0,0.5)">上</text>
+        <text x="165" y="69" font-size="9" fill="rgba(255,215,0,0.5)">五</text>
+        <text x="165" y="101" font-size="9" fill="rgba(255,215,0,0.5)">四</text>
+        <text x="165" y="133" font-size="9" fill="rgba(255,215,0,0.5)">三</text>
+        <text x="165" y="165" font-size="9" fill="rgba(255,215,0,0.5)">二</text>
+        <text x="165" y="197" font-size="9" fill="rgba(255,215,0,0.5)">初</text>
+        <!-- Arrow indicating bottom-up -->
+        <path d="M35,195 L35,35" fill="none" stroke="rgba(255,215,0,0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+        <polygon points="32,38 35,28 38,38" fill="rgba(255,215,0,0.3)"/>
+        <text x="25" y="115" font-size="8" fill="rgba(255,215,0,0.3)" transform="rotate(-90, 25, 115)">从下往上</text>
+      </svg>
+    </div>
+    <div class="title-main ani">卦的结构</div>
+    <div class="subtitle ani">第六期 · 爻、位、象</div>
+  </div>
+
+  <!-- Page 2: Yao - the smallest unit -->
+  <div class="page bg-dawn" data-page="1">
+    <div class="stars" id="s1"></div>
+    <div class="ani">
+      <svg width="240" height="140" viewBox="0 0 240 140">
+        <!-- Yang yao -->
+        <g>
+          <rect x="30" y="35" width="80" height="10" rx="4" fill="rgba(255,215,0,0.8)" stroke="rgba(255,215,0,0.4)" stroke-width="1">
+            <animate attributeName="filter" values="none;url(#glowYao);none" dur="3s" repeatCount="indefinite"/>
+          </rect>
+          <text x="70" y="70" text-anchor="middle" font-size="12" fill="#ffd700">阳爻 ⚊</text>
+          <text x="70" y="88" text-anchor="middle" font-size="9" fill="#8a7a5a">一整条线</text>
+        </g>
+        <!-- Yin yao -->
+        <g>
+          <rect x="140" y="35" width="32" height="10" rx="4" fill="rgba(100,140,200,0.8)" stroke="rgba(100,140,200,0.4)" stroke-width="1"/>
+          <rect x="188" y="35" width="32" height="10" rx="4" fill="rgba(100,140,200,0.8)" stroke="rgba(100,140,200,0.4)" stroke-width="1"/>
+          <text x="180" y="70" text-anchor="middle" font-size="12" fill="#6090c0">阴爻 ⚋</text>
+          <text x="180" y="88" text-anchor="middle" font-size="9" fill="#5a6a7a">中间断开</text>
+        </g>
+        <!-- VS -->
+        <text x="120" y="44" text-anchor="middle" font-size="14" fill="rgba(255,255,255,0.3)">vs</text>
+        <!-- Annotation -->
+        <text x="120" y="125" text-anchor="middle" font-size="10" fill="#5a5040">爻（yáo）= 卦的最小零件</text>
+      </svg>
+    </div>
+    <div class="page-title ani">爻：最小的零件</div>
+    <div class="page-text ani">
+      "爻"读作 <span class="em">yáo</span>，<br>
+      是卦最小的组成单位。<br><br>
+      只有两种：<br>
+      <span class="em">阳爻 ⚊</span> — 一整条横线<br>
+      <span class="dark">阴爻 ⚋</span> — 中间断开的两段<br><br>
+      就像电脑只用<span class="em">0和1</span>，<br>
+      周易只用这<span class="em">两种线条</span><br>
+      就能表达万物！
+    </div>
+  </div>
+
+  <!-- Page 3: Position - Six Positions -->
+  <div class="page bg-dual" data-page="2">
+    <div class="ani">
+      <svg width="220" height="240" viewBox="0 0 220 240">
+        <defs>
+          <linearGradient id="gPos" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="rgba(100,140,200,0.6)"/>
+            <stop offset="50%" stop-color="rgba(200,180,100,0.6)"/>
+            <stop offset="100%" stop-color="rgba(255,215,0,0.8)"/>
+          </linearGradient>
+        </defs>
+        <!-- 6 positions with labels -->
+        <g>
+          <!-- Position 6 (上) -->
+          <rect x="60" y="20" width="80" height="8" rx="3" fill="rgba(255,215,0,0.6)"/>
+          <text x="155" y="28" font-size="11" fill="#ffd700">上（第六）</text>
+          <!-- Position 5 (五) -->
+          <rect x="60" y="55" width="33" height="8" rx="3" fill="rgba(255,200,0,0.5)"/><rect x="107" y="55" width="33" height="8" rx="3" fill="rgba(255,200,0,0.5)"/>
+          <text x="155" y="63" font-size="11" fill="#e8c840">五（第五）</text>
+          <!-- Position 4 (四) -->
+          <rect x="60" y="90" width="80" height="8" rx="3" fill="rgba(200,180,80,0.5)"/>
+          <text x="155" y="98" font-size="11" fill="#c8b050">四（第四）</text>
+          <!-- Position 3 (三) -->
+          <rect x="60" y="125" width="33" height="8" rx="3" fill="rgba(180,160,80,0.4)"/><rect x="107" y="125" width="33" height="8" rx="3" fill="rgba(180,160,80,0.4)"/>
+          <text x="155" y="133" font-size="11" fill="#a09040">三（第三）</text>
+          <!-- Position 2 (二) -->
+          <rect x="60" y="160" width="80" height="8" rx="3" fill="rgba(120,150,180,0.5)"/>
+          <text x="155" y="168" font-size="11" fill="#7898b0">二（第二）</text>
+          <!-- Position 1 (初) -->
+          <rect x="60" y="195" width="80" height="8" rx="3" fill="rgba(100,140,200,0.5)"/>
+          <text x="155" y="203" font-size="11" fill="#6090c0">初（第一）</text>
+        </g>
+        <!-- Arrow bottom to top -->
+        <path d="M40,200 L40,25" fill="none" stroke="url(#gPos)" stroke-width="2" stroke-linecap="round"/>
+        <polygon points="37,28 40,18 43,28" fill="#ffd700"/>
+        <text x="30" y="115" font-size="9" fill="rgba(255,215,0,0.4)" text-anchor="middle" transform="rotate(-90, 30, 115)">从下往上数</text>
+      </svg>
+    </div>
+    <div class="page-title ani">位：六个位置</div>
+    <div class="page-text ani">
+      一个卦有<span class="em">六条爻</span>，<br>
+      从<span class="em">下往上</span>数：<br><br>
+      第一条叫 <span class="em">初</span>（最底下）<br>
+      第二条叫 <span class="em">二</span><br>
+      第三条叫 <span class="em">三</span><br>
+      第四条叫 <span class="em">四</span><br>
+      第五条叫 <span class="em">五</span><br>
+      第六条叫 <span class="em">上</span>（最顶上）<br><br>
+      <span class="dark">注意：是从下面开始数哦！</span>
+    </div>
+  </div>
+
+  <!-- Page 4: Meaning of Positions -->
+  <div class="page bg-flow" data-page="3">
+    <div class="particles" id="p3"></div>
+    <div class="ani">
+      <svg width="200" height="220" viewBox="0 0 200 220">
+        <!-- Tower/hierarchy visual -->
+        <defs>
+          <linearGradient id="gTower" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="rgba(100,130,180,0.3)"/>
+            <stop offset="100%" stop-color="rgba(255,215,0,0.5)"/>
+          </linearGradient>
+        </defs>
+        <!-- Pyramid layers -->
+        <polygon points="100,15 140,50 60,50" fill="rgba(180,50,50,0.2)" stroke="rgba(255,100,100,0.3)" stroke-width="1"/>
+        <text x="100" y="42" text-anchor="middle" font-size="8" fill="#c06060">上=过极⚠️</text>
+        
+        <rect x="55" y="55" width="90" height="30" rx="3" fill="rgba(255,215,0,0.15)" stroke="rgba(255,215,0,0.3)" stroke-width="1"/>
+        <text x="100" y="74" text-anchor="middle" font-size="9" fill="#ffd700">五=👑 君位</text>
+        
+        <rect x="50" y="90" width="100" height="30" rx="3" fill="rgba(200,180,80,0.1)" stroke="rgba(200,180,80,0.2)" stroke-width="1"/>
+        <text x="100" y="109" text-anchor="middle" font-size="9" fill="#c8a840">四=近君之位</text>
+        
+        <rect x="45" y="125" width="110" height="30" rx="3" fill="rgba(200,100,50,0.1)" stroke="rgba(200,100,50,0.2)" stroke-width="1"/>
+        <text x="100" y="144" text-anchor="middle" font-size="9" fill="#c07040">三=⚡危险位</text>
+        
+        <rect x="40" y="160" width="120" height="30" rx="3" fill="rgba(100,150,200,0.1)" stroke="rgba(100,150,200,0.2)" stroke-width="1"/>
+        <text x="100" y="179" text-anchor="middle" font-size="9" fill="#6898b8">二=臣位</text>
+        
+        <rect x="35" y="195" width="130" height="30" rx="3" fill="rgba(80,120,80,0.1)" stroke="rgba(80,120,80,0.2)" stroke-width="1"/>
+        <text x="100" y="214" text-anchor="middle" font-size="9" fill="#5a9060">初=起始/民</text>
+      </svg>
+    </div>
+    <div class="page-title ani">每个位置都有含义</div>
+    <div class="page-text ani" style="text-align:left;max-width:440px;">
+      <span class="em">初</span> = 起步阶段，普通百姓<br>
+      <span class="em">二</span> = 臣子之位，能干有为<br>
+      <span class="em">三</span> = ⚡ 危险位！上不上下不下<br>
+      <span class="em">四</span> = 靠近君王，要小心谨慎<br>
+      <span class="em">五</span> = 👑 君位！最尊贵的位置<br>
+      <span class="em">上</span> = 过了头，物极必反<br><br>
+      <span class="dark">就像爬楼梯，每层风景不同。</span>
+    </div>
+  </div>
+
+  <!-- Page 5: Guaci and Yaoci -->
+  <div class="page bg-light" data-page="4">
+    <div class="stars" id="s4"></div>
+    <div class="ani">
+      <svg width="240" height="130" viewBox="0 0 240 130">
+        <!-- Left: Guaci (whole hexagram) -->
+        <g>
+          <rect x="15" y="15" width="95" height="100" rx="8" fill="rgba(255,215,0,0.05)" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+          <text x="62" y="38" text-anchor="middle" font-size="10" fill="#ffd700" font-weight="bold">卦辞</text>
+          <!-- mini hexagram -->
+          <rect x="35" y="48" width="55" height="5" rx="2" fill="rgba(255,215,0,0.4)"/>
+          <rect x="35" y="58" width="55" height="5" rx="2" fill="rgba(255,215,0,0.4)"/>
+          <rect x="35" y="68" width="22" height="5" rx="2" fill="rgba(255,215,0,0.4)"/><rect x="68" y="68" width="22" height="5" rx="2" fill="rgba(255,215,0,0.4)"/>
+          <rect x="35" y="78" width="55" height="5" rx="2" fill="rgba(255,215,0,0.4)"/>
+          <rect x="35" y="88" width="22" height="5" rx="2" fill="rgba(255,215,0,0.4)"/><rect x="68" y="88" width="22" height="5" rx="2" fill="rgba(255,215,0,0.4)"/>
+          <rect x="35" y="98" width="55" height="5" rx="2" fill="rgba(255,215,0,0.4)"/>
+          <text x="62" y="122" text-anchor="middle" font-size="8" fill="#6a5a4a">整体判断</text>
+        </g>
+        <!-- Right: Yaoci (each line) -->
+        <g>
+          <rect x="130" y="15" width="95" height="100" rx="8" fill="rgba(100,150,200,0.05)" stroke="rgba(100,150,200,0.2)" stroke-width="1"/>
+          <text x="177" y="38" text-anchor="middle" font-size="10" fill="#6090c0" font-weight="bold">爻辞</text>
+          <!-- mini lines with individual highlights -->
+          <rect x="150" y="48" width="55" height="5" rx="2" fill="rgba(100,150,200,0.3)"/>
+          <rect x="150" y="58" width="55" height="5" rx="2" fill="rgba(100,150,200,0.3)"/>
+          <rect x="150" y="68" width="55" height="5" rx="2" fill="rgba(255,100,100,0.5)" stroke="rgba(255,100,100,0.5)" stroke-width="0.5">
+            <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="150" y="78" width="55" height="5" rx="2" fill="rgba(100,150,200,0.3)"/>
+          <rect x="150" y="88" width="55" height="5" rx="2" fill="rgba(100,150,200,0.3)"/>
+          <rect x="150" y="98" width="55" height="5" rx="2" fill="rgba(100,150,200,0.3)"/>
+          <text x="177" y="122" text-anchor="middle" font-size="8" fill="#5a6a7a">逐爻判断</text>
+        </g>
+        <!-- Arrow between -->
+        <text x="120" y="70" text-anchor="middle" font-size="14" fill="rgba(255,255,255,0.2)">+</text>
+      </svg>
+    </div>
+    <div class="page-title ani">卦辞与爻辞</div>
+    <div class="page-text ani">
+      每个卦有两层文字：<br><br>
+      <span class="em">卦辞</span> — 对整个卦的判断<br>
+      <span class="dark">（周文王写的）</span><br><br>
+      <span class="em">爻辞</span> — 对每一爻的判断<br>
+      <span class="dark">（周公写的，每卦6条）</span><br><br>
+      卦辞告诉你<span class="em">大方向</span>，<br>
+      爻辞告诉你<span class="em">每一步</span>该怎么走。
+    </div>
+  </div>
+
+  <!-- Page 6: Xiang - Image -->
+  <div class="page bg-nature" data-page="5">
+    <div class="stars" id="s5"></div>
+    <div class="ani">
+      <svg width="240" height="140" viewBox="0 0 240 140">
+        <!-- Sky (Qian) above Water (Kan) = Song -->
+        <defs>
+          <linearGradient id="gSky" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="rgba(100,150,255,0.3)"/>
+            <stop offset="100%" stop-color="rgba(50,80,150,0.1)"/>
+          </linearGradient>
+          <linearGradient id="gWater" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="rgba(30,80,150,0.1)"/>
+            <stop offset="100%" stop-color="rgba(20,50,100,0.4)"/>
+          </linearGradient>
+        </defs>
+        <!-- Scene: sky above water -->
+        <rect x="30" y="10" width="100" height="50" rx="5" fill="url(#gSky)"/>
+        <text x="80" y="38" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.6)">☰ 天 ↑</text>
+        <rect x="30" y="65" width="100" height="50" rx="5" fill="url(#gWater)"/>
+        <text x="80" y="95" text-anchor="middle" font-size="9" fill="rgba(100,180,255,0.6)">☵ 水 ↓</text>
+        <!-- Arrow showing opposite directions -->
+        <path d="M75,50 L75,40" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+        <polygon points="72,41 75,35 78,41" fill="rgba(255,255,255,0.4)"/>
+        <path d="M85,75 L85,85" stroke="rgba(100,180,255,0.4)" stroke-width="1.5"/>
+        <polygon points="82,84 85,90 88,84" fill="rgba(100,180,255,0.4)"/>
+        <!-- = sign -->
+        <text x="145" y="62" font-size="16" fill="rgba(255,215,0,0.5)">=</text>
+        <!-- Result: dispute -->
+        <g>
+          <rect x="160" y="30" width="65" height="60" rx="8" fill="rgba(255,215,0,0.05)" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+          <text x="192" y="55" text-anchor="middle" font-size="14" fill="#ffd700">讼</text>
+          <text x="192" y="75" text-anchor="middle" font-size="9" fill="#8a7a5a">争论</text>
+        </g>
+        <text x="120" y="130" text-anchor="middle" font-size="9" fill="#5a5040">天往上走，水往下流 → 方向相反 → 争论</text>
+      </svg>
+    </div>
+    <div class="page-title ani">象：看图说话</div>
+    <div class="page-text ani">
+      <span class="em">「象」</span>就是卦给你画的一幅画。<br><br>
+      看到卦的上下两部分，<br>
+      想象它们在自然中的画面：<br><br>
+      天在水上 → 各走各的 → <span class="em">争论</span><br>
+      水在山下 → 泉水初涌 → <span class="em">蒙昧</span><br>
+      火在天上 → 光照万物 → <span class="em">大有</span><br><br>
+      <span class="dark">读卦就是看画、讲故事！</span>
+    </div>
+  </div>
+
+  <!-- Page 7: Tuan and Xiang - Confucius -->
+  <div class="page bg-balance" data-page="6">
+    <div class="particles" id="p6"></div>
+    <div class="ani">
+      <svg width="220" height="130" viewBox="0 0 220 130">
+        <!-- Confucius figure (simplified) -->
+        <circle cx="110" cy="35" r="18" fill="none" stroke="rgba(255,215,0,0.4)" stroke-width="1.5">
+          <animate attributeName="stroke-opacity" values="0.3;0.7;0.3" dur="4s" repeatCount="indefinite"/>
+        </circle>
+        <!-- Hat -->
+        <rect x="95" y="15" width="30" height="5" rx="2" fill="rgba(255,215,0,0.3)"/>
+        <!-- Beard lines -->
+        <path d="M104,50 L104,60" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+        <path d="M110,52 L110,65" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+        <path d="M116,50 L116,60" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+        <!-- Two books/scrolls -->
+        <rect x="40" y="80" width="55" height="35" rx="5" fill="rgba(255,215,0,0.06)" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+        <text x="67" y="96" text-anchor="middle" font-size="9" fill="#ffd700">彖辞</text>
+        <text x="67" y="110" text-anchor="middle" font-size="8" fill="#6a5a4a">解释卦辞</text>
+        <rect x="125" y="80" width="55" height="35" rx="5" fill="rgba(100,150,200,0.06)" stroke="rgba(100,150,200,0.2)" stroke-width="1"/>
+        <text x="152" y="96" text-anchor="middle" font-size="9" fill="#6090c0">象辞</text>
+        <text x="152" y="110" text-anchor="middle" font-size="8" fill="#5a6a7a">解释象义</text>
+        <!-- Lines connecting -->
+        <line x1="100" y1="55" x2="67" y2="78" stroke="rgba(255,215,0,0.15)" stroke-width="1" stroke-dasharray="2 2"/>
+        <line x1="120" y1="55" x2="152" y2="78" stroke="rgba(100,150,200,0.15)" stroke-width="1" stroke-dasharray="2 2"/>
+        <!-- Label -->
+        <text x="110" y="128" text-anchor="middle" font-size="8" fill="#5a5040">孔子 · 十翼（注释）</text>
+      </svg>
+    </div>
+    <div class="page-title ani">孔子的注解</div>
+    <div class="page-text ani">
+      周文王写了卦辞，周公写了爻辞。<br>
+      后来<span class="em">孔子</span>又加了注解：<br><br>
+      <span class="em">彖辞</span> — 解释整个卦为什么这样<br>
+      <span class="em">象辞</span> — 解释画面代表什么<br><br>
+      这些注解叫做<span class="em">"十翼"</span>，<br>
+      像给周易装上了翅膀，<br>
+      <span class="dark">帮助后人更好地理解。</span>
+    </div>
+  </div>
+
+  <!-- Page 8: How to Read a Hexagram -->
+  <div class="page bg-deep" data-page="7">
+    <div class="stars" id="s7"></div>
+    <div class="ani">
+      <svg width="200" height="160" viewBox="0 0 200 160">
+        <!-- 4 steps with arrows -->
+        <g>
+          <!-- Step 1 -->
+          <circle cx="40" cy="30" r="15" fill="rgba(255,215,0,0.1)" stroke="rgba(255,215,0,0.3)" stroke-width="1"/>
+          <text x="40" y="34" text-anchor="middle" font-size="10" fill="#ffd700">1</text>
+          <text x="75" y="34" font-size="9" fill="#c8bca0">看卦名</text>
+          <!-- Arrow -->
+          <path d="M40,48 L40,58" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+          <!-- Step 2 -->
+          <circle cx="40" cy="70" r="15" fill="rgba(255,215,0,0.1)" stroke="rgba(255,215,0,0.3)" stroke-width="1"/>
+          <text x="40" y="74" text-anchor="middle" font-size="10" fill="#ffd700">2</text>
+          <text x="75" y="74" font-size="9" fill="#c8bca0">读卦辞</text>
+          <!-- Arrow -->
+          <path d="M40,88 L40,98" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+          <!-- Step 3 -->
+          <circle cx="40" cy="110" r="15" fill="rgba(255,215,0,0.1)" stroke="rgba(255,215,0,0.3)" stroke-width="1"/>
+          <text x="40" y="114" text-anchor="middle" font-size="10" fill="#ffd700">3</text>
+          <text x="75" y="114" font-size="9" fill="#c8bca0">看各爻</text>
+          <!-- Arrow -->
+          <path d="M40,128 L40,138" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+          <!-- Step 4 -->
+          <circle cx="40" cy="150" r="15" fill="rgba(255,100,100,0.1)" stroke="rgba(255,100,100,0.3)" stroke-width="1"/>
+          <text x="40" y="154" text-anchor="middle" font-size="10" fill="#e07060">4</text>
+          <text x="75" y="154" font-size="9" fill="#c8bca0">找动爻</text>
+        </g>
+        <!-- Right side: mini hexagram with highlighted moving line -->
+        <g transform="translate(130, 40)">
+          <rect x="0" y="0" width="50" height="5" rx="2" fill="rgba(255,215,0,0.3)"/>
+          <rect x="0" y="15" width="50" height="5" rx="2" fill="rgba(255,215,0,0.3)"/>
+          <rect x="0" y="30" width="20" height="5" rx="2" fill="rgba(255,215,0,0.3)"/><rect x="30" y="30" width="20" height="5" rx="2" fill="rgba(255,215,0,0.3)"/>
+          <rect x="0" y="45" width="50" height="5" rx="2" fill="rgba(255,100,100,0.7)" stroke="rgba(255,100,100,0.5)" stroke-width="1">
+            <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite"/>
+          </rect>
+          <text x="55" y="50" font-size="7" fill="#e07060">← 动爻</text>
+          <rect x="0" y="60" width="20" height="5" rx="2" fill="rgba(255,215,0,0.3)"/><rect x="30" y="60" width="20" height="5" rx="2" fill="rgba(255,215,0,0.3)"/>
+          <rect x="0" y="75" width="50" height="5" rx="2" fill="rgba(255,215,0,0.3)"/>
+        </g>
+      </svg>
+    </div>
+    <div class="page-title ani">怎么读一个卦？</div>
+    <div class="page-text ani" style="text-align:left;max-width:440px;">
+      <span class="em">第一步：看卦名</span><br>
+      了解这是什么场景<br><br>
+      <span class="em">第二步：读卦辞</span><br>
+      掌握整体趋势<br><br>
+      <span class="em">第三步：看各爻</span><br>
+      从初到上，逐步分析<br><br>
+      <span class="em">第四步：找动爻</span><br>
+      <span class="dark">正在变化的那一爻，</span><br>
+      <span class="dark">就是此刻最关键的信息。</span>
+    </div>
+  </div>
+
+  <!-- Page 9: Life Analogy - Weather Forecast -->
+  <div class="page bg-cosmos" data-page="8">
+    <div class="particles" id="p8"></div>
+    <div class="ani">
+      <svg width="200" height="140" viewBox="0 0 200 140">
+        <!-- Weather forecast card -->
+        <rect x="20" y="10" width="160" height="120" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,215,0,0.15)" stroke-width="1"/>
+        <!-- Header -->
+        <rect x="20" y="10" width="160" height="30" rx="10" fill="rgba(255,215,0,0.06)"/>
+        <text x="100" y="30" text-anchor="middle" font-size="10" fill="#ffd700">📋 今日运势预报</text>
+        <!-- Overall -->
+        <text x="35" y="55" font-size="9" fill="#c8bca0">整体趋势：</text>
+        <text x="110" y="55" font-size="9" fill="#ffd700">☀️ 顺利（卦辞）</text>
+        <!-- Hourly breakdown -->
+        <text x="35" y="75" font-size="8" fill="#8a7a5a">初爻：起步平稳 ☁️</text>
+        <text x="35" y="90" font-size="8" fill="#8a7a5a">二爻：贵人相助 ⭐</text>
+        <text x="35" y="105" font-size="8" fill="#c07040">三爻：注意风险 ⚡</text>
+        <text x="35" y="120" font-size="8" fill="#8a7a5a">五爻：最佳时机 🌟</text>
+      </svg>
+    </div>
+    <div class="page-title ani">就像天气预报</div>
+    <div class="page-text ani">
+      读卦就像看<span class="em">天气预报</span>：<br><br>
+      <span class="em">卦辞</span> = 今天整体天气<br>
+      <span class="dark">"今天晴转多云"</span><br><br>
+      <span class="em">爻辞</span> = 各时段预报<br>
+      <span class="dark">"上午晴，下午有阵雨"</span><br><br>
+      <span class="em">动爻</span> = 此刻正在变的天气<br>
+      <span class="dark">"现在云在聚集，快下雨了"</span><br><br>
+      <span class="em">看懂卦，就能提前准备！</span>
+    </div>
+  </div>
+
+  <!-- Page 10: Summary -->
+  <div class="page bg-final" data-page="9">
+    <div class="particles" id="p9"></div>
+    <div class="ani">
+      <svg width="80" height="100" viewBox="0 0 80 100">
+        <!-- Spinning hexagram -->
+        <g>
+          <animateTransform attributeName="transform" type="rotate" values="0 40 50;360 40 50" dur="20s" repeatCount="indefinite"/>
+          <rect x="15" y="20" width="50" height="5" rx="2" fill="rgba(255,215,0,0.6)"/>
+          <rect x="15" y="32" width="20" height="5" rx="2" fill="rgba(255,215,0,0.5)"/><rect x="45" y="32" width="20" height="5" rx="2" fill="rgba(255,215,0,0.5)"/>
+          <rect x="15" y="44" width="50" height="5" rx="2" fill="rgba(255,215,0,0.4)"/>
+          <rect x="15" y="56" width="20" height="5" rx="2" fill="rgba(255,215,0,0.4)"/><rect x="45" y="56" width="20" height="5" rx="2" fill="rgba(255,215,0,0.4)"/>
+          <rect x="15" y="68" width="50" height="5" rx="2" fill="rgba(255,215,0,0.5)"/>
+          <rect x="15" y="80" width="50" height="5" rx="2" fill="rgba(255,215,0,0.6)"/>
+        </g>
+      </svg>
+    </div>
+    <div class="page-title ani">小结</div>
+    <div class="page-text ani">
+      <span class="em">爻</span> = 卦的最小单位（阳⚊ / 阴⚋）<br>
+      <span class="em">位</span> = 六个位置（初→二→三→四→五→上）<br>
+      <span class="em">象</span> = 卦画出的自然画面<br><br>
+      卦辞看<span class="em">整体</span>，爻辞看<span class="em">细节</span><br>
+      动爻是<span class="em">关键</span>的变化点<br><br>
+      <span class="dark">掌握了这些，</span><br>
+      <span class="dark">你就能开始读懂任何一个卦了！</span>
+    </div>
+    <div class="ani" style="margin-top:20px;padding:12px 20px;border:1px solid rgba(255,215,0,0.15);border-radius:10px;text-align:center;">
+      <div style="color:#ffd700;font-size:1em;font-weight:bold;">下一期预告</div>
+      <div style="color:#6a5a4a;margin-top:5px;">第七期 · 乾卦 — 天行健，君子以自强不息</div>
+    </div>
+    <div class="ani" style="margin-top:12px;color:#3a3a3a;font-size:0.72em;">— 周易讲解 · 第六期 完 —</div>
+  </div>
+
+</div>
+
+<!-- Voice Panel -->
+<div class="voice-panel" id="voicePanel">
+  <label>🗣️ 声音 <select id="voiceSelect"></select></label>
+  <label>🔊 语速: <span id="rateVal">0.9</span>x <input type="range" id="rateRange" min="0.5" max="1.5" step="0.1" value="0.9"></label>
+  <div class="close-panel" onclick="toggleVoicePanel()">✕ 关闭</div>
+</div>
+
+<script>
+let cur = 0;
+const pages = document.querySelectorAll('.page');
+const total = pages.length;
+let animating = false, speaking = false;
+
+const navDots = document.getElementById('navDots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => go(i);
+  navDots.appendChild(d);
+}
+
+function go(idx) {
+  if (idx < 0 || idx >= total || idx === cur || animating) return;
+  animating = true;
+  window.speechSynthesis.cancel();
+  const old = pages[cur], nw = pages[idx], dir = idx > cur ? 1 : -1;
+  old.classList.remove('active'); old.classList.add('prev');
+  if (dir < 0) { old.style.transform = 'translateX(100%)'; old.style.opacity = '0'; }
+  nw.style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+  nw.classList.remove('prev');
+  requestAnimationFrame(() => {
+    nw.classList.add('active'); nw.style.transform = '';
+    cur = idx; updateUI();
+    setTimeout(() => {
+      animating = false;
+      old.classList.remove('prev'); old.style.transform = ''; old.style.opacity = '';
+      if (speaking) speakPage(cur);
+    }, 650);
+  });
+}
+
+function updateUI() {
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.getElementById('pageNum').textContent = `${cur + 1} / ${total}`;
+  document.getElementById('navHint').style.opacity = '0';
+}
+
+let tx = 0, ty = 0, tt = 0;
+document.addEventListener('touchstart', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY; tt = Date.now();
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty, dt = Date.now() - tt;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 500) { dx < 0 ? go(cur+1) : go(cur-1); return; }
+  if (dt < 300 && Math.abs(dx) < 15 && Math.abs(dy) < 15) {
+    e.changedTouches[0].clientX > window.innerWidth * 0.4 ? go(cur+1) : go(cur-1);
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur+1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur-1); }
+});
+
+// TTS
+const narrations = [
+  "卦的结构。第六期，爻、位、象。",
+  "爻，读作yáo，是卦最小的组成单位。只有两种：阳爻，一整条横线。阴爻，中间断开的两段。就像电脑只用0和1，周易只用这两种线条就能表达万物！",
+  "一个卦有六条爻，从下往上数：第一条叫初，第二条叫二，第三条叫三，第四条叫四，第五条叫五，第六条叫上。注意，是从下面开始数哦！",
+  "每个位置都有它的含义。初代表起步阶段，是普通百姓。二是臣子之位，能干有为。三是危险位，上不上下不下。四靠近君王，要小心谨慎。五是君位，最尊贵的位置。上代表过了头，物极必反。就像爬楼梯，每层风景不同。",
+  "每个卦有两层文字。卦辞是对整个卦的判断，由周文王所写。爻辞是对每一爻的判断，由周公所写，每卦有6条。卦辞告诉你大方向，爻辞告诉你每一步该怎么走。",
+  "象就是卦给你画的一幅画。看到卦的上下两部分，想象它们在自然中的画面。天在水上，各走各的，代表争论。水在山下，泉水初涌，代表蒙昧。火在天上，光照万物，代表大有。读卦就是看画、讲故事！",
+  "周文王写了卦辞，周公写了爻辞。后来孔子又加了注解：彖辞解释整个卦为什么这样，象辞解释画面代表什么。这些注解叫做十翼，像给周易装上了翅膀，帮助后人更好地理解。",
+  "怎么读一个卦呢？第一步，看卦名，了解这是什么场景。第二步，读卦辞，掌握整体趋势。第三步，看各爻，从初到上逐步分析。第四步，找动爻，正在变化的那一爻，就是此刻最关键的信息。",
+  "读卦就像看天气预报。卦辞相当于今天整体天气，比如今天晴转多云。爻辞相当于各时段预报，比如上午晴下午有阵雨。动爻就是此刻正在变的天气，比如现在云在聚集，快下雨了。看懂卦，就能提前准备！",
+  "小结。爻是卦的最小单位，分阳爻和阴爻。位是六个位置，从初到上。象是卦画出的自然画面。卦辞看整体，爻辞看细节，动爻是关键的变化点。掌握了这些，你就能开始读懂任何一个卦了！下一期，我们来讲乾卦，天行健，君子以自强不息。"
+];
+
+let voices = [];
+function loadVoices() {
+  voices = window.speechSynthesis.getVoices();
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+  const zh = voices.filter(v => (v.lang.startsWith('zh-CN')||v.lang==='zh')&&!v.lang.startsWith('zh-HK')&&!v.lang.startsWith('zh-TW'));
+  // Sort: Edge Online (Natural) first
+  zh.sort((a, b) => {
+    const aOnline = a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Online') && a.name.includes('Natural') ? 2 : a.name.includes('Microsoft') ? 1 : 0;
+    const bOnline = b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Online') && b.name.includes('Natural') ? 2 : b.name.includes('Microsoft') ? 1 : 0;
+    return bOnline - aOnline;
+  });
+  (zh.length ? zh : voices.slice(0, 8)).forEach(v => {
+    const o = document.createElement('option');
+    o.value = voices.indexOf(v);
+    o.textContent = v.name.replace(/Microsoft |Google |Apple /g, '');
+    sel.appendChild(o);
+  });
+}
+window.speechSynthesis.onvoiceschanged = loadVoices;
+setTimeout(loadVoices, 300);
+document.getElementById('rateRange').addEventListener('input', function() {
+  document.getElementById('rateVal').textContent = this.value;
+});
+
+function speakPage(idx) {
+  window.speechSynthesis.cancel();
+  if (!narrations[idx]) return;
+  const u = new SpeechSynthesisUtterance(narrations[idx]);
+  u.lang = 'zh-CN'; u.rate = parseFloat(document.getElementById('rateRange').value);
+  const sv = document.getElementById('voiceSelect');
+  if (sv.value && voices[sv.value]) u.voice = voices[sv.value];
+  u.onend = () => {
+    if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
+    else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
+  };
+  window.speechSynthesis.speak(u);
+}
+
+function toggleAudio() {
+  if (speaking) { speaking = false; window.speechSynthesis.cancel(); }
+  else { speaking = true; speakPage(cur); }
+  updateAudioBtn();
+}
+function updateAudioBtn() {
+  const b = document.getElementById('audioBtn');
+  b.textContent = speaking ? '🔊' : '🔇';
+  b.classList.toggle('playing', speaking);
+}
+
+let lpt;
+document.getElementById('audioBtn').addEventListener('touchstart', e => {
+  lpt = setTimeout(() => { toggleVoicePanel(); e.preventDefault(); }, 600);
+}, { passive: false });
+document.getElementById('audioBtn').addEventListener('touchend', () => clearTimeout(lpt));
+function toggleVoicePanel() { document.getElementById('voicePanel').classList.toggle('show'); }
+
+// Particles & Stars
+function mkParticles(id, n=15) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle ' + (Math.random() > 0.5 ? 'particle-gold' : 'particle-white');
+    p.style.left = Math.random()*100+'%';
+    p.style.animationDelay = Math.random()*7+'s';
+    p.style.animationDuration = (5+Math.random()*4)+'s';
+    const s = 2+Math.random()*4; p.style.width = s+'px'; p.style.height = s+'px';
+    c.appendChild(p);
+  }
+}
+function mkStars(id, n=35) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = Math.random()*4+'s';
+    const sz = 1+Math.random()*2; s.style.width = sz+'px'; s.style.height = sz+'px';
+    c.appendChild(s);
+  }
+}
+
+mkParticles('p0', 18); mkParticles('p3', 14); mkParticles('p6', 12); mkParticles('p8', 16); mkParticles('p9', 12);
+mkStars('s1', 30); mkStars('s4', 28); mkStars('s5', 32); mkStars('s7', 25);
+
+setTimeout(() => { document.getElementById('navHint').style.opacity = '0'; }, 4500);
+document.addEventListener('dblclick', e => e.preventDefault());
+</script>
+<script src="../../assets/site.js"></script></body>
+</html>

@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco传统文化讲解：六十四卦的形成">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>周易讲解 · 第五期：六十四卦的诞生</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'PingFang SC', 'Noto Serif SC', serif;
+  background: #0a0a0f;
+  color: #e8e0d0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.pages-wrapper { width: 100%; height: 100%; position: relative; }
+.page {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 40px 24px;
+  opacity: 0; transform: translateX(100%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none; overflow: hidden;
+}
+.page.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.page.prev { opacity: 0; transform: translateX(-100%); }
+
+/* Backgrounds */
+.bg-void { background: radial-gradient(ellipse at center, #080808 0%, #000 70%); }
+.bg-cosmos { background: radial-gradient(ellipse at center, #0f0a1e 0%, #060410 70%); }
+.bg-dawn { background: linear-gradient(180deg, #0a0820 0%, #1a1545 50%, #0f0d25 100%); }
+.bg-light { background: linear-gradient(135deg, #1a1508 0%, #0f0d05 50%, #080604 100%); }
+.bg-dual { background: linear-gradient(135deg, #0a0a18 0%, #080812 100%); }
+.bg-nature { background: linear-gradient(180deg, #050a10 0%, #0a1520 50%, #050a0f 100%); }
+.bg-flow { background: radial-gradient(ellipse at 50% 60%, #0a1020 0%, #060810 70%); }
+.bg-balance { background: radial-gradient(ellipse at center, #100a18 0%, #080510 70%); }
+.bg-final { background: radial-gradient(ellipse at center, #0f0818 0%, #060410 70%); }
+.bg-matrix { background: linear-gradient(135deg, #080a15 0%, #050812 50%, #0a0818 100%); }
+
+/* Typography */
+.title-main {
+  font-size: clamp(2.2em, 8vw, 3.5em);
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, #c0c0c0 50%, #ffd700 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-align: center; line-height: 1.3;
+  animation: textGlow 4s ease-in-out infinite;
+}
+@keyframes textGlow {
+  0%,100% { filter: brightness(1) drop-shadow(0 0 8px rgba(255,255,255,0.1)); }
+  50% { filter: brightness(1.15) drop-shadow(0 0 20px rgba(255,215,0,0.3)); }
+}
+.subtitle { font-size: clamp(0.85em, 3.2vw, 1.1em); color: #5a5040; margin-top: 12px; text-align: center; letter-spacing: 4px; }
+.page-title {
+  font-size: clamp(1.4em, 5.5vw, 2em); font-weight: 800;
+  color: #ffd700; text-align: center; margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(255,215,0,0.15);
+}
+.page-text {
+  font-size: clamp(0.95em, 3.8vw, 1.15em); line-height: 2;
+  text-align: center; color: #c8bca0; max-width: 560px;
+}
+.page-text .em { color: #ffd700; font-weight: bold; }
+.page-text .light { color: #f0f0f0; font-weight: bold; }
+.page-text .dark { color: #6a7a8a; }
+.fact-card {
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15);
+  border-radius: 12px; padding: 14px 18px; margin-top: 18px;
+  max-width: 480px; text-align: left; font-size: 0.88em; line-height: 1.8; color: #a89878;
+}
+.fact-card .label { color: #ffd700; font-weight: bold; margin-bottom: 4px; }
+
+/* Animations */
+.ani { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.page.active .ani { opacity: 1; transform: translateY(0); }
+.page.active .ani:nth-child(2) { transition-delay: 0.15s; }
+.page.active .ani:nth-child(3) { transition-delay: 0.3s; }
+.page.active .ani:nth-child(4) { transition-delay: 0.45s; }
+.page.active .ani:nth-child(5) { transition-delay: 0.6s; }
+.page.active .ani:nth-child(6) { transition-delay: 0.75s; }
+
+/* Particles */
+.particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.particle {
+  position: absolute; border-radius: 50%; opacity: 0;
+  animation: floatUp 7s ease-in-out infinite;
+}
+.particle-gold { background: radial-gradient(circle, #ffd700, transparent); }
+.particle-white { background: radial-gradient(circle, rgba(255,255,255,0.8), transparent); }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(100vh) scale(0.3); }
+  15% { opacity: 0.7; } 85% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(0.8); }
+}
+
+/* Stars */
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.star {
+  position: absolute; background: #fff; border-radius: 50%;
+  animation: twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.85; transform: scale(1.2); } }
+
+/* Navigation */
+.nav-hint {
+  position: fixed; bottom: 18px; left: 0; right: 0;
+  text-align: center; color: rgba(255,255,255,0.25); font-size: 0.75em;
+  pointer-events: none; transition: opacity 0.5s; z-index: 100;
+}
+.nav-dots {
+  position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 7px; z-index: 100;
+}
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); transition: all 0.3s; cursor: pointer;
+}
+.nav-dot.active { background: #ffd700; box-shadow: 0 0 6px rgba(255,215,0,0.5); transform: scale(1.4); }
+
+.audio-btn {
+  position: fixed; top: 14px; right: 14px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: #ffd700; font-size: 1.1em;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 200; backdrop-filter: blur(10px); transition: all 0.3s;
+}
+.audio-btn:active { transform: scale(0.9); }
+.audio-btn.playing { background: rgba(255,215,0,0.15); box-shadow: 0 0 12px rgba(255,215,0,0.2); }
+.page-num { position: fixed; top: 16px; left: 16px; font-size: 0.7em; color: rgba(255,255,255,0.2); z-index: 100; }
+
+/* Voice panel */
+.voice-panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(10,10,15,0.96); backdrop-filter: blur(20px);
+  padding: 20px; border-top: 1px solid rgba(255,215,0,0.15);
+  transform: translateY(100%); transition: transform 0.3s; z-index: 300;
+  border-radius: 18px 18px 0 0;
+}
+.voice-panel.show { transform: translateY(0); }
+.voice-panel label { display: block; color: #7a6a5a; font-size: 0.82em; margin-bottom: 6px; }
+.voice-panel select, .voice-panel input[type="range"] {
+  width: 100%; padding: 10px; border-radius: 8px;
+  border: 1px solid rgba(255,215,0,0.15); background: rgba(255,255,255,0.04);
+  color: #d4c8b0; font-size: 0.95em; margin-bottom: 12px;
+}
+.voice-panel .close-panel { text-align: center; color: #ffd700; cursor: pointer; padding: 8px; }
+
+/* Custom for EP5 */
+.hexagram-grid {
+  display: grid; grid-template-columns: repeat(8, 1fr); gap: 3px;
+  width: clamp(200px, 65vw, 300px); margin: 15px auto;
+}
+.hex-cell {
+  aspect-ratio: 1; border-radius: 3px;
+  background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: clamp(0.4em, 1.5vw, 0.6em); color: rgba(255,215,0,0.6);
+  animation: cellPulse 3s ease-in-out infinite;
+}
+.hex-cell:nth-child(odd) { animation-delay: 0.5s; }
+@keyframes cellPulse {
+  0%,100% { background: rgba(255,215,0,0.05); }
+  50% { background: rgba(255,215,0,0.12); }
+}
+.trigram-combine {
+  display: flex; align-items: center; gap: 12px; margin: 15px 0;
+}
+.trigram-box {
+  padding: 12px 16px; border-radius: 10px;
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.2);
+  text-align: center; color: #ffd700; font-size: 0.9em;
+}
+.combine-sign { color: #ffd700; font-size: 1.5em; }
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
+<div class="page-num" id="pageNum">1 / 10</div>
+<div class="nav-dots" id="navDots"></div>
+<div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
+
+<div class="pages-wrapper">
+
+  <!-- Page 1: Cover -->
+  <div class="page bg-cosmos active" data-page="0">
+    <div class="particles" id="p0"></div>
+    <div class="ani">
+      <svg width="220" height="220" viewBox="0 0 220 220">
+        <defs>
+          <linearGradient id="gGold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffd700" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#b8860b" stop-opacity="0.4"/>
+          </linearGradient>
+          <filter id="glow64">
+            <feGaussianBlur stdDeviation="1.5" result="g"/>
+            <feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- 8x8 grid representing 64 hexagrams -->
+        <g filter="url(#glow64)">
+          <rect x="10" y="10" width="200" height="200" rx="8" fill="none" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+          <!-- Generate 8x8 mini hexagram symbols -->
+          <g id="gridCells">
+            <script>
+              <!-- cells generated by JS below -->
+            </script>
+          </g>
+          <!-- Animated highlight scanning -->
+          <rect x="10" y="10" width="25" height="25" rx="3" fill="rgba(255,215,0,0.15)" stroke="rgba(255,215,0,0.4)" stroke-width="0.5">
+            <animate attributeName="x" values="10;35;60;85;110;135;160;185;10;35;60;85;110;135;160;185" dur="8s" repeatCount="indefinite"/>
+            <animate attributeName="y" values="10;10;10;10;10;10;10;10;35;35;35;35;35;35;35;35" dur="8s" repeatCount="indefinite"/>
+          </rect>
+        </g>
+        <!-- Decorative outer ring -->
+        <circle cx="110" cy="110" r="108" fill="none" stroke="rgba(255,215,0,0.1)" stroke-width="0.5" stroke-dasharray="4 4">
+          <animateTransform attributeName="transform" type="rotate" values="0 110 110;360 110 110" dur="60s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+    </div>
+    <div class="title-main ani">六十四卦的诞生</div>
+    <div class="subtitle ani">第五期 · 八卦重叠的奥秘</div>
+  </div>
+
+  <!-- Page 2: From 8 to 64 -->
+  <div class="page bg-dawn" data-page="1">
+    <div class="stars" id="s1"></div>
+    <div class="ani">
+      <svg width="260" height="140" viewBox="0 0 260 140">
+        <!-- Left: 8 trigrams in circle -->
+        <g>
+          <circle cx="60" cy="70" r="50" fill="none" stroke="rgba(255,215,0,0.15)" stroke-width="1"/>
+          <!-- 8 dots around circle -->
+          <circle cx="60" cy="20" r="5" fill="rgba(255,215,0,0.6)"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/></circle>
+          <circle cx="95" cy="35" r="5" fill="rgba(255,215,0,0.6)"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" begin="0.25s"/></circle>
+          <circle cx="110" cy="70" r="5" fill="rgba(255,215,0,0.6)"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" begin="0.5s"/></circle>
+          <circle cx="95" cy="105" r="5" fill="rgba(255,215,0,0.6)"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" begin="0.75s"/></circle>
+          <circle cx="60" cy="120" r="5" fill="rgba(255,215,0,0.6)"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" begin="1s"/></circle>
+          <circle cx="25" cy="105" r="5" fill="rgba(255,215,0,0.6)"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" begin="1.25s"/></circle>
+          <circle cx="10" cy="70" r="5" fill="rgba(255,215,0,0.6)"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" begin="1.5s"/></circle>
+          <circle cx="25" cy="35" r="5" fill="rgba(255,215,0,0.6)"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" begin="1.75s"/></circle>
+          <text x="60" y="75" text-anchor="middle" font-size="11" fill="#ffd700">八卦</text>
+        </g>
+        <!-- Arrow: multiply -->
+        <text x="130" y="65" text-anchor="middle" font-size="16" fill="#ffd700" opacity="0.8">×</text>
+        <text x="130" y="85" text-anchor="middle" font-size="10" fill="#8a7a5a">重叠</text>
+        <!-- Right: 64 grid -->
+        <g>
+          <rect x="160" y="20" width="90" height="90" rx="5" fill="none" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+          <!-- 8x8 tiny dots -->
+          <g fill="rgba(255,215,0,0.5)">
+            <circle cx="170" cy="30" r="2"/><circle cx="181" cy="30" r="2"/><circle cx="192" cy="30" r="2"/><circle cx="203" cy="30" r="2"/><circle cx="214" cy="30" r="2"/><circle cx="225" cy="30" r="2"/><circle cx="236" cy="30" r="2"/><circle cx="247" cy="30" r="2"/>
+            <circle cx="170" cy="41" r="2"/><circle cx="181" cy="41" r="2"/><circle cx="192" cy="41" r="2"/><circle cx="203" cy="41" r="2"/><circle cx="214" cy="41" r="2"/><circle cx="225" cy="41" r="2"/><circle cx="236" cy="41" r="2"/><circle cx="247" cy="41" r="2"/>
+            <circle cx="170" cy="52" r="2"/><circle cx="181" cy="52" r="2"/><circle cx="192" cy="52" r="2"/><circle cx="203" cy="52" r="2"/><circle cx="214" cy="52" r="2"/><circle cx="225" cy="52" r="2"/><circle cx="236" cy="52" r="2"/><circle cx="247" cy="52" r="2"/>
+            <circle cx="170" cy="63" r="2"/><circle cx="181" cy="63" r="2"/><circle cx="192" cy="63" r="2"/><circle cx="203" cy="63" r="2"/><circle cx="214" cy="63" r="2"/><circle cx="225" cy="63" r="2"/><circle cx="236" cy="63" r="2"/><circle cx="247" cy="63" r="2"/>
+            <circle cx="170" cy="74" r="2"/><circle cx="181" cy="74" r="2"/><circle cx="192" cy="74" r="2"/><circle cx="203" cy="74" r="2"/><circle cx="214" cy="74" r="2"/><circle cx="225" cy="74" r="2"/><circle cx="236" cy="74" r="2"/><circle cx="247" cy="74" r="2"/>
+            <circle cx="170" cy="85" r="2"/><circle cx="181" cy="85" r="2"/><circle cx="192" cy="85" r="2"/><circle cx="203" cy="85" r="2"/><circle cx="214" cy="85" r="2"/><circle cx="225" cy="85" r="2"/><circle cx="236" cy="85" r="2"/><circle cx="247" cy="85" r="2"/>
+            <circle cx="170" cy="96" r="2"/><circle cx="181" cy="96" r="2"/><circle cx="192" cy="96" r="2"/><circle cx="203" cy="96" r="2"/><circle cx="214" cy="96" r="2"/><circle cx="225" cy="96" r="2"/><circle cx="236" cy="96" r="2"/><circle cx="247" cy="96" r="2"/>
+            <circle cx="170" cy="107" r="2"/><circle cx="181" cy="107" r="2"/><circle cx="192" cy="107" r="2"/><circle cx="203" cy="107" r="2"/><circle cx="214" cy="107" r="2"/><circle cx="225" cy="107" r="2"/><circle cx="236" cy="107" r="2"/><circle cx="247" cy="107" r="2"/>
+          </g>
+          <text x="205" y="125" text-anchor="middle" font-size="11" fill="#ffd700">六十四卦</text>
+        </g>
+      </svg>
+    </div>
+    <div class="page-title ani">从八到六十四</div>
+    <div class="page-text ani">
+      上一期我们学了<span class="em">八卦</span>，<br>
+      它们是自然界的8种基本符号。<br><br>
+      但8个还不够！<br>
+      古人想：如果把两个卦<span class="em">叠</span>起来呢？<br><br>
+      <span class="em">8 × 8 = 64</span>种组合！<br><br>
+      就像8种颜色两两配对，<br>
+      能配出<span class="em">64种新花样</span>。
+    </div>
+  </div>
+
+  <!-- Page 3: Structure of Chonggua -->
+  <div class="page bg-dual" data-page="2">
+    <div class="ani">
+      <svg width="200" height="220" viewBox="0 0 200 220">
+        <defs>
+          <linearGradient id="gUpper" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ffd700" stop-opacity="0.8"/>
+            <stop offset="100%" stop-color="#ffd700" stop-opacity="0.3"/>
+          </linearGradient>
+          <linearGradient id="gLower" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#6090c0" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#6090c0" stop-opacity="0.8"/>
+          </linearGradient>
+        </defs>
+        <!-- Upper trigram (Qian - 3 solid lines) -->
+        <g opacity="0.9">
+          <rect x="50" y="30" width="100" height="8" rx="3" fill="url(#gUpper)"><animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/></rect>
+          <rect x="50" y="50" width="100" height="8" rx="3" fill="url(#gUpper)"><animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" begin="0.2s"/></rect>
+          <rect x="50" y="70" width="100" height="8" rx="3" fill="url(#gUpper)"><animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" begin="0.4s"/></rect>
+        </g>
+        <!-- Label upper -->
+        <text x="165" y="55" font-size="11" fill="#ffd700" opacity="0.8">上卦</text>
+        <text x="165" y="72" font-size="9" fill="#8a7a5a">（外卦）</text>
+        <!-- Divider -->
+        <line x1="40" y1="100" x2="160" y2="100" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="3 3"/>
+        <!-- Lower trigram (Kan - broken,solid,broken) -->
+        <g opacity="0.9">
+          <rect x="50" y="120" width="42" height="8" rx="3" fill="url(#gLower)"/><rect x="108" y="120" width="42" height="8" rx="3" fill="url(#gLower)"/>
+          <rect x="50" y="140" width="100" height="8" rx="3" fill="url(#gLower)"/>
+          <rect x="50" y="160" width="42" height="8" rx="3" fill="url(#gLower)"/><rect x="108" y="160" width="42" height="8" rx="3" fill="url(#gLower)"/>
+        </g>
+        <!-- Label lower -->
+        <text x="165" y="145" font-size="11" fill="#6090c0" opacity="0.8">下卦</text>
+        <text x="165" y="162" font-size="9" fill="#5a6a7a">（内卦）</text>
+        <!-- Bracket -->
+        <path d="M35,25 Q25,100 35,175" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="1.5"/>
+        <text x="15" y="105" font-size="10" fill="#ffd700" opacity="0.7">六爻</text>
+      </svg>
+    </div>
+    <div class="page-title ani">重卦的结构</div>
+    <div class="page-text ani">
+      两个三爻卦叠在一起，<br>
+      就变成了一个<span class="em">六爻卦</span>。<br><br>
+      上面三条叫<span class="em">上卦</span>（外卦），<br>
+      下面三条叫<span class="em">下卦</span>（内卦）。<br><br>
+      <span class="dark">就像搭积木，</span><br>
+      <span class="dark">两块积木叠成更高的塔。</span>
+    </div>
+  </div>
+
+  <!-- Page 4: Example - Song & Xu -->
+  <div class="page bg-flow" data-page="3">
+    <div class="particles" id="p3"></div>
+    <div class="ani">
+      <svg width="280" height="180" viewBox="0 0 280 180">
+        <!-- Left: Tian Shui Song (Qian above, Kan below) -->
+        <g>
+          <text x="70" y="15" text-anchor="middle" font-size="11" fill="#ffd700">天水讼 ☰/☵</text>
+          <!-- Upper: Qian (3 solid) -->
+          <rect x="30" y="25" width="80" height="6" rx="2" fill="rgba(255,215,0,0.7)"/>
+          <rect x="30" y="40" width="80" height="6" rx="2" fill="rgba(255,215,0,0.7)"/>
+          <rect x="30" y="55" width="80" height="6" rx="2" fill="rgba(255,215,0,0.7)"/>
+          <!-- Lower: Kan (broken,solid,broken) -->
+          <rect x="30" y="75" width="34" height="6" rx="2" fill="rgba(100,150,200,0.7)"/><rect x="76" y="75" width="34" height="6" rx="2" fill="rgba(100,150,200,0.7)"/>
+          <rect x="30" y="90" width="80" height="6" rx="2" fill="rgba(100,150,200,0.7)"/>
+          <rect x="30" y="105" width="34" height="6" rx="2" fill="rgba(100,150,200,0.7)"/><rect x="76" y="105" width="34" height="6" rx="2" fill="rgba(100,150,200,0.7)"/>
+          <text x="70" y="130" text-anchor="middle" font-size="9" fill="#8a7a5a">乾上坎下</text>
+          <text x="70" y="148" text-anchor="middle" font-size="9" fill="#6a5a4a">天在水上→争论</text>
+        </g>
+        <!-- Middle: not equal sign -->
+        <text x="140" y="70" text-anchor="middle" font-size="20" fill="rgba(255,100,100,0.7)">≠</text>
+        <text x="140" y="95" text-anchor="middle" font-size="9" fill="#6a5a4a">上下颠倒</text>
+        <text x="140" y="108" text-anchor="middle" font-size="9" fill="#6a5a4a">含义不同！</text>
+        <!-- Right: Shui Tian Xu (Kan above, Qian below) -->
+        <g>
+          <text x="210" y="15" text-anchor="middle" font-size="11" fill="#6090c0">水天需 ☵/☰</text>
+          <!-- Upper: Kan (broken,solid,broken) -->
+          <rect x="170" y="25" width="34" height="6" rx="2" fill="rgba(100,150,200,0.7)"/><rect x="216" y="25" width="34" height="6" rx="2" fill="rgba(100,150,200,0.7)"/>
+          <rect x="170" y="40" width="80" height="6" rx="2" fill="rgba(100,150,200,0.7)"/>
+          <rect x="170" y="55" width="34" height="6" rx="2" fill="rgba(100,150,200,0.7)"/><rect x="216" y="55" width="34" height="6" rx="2" fill="rgba(100,150,200,0.7)"/>
+          <!-- Lower: Qian (3 solid) -->
+          <rect x="170" y="75" width="80" height="6" rx="2" fill="rgba(255,215,0,0.7)"/>
+          <rect x="170" y="90" width="80" height="6" rx="2" fill="rgba(255,215,0,0.7)"/>
+          <rect x="170" y="105" width="80" height="6" rx="2" fill="rgba(255,215,0,0.7)"/>
+          <text x="210" y="130" text-anchor="middle" font-size="9" fill="#8a7a5a">坎上乾下</text>
+          <text x="210" y="148" text-anchor="middle" font-size="9" fill="#6a5a4a">水在天上→等待</text>
+        </g>
+      </svg>
+    </div>
+    <div class="page-title ani">上下不同，意义不同</div>
+    <div class="page-text ani">
+      同样是<span class="em">乾</span>和<span class="em">坎</span>两个卦，<br>
+      谁在上、谁在下，含义完全不同！<br><br>
+      <span class="em">乾上坎下</span> = 天水讼（争论）<br>
+      天往上走，水往下流，<span class="dark">方向相反→起冲突</span><br><br>
+      <span class="em">坎上乾下</span> = 水天需（等待）<br>
+      乌云在天上，<span class="dark">要下雨了→耐心等</span>
+    </div>
+  </div>
+
+  <!-- Page 5: Naming the 64 Hexagrams -->
+  <div class="page bg-light" data-page="4">
+    <div class="stars" id="s4"></div>
+    <div class="page-title ani">六十四卦怎么取名？</div>
+    <div class="page-text ani">
+      每个卦的名字，<br>
+      都藏着它的<span class="em">画面</span>和<span class="em">含义</span>：<br><br>
+      ☰☰ 乾卦 = <span class="em">天</span>叠<span class="em">天</span> → 刚健不息<br>
+      ☷☷ 坤卦 = <span class="em">地</span>叠<span class="em">地</span> → 厚德载物<br>
+      ☵☳ 屯卦 = <span class="em">水</span>上<span class="em">雷</span>下 → 草木初生<br>
+      ☶☵ 蒙卦 = <span class="em">山</span>上<span class="em">水</span>下 → 蒙昧待启<br><br>
+      <span class="dark">名字本身就是一幅画！</span>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">💡 取名小规律</div>
+      上下卦相同 → 用本卦名（乾、坤、震…）<br>
+      上下卦不同 → 根据组合画面取新名<br>
+      比如"火在水上" → 既济（已经渡河）
+    </div>
+  </div>
+
+  <!-- Page 6: King Wen and 64 Hexagrams -->
+  <div class="page bg-balance" data-page="5">
+    <div class="particles" id="p5"></div>
+    <div class="ani">
+      <svg width="200" height="150" viewBox="0 0 200 150">
+        <!-- Prison bars -->
+        <rect x="20" y="20" width="5" height="110" rx="2" fill="rgba(150,150,150,0.3)"/>
+        <rect x="45" y="20" width="5" height="110" rx="2" fill="rgba(150,150,150,0.3)"/>
+        <rect x="70" y="20" width="5" height="110" rx="2" fill="rgba(150,150,150,0.3)"/>
+        <rect x="95" y="20" width="5" height="110" rx="2" fill="rgba(150,150,150,0.3)"/>
+        <rect x="120" y="20" width="5" height="110" rx="2" fill="rgba(150,150,150,0.3)"/>
+        <rect x="145" y="20" width="5" height="110" rx="2" fill="rgba(150,150,150,0.3)"/>
+        <rect x="170" y="20" width="5" height="110" rx="2" fill="rgba(150,150,150,0.3)"/>
+        <!-- Figure meditating -->
+        <circle cx="100" cy="55" r="12" fill="none" stroke="rgba(255,215,0,0.5)" stroke-width="1.5">
+          <animate attributeName="stroke-opacity" values="0.3;0.8;0.3" dur="4s" repeatCount="indefinite"/>
+        </circle>
+        <line x1="100" y1="67" x2="100" y2="95" stroke="rgba(255,215,0,0.4)" stroke-width="1.5"/>
+        <line x1="100" y1="75" x2="85" y2="85" stroke="rgba(255,215,0,0.4)" stroke-width="1.5"/>
+        <line x1="100" y1="75" x2="115" y2="85" stroke="rgba(255,215,0,0.4)" stroke-width="1.5"/>
+        <!-- Glowing hexagram lines around figure -->
+        <g opacity="0.6">
+          <rect x="135" y="45" width="30" height="3" rx="1" fill="#ffd700"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite"/></rect>
+          <rect x="135" y="53" width="12" height="3" rx="1" fill="#ffd700"/><rect x="153" y="53" width="12" height="3" rx="1" fill="#ffd700"/>
+          <rect x="135" y="61" width="30" height="3" rx="1" fill="#ffd700"><animate attributeName="opacity" values="0.3;0.8;0.3" dur="2s" repeatCount="indefinite" begin="0.5s"/></rect>
+        </g>
+        <!-- 7 years text -->
+        <text x="100" y="142" text-anchor="middle" font-size="10" fill="#5a5040">被囚羑里 · 七年推演</text>
+      </svg>
+    </div>
+    <div class="page-title ani">周文王与六十四卦</div>
+    <div class="page-text ani">
+      <span class="em">周文王</span>被商纣王关进监狱，<br>
+      一关就是<span class="em">七年</span>。<br><br>
+      在暗无天日的牢房里，<br>
+      他没有放弃，反而静下心来，<br>
+      把八卦两两重叠，<br>
+      推演出完整的<span class="em">六十四卦</span>。<br><br>
+      <span class="dark">最伟大的智慧，</span><br>
+      <span class="dark">往往诞生于最艰难的时刻。</span>
+    </div>
+  </div>
+
+  <!-- Page 7: Sequence of 64 Hexagrams -->
+  <div class="page bg-nature" data-page="6">
+    <div class="stars" id="s6"></div>
+    <div class="ani">
+      <svg width="260" height="100" viewBox="0 0 260 100">
+        <!-- Timeline -->
+        <line x1="20" y1="50" x2="240" y2="50" stroke="rgba(255,215,0,0.2)" stroke-width="1.5"/>
+        <!-- Start: Qian+Kun -->
+        <circle cx="30" cy="50" r="8" fill="rgba(255,215,0,0.3)" stroke="#ffd700" stroke-width="1">
+          <animate attributeName="r" values="7;10;7" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <text x="30" y="30" text-anchor="middle" font-size="9" fill="#ffd700">乾坤</text>
+        <text x="30" y="72" text-anchor="middle" font-size="8" fill="#5a5040">开头</text>
+        <!-- Middle dots -->
+        <circle cx="80" cy="50" r="4" fill="rgba(255,215,0,0.2)"/>
+        <circle cx="110" cy="50" r="4" fill="rgba(255,215,0,0.2)"/>
+        <circle cx="140" cy="50" r="4" fill="rgba(255,215,0,0.2)"/>
+        <text x="110" y="30" text-anchor="middle" font-size="8" fill="#6a5a4a">… 万事万物 …</text>
+        <circle cx="170" cy="50" r="4" fill="rgba(255,215,0,0.2)"/>
+        <circle cx="200" cy="50" r="4" fill="rgba(255,215,0,0.2)"/>
+        <!-- End: Jiji+Weiji -->
+        <circle cx="235" cy="50" r="8" fill="rgba(100,150,200,0.3)" stroke="#6090c0" stroke-width="1">
+          <animate attributeName="r" values="7;10;7" dur="3s" repeatCount="indefinite" begin="1.5s"/>
+        </circle>
+        <text x="235" y="30" text-anchor="middle" font-size="8" fill="#6090c0">既济未济</text>
+        <text x="235" y="72" text-anchor="middle" font-size="8" fill="#5a5040">结尾</text>
+        <!-- Arrow -->
+        <polygon points="245,50 253,47 253,53" fill="rgba(255,215,0,0.4)"/>
+        <text x="253" y="42" font-size="7" fill="#4a4a4a">循环</text>
+        <!-- Curved return arrow -->
+        <path d="M250,55 Q255,85 130,90 Q20,85 25,55" fill="none" stroke="rgba(255,215,0,0.1)" stroke-width="1" stroke-dasharray="3 3"/>
+      </svg>
+    </div>
+    <div class="page-title ani">六十四卦的排列</div>
+    <div class="page-text ani">
+      六十四卦的顺序不是随意的，<br>
+      它讲述了一个<span class="em">完整的故事</span>：<br><br>
+      开头：<span class="em">乾</span>（天）+ <span class="em">坤</span>（地）<br>
+      <span class="dark">天地初开，万物开始。</span><br><br>
+      结尾：<span class="em">既济</span>（完成）+ <span class="em">未济</span>（未完）<br>
+      <span class="dark">事情做完了，新的又开始了。</span><br><br>
+      <span class="em">结束就是新的开始</span>，永不停歇。
+    </div>
+  </div>
+
+  <!-- Page 8: 64 = Life Map -->
+  <div class="page bg-cosmos" data-page="7">
+    <div class="particles" id="p7"></div>
+    <div class="page-title ani">人生地图</div>
+    <div class="page-text ani">
+      六十四卦涵盖了<br>
+      人一生中<span class="em">所有可能的处境</span>：<br><br>
+      刚开始创业 → <span class="em">屯</span>卦（艰难起步）<br>
+      遇到困难 → <span class="em">坎</span>卦（重重险阻）<br>
+      获得成功 → <span class="em">大有</span>卦（收获满满）<br>
+      需要退让 → <span class="em">遁</span>卦（适时隐退）<br>
+      家庭和睦 → <span class="em">家人</span>卦（齐家之道）<br><br>
+      <span class="dark">不管你遇到什么，</span><br>
+      <span class="dark">六十四卦里都有对应的指引。</span>
+    </div>
+  </div>
+
+  <!-- Page 9: Analogy - Encyclopedia -->
+  <div class="page bg-flow" data-page="8">
+    <div class="stars" id="s8"></div>
+    <div class="ani">
+      <svg width="180" height="160" viewBox="0 0 180 160">
+        <!-- Book shape -->
+        <defs>
+          <linearGradient id="gBook" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="rgba(255,215,0,0.3)"/>
+            <stop offset="100%" stop-color="rgba(180,130,0,0.15)"/>
+          </linearGradient>
+        </defs>
+        <!-- Book spine -->
+        <rect x="40" y="20" width="100" height="120" rx="5" fill="url(#gBook)" stroke="rgba(255,215,0,0.3)" stroke-width="1"/>
+        <!-- Pages -->
+        <line x1="55" y1="35" x2="125" y2="35" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+        <line x1="55" y1="50" x2="125" y2="50" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+        <line x1="55" y1="65" x2="125" y2="65" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+        <line x1="55" y1="80" x2="125" y2="80" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+        <line x1="55" y1="95" x2="125" y2="95" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+        <line x1="55" y1="110" x2="125" y2="110" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+        <line x1="55" y1="125" x2="125" y2="125" stroke="rgba(255,255,255,0.15)" stroke-width="0.5"/>
+        <!-- Title on book -->
+        <text x="90" y="78" text-anchor="middle" font-size="12" fill="#ffd700" font-weight="bold">周易</text>
+        <text x="90" y="95" text-anchor="middle" font-size="9" fill="#8a7a5a">64卦</text>
+        <!-- Sparkles -->
+        <circle cx="45" cy="25" r="2" fill="#ffd700" opacity="0.6"><animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" repeatCount="indefinite"/></circle>
+        <circle cx="135" cy="30" r="1.5" fill="#ffd700" opacity="0.4"><animate attributeName="opacity" values="0.2;0.7;0.2" dur="2.5s" repeatCount="indefinite" begin="0.5s"/></circle>
+        <circle cx="140" cy="130" r="2" fill="#ffd700" opacity="0.5"><animate attributeName="opacity" values="0.2;0.8;0.2" dur="3s" repeatCount="indefinite" begin="1s"/></circle>
+      </svg>
+    </div>
+    <div class="page-title ani">生活百科全书</div>
+    <div class="page-text ani">
+      六十四卦就像一本<br>
+      <span class="em">生活百科全书</span>：<br><br>
+      📖 64个"章节"<br>
+      每一章讲一种人生场景<br><br>
+      🔍 遇到问题？翻到对应的卦<br>
+      就能找到古人的<span class="em">智慧建议</span><br><br>
+      <span class="dark">不是算命，而是</span><span class="em">人生导航</span>。<br>
+      <span class="dark">帮助我们观察古人如何理解不同处境。</span>
+    </div>
+  </div>
+
+  <!-- Page 10: Summary -->
+  <div class="page bg-final" data-page="9">
+    <div class="particles" id="p9"></div>
+    <div class="ani">
+      <svg width="80" height="80" viewBox="0 0 80 80">
+        <!-- Mini 64 grid spinning -->
+        <g>
+          <animateTransform attributeName="transform" type="rotate" values="0 40 40;360 40 40" dur="30s" repeatCount="indefinite"/>
+          <rect x="15" y="15" width="50" height="50" rx="5" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="1"/>
+          <g fill="rgba(255,215,0,0.4)">
+            <circle cx="22" cy="22" r="1.5"/><circle cx="29" cy="22" r="1.5"/><circle cx="36" cy="22" r="1.5"/><circle cx="43" cy="22" r="1.5"/><circle cx="50" cy="22" r="1.5"/><circle cx="57" cy="22" r="1.5"/>
+            <circle cx="22" cy="33" r="1.5"/><circle cx="29" cy="33" r="1.5"/><circle cx="36" cy="33" r="1.5"/><circle cx="43" cy="33" r="1.5"/><circle cx="50" cy="33" r="1.5"/><circle cx="57" cy="33" r="1.5"/>
+            <circle cx="22" cy="44" r="1.5"/><circle cx="29" cy="44" r="1.5"/><circle cx="36" cy="44" r="1.5"/><circle cx="43" cy="44" r="1.5"/><circle cx="50" cy="44" r="1.5"/><circle cx="57" cy="44" r="1.5"/>
+            <circle cx="22" cy="55" r="1.5"/><circle cx="29" cy="55" r="1.5"/><circle cx="36" cy="55" r="1.5"/><circle cx="43" cy="55" r="1.5"/><circle cx="50" cy="55" r="1.5"/><circle cx="57" cy="55" r="1.5"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="page-title ani">小结</div>
+    <div class="page-text ani">
+      <span class="em">八卦 × 八卦 = 六十四卦</span><br><br>
+      上卦 + 下卦 = 一个完整的六爻卦<br>
+      上下颠倒，含义完全不同<br><br>
+      <span class="em">周文王</span>被囚七年，<br>
+      推演出这套完整的系统。<br><br>
+      六十四卦 = <span class="em">人生的64种场景</span><br>
+      <span class="dark">是地图，是百科，是指引。</span>
+    </div>
+    <div class="ani" style="margin-top:20px;padding:12px 20px;border:1px solid rgba(255,215,0,0.15);border-radius:10px;text-align:center;">
+      <div style="color:#ffd700;font-size:1em;font-weight:bold;">下一期预告</div>
+      <div style="color:#6a5a4a;margin-top:5px;">第六期 · 卦的结构 — 爻、位、象</div>
+    </div>
+    <div class="ani" style="margin-top:12px;color:#3a3a3a;font-size:0.72em;">— 周易讲解 · 第五期 完 —</div>
+  </div>
+
+</div>
+
+<!-- Voice Panel -->
+<div class="voice-panel" id="voicePanel">
+  <label>🗣️ 声音 <select id="voiceSelect"></select></label>
+  <label>🔊 语速: <span id="rateVal">0.9</span>x <input type="range" id="rateRange" min="0.5" max="1.5" step="0.1" value="0.9"></label>
+  <div class="close-panel" onclick="toggleVoicePanel()">✕ 关闭</div>
+</div>
+
+<script>
+let cur = 0;
+const pages = document.querySelectorAll('.page');
+const total = pages.length;
+let animating = false, speaking = false;
+
+const navDots = document.getElementById('navDots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => go(i);
+  navDots.appendChild(d);
+}
+
+function go(idx) {
+  if (idx < 0 || idx >= total || idx === cur || animating) return;
+  animating = true;
+  window.speechSynthesis.cancel();
+  const old = pages[cur], nw = pages[idx], dir = idx > cur ? 1 : -1;
+  old.classList.remove('active'); old.classList.add('prev');
+  if (dir < 0) { old.style.transform = 'translateX(100%)'; old.style.opacity = '0'; }
+  nw.style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+  nw.classList.remove('prev');
+  requestAnimationFrame(() => {
+    nw.classList.add('active'); nw.style.transform = '';
+    cur = idx; updateUI();
+    setTimeout(() => {
+      animating = false;
+      old.classList.remove('prev'); old.style.transform = ''; old.style.opacity = '';
+      if (speaking) speakPage(cur);
+    }, 650);
+  });
+}
+
+function updateUI() {
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.getElementById('pageNum').textContent = `${cur + 1} / ${total}`;
+  document.getElementById('navHint').style.opacity = '0';
+}
+
+let tx = 0, ty = 0, tt = 0;
+document.addEventListener('touchstart', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY; tt = Date.now();
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty, dt = Date.now() - tt;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 500) { dx < 0 ? go(cur+1) : go(cur-1); return; }
+  if (dt < 300 && Math.abs(dx) < 15 && Math.abs(dy) < 15) {
+    e.changedTouches[0].clientX > window.innerWidth * 0.4 ? go(cur+1) : go(cur-1);
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur+1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur-1); }
+});
+
+// TTS
+const narrations = [
+  "六十四卦的诞生。第五期，八卦重叠的奥秘。",
+  "上一期我们学了八卦，它们是自然界的8种基本符号。但8个还不够！古人想：如果把两个卦叠起来呢？8乘以8，等于64种组合！就像8种颜色两两配对，能配出64种新花样。",
+  "两个三爻卦叠在一起，就变成了一个六爻卦。上面三条叫上卦，也叫外卦。下面三条叫下卦，也叫内卦。就像搭积木，两块积木叠成更高的塔。",
+  "同样是乾和坎两个卦，谁在上、谁在下，含义完全不同！乾上坎下，叫天水讼，意思是争论。因为天往上走，水往下流，方向相反，所以起冲突。坎上乾下，叫水天需，意思是等待。因为乌云在天上，要下雨了，所以要耐心等。",
+  "每个卦的名字，都藏着它的画面和含义。乾卦是天叠天，代表刚健不息。坤卦是地叠地，代表厚德载物。屯卦是水上雷下，代表草木初生。蒙卦是山上水下，代表蒙昧待启。名字本身就是一幅画！",
+  "周文王被商纣王关进监狱，一关就是七年。在暗无天日的牢房里，他没有放弃，反而静下心来，把八卦两两重叠，推演出完整的六十四卦。最伟大的智慧，往往诞生于最艰难的时刻。",
+  "六十四卦的顺序不是随意的，它讲述了一个完整的故事。开头是乾卦和坤卦，代表天地初开，万物开始。结尾是既济和未济，代表事情做完了，新的又开始了。结束就是新的开始，永不停歇。",
+  "六十四卦涵盖了人一生中所有可能的处境。刚开始创业，看屯卦，教你艰难起步。遇到困难，看坎卦，教你面对险阻。获得成功，看大有卦。需要退让，看遁卦。家庭和睦，看家人卦。不管你遇到什么，六十四卦里都有对应的指引。",
+  "六十四卦就像一本生活百科全书。64个章节，每一章讲一种人生场景。后世常借不同卦象讨论人生处境。这里把它作为古代思想材料来阅读，不用于预测或替代现实决策。",
+  "小结。八卦乘以八卦等于六十四卦。上卦加下卦等于一个完整的六爻卦。上下颠倒，含义完全不同。周文王被囚七年，推演出这套完整的系统。六十四卦就是人生的64种场景，是地图，是百科，是指引。下一期，我们来讲卦的结构，爻、位、象。"
+];
+
+let voices = [];
+function loadVoices() {
+  voices = window.speechSynthesis.getVoices();
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+  const zh = voices.filter(v => (v.lang.startsWith('zh-CN')||v.lang==='zh')&&!v.lang.startsWith('zh-HK')&&!v.lang.startsWith('zh-TW'));
+  // Sort: Edge Online (Natural) first
+  zh.sort((a, b) => {
+    const aOnline = a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Online') && a.name.includes('Natural') ? 2 : a.name.includes('Microsoft') ? 1 : 0;
+    const bOnline = b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Online') && b.name.includes('Natural') ? 2 : b.name.includes('Microsoft') ? 1 : 0;
+    return bOnline - aOnline;
+  });
+  (zh.length ? zh : voices.slice(0, 8)).forEach(v => {
+    const o = document.createElement('option');
+    o.value = voices.indexOf(v);
+    o.textContent = v.name.replace(/Microsoft |Google |Apple /g, '');
+    sel.appendChild(o);
+  });
+}
+window.speechSynthesis.onvoiceschanged = loadVoices;
+setTimeout(loadVoices, 300);
+document.getElementById('rateRange').addEventListener('input', function() {
+  document.getElementById('rateVal').textContent = this.value;
+});
+
+function speakPage(idx) {
+  window.speechSynthesis.cancel();
+  if (!narrations[idx]) return;
+  const u = new SpeechSynthesisUtterance(narrations[idx]);
+  u.lang = 'zh-CN'; u.rate = parseFloat(document.getElementById('rateRange').value);
+  const sv = document.getElementById('voiceSelect');
+  if (sv.value && voices[sv.value]) u.voice = voices[sv.value];
+  u.onend = () => {
+    if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
+    else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
+  };
+  window.speechSynthesis.speak(u);
+}
+
+function toggleAudio() {
+  if (speaking) { speaking = false; window.speechSynthesis.cancel(); }
+  else { speaking = true; speakPage(cur); }
+  updateAudioBtn();
+}
+function updateAudioBtn() {
+  const b = document.getElementById('audioBtn');
+  b.textContent = speaking ? '🔊' : '🔇';
+  b.classList.toggle('playing', speaking);
+}
+
+let lpt;
+document.getElementById('audioBtn').addEventListener('touchstart', e => {
+  lpt = setTimeout(() => { toggleVoicePanel(); e.preventDefault(); }, 600);
+}, { passive: false });
+document.getElementById('audioBtn').addEventListener('touchend', () => clearTimeout(lpt));
+function toggleVoicePanel() { document.getElementById('voicePanel').classList.toggle('show'); }
+
+// Particles & Stars
+function mkParticles(id, n=15) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle ' + (Math.random() > 0.5 ? 'particle-gold' : 'particle-white');
+    p.style.left = Math.random()*100+'%';
+    p.style.animationDelay = Math.random()*7+'s';
+    p.style.animationDuration = (5+Math.random()*4)+'s';
+    const s = 2+Math.random()*4; p.style.width = s+'px'; p.style.height = s+'px';
+    c.appendChild(p);
+  }
+}
+function mkStars(id, n=35) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = Math.random()*4+'s';
+    const sz = 1+Math.random()*2; s.style.width = sz+'px'; s.style.height = sz+'px';
+    c.appendChild(s);
+  }
+}
+
+mkParticles('p0', 18); mkParticles('p3', 14); mkParticles('p5', 12); mkParticles('p7', 16); mkParticles('p9', 12);
+mkStars('s1', 30); mkStars('s4', 28); mkStars('s6', 32); mkStars('s8', 25);
+
+setTimeout(() => { document.getElementById('navHint').style.opacity = '0'; }, 4500);
+document.addEventListener('dblclick', e => e.preventDefault());
+</script>
+<script src="../../assets/site.js"></script></body>
+</html>

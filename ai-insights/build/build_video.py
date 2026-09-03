@@ -1,0 +1,474 @@
+#!/usr/bin/env python3
+"""Build a self-narrating 9:16 vertical video page from a JSON config."""
+import argparse, html, json
+from pathlib import Path
+
+
+def esc(v):
+    return html.escape(str(v), quote=True)
+
+
+def slide_markup(s, i):
+    kind = s["kind"]
+    parts = [
+        f'<section class="slide k-{esc(kind)}" data-tts="{esc(s["tts"])}" aria-label="第{i+1}页">',
+        '<div class="orb a"></div><div class="orb b"></div>',
+        '<main class="content">',
+    ]
+    eyebrow = (s.get("eyebrow") or "").strip()
+    if eyebrow:
+        parts.append(f'<div class="eyebrow">{esc(eyebrow)}</div>')
+    if kind == "cover":
+        parts += [
+            f'<h1 class="rv">{esc(s["title"])}</h1>',
+            f'<div class="hero-accent rv d1">{esc(s["accent"])}</div>',
+            f'<p class="note rv d2">{esc(s["note"])}</p>',
+            '<button class="cta only-icon rv d3" data-start aria-label="开始讲解" title="开始讲解">📢</button>',
+        ]
+    elif kind == "fact":
+        parts += [
+            f'<h2 class="rv">{esc(s["title"])}</h2>',
+            f'<div class="metric rv d1">{esc(s["metric"])}</div>',
+            f'<p class="body rv d2">{esc(s["body"])}</p>',
+        ]
+    elif kind == "formula":
+        items = "".join(
+            f'<div class="f-card"><span class="f-no">{n+1}</span>{esc(x)}</div>'
+            for n, x in enumerate(s["items"])
+        )
+        parts += [
+            f'<h2 class="rv">{esc(s["title"])}</h2>',
+            f'<div class="formula rv d1">{items}</div>',
+        ]
+        result = (s.get("result") or "").strip()
+        if result:
+            parts.append(f'<div class="result rv d2">{esc(result)}</div>')
+    elif kind == "compare":
+        parts += [f'<h2 class="rv">{esc(s["title"])}</h2>', '<div class="compare rv d1">']
+        for side in ("left", "right"):
+            x = s[side]
+            parts.append(
+                f'<div class="glass {esc(x["tone"])}">'
+                f'<small>{esc(x["label"])}</small>'
+                f'<strong>{esc(x["value"])}</strong></div>'
+            )
+        parts.append("</div>")
+    elif kind == "metrics":
+        parts += [f'<h2 class="rv">{esc(s["title"])}</h2>', '<div class="mgrid rv d1">']
+        for x in s["items"]:
+            parts.append(
+                f'<div class="glass"><i>{esc(x["icon"])}</i><b>{esc(x["name"])}</b></div>'
+            )
+        parts.append("</div>")
+    elif kind == "conclusion":
+        parts += [
+            f'<h2 class="rv">{esc(s["title"])}</h2>',
+            f'<div class="hero-accent rv d1">{esc(s["accent"])}</div>',
+            f'<p class="note rv d2">{esc(s["note"])}</p>',
+        ]
+    elif kind == "action":
+        # 独立的行动页：观众唯一要带走的东西，不该和落款挤在一屏。
+        # 一句话只能给出方法的形状（「拆成 3 段」），照做时会卡在「怎么数步／在哪切／交什么」，
+        # 所以强制列表；action_script 放能复制粘贴的原话 —— 用得上才叫拿得走。
+        act = s.get("action")
+        acts = [x.strip() for x in act if str(x).strip()] if isinstance(act, list) else (
+            [act.strip()] if isinstance(act, str) and act.strip() else [])
+        parts.append(f'<h2 class="rv">{esc(s["title"])}</h2>')
+        if acts:
+            steps = "".join(f"<li>{esc(x)}</li>" for x in acts)
+            block = f'<div class="action rv d1"><ol class="act-steps">{steps}</ol>'
+            script = (s.get("action_script") or "").strip()
+            if script:
+                block += f'<p class="act-script">{esc(script)}</p>'
+            parts.append(block + "</div>")
+    elif kind == "ending":
+        # 来源是给可核查性用的，不是给观众读的：编号（arXiv xxxx.xxxxx）对观众零信息量，
+        # 还占掉「今天就试这一条」的版面。故收成一行小字，只留人话名称；URL 保留在 href 里可点核查。
+        srcs = "".join(
+            f'<a href="{esc(x["url"])}" target="_blank" rel="noopener noreferrer">{esc(x["name"])}</a>'
+            for x in s.get("sources", [])
+        )
+        if srcs:
+            parts.append(
+                f'<p class="sources rv d1"><span class="src-tag">依据</span>{srcs}</p>'
+            )
+        parts += [
+            f'<h2 class="rv">{esc(s["title"])}</h2>',
+            f'<p class="disclaimer rv d2">{esc(s["disclaimer"])}</p>',
+            f'<div class="signature rv d3">🦎 {esc(s["signature"])}</div>',
+        ]
+    parts += ['<div class="speak-bar" aria-hidden="true"></div>', "</main></section>"]
+    return "\n".join(parts)
+
+
+TEMPLATE = r"""<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>__TITLE__</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow:hidden;background:#01050f;color:#f0f4f8;
+ font-family:"SF Pro Display","Segoe UI","Microsoft YaHei","PingFang SC",sans-serif}
+body{display:grid;place-items:center}
+
+/* ===== Stage ===== */
+.stage{position:relative;width:min(100vw,56.25vh);height:min(100vh,177.78vw);
+ overflow:hidden;background:
+ radial-gradient(ellipse 80% 50% at 50% -10%,rgba(56,189,248,.16),transparent 60%),
+ radial-gradient(ellipse 60% 40% at 100% 100%,rgba(139,92,246,.13),transparent 65%),
+ linear-gradient(168deg,#050b1e 0%,#030713 55%,#01040d 100%)}
+canvas#px{position:absolute;inset:0;z-index:0;opacity:.6}
+
+/* ===== Top chrome ===== */
+.dots{position:absolute;z-index:15;top:3.2%;left:50%;transform:translateX(-50%);
+ display:flex;gap:1.3vw}
+.dot{width:clamp(5px,1.1vw,9px);height:clamp(5px,1.1vw,9px);border-radius:50%;
+ background:rgba(71,85,105,.6);transition:all .55s cubic-bezier(.4,0,.2,1)}
+.dot.on{background:#67e8f9;box-shadow:0 0 12px rgba(34,211,238,.7);transform:scale(1.35)}
+.brand{position:absolute;z-index:10;left:6%;top:5.2%;color:#3f5570;
+ font-size:clamp(10px,1.7vw,15px);letter-spacing:.09em;font-weight:500}
+.status{position:absolute;z-index:10;right:6%;top:5.2%;
+ font-size:clamp(10px,1.7vw,15px);color:#4b8fa8;letter-spacing:.05em}
+
+/* ===== Track ===== */
+.track{height:100%;display:flex;transition:transform .78s cubic-bezier(.19,1,.22,1)}
+.slide{position:relative;min-width:100%;height:100%;
+ display:flex;align-items:center;justify-content:center;
+ padding:13% 7.5% 15%;overflow:hidden}
+.slide::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+ background-image:linear-gradient(rgba(56,189,248,.028) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(56,189,248,.028) 1px,transparent 1px);
+ background-size:11vw 11vw;
+ mask-image:linear-gradient(to bottom,rgba(0,0,0,.5),transparent 72%);
+ -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,.5),transparent 72%)}
+
+/* ===== Orbs ===== */
+.orb{position:absolute;border-radius:50%;z-index:0;pointer-events:none}
+.orb.a{width:58vw;height:58vw;right:-24vw;top:4%;
+ background:radial-gradient(circle,rgba(99,102,241,.2),transparent 68%);
+ animation:fa 10s ease-in-out infinite alternate}
+.orb.b{width:44vw;height:44vw;left:-19vw;bottom:8%;
+ background:radial-gradient(circle,rgba(6,182,212,.16),transparent 68%);
+ animation:fb 13s ease-in-out infinite alternate}
+@keyframes fa{to{transform:translate(-7vw,6vh) scale(1.14)}}
+@keyframes fb{to{transform:translate(9vw,-5vh) scale(1.2)}}
+
+/* ===== Content + reveal ===== */
+.content{position:relative;z-index:2;width:100%;max-width:100%;text-align:center;
+ display:flex;flex-direction:column;align-items:center}
+.rv{opacity:0;transform:translateY(32px);
+ transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.slide.active .rv{opacity:1;transform:translateY(0)}
+.slide.active .d1{transition-delay:.16s}
+.slide.active .d2{transition-delay:.32s}
+.slide.active .d3{transition-delay:.48s}
+
+/* ===== Eyebrow ===== */
+.eyebrow{display:inline-block;color:#7dd3fc;
+ border:1px solid rgba(56,189,248,.28);border-radius:999px;
+ padding:.5em 1.2em;font-size:clamp(12px,2.4vw,21px);font-weight:600;
+ letter-spacing:.15em;background:rgba(8,47,73,.45);
+ backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+ margin-bottom:4.2vh;opacity:0;transform:translateY(20px) scale(.94);
+ transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1),box-shadow .5s}
+.slide.active .eyebrow{opacity:1;transform:translateY(0) scale(1)}
+
+/* ===== 封面第一句＝信息抓手：整句话，不是标签 ===== */
+/* 内页 eyebrow 是编号标签，维持小胶囊；封面这句要让人一眼读完并对号入座 */
+.k-cover .eyebrow{display:block;max-width:15em;border:0;background:none;
+ backdrop-filter:none;-webkit-backdrop-filter:none;border-radius:0;padding:0;
+ font-size:clamp(24px,4.9vw,46px);font-weight:600;letter-spacing:.01em;
+ line-height:1.42;color:#b8cfe6;margin-bottom:2.6vh;text-wrap:balance}
+.k-cover .eyebrow::after{content:"";display:block;width:2.1em;height:3px;margin:2.4vh auto 0;
+ border-radius:3px;background:linear-gradient(90deg,rgba(56,189,248,0),#38bdf8,rgba(56,189,248,0))}
+.slide.speaking.k-cover .eyebrow{box-shadow:none;color:#d6e6f5}
+
+/* ===== Headings ===== */
+h1,h2{line-height:1.13;font-weight:800;letter-spacing:-.025em;text-wrap:balance}
+h1{font-size:clamp(44px,9.8vw,90px);margin:.08em 0 .34em;
+ text-shadow:0 0 70px rgba(56,189,248,.18)}
+h2{font-size:clamp(33px,6.9vw,63px);margin:.08em 0 .38em;
+ text-shadow:0 0 55px rgba(56,189,248,.12)}
+
+/* ===== Hero accent (gradient text, render-safe) ===== */
+.hero-accent{font-weight:900;font-size:clamp(37px,7.9vw,73px);line-height:1.17;
+ background-image:linear-gradient(102deg,#67e8f9 0%,#a78bfa 48%,#fbbf24 100%);
+ -webkit-background-clip:text;background-clip:text;
+ -webkit-text-fill-color:transparent;color:#a5c9e8}
+@supports not ((-webkit-background-clip:text) or (background-clip:text)){
+ .hero-accent{-webkit-text-fill-color:#7dd3fc;color:#7dd3fc}}
+
+/* ===== Text ===== */
+.note,.body{font-size:clamp(18px,3.7vw,33px);line-height:1.72}
+.note{margin-top:3.3vh;color:#8fa4bd}
+.k-cover .note{font-size:clamp(19px,3.9vw,35px);color:#9fb6cd}
+.body{margin:2.4vh auto 0;text-align:left;max-width:93%;color:#c3d0de}
+
+/* ===== CTA ===== */
+.cta{margin-top:4.8vh;border:0;border-radius:999px;padding:.82em 1.85em;
+ position:relative;
+ color:#fff;font-size:clamp(19px,3.7vw,33px);font-weight:700;cursor:pointer;
+ background:linear-gradient(135deg,#0891b2 0%,#7c3aed 62%,#6d28d9 100%);
+ box-shadow:0 4px 36px rgba(34,211,238,.34),0 0 0 1px rgba(124,58,237,.34);
+ transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s}
+.cta:hover{transform:scale(1.05);box-shadow:0 6px 46px rgba(34,211,238,.5)}
+.cta:active{transform:scale(.98)}
+/* icon-only 变体：无文字，用圆形 + 呼吸光环提示可点 */
+.cta.only-icon{padding:0;margin-top:5.6vh;
+ width:clamp(104px,17.5vw,158px);height:clamp(104px,17.5vw,158px);
+ display:grid;place-items:center;line-height:1;
+ font-size:clamp(42px,8vw,72px)}
+.cta.only-icon::after{content:"";position:absolute;inset:-12px;border-radius:999px;
+ border:2px solid rgba(34,211,238,.55);opacity:0;
+ animation:ctaring 2.6s cubic-bezier(.22,.61,.36,1) infinite}
+@keyframes ctaring{
+ 0%{transform:scale(.9);opacity:.75}
+ 70%{transform:scale(1.22);opacity:0}
+ 100%{transform:scale(1.22);opacity:0}}
+
+/* ===== Metric ===== */
+.metric{font-size:clamp(31px,6.6vw,62px);font-weight:900;color:#fcd34d;
+ margin:2.9vh 0;letter-spacing:-.01em;
+ text-shadow:0 0 46px rgba(251,191,36,.26)}
+
+/* ===== Formula: 2x2 grid fits vertical format ===== */
+.formula{display:grid;grid-template-columns:1fr 1fr;gap:2.2vh 2.4vw;
+ margin:3.2vh auto;width:100%}
+.f-card{position:relative;padding:2.6vh 1.4vw;border-radius:20px;font-weight:700;
+ font-size:clamp(17px,3.4vw,31px);
+ background:linear-gradient(145deg,rgba(20,32,56,.85),rgba(12,20,38,.75));
+ border:1px solid rgba(56,189,248,.26);
+ backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 6px 24px rgba(0,0,0,.32)}
+.f-no{position:absolute;top:.7em;left:.85em;font-size:.62em;font-weight:800;
+ color:#38bdf8;opacity:.75;letter-spacing:0}
+.result{font-size:clamp(25px,4.9vw,43px);color:#fcd34d;font-weight:900;margin-top:2.6vh;
+ text-shadow:0 0 32px rgba(251,191,36,.2)}
+
+/* ===== Glass cards ===== */
+.glass{padding:3.4vh 4.2vw;border-radius:24px;
+ background:linear-gradient(145deg,rgba(18,29,52,.72),rgba(10,17,33,.62));
+ border:1px solid rgba(100,116,139,.26);
+ backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 10px 36px rgba(0,0,0,.34);
+ transition:border-color .45s,box-shadow .45s,transform .45s}
+.glass small{display:block;font-size:clamp(15px,2.9vw,25px);color:#7d90a8;
+ margin-bottom:1.1vh;letter-spacing:.06em}
+.glass strong{font-size:clamp(27px,5.4vw,49px);font-weight:800}
+.glass i{display:block;font-style:normal;font-size:clamp(34px,6.6vw,57px);
+ color:#67e8f9;margin-bottom:1.4vh;
+ filter:drop-shadow(0 0 14px rgba(34,211,238,.4))}
+.glass b{font-size:clamp(21px,4.1vw,37px);font-weight:700}
+
+.compare{display:grid;gap:2.4vh;margin-top:3.8vh;width:100%}
+.glass.dim strong{color:#5c6f85}
+.glass.bright{border-color:rgba(34,211,238,.48);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 0 46px rgba(34,211,238,.15)}
+.glass.bright strong{color:#67e8f9}
+.slide.active .glass.bright{animation:glow 3.5s ease-in-out infinite alternate}
+@keyframes glow{to{box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 0 62px rgba(34,211,238,.26)}}
+
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:2.4vw;margin-top:3.8vh;width:100%}
+.mgrid .glass{padding:2.9vh 2.4vw;text-align:center}
+
+/* ===== Ending ===== */
+/* 来源＝可核查性，不是观众读物：一行小字，不与「今天就试这一条」抢版面 */
+.sources{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;
+ gap:.4em .8em;margin:0 auto 3.4vh;width:100%;max-width:94%;line-height:1.7}
+.src-tag{color:#5b6d84;font-size:clamp(13px,2.3vw,20px);letter-spacing:.06em}
+.sources a{color:#6b8ba8;font-size:clamp(13px,2.4vw,21px);text-decoration:none}
+.sources a:not(:last-child)::after{content:"·";margin-left:.8em;color:#3d4f63}
+/* ===== 落版页「今天就试这一条」＝观众唯一要带走的东西 ===== */
+.action{width:100%;max-width:94%;margin:0 auto 4.4vh;text-align:left;
+ border:1px solid rgba(56,189,248,.3);border-left:4px solid #38bdf8;border-radius:18px;
+ padding:3vh 4.6% 3.2vh;background:linear-gradient(135deg,rgba(8,47,73,.5),rgba(2,20,40,.42));
+ backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.act-tag{display:block;color:#7dd3fc;font-size:clamp(14px,2.6vw,23px);font-weight:700;
+ letter-spacing:.14em;margin-bottom:1.5vh}
+.act-steps{margin:.2em 0 0;padding-left:1.5em;color:#e6f0fa;
+ font-size:clamp(18px,3.5vw,32px);font-weight:600;line-height:1.62}
+.act-steps li{margin:.42em 0}
+.act-steps li::marker{color:#7dd3fc;font-weight:800}
+.act-script{margin:.85em 0 0;padding:.72em .9em;border-left:3px solid #7dd3fc;
+ background:rgba(8,38,60,.5);border-radius:0 12px 12px 0;
+ color:#bfe4fb;font-size:clamp(16px,3.1vw,28px);font-weight:600;line-height:1.58}
+.disclaimer{color:#5b6d84;font-size:clamp(13px,2.4vw,21px);line-height:1.68;
+ margin-top:2vh;max-width:91%}
+.signature{font-size:clamp(27px,4.9vw,45px);font-weight:900;margin-top:3.3vh;
+ background-image:linear-gradient(102deg,#67e8f9,#a78bfa);
+ -webkit-background-clip:text;background-clip:text;
+ -webkit-text-fill-color:transparent;color:#8ec5e8}
+
+/* ===== Speaking state ===== */
+.speak-bar{width:0;height:3px;border-radius:2px;
+ background:linear-gradient(90deg,#22d3ee,#a78bfa,#fbbf24);
+ margin:3.3vh auto 0;transition:width .7s cubic-bezier(.16,1,.3,1)}
+.slide.speaking .speak-bar{width:72%;animation:bp 1.7s ease-in-out infinite alternate}
+.slide.speaking .content{filter:drop-shadow(0 0 34px rgba(34,211,238,.2))}
+.slide.speaking .eyebrow{box-shadow:0 0 22px rgba(34,211,238,.34);
+ border-color:rgba(56,189,248,.5)}
+@keyframes bp{0%{opacity:1}100%{opacity:.28}}
+
+/* ===== Controls ===== */
+.controls{position:absolute;z-index:20;left:3.5%;right:3.5%;bottom:1.9%;
+ display:flex;align-items:center;gap:clamp(3px,1.1vw,9px);
+ padding:1vh 2.4vw;border-radius:18px;
+ background:rgba(1,5,15,.86);border:1px solid rgba(51,65,85,.45);
+ backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+ box-shadow:0 8px 32px rgba(0,0,0,.5);transition:opacity .55s}
+.controls.faded{opacity:.05}
+.controls:hover,.controls:focus-within{opacity:1}
+.controls button,.controls select,.controls input{font:inherit}
+.controls button{border:1px solid rgba(51,65,85,.8);background:rgba(15,23,42,.9);
+ color:#dbe4ee;border-radius:10px;padding:.48em .68em;cursor:pointer;
+ font-size:clamp(11px,2.1vw,17px);transition:background .25s,border-color .25s}
+.controls button:hover{background:rgba(30,41,59,.95);border-color:rgba(71,85,105,.9)}
+.controls .primary{background:#0e7490;border-color:#0891b2}
+.controls .primary:hover{background:#0891b2}
+.controls select{min-width:0;max-width:25%;color:#dbe4ee;background:rgba(15,23,42,.9);
+ border:1px solid rgba(51,65,85,.8);border-radius:8px;padding:.38em;
+ font-size:clamp(9px,1.7vw,14px)}
+.controls input[type=range]{width:12%;accent-color:#22d3ee}
+.rl{color:#7d90a8;font-size:clamp(9px,1.7vw,13px);font-variant-numeric:tabular-nums}
+.counter{margin-left:auto;color:#5b6d84;font-size:clamp(9px,1.7vw,13px);
+ font-variant-numeric:tabular-nums}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition-duration:.01ms!important}}
+/* Screenshot/verify mode: freeze transitions */
+html.nofx *{animation:none!important;transition:none!important}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+ <canvas id="px"></canvas>
+ <div class="dots" id="dots"></div>
+ <div class="brand">今日AI洞察 · __DATE__</div>
+ <div class="status" id="status">等待开始</div>
+ <div class="track" id="track">
+__SLIDES__
+ </div>
+ <nav class="controls" id="controls" aria-label="控制">
+  <button id="prev" title="上一页">◀</button>
+  <button class="primary" id="play">▶ 开始</button>
+  <button id="replay" title="重播">🔄</button>
+  <button id="next" title="下一页">▶</button>
+  <select id="voice" aria-label="语音"></select>
+  <input id="rate" aria-label="语速" type="range" min="0.8" max="1.3" step="0.05" value="1">
+  <span class="rl" id="rateVal">1.0×</span>
+  <span class="counter" id="counter"></span>
+ </nav>
+</div>
+<script>
+(()=>{'use strict';
+/* ---- particles ---- */
+const cv=document.getElementById('px'),cx=cv.getContext('2d');let W,H,ps=[];
+function rs(){const r=cv.parentElement.getBoundingClientRect();
+ W=cv.width=r.width;H=cv.height=r.height;
+ ps=Array.from({length:34},()=>({x:Math.random()*W,y:Math.random()*H,
+  r:Math.random()*1.7+.5,dx:(Math.random()-.5)*.16,dy:Math.random()*-.11-.03,
+  o:Math.random()*.45+.12}))}
+function dr(){cx.clearRect(0,0,W,H);
+ for(const p of ps){p.x+=p.dx;p.y+=p.dy;
+  if(p.y<-12){p.y=H+12;p.x=Math.random()*W}
+  if(p.x<-12)p.x=W+12;if(p.x>W+12)p.x=-12;
+  cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.284);
+  cx.fillStyle='rgba(125,211,252,'+p.o+')';cx.fill()}
+ requestAnimationFrame(dr)}
+rs();dr();window.addEventListener('resize',rs);
+
+/* ---- refs ---- */
+const sl=[...document.querySelectorAll('.slide')],tk=document.getElementById('track'),
+ pb=document.getElementById('play'),st=document.getElementById('status'),
+ vs=document.getElementById('voice'),ri=document.getElementById('rate'),
+ rv=document.getElementById('rateVal'),ct=document.getElementById('counter'),
+ cl=document.getElementById('controls'),de=document.getElementById('dots');
+sl.forEach(()=>{const d=document.createElement('div');d.className='dot';de.appendChild(d)});
+const dt=[...de.children];
+let ix=0,playing=false,paused=false,ht;
+
+function show(i){ix=Math.max(0,Math.min(sl.length-1,i));
+ tk.style.transform='translateX(-'+(ix*100)+'%)';
+ sl.forEach((s,n)=>s.classList.toggle('active',n===ix));
+ dt.forEach((d,n)=>d.classList.toggle('on',n===ix));
+ ct.textContent=(ix+1)+'/'+sl.length}
+
+function lv(){const all=speechSynthesis.getVoices(),
+ zh=all.filter(v=>/^zh/i.test(v.lang)||/Chinese|中文|Xiaoxiao/i.test(v.name));
+ vs.innerHTML='';const pool=zh.length?zh:all;
+ pool.forEach(v=>{const o=document.createElement('option');
+  o.value=v.name;o.textContent=v.name;vs.appendChild(o)});
+ const best=pool.find(v=>/Microsoft Xiaoxiao Online \(Natural\)/i.test(v.name))
+  ||pool.find(v=>/Online \(Natural\)/i.test(v.name))||pool[0];
+ if(best)vs.value=best.name}
+
+function stop(){speechSynthesis.cancel();playing=false;paused=false;
+ sl.forEach(s=>s.classList.remove('speaking'));
+ pb.textContent='▶ 继续';st.textContent='已停止'}
+
+function speak(){speechSynthesis.cancel();
+ sl.forEach(s=>s.classList.remove('speaking'));
+ const u=new SpeechSynthesisUtterance(sl[ix].dataset.tts);
+ u.lang='zh-CN';u.rate=Number(ri.value);u.pitch=1;
+ const v=speechSynthesis.getVoices().find(x=>x.name===vs.value);if(v)u.voice=v;
+ u.onstart=()=>{playing=true;paused=false;sl[ix].classList.add('speaking');
+  pb.textContent='⏸ 暂停';st.textContent='正在讲解'};
+ u.onend=()=>{sl[ix].classList.remove('speaking');if(!playing)return;
+  if(ix<sl.length-1){show(ix+1);setTimeout(speak,720)}
+  else{playing=false;pb.textContent='🔄 重新开始';st.textContent='讲解完成'}};
+ u.onerror=e=>{if(e.error!=='canceled'&&e.error!=='interrupted'){
+  playing=false;st.textContent='语音不可用';pb.textContent='▶ 重试'}};
+ speechSynthesis.speak(u)}
+
+function tg(){if(ix===sl.length-1&&!playing){show(0);setTimeout(speak,420);return}
+ if(!playing){playing=true;speak()}
+ else if(paused){speechSynthesis.resume();paused=false;
+  pb.textContent='⏸ 暂停';st.textContent='正在讲解'}
+ else{speechSynthesis.pause();paused=true;
+  pb.textContent='▶ 继续';st.textContent='已暂停'}}
+
+function mv(n){speechSynthesis.cancel();playing=false;paused=false;
+ show(ix+n);pb.textContent='▶ 从本页开始';st.textContent='手动翻页'}
+
+document.querySelector('[data-start]').onclick=()=>{show(0);speak()};
+pb.onclick=tg;
+document.getElementById('prev').onclick=()=>mv(-1);
+document.getElementById('next').onclick=()=>mv(1);
+document.getElementById('replay').onclick=()=>{playing=true;speak()};
+ri.oninput=()=>rv.textContent=Number(ri.value).toFixed(1)+'×';
+speechSynthesis.onvoiceschanged=lv;lv();show(0);
+document.addEventListener('keydown',e=>{
+ if(e.key==='ArrowRight')mv(1);if(e.key==='ArrowLeft')mv(-1);
+ if(e.key===' '){e.preventDefault();tg()}});
+function rvl(){cl.classList.remove('faded');clearTimeout(ht);
+ ht=setTimeout(()=>cl.classList.add('faded'),3500)}
+document.addEventListener('mousemove',rvl);
+document.addEventListener('touchstart',rvl,{passive:true});
+window.addEventListener('beforeunload',stop);rvl()})();
+</script>
+</body>
+</html>"""
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--config", required=True)
+    ap.add_argument("--output", required=True)
+    a = ap.parse_args()
+    d = json.loads(Path(a.config).read_text(encoding="utf-8"))
+    slides = "\n".join(slide_markup(s, i) for i, s in enumerate(d["slides"]))
+    out = (
+        TEMPLATE.replace("__TITLE__", esc(d["page_title"]))
+        .replace("__DATE__", esc(d["date"]))
+        .replace("__SLIDES__", slides)
+    )
+    p = Path(a.output)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(out, encoding="utf-8")
+    chars = sum(len(s["tts"]) for s in d["slides"])
+    print(f"Done: {p} | slides={len(d['slides'])} | tts_chars={chars}")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco科学科普讲解：认识认知螺旋">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>🌀 认知螺旋 · 思维讲解</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+
+.slide-container {
+  width: 100%; height: 100%; position: relative; overflow: hidden;
+  touch-action: pan-y;
+}
+
+.slide {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 30px 24px; text-align: center; transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+/* 封面 */
+.slide-0 { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); color: #fff; }
+/* 位置决定风景 */
+.slide-1 { background: linear-gradient(135deg, #2193b0, #6dd5ed); color: #fff; }
+/* 认知四象限 */
+.slide-2 { background: linear-gradient(135deg, #834d9b, #d04ed6); color: #fff; }
+/* 螺旋阶段1-2 */
+.slide-3 { background: linear-gradient(135deg, #e94560, #533483); color: #fff; }
+/* 螺旋阶段3-4 */
+.slide-4 { background: linear-gradient(135deg, #11998e, #38ef7d); color: #fff; }
+/* 螺旋循环 */
+.slide-5 { background: linear-gradient(135deg, #fc5c7d, #6a82fb); color: #fff; }
+/* 认知黑洞 */
+.slide-6 { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); color: #fff; }
+/* 突破方法 */
+.slide-7 { background: linear-gradient(135deg, #f7971e, #ffd200); color: #333; }
+/* 核心心法 */
+.slide-8 { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
+
+.big-title {
+  font-size: 42px; font-weight: 900; margin-bottom: 12px;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  animation: fadeUp 0.5s ease-out;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.big-icon { font-size: 64px; margin-bottom: 16px; }
+
+.quote-box {
+  font-size: 18px; font-weight: 700; line-height: 1.8;
+  background: rgba(255,255,255,0.15); padding: 16px 20px; border-radius: 16px;
+  max-width: 320px; margin: 12px 0; border-left: 4px solid rgba(255,255,255,0.5);
+  text-align: left;
+}
+
+.explain-text {
+  font-size: 15px; line-height: 1.8; max-width: 310px; margin-top: 12px;
+  opacity: 0.9; text-align: left;
+}
+
+.metaphor-box {
+  font-size: 14px; margin-top: 14px; padding: 10px 16px;
+  background: rgba(255,255,255,0.1); border-radius: 12px;
+  max-width: 300px; opacity: 0.85;
+}
+
+.step-card {
+  background: rgba(255,255,255,0.12); border-radius: 14px; padding: 14px 18px;
+  margin: 8px 0; max-width: 320px; width: 100%; text-align: left;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.step-card .step-head {
+  font-size: 17px; font-weight: 800; margin-bottom: 4px;
+}
+.step-card .step-desc {
+  font-size: 14px; opacity: 0.85; line-height: 1.5;
+}
+
+.method-card {
+  background: rgba(0,0,0,0.1); border-radius: 14px; padding: 14px 18px;
+  margin: 8px 0; max-width: 320px; width: 100%; text-align: left;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+.method-card .method-title { font-size: 17px; font-weight: 800; margin-bottom: 4px; }
+.method-card .method-desc { font-size: 14px; opacity: 0.8; line-height: 1.5; }
+
+.subtitle { font-size: 16px; opacity: 0.8; margin-bottom: 20px; }
+.hint { font-size: 13px; opacity: 0.5; position: absolute; bottom: 60px; }
+
+/* 导航 */
+.nav-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; background: rgba(0,0,0,0.3); backdrop-filter: blur(10px);
+}
+.nav-dots { display: flex; gap: 5px; }
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.35);
+  transition: all 0.3s; cursor: pointer;
+}
+.nav-dot.active { background: #fff; width: 18px; border-radius: 4px; }
+
+.nav-btn {
+  padding: 8px 14px; border: none; border-radius: 18px;
+  background: rgba(255,255,255,0.2); color: #fff; font-size: 13px;
+  font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.nav-btn:hover { background: rgba(255,255,255,0.35); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.nav-btn.auto { background: rgba(255,255,255,0.3); }
+.nav-btn.auto.playing { background: rgba(255,200,0,0.5); }
+
+.page-num {
+  position: fixed; top: 14px; right: 14px; z-index: 100;
+  font-size: 12px; color: rgba(255,255,255,0.5); font-weight: 600;
+}
+.speak-indicator {
+  position: fixed; top: 14px; left: 14px; z-index: 100;
+  font-size: 18px; opacity: 0; transition: opacity 0.3s;
+}
+.speak-indicator.active { opacity: 1; animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+@media (max-width: 380px) {
+  .big-title { font-size: 34px; }
+  .quote-box { font-size: 16px; padding: 12px 16px; }
+  .step-card, .method-card { padding: 12px 14px; }
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="speak-indicator" id="speakIndicator">🔊</div>
+<div class="page-num" id="pageNum">1/9</div>
+
+<div class="slide-container" id="slideContainer">
+
+  <!-- Slide 0: 封面 -->
+  <div class="slide slide-0" data-speech="认知螺旋，思维讲解。保持微笑，在山的不同位置看到的风景不一样，理解万岁。左滑开始，或者点自动播放，我来一页一页讲给你听。">
+    <div class="big-icon">🌀</div>
+    <div class="big-title">认知螺旋</div>
+    <div class="subtitle">位置决定风景 · 突破认知黑洞</div>
+    <p style="font-size:14px; opacity:0.6; max-width:260px; margin-top:12px;">一套关于"如何看见自己看不见的东西"的思维框架</p>
+    <div class="hint">← 左滑翻页 · 点▶️自动讲解 →</div>
+  </div>
+
+  <!-- Slide 1: 位置决定风景 -->
+  <div class="slide slide-1" data-speech="第一个洞察：位置决定风景。保持微笑，在山的不同位置看到的风景不一样，理解万岁。同一座山，站在山脚看到的是压迫感，站在半山腰看到的是路径，站在山顶看到的是全局。你的位置决定了你的视野，你的视野决定了你的判断。所以，别急着评判别人的选择，也许你们只是站在山的不同位置。">
+    <div class="big-icon">🏔️</div>
+    <div class="big-title" style="font-size:28px;">位置决定风景</div>
+    <div class="quote-box">保持微笑，在山的不同位置看到的风景不一样，理解万岁</div>
+    <div class="explain-text">
+      山脚 → 看到<b>压迫感</b><br>
+      半山腰 → 看到<b>路径</b><br>
+      山顶 → 看到<b>全局</b>
+    </div>
+    <div class="metaphor-box">💡 别急着评判别人——也许你们只是站在山的不同位置。</div>
+  </div>
+
+  <!-- Slide 2: 认知四象限 -->
+  <div class="slide slide-2" data-speech="第二个洞察：认知的四个层级。知道自己知道，知道自己不知道，不知道自己不知道。这三个层级中，最危险的不是不知道，而是不知道自己不知道。你甚至意识不到自己的盲区。这就是认知黑洞——你在里面时，连光都逃不出去，完全察觉不到自己被困住了。">
+    <div class="big-icon">🧠</div>
+    <div class="big-title" style="font-size:26px;">认知四象限</div>
+    <div class="step-card">
+      <div class="step-head">✅ 知道自己知道</div>
+      <div class="step-desc">清醒的能力区</div>
+    </div>
+    <div class="step-card">
+      <div class="step-head">🤔 知道自己不知道</div>
+      <div class="step-desc">学习的起点</div>
+    </div>
+    <div class="step-card" style="border-color:rgba(255,100,100,0.4);">
+      <div class="step-head">⚠️ 不知道自己不知道</div>
+      <div class="step-desc">最危险！看不到的盲区</div>
+    </div>
+    <div class="metaphor-box">🕳️ 这就是「认知黑洞」——身处其中浑然不觉</div>
+  </div>
+
+  <!-- Slide 3: 螺旋 阶段1-2 -->
+  <div class="slide slide-3" data-speech="认知螺旋，第一阶段：不知道自己不知道。这是无意识无能力的阶段。自信心最高，但能力最低。完全看不到自己的盲区，还觉得自己挺厉害。第二阶段：知道自己不知道。这是觉醒的开始。开始意识到自己的不足了，虽然可能很挫败，但谦卑是学习的起点。">
+    <div style="font-size:20px; font-weight:800; margin-bottom:16px;">🌀 认知螺旋</div>
+    <div class="step-card">
+      <div class="step-head">😶 阶段一：不知道自己不知道</div>
+      <div class="step-desc">无意识 · 无能力<br>自信最高❗能力最低<br>完全看不到自己的盲区</div>
+    </div>
+    <div style="font-size:24px; margin:6px 0; opacity:0.6;">⬇️</div>
+    <div class="step-card">
+      <div class="step-head">🤔 阶段二：知道自己不知道</div>
+      <div class="step-desc">有意识 · 无能力<br>觉醒的开始 🌅<br>谦卑是学习的起点</div>
+    </div>
+  </div>
+
+  <!-- Slide 4: 螺旋 阶段3-4 -->
+  <div class="slide slide-4" data-speech="第三阶段：知道自己知道。有意识有能力，这是刻意练习的阶段。通过努力掌握了技能，但还需要集中注意力才能做好。第四阶段：不知道自己知道。无意识有能力。技能已经内化为本能了，像呼吸一样自然。举重若轻，游刃有余。">
+    <div style="font-size:20px; font-weight:800; margin-bottom:16px; color:#fff;">🌀 继续上升</div>
+    <div class="step-card">
+      <div class="step-head">💪 阶段三：知道自己知道</div>
+      <div class="step-desc">有意识 · 有能力<br>刻意练习阶段 🏋️<br>需要集中注意力才能做好</div>
+    </div>
+    <div style="font-size:24px; margin:6px 0; opacity:0.6;">⬇️</div>
+    <div class="step-card">
+      <div class="step-head">🧘 阶段四：不知道自己知道</div>
+      <div class="step-desc">无意识 · 有能力<br>内化为本能 ✨<br>举重若轻，游刃有余</div>
+    </div>
+  </div>
+
+  <!-- Slide 5: 循环 -->
+  <div class="slide slide-5" data-speech="然后，新一轮循环开始了！当你在一个领域达到了不知道自己知道的境界，你会在更高的层面发现新的不知道。这不是退步，这是视野在扩大。就像爬螺旋楼梯，你可能经过同一个方向好几次，但每一次都比上一次高了一层。这就是认知螺旋，永无止境，这就是成长。">
+    <div class="big-icon">🔄</div>
+    <div class="big-title" style="font-size:26px;">螺旋永不停止</div>
+    <div class="quote-box" style="text-align:center;">
+      到达顶峰后…<br>
+      ⬇️<br>
+      又发现新的「不知道」<br>
+      ⬇️<br>
+      新一轮螺旋开始 🌀
+    </div>
+    <div class="explain-text" style="text-align:center;">
+      这不是退步<br>
+      这是<b>视野在扩大</b>的证明<br><br>
+      就像螺旋楼梯 🏗️<br>
+      经过同一方向好几次<br>
+      但每次都<b>高了一层</b>
+    </div>
+  </div>
+
+  <!-- Slide 6: 认知黑洞 -->
+  <div class="slide slide-6" data-speech="认知黑洞。这是最可怕的状态：不知道自己不知道。为什么叫黑洞？因为黑洞的特点是：你在里面时，连光都逃不出去。你完全察觉不到自己被困住了。更可怕的是，你还会觉得自己很对、很聪明。这就是为什么突破它那么难——你无法从内部发现问题。你需要外力。">
+    <div class="big-icon">🕳️</div>
+    <div class="big-title" style="font-size:26px;">认知黑洞</div>
+    <div class="quote-box">
+      黑洞的特点：<br>
+      ❌ 光逃不出去<br>
+      ❌ 内部察觉不到被困<br>
+      ❌ 还觉得自己很对
+    </div>
+    <div class="explain-text" style="text-align:center;">
+      无法从内部突破<br>
+      <b>你需要外力！</b>
+    </div>
+    <div class="metaphor-box">🐟 鱼发现不了水——直到它跳出水面的那一刻</div>
+  </div>
+
+  <!-- Slide 7: 突破方法 -->
+  <div class="slide slide-7" data-speech="如何突破认知黑洞？三种方法。方法一：换个位置。去挑战陌生的工作内容，主动做不确定的事，把不确定的事做成，确定下来。当你把未知变成已知，你就已经站在了新的高度。方法二：换个人聊。他人即镜子。找认知框架完全不同的人交流，他们能看到你的盲区。方法三：换个领域碰撞。跨界是认知升级的加速器。用A领域的思维解B领域的问题，产生降维打击。">
+    <div style="font-size:22px; font-weight:800; margin-bottom:14px;">🚀 突破三招</div>
+    <div class="method-card">
+      <div class="method-title">🏔️ 换个位置</div>
+      <div class="method-desc">挑战陌生的工作内容<br>做不确定的事，把它做成确定</div>
+    </div>
+    <div class="method-card">
+      <div class="method-title">🪞 换个人聊</div>
+      <div class="method-desc">他人即镜子<br>不同框架的人能看到你的盲区</div>
+    </div>
+    <div class="method-card">
+      <div class="method-title">💥 换个领域碰撞</div>
+      <div class="method-desc">跨界 = 认知加速器<br>A思维解B问题 → 降维打击</div>
+    </div>
+  </div>
+
+  <!-- Slide 8: 核心心法 -->
+  <div class="slide slide-8" data-speech="最后的核心心法。保持微笑，保持好奇，保持谦卑。承认自己不知道，不是软弱。那恰恰是通往知道的唯一入口。在山的不同位置看到的风景不一样，对别人多一分理解，对自己多一分耐心。认知螺旋，永无止境。理解万岁！">
+    <div class="big-icon">🔑</div>
+    <div class="big-title" style="font-size:26px;">核心心法</div>
+    <div class="quote-box" style="text-align:center; border-left:none; border:2px solid rgba(255,255,255,0.3);">
+      保持微笑 😊<br>
+      保持好奇 🔍<br>
+      保持谦卑 🙏
+    </div>
+    <div class="explain-text" style="text-align:center;">
+      承认「不知道」不是软弱<br>
+      那是通往「知道」的<b>唯一入口</b><br><br>
+      对别人多一分理解<br>
+      对自己多一分耐心<br><br>
+      <b style="font-size:18px;">理解万岁 🌀</b>
+    </div>
+  </div>
+
+</div>
+
+<!-- 底部导航 -->
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="prevSlide()">‹ 上页</button>
+  <div class="nav-dots" id="navDots"></div>
+  <button class="nav-btn auto" id="autoBtn" onclick="toggleAuto()">▶️ 自动</button>
+  <button class="nav-btn" id="nextBtn" onclick="nextSlide()">下页 ›</button>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
+let currentSlide = 0;
+let isAutoPlaying = false;
+let selectedVoice = null;
+
+function initDots() {
+  const dotsContainer = document.getElementById('navDots');
+  for (let i = 0; i < totalSlides; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goToSlide(i);
+    dotsContainer.appendChild(dot);
+  }
+}
+
+function updateUI() {
+  slides.forEach((slide, i) => {
+    slide.style.transform = `translateX(${(i - currentSlide) * 100}%)`;
+  });
+  document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === currentSlide);
+  });
+  document.getElementById('pageNum').textContent = `${currentSlide + 1}/${totalSlides}`;
+  document.getElementById('prevBtn').disabled = currentSlide === 0;
+  document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+}
+
+function goToSlide(idx) {
+  if (idx < 0 || idx >= totalSlides) return;
+  currentSlide = idx;
+  updateUI();
+  if (isAutoPlaying) speakCurrent();
+}
+
+function nextSlide() { goToSlide(currentSlide + 1); }
+function prevSlide() { goToSlide(currentSlide - 1); }
+
+// 触摸滑动
+let touchStartX = 0;
+const container = document.getElementById('slideContainer');
+container.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+container.addEventListener('touchend', e => {
+  const diff = touchStartX - e.changedTouches[0].screenX;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) nextSlide(); else prevSlide();
+  }
+});
+
+// TTS - decoupled from slide timing
+let autoAdvanceTimer = null;
+
+function loadVoices() {
+  const voices = speechSynthesis.getVoices();
+  const cnVoices = voices.filter(v => v.lang.startsWith('zh'));
+  const xiaoxiao = cnVoices.find(v => v.name.includes('Xiaoxiao') && v.name.includes('Online'));
+  const online = cnVoices.find(v => v.name.includes('Online') && v.name.includes('Natural'));
+  selectedVoice = xiaoxiao || online || cnVoices[0] || null;
+}
+
+function speakText(text) {
+  speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = 0.88;
+  utter.pitch = 1.05;
+  if (selectedVoice) utter.voice = selectedVoice;
+  utter.onstart = () => { document.getElementById('speakIndicator').classList.add('active'); };
+  utter.onend = () => { document.getElementById('speakIndicator').classList.remove('active'); };
+  utter.onerror = () => { document.getElementById('speakIndicator').classList.remove('active'); };
+  speechSynthesis.speak(utter);
+}
+
+// Auto-play: use fixed timer based on text length, poll speech status before advancing
+function scheduleNextSlide() {
+  if (!isAutoPlaying || currentSlide >= totalSlides - 1) {
+    if (isAutoPlaying) stopAuto();
+    return;
+  }
+  const text = slides[currentSlide].dataset.speech || '';
+  // ~4 chars/sec at rate 0.88, minimum 6s per slide
+  const waitMs = Math.max(6000, text.length * 280);
+  clearTimeout(autoAdvanceTimer);
+  autoAdvanceTimer = setTimeout(() => { checkAndAdvance(); }, waitMs);
+}
+
+function checkAndAdvance() {
+  if (!isAutoPlaying) return;
+  // If speech is still playing, wait 1s and check again
+  if (speechSynthesis.speaking) {
+    autoAdvanceTimer = setTimeout(() => { checkAndAdvance(); }, 1000);
+    return;
+  }
+  // Advance
+  if (currentSlide < totalSlides - 1) {
+    nextSlide();
+    speakAndSchedule();
+  } else {
+    stopAuto();
+  }
+}
+
+function speakAndSchedule() {
+  const text = slides[currentSlide].dataset.speech;
+  if (text) speakText(text);
+  scheduleNextSlide();
+}
+
+function speakCurrent() { speakAndSchedule(); }
+
+function toggleAuto() { isAutoPlaying ? stopAuto() : startAuto(); }
+
+function startAuto() {
+  isAutoPlaying = true;
+  document.getElementById('autoBtn').textContent = '⏸ 暂停';
+  document.getElementById('autoBtn').classList.add('playing');
+  speakCurrent();
+}
+
+function stopAuto() {
+  isAutoPlaying = false;
+  speechSynthesis.cancel();
+  clearTimeout(autoAdvanceTimer);
+  document.getElementById('autoBtn').textContent = '▶️ 自动';
+  document.getElementById('autoBtn').classList.remove('playing');
+  document.getElementById('speakIndicator').classList.remove('active');
+}
+
+speechSynthesis.onvoiceschanged = loadVoices;
+loadVoices();
+initDots();
+updateUI();
+
+document.addEventListener('visibilitychange', () => { if (document.hidden && isAutoPlaying) stopAuto(); });
+</script>
+
+<script src="../../assets/site.js"></script></body>
+</html>

@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第3课 练习 纽扣分类 | 二年级数学 · 分类整理专题</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pink:#ff6b9d;--blue:#4ecdc4;--yellow:#ffe66d;--orange:#ff8a5c;
+  --purple:#a78bfa;--green:#6bcb77;--red:#ff6b6b;--sky:#87ceeb;
+  --bg:#fef9f0;--card:#fff;--text:#333;--shadow:0 4px 20px rgba(0,0,0,.08);
+  --radius:16px;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.8;
+  min-height:100vh;overflow-x:hidden;
+  background-image:radial-gradient(circle at 20% 80%,rgba(78,205,196,.08) 0%,transparent 50%),
+                    radial-gradient(circle at 80% 20%,rgba(255,107,157,.08) 0%,transparent 50%);
+}
+.bg-shapes{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.bg-shapes span{position:absolute;display:block;opacity:.06;animation:floatShape 20s linear infinite;font-size:3rem}
+.bg-shapes span:nth-child(1){left:5%;animation-delay:0s;animation-duration:18s}
+.bg-shapes span:nth-child(2){left:20%;animation-delay:3s;animation-duration:22s}
+.bg-shapes span:nth-child(3){left:40%;animation-delay:6s;animation-duration:16s}
+.bg-shapes span:nth-child(4){left:60%;animation-delay:1s;animation-duration:25s}
+.bg-shapes span:nth-child(5){left:75%;animation-delay:8s;animation-duration:19s}
+.bg-shapes span:nth-child(6){left:90%;animation-delay:4s;animation-duration:21s}
+@keyframes floatShape{0%{transform:translateY(110vh) rotate(0deg)}100%{transform:translateY(-10vh) rotate(720deg)}}
+
+.container{max-width:800px;margin:0 auto;padding:16px;position:relative;z-index:1}
+
+.breadcrumb{
+  background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  color:#fff;padding:12px 20px;border-radius:var(--radius);
+  font-size:.85rem;margin-bottom:20px;
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px;
+  box-shadow:0 4px 15px rgba(102,126,234,.3);
+}
+.breadcrumb a{color:rgba(255,255,255,.85);text-decoration:none}
+.breadcrumb a:hover{color:#fff;text-decoration:underline}
+.breadcrumb .sep{opacity:.5}
+.breadcrumb .current{font-weight:700}
+
+.hero{
+  text-align:center;padding:32px 20px;
+  background:linear-gradient(135deg,#a8edea 0%,#fed6e3 100%);
+  border-radius:var(--radius);margin-bottom:24px;
+  box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.hero::before{content:"✏️";position:absolute;top:10px;right:20px;font-size:3.5rem;opacity:.15;animation:bounce2 3s ease-in-out infinite}
+@keyframes bounce2{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+.hero h1{font-size:1.8rem;margin-bottom:8px;color:#333}
+.hero .subtitle{font-size:1rem;color:#666}
+.hero .lesson-num{display:inline-block;background:var(--green);color:#fff;padding:4px 16px;border-radius:20px;font-size:.85rem;margin-top:8px}
+
+/* Progress */
+.progress-bar{
+  background:#fff;border-radius:var(--radius);padding:12px 20px;
+  margin-bottom:20px;box-shadow:var(--shadow);
+  display:flex;align-items:center;gap:12px;
+  position:sticky;top:8px;z-index:100;
+}
+.progress-bar .label{font-size:.85rem;color:#888;white-space:nowrap}
+.progress-track{flex:1;height:10px;background:#eee;border-radius:5px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--blue));border-radius:5px;transition:width .5s ease}
+.progress-text{font-size:.85rem;font-weight:700;color:var(--green);white-space:nowrap}
+
+/* Section Cards */
+.section{
+  background:var(--card);border-radius:var(--radius);
+  padding:24px;margin-bottom:24px;box-shadow:var(--shadow);
+  border-left:5px solid var(--blue);
+  opacity:0;transform:translateY(30px);
+  transition:opacity .6s ease,transform .6s ease;
+}
+.section.visible{opacity:1;transform:translateY(0)}
+.section.pink-border{border-left-color:var(--pink)}
+.section.yellow-border{border-left-color:var(--yellow)}
+.section.green-border{border-left-color:var(--green)}
+.section.purple-border{border-left-color:var(--purple)}
+.section.orange-border{border-left-color:var(--orange)}
+
+.section-title{font-size:1.3rem;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.section-title .icon{font-size:1.5rem}
+
+/* TTS Button */
+.tts-btn{
+  display:inline-flex;align-items:center;gap:4px;
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:#fff;border:none;border-radius:20px;
+  padding:4px 14px;font-size:.8rem;cursor:pointer;
+  transition:all .3s;margin-left:8px;vertical-align:middle;
+}
+.tts-btn:hover{transform:scale(1.05);box-shadow:0 2px 10px rgba(102,126,234,.4)}
+.tts-btn.playing{background:linear-gradient(135deg,#f44,#e91e63);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(244,67,54,.4)}50%{box-shadow:0 0 0 8px rgba(244,67,54,0)}}
+
+/* Cards display area */
+.cards-area{
+  display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
+  padding:16px;background:#f8f9fa;border-radius:var(--radius);margin:12px 0;
+}
+.shape-card{
+  width:72px;height:72px;display:flex;align-items:center;justify-content:center;
+  font-size:2.2rem;background:#fff;border-radius:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,.1);cursor:default;transition:transform .3s;
+  position:relative;
+}
+.shape-card:hover{transform:scale(1.1)}
+.shape-card .card-label{
+  position:absolute;bottom:-18px;font-size:.65rem;color:#888;white-space:nowrap;
+}
+
+/* Tables */
+.answer-table{
+  width:100%;border-collapse:collapse;margin:12px 0;
+  border-radius:12px;overflow:hidden;
+}
+.answer-table th,.answer-table td{
+  border:2px solid #e0e0e0;padding:10px 8px;text-align:center;
+  font-size:1rem;
+}
+.answer-table th{
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:#fff;font-weight:700;
+}
+.answer-table td{background:#fff}
+.answer-table input[type="number"],.answer-table input[type="text"]{
+  width:60px;height:36px;border:2px solid #ddd;border-radius:8px;
+  text-align:center;font-size:1.1rem;font-weight:700;
+  transition:border-color .3s;
+}
+.answer-table input:focus{border-color:var(--blue);outline:none;box-shadow:0 0 0 3px rgba(78,205,196,.2)}
+.answer-table input.correct{border-color:var(--green);background:#e8f5e9}
+.answer-table input.wrong{border-color:var(--red);background:#ffebee}
+
+/* Submit Button */
+.submit-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,var(--green),#27ae60);
+  color:#fff;border:none;border-radius:30px;
+  padding:12px 32px;font-size:1rem;font-weight:700;
+  cursor:pointer;transition:all .3s;margin:12px 0;
+}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(39,174,96,.3)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+
+/* Feedback */
+.feedback{
+  padding:12px 16px;border-radius:12px;margin:8px 0;
+  font-weight:700;font-size:1rem;text-align:center;
+  opacity:0;transition:opacity .3s;
+}
+.feedback.show{opacity:1}
+.feedback.success{background:#e8f5e9;color:#2e7d32;border:2px solid #a5d6a7}
+.feedback.error{background:#ffebee;color:#c62828;border:2px solid #ef9a9a}
+
+/* Choice buttons (radio-like) */
+.choice-group{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.choice-btn{
+  padding:10px 20px;border:3px solid #ddd;border-radius:12px;
+  background:#fff;cursor:pointer;font-size:1rem;font-weight:600;
+  transition:all .3s;
+}
+.choice-btn:hover{border-color:var(--blue);background:#e0f7fa}
+.choice-btn.selected{border-color:var(--blue);background:#e0f7fa;color:#00695c}
+.choice-btn.correct{border-color:var(--green);background:#e8f5e9;color:#2e7d32}
+.choice-btn.wrong{border-color:var(--red);background:#ffebee;color:#c62828}
+
+/* Step within exercise */
+.ex-step{display:none;animation:fadeIn .4s ease}
+.ex-step.active{display:block}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+.step-indicator{
+  display:flex;gap:8px;margin-bottom:16px;
+}
+.step-tag{
+  padding:4px 12px;border-radius:16px;font-size:.8rem;font-weight:700;
+  background:#eee;color:#888;transition:all .3s;
+}
+.step-tag.active{background:var(--blue);color:#fff}
+.step-tag.done{background:var(--green);color:#fff}
+
+/* Drag area for signs */
+.sign-area{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:12px;margin:12px 0}
+.sign-item{
+  width:56px;height:56px;display:flex;align-items:center;justify-content:center;
+  font-size:1.8rem;background:#fff;border-radius:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.1);cursor:default;
+}
+
+/* Expression chips */
+.expr-chip{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:8px 16px;margin:4px;border:2px solid #ddd;border-radius:12px;
+  background:#fff;font-size:1rem;font-weight:700;cursor:pointer;
+  transition:all .3s;user-select:none;
+}
+.expr-chip:hover{border-color:var(--purple);background:#f3e5f5}
+.expr-chip.selected-a{border-color:var(--pink);background:#fce4ec;color:#c62828}
+.expr-chip.selected-b{border-color:var(--blue);background:#e3f2fd;color:#1565c0}
+.expr-chip.locked{pointer-events:none;opacity:.8}
+
+/* Solid shape items */
+.solid-area{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:12px;margin:12px 0}
+.solid-item{
+  width:60px;height:60px;display:flex;align-items:center;justify-content:center;
+  font-size:2rem;background:#fff;border-radius:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+/* Score Card */
+.score-card{
+  background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  border-radius:var(--radius);padding:32px;margin:24px 0;
+  text-align:center;color:#fff;box-shadow:0 8px 30px rgba(102,126,234,.4);
+  display:none;
+}
+.score-card.show{display:block;animation:popIn .5s ease}
+@keyframes popIn{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.score-card h2{font-size:1.8rem;margin-bottom:12px}
+.score-card .score-num{font-size:4rem;font-weight:900;display:block;margin:8px 0}
+.score-card .stars{font-size:2.5rem;margin:12px 0;letter-spacing:8px}
+.score-card .detail{font-size:.9rem;opacity:.85;margin-top:8px}
+.score-card .result-row{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin:16px 0}
+.score-card .result-item{
+  background:rgba(255,255,255,.15);border-radius:12px;padding:8px 16px;
+  min-width:120px;
+}
+.score-card .result-item .q{font-size:.8rem;opacity:.7}
+.score-card .result-item .r{font-size:1.2rem;font-weight:700}
+
+/* Nav */
+.nav-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px}
+.nav-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:12px 28px;border-radius:30px;border:none;
+  font-size:1rem;font-weight:700;cursor:pointer;transition:all .3s;
+  text-decoration:none;color:#fff;
+}
+.nav-btn:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(0,0,0,.2)}
+.nav-btn.prev{background:linear-gradient(135deg,#a8a8a8,#888)}
+.nav-btn.next{background:linear-gradient(135deg,var(--green),#27ae60)}
+
+/* Confetti */
+#confettiContainer{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden}
+.confetti{position:absolute;top:-10px;animation:confettiFall linear forwards}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+
+@media(max-width:600px){
+  .hero h1{font-size:1.4rem}
+  .section{padding:16px}
+  .shape-card{width:56px;height:56px;font-size:1.8rem}
+  .expr-chip{padding:6px 10px;font-size:.9rem}
+  .score-card .score-num{font-size:3rem}
+}
+</style>
+<style id="public-local-controls">/* 公开站：语音工具就近放置，不使用固定全站通栏 */
+.bottom-bar,.ttsbar,.voice-fab{position:static!important;inset:auto!important;margin:18px auto!important;transform:none!important}.voice-panel{position:static!important;display:block!important;margin:8px auto!important}body{padding-bottom:0!important}
+</style></head>
+<body>
+
+<div class="bg-shapes">
+  <span>✏️</span><span>📐</span><span>🔢</span><span>⭐</span><span>📝</span><span>🎯</span>
+</div>
+
+<div id="confettiContainer"></div>
+
+<div class="container">
+
+<nav class="breadcrumb">
+  <a href="unit1-index.html">📐 分类整理专题</a>
+  <span class="sep">›</span>
+  <a href="unit1-lesson3-teach.html">第3课 纽扣分类</a>
+  <span class="sep">›</span>
+  <span class="current">练习</span>
+</nav>
+
+<div class="hero">
+  <h1>✏️ 纽扣分类 · 练习</h1>
+  <div class="subtitle">多次分类 · 动手试试</div>
+  <div class="lesson-num">分类整理专题 · 第3课 练习</div>
+</div>
+
+<div class="progress-bar">
+  <span class="label">✏️ 练习进度</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <span class="progress-text" id="progressText">0/4</span>
+</div>
+
+<!-- ========== Exercise 1: 卡片分类 ========== -->
+<div class="section orange-border" id="ex1">
+  <div class="section-title">
+    <span class="icon">🃏</span>
+    <span>练习一：卡片分类</span>
+    <button class="tts-btn" onclick="speak('小朋友们看这些卡片！有三角形、圆形和方形，上面还画着小花和苹果。我们来把它们分一分吧！')">🔊 听题</button>
+  </div>
+
+  <div class="cards-area" id="ex1Cards">
+    <!-- JS renders 6 cards: △🌸, △🍎, ○🌸, ○🍎, □🌸, □🍎 -->
+  </div>
+
+  <!-- Sub-steps -->
+  <div class="step-indicator" id="ex1Steps">
+    <span class="step-tag active" data-s="0">第1步</span>
+    <span class="step-tag" data-s="1">第2步</span>
+    <span class="step-tag" data-s="2">第3步</span>
+    <span class="step-tag" data-s="3">第4步</span>
+  </div>
+
+  <!-- Step 1: by shape -->
+  <div class="ex-step active" id="ex1s0">
+    <p style="font-weight:700;margin-bottom:8px">📋 第1步：按形状分，每种有几个？</p>
+    <table class="answer-table">
+      <tr><th>形状</th><th>△ 三角形</th><th>○ 圆形</th><th>□ 方形</th></tr>
+      <tr><td>个数</td>
+        <td><input type="number" id="ex1_shape_tri" min="0" max="9"></td>
+        <td><input type="number" id="ex1_shape_cir" min="0" max="9"></td>
+        <td><input type="number" id="ex1_shape_sq" min="0" max="9"></td>
+      </tr>
+    </table>
+    <div style="text-align:center">
+      <button class="submit-btn" onclick="checkEx1Step0()">✅ 提交</button>
+    </div>
+    <div class="feedback" id="ex1s0fb"></div>
+  </div>
+
+  <!-- Step 2: can we continue? -->
+  <div class="ex-step" id="ex1s1">
+    <p style="font-weight:700;margin-bottom:8px">🤔 第2步：还能继续分吗？</p>
+    <div class="choice-group" id="ex1s1choices">
+      <div class="choice-btn" onclick="selectChoice('ex1s1',this,'yes')">✅ 能！还可以继续分</div>
+      <div class="choice-btn" onclick="selectChoice('ex1s1',this,'no')">❌ 不能了</div>
+    </div>
+    <div style="text-align:center">
+      <button class="submit-btn" onclick="checkEx1Step1()">✅ 提交</button>
+    </div>
+    <div class="feedback" id="ex1s1fb"></div>
+  </div>
+
+  <!-- Step 3: by pattern -->
+  <div class="ex-step" id="ex1s2">
+    <p style="font-weight:700;margin-bottom:8px">📋 第3步：再按图案分，每种有几个？</p>
+    <table class="answer-table">
+      <tr><th>图案</th><th>🌸 小花</th><th>🍎 苹果</th></tr>
+      <tr><td>个数</td>
+        <td><input type="number" id="ex1_pat_flower" min="0" max="9"></td>
+        <td><input type="number" id="ex1_pat_apple" min="0" max="9"></td>
+      </tr>
+    </table>
+    <div style="text-align:center">
+      <button class="submit-btn" onclick="checkEx1Step2()">✅ 提交</button>
+    </div>
+    <div class="feedback" id="ex1s2fb"></div>
+  </div>
+
+  <!-- Step 4: how many types? -->
+  <div class="ex-step" id="ex1s3">
+    <p style="font-weight:700;margin-bottom:8px">🔢 第4步：最后一共分成几类？</p>
+    <div class="choice-group" id="ex1s3choices">
+      <div class="choice-btn" onclick="selectChoice('ex1s3',this,'3')">3类</div>
+      <div class="choice-btn" onclick="selectChoice('ex1s3',this,'4')">4类</div>
+      <div class="choice-btn" onclick="selectChoice('ex1s3',this,'6')">6类</div>
+      <div class="choice-btn" onclick="selectChoice('ex1s3',this,'8')">8类</div>
+    </div>
+    <div style="text-align:center">
+      <button class="submit-btn" onclick="checkEx1Step3()">✅ 提交</button>
+    </div>
+    <div class="feedback" id="ex1s3fb"></div>
+  </div>
+</div>
+
+<!-- ========== Exercise 2: 交通标志 ========== -->
+<div class="section pink-border" id="ex2">
+  <div class="section-title">
+    <span class="icon">🚦</span>
+    <span>练习二：交通标志分类</span>
+    <button class="tts-btn" onclick="speak('看看这些交通标志！有三角形的、圆形的和长方形的。先按形状分一分，数一数各有几个！')">🔊 听题</button>
+  </div>
+
+  <div class="sign-area" id="ex2Signs">
+    <!-- JS renders 9 signs -->
+  </div>
+
+  <div class="step-indicator" id="ex2Steps">
+    <span class="step-tag active" data-s="0">第1步</span>
+    <span class="step-tag" data-s="1">第2步</span>
+  </div>
+
+  <!-- Step 1: by shape table -->
+  <div class="ex-step active" id="ex2s0">
+    <p style="font-weight:700;margin-bottom:8px">📋 第1步：按形状分，填写表格</p>
+    <table class="answer-table">
+      <tr><th>形状</th><th>⚠️ 三角形</th><th>🔴 圆形</th><th>🔵 长方形</th><th>合计</th></tr>
+      <tr><td>个数</td>
+        <td><input type="number" id="ex2_tri" min="0" max="9"></td>
+        <td><input type="number" id="ex2_cir" min="0" max="9"></td>
+        <td><input type="number" id="ex2_rect" min="0" max="9"></td>
+        <td><input type="number" id="ex2_total" min="0" max="20"></td>
+      </tr>
+    </table>
+    <div style="text-align:center">
+      <button class="submit-btn" onclick="checkEx2Step0()">✅ 提交</button>
+    </div>
+    <div class="feedback" id="ex2s0fb"></div>
+  </div>
+
+  <!-- Step 2: what else? -->
+  <div class="ex-step" id="ex2s1">
+    <p style="font-weight:700;margin-bottom:8px">🤔 第2步：还可以怎样分？</p>
+    <div class="choice-group" id="ex2s1choices">
+      <div class="choice-btn" onclick="selectChoice('ex2s1',this,'color')">🎨 按颜色分</div>
+      <div class="choice-btn" onclick="selectChoice('ex2s1',this,'size')">📏 按大小分</div>
+      <div class="choice-btn" onclick="selectChoice('ex2s1',this,'weight')">⚖️ 按重量分</div>
+    </div>
+    <div style="text-align:center">
+      <button class="submit-btn" onclick="checkEx2Step1()">✅ 提交</button>
+    </div>
+    <div class="feedback" id="ex2s1fb"></div>
+  </div>
+</div>
+
+<!-- ========== Exercise 3: 算式分类 ========== -->
+<div class="section purple-border" id="ex3">
+  <div class="section-title">
+    <span class="icon">🔢</span>
+    <span>练习三：算式分类</span>
+    <button class="tts-btn" onclick="speak('这里有8道减法算式。请你把它们分成两类：减一位数的和减两位数的。点击算式选择分类！粉色代表减一位数，蓝色代表减两位数。')">🔊 听题</button>
+  </div>
+
+  <p style="margin-bottom:8px">把下面的算式分成两类：<strong>减一位数</strong>（粉色）和 <strong>减两位数</strong>（蓝色）</p>
+  <p style="font-size:.85rem;color:#888;margin-bottom:12px">💡 点一次 = 粉色（减一位数），点两次 = 蓝色（减两位数），点三次 = 取消</p>
+
+  <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0" id="ex3Chips">
+    <!-- JS renders expression chips -->
+  </div>
+
+  <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:12px 0">
+    <div style="display:flex;align-items:center;gap:6px">
+      <span style="display:inline-block;width:20px;height:20px;background:#fce4ec;border:2px solid var(--pink);border-radius:6px"></span>
+      <span style="font-size:.9rem">减一位数</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <span style="display:inline-block;width:20px;height:20px;background:#e3f2fd;border:2px solid var(--blue);border-radius:6px"></span>
+      <span style="font-size:.9rem">减两位数</span>
+    </div>
+  </div>
+
+  <div style="text-align:center">
+    <button class="submit-btn" onclick="checkEx3()">✅ 提交</button>
+  </div>
+  <div class="feedback" id="ex3fb"></div>
+
+  <!-- Show result table after correct -->
+  <div id="ex3Result" style="display:none;margin-top:16px">
+    <table class="answer-table">
+      <tr><th>分类</th><th>算式</th><th>个数</th></tr>
+      <tr><td style="background:#fce4ec;font-weight:700">减一位数</td><td>28-4, 18-3, 10-3, 30-7, 20-5</td><td><strong>5</strong>个</td></tr>
+      <tr><td style="background:#e3f2fd;font-weight:700">减两位数</td><td>38-21, 30-22, 34-11</td><td><strong>3</strong>个</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ========== Exercise 4: 立体图形 ========== -->
+<div class="section green-border" id="ex4">
+  <div class="section-title">
+    <span class="icon">🧊</span>
+    <span>练习四：立体图形分类</span>
+    <button class="tts-btn" onclick="speak('看这些立体图形！有正方体、长方体、圆柱和球。请你选一个标准把它们分成两组，然后数一数各有几个！')">🔊 听题</button>
+  </div>
+
+  <div class="solid-area" id="ex4Solids">
+    <!-- JS renders 9 solids -->
+  </div>
+
+  <div class="step-indicator" id="ex4Steps">
+    <span class="step-tag active" data-s="0">第1步</span>
+    <span class="step-tag" data-s="1">第2步</span>
+  </div>
+
+  <!-- Step 1: pick a standard -->
+  <div class="ex-step active" id="ex4s0">
+    <p style="font-weight:700;margin-bottom:8px">🤔 第1步：你想按什么标准分成两组？</p>
+    <div class="choice-group" id="ex4s0choices">
+      <div class="choice-btn" onclick="selectChoice('ex4s0',this,'flat_round')">🔲 有平面的 vs 🔵 有曲面的</div>
+      <div class="choice-btn" onclick="selectChoice('ex4s0',this,'roll')">🔄 能滚动的 vs 📦 不能滚动的</div>
+      <div class="choice-btn" onclick="selectChoice('ex4s0',this,'stack')">📚 能叠稳的 vs ⚽ 不能叠稳的</div>
+    </div>
+    <div style="text-align:center">
+      <button class="submit-btn" onclick="checkEx4Step0()">✅ 提交</button>
+    </div>
+    <div class="feedback" id="ex4s0fb"></div>
+  </div>
+
+  <!-- Step 2: count each group and verify total -->
+  <div class="ex-step" id="ex4s1">
+    <p style="font-weight:700;margin-bottom:8px" id="ex4s1prompt">📋 第2步：数一数</p>
+    <table class="answer-table" id="ex4s1table">
+      <tr><th>分类</th><th id="ex4g1label">A组</th><th id="ex4g2label">B组</th><th>合计</th></tr>
+      <tr><td>个数</td>
+        <td><input type="number" id="ex4_g1" min="0" max="20"></td>
+        <td><input type="number" id="ex4_g2" min="0" max="20"></td>
+        <td><input type="number" id="ex4_total" min="0" max="20"></td>
+      </tr>
+    </table>
+    <div style="text-align:center">
+      <button class="submit-btn" onclick="checkEx4Step1()">✅ 提交</button>
+    </div>
+    <div class="feedback" id="ex4s1fb"></div>
+  </div>
+</div>
+
+<!-- ========== Score Card ========== -->
+<div class="score-card" id="scoreCard">
+  <h2>📋 我的答题卡</h2>
+  <div class="score-num" id="scoreNum">0/4</div>
+  <div class="stars" id="scoreStars">⭐⭐⭐</div>
+  <div class="result-row" id="scoreDetails">
+    <!-- JS fills -->
+  </div>
+  <div class="detail" id="scoreMsg"></div>
+  <div class="nav-buttons" style="margin-top:24px">
+    <a href="unit1-lesson3-teach.html" class="nav-btn prev">← 回去复习</a>
+    <a href="unit1-exercises.html" class="nav-btn next">单元练习 →</a>
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<div class="nav-buttons" id="bottomNav" style="margin-bottom:40px">
+  <a href="unit1-lesson3-teach.html" class="nav-btn prev">← 回到讲解</a>
+  <a href="unit1-exercises.html" class="nav-btn next">单元练习 →</a>
+</div>
+
+</div><!-- container -->
+
+<script>
+// ===== State =====
+const exerciseResults = {ex1: null, ex2: null, ex3: null, ex4: null};
+let completedCount = 0;
+const choiceState = {};
+
+// ===== Exercise 1: Card Classification =====
+const ex1Cards = [
+  {shape:'△', pattern:'🌸', label:'三角花'},
+  {shape:'△', pattern:'🍎', label:'三角苹果'},
+  {shape:'○', pattern:'🌸', label:'圆花'},
+  {shape:'○', pattern:'🍎', label:'圆苹果'},
+  {shape:'□', pattern:'🌸', label:'方花'},
+  {shape:'□', pattern:'🍎', label:'方苹果'},
+];
+
+function renderEx1Cards() {
+  const area = document.getElementById('ex1Cards');
+  const colors = {
+    '△':'#FFE0B2','○':'#BBDEFB','□':'#C8E6C9'
+  };
+  ex1Cards.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'shape-card';
+    el.style.background = colors[c.shape] || '#fff';
+    el.innerHTML = `<span style="font-size:1.6rem">${c.shape}</span><span style="font-size:1.2rem;margin-left:2px">${c.pattern}</span>`;
+    area.appendChild(el);
+  });
+}
+
+function selectChoice(group, el, val) {
+  document.querySelectorAll(`#${group}choices .choice-btn`).forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  choiceState[group] = val;
+}
+
+function advanceEx1Step(from) {
+  document.getElementById('ex1s' + from).classList.remove('active');
+  const next = from + 1;
+  document.getElementById('ex1s' + next).classList.add('active');
+  const tags = document.querySelectorAll('#ex1Steps .step-tag');
+  tags[from].classList.remove('active');
+  tags[from].classList.add('done');
+  tags[next].classList.add('active');
+}
+
+function checkEx1Step0() {
+  const tri = parseInt(document.getElementById('ex1_shape_tri').value);
+  const cir = parseInt(document.getElementById('ex1_shape_cir').value);
+  const sq = parseInt(document.getElementById('ex1_shape_sq').value);
+  const fb = document.getElementById('ex1s0fb');
+
+  if (isNaN(tri) || isNaN(cir) || isNaN(sq)) {
+    showFB(fb, '请把表格填完哦！', 'error'); return;
+  }
+  if (tri === 2 && cir === 2 && sq === 2) {
+    markInput('ex1_shape_tri', true); markInput('ex1_shape_cir', true); markInput('ex1_shape_sq', true);
+    showFB(fb, '🎉 完全正确！每种形状各有2个！', 'success');
+    setTimeout(() => advanceEx1Step(0), 1200);
+  } else {
+    [['ex1_shape_tri',2],['ex1_shape_cir',2],['ex1_shape_sq',2]].forEach(([id,v]) => {
+      markInput(id, parseInt(document.getElementById(id).value) === v);
+    });
+    showFB(fb, '有些数错了，再数一数卡片吧！🧐', 'error');
+  }
+}
+
+function checkEx1Step1() {
+  const fb = document.getElementById('ex1s1fb');
+  if (!choiceState['ex1s1']) { showFB(fb, '请选一个答案！', 'error'); return; }
+  const btns = document.querySelectorAll('#ex1s1choices .choice-btn');
+  if (choiceState['ex1s1'] === 'yes') {
+    btns[0].classList.add('correct');
+    showFB(fb, '🎉 对！每种形状里面还有不同图案，可以继续分！', 'success');
+    setTimeout(() => advanceEx1Step(1), 1200);
+  } else {
+    btns[1].classList.add('wrong');
+    showFB(fb, '再想想哦，每种形状的卡片上图案一样吗？🤔', 'error');
+  }
+}
+
+function checkEx1Step2() {
+  const flower = parseInt(document.getElementById('ex1_pat_flower').value);
+  const apple = parseInt(document.getElementById('ex1_pat_apple').value);
+  const fb = document.getElementById('ex1s2fb');
+
+  if (isNaN(flower) || isNaN(apple)) { showFB(fb, '请把表格填完哦！', 'error'); return; }
+  if (flower === 3 && apple === 3) {
+    markInput('ex1_pat_flower', true); markInput('ex1_pat_apple', true);
+    showFB(fb, '🎉 太棒了！小花有3个，苹果也有3个！', 'success');
+    setTimeout(() => advanceEx1Step(2), 1200);
+  } else {
+    markInput('ex1_pat_flower', flower === 3);
+    markInput('ex1_pat_apple', apple === 3);
+    showFB(fb, '有些数错了，再数一数！🧐', 'error');
+  }
+}
+
+function checkEx1Step3() {
+  const fb = document.getElementById('ex1s3fb');
+  if (!choiceState['ex1s3']) { showFB(fb, '请选一个答案！', 'error'); return; }
+  const btns = document.querySelectorAll('#ex1s3choices .choice-btn');
+  btns.forEach(b => {
+    const v = b.textContent.replace('类','');
+    if (v === '6') b.classList.add('correct');
+    else if (b.classList.contains('selected') && v !== '6') b.classList.add('wrong');
+  });
+  if (choiceState['ex1s3'] === '6') {
+    showFB(fb, '🎉 完全正确！3 种形状，每种再分 2 份：2+2+2 = 6 类！', 'success');
+    exerciseResults.ex1 = true;
+    markExDone(1);
+  } else {
+    showFB(fb, '不对哦！3 种形状，每种又分 2 份，2+2+2 等于几？🤔', 'error');
+    exerciseResults.ex1 = false;
+  }
+}
+
+// ===== Exercise 2: Traffic Signs =====
+const ex2SignsData = [
+  {emoji:'⚠️', shape:'triangle', desc:'注意危险'},
+  {emoji:'⚠️', shape:'triangle', desc:'注意行人'},
+  {emoji:'⚠️', shape:'triangle', desc:'注意儿童'},
+  {emoji:'⛔', shape:'circle', desc:'禁止通行'},
+  {emoji:'🚫', shape:'circle', desc:'禁止驶入'},
+  {emoji:'🅿️', shape:'circle', desc:'停车'},
+  {emoji:'🔴', shape:'circle', desc:'限速'},
+  {emoji:'🔵', shape:'rectangle', desc:'直行'},
+  {emoji:'🔵', shape:'rectangle', desc:'单行道'},
+];
+
+function renderEx2Signs() {
+  const area = document.getElementById('ex2Signs');
+  const shuffled = [...ex2SignsData].sort(() => Math.random() - 0.5);
+  shuffled.forEach(s => {
+    const el = document.createElement('div');
+    el.className = 'sign-item';
+    el.innerHTML = s.emoji;
+    el.title = s.desc;
+    area.appendChild(el);
+  });
+}
+
+function checkEx2Step0() {
+  const tri = parseInt(document.getElementById('ex2_tri').value);
+  const cir = parseInt(document.getElementById('ex2_cir').value);
+  const rect = parseInt(document.getElementById('ex2_rect').value);
+  const total = parseInt(document.getElementById('ex2_total').value);
+  const fb = document.getElementById('ex2s0fb');
+
+  if ([tri,cir,rect,total].some(isNaN)) { showFB(fb, '请把表格填完哦！', 'error'); return; }
+
+  const results = [[tri,3,'ex2_tri'],[cir,4,'ex2_cir'],[rect,2,'ex2_rect'],[total,9,'ex2_total']];
+  let allCorrect = true;
+  results.forEach(([val, correct, id]) => {
+    markInput(id, val === correct);
+    if (val !== correct) allCorrect = false;
+  });
+
+  if (allCorrect) {
+    showFB(fb, '🎉 完全正确！三角形3个，圆形4个，长方形2个，一共9个！', 'success');
+    // Advance to step 2
+    document.getElementById('ex2s0').classList.remove('active');
+    document.getElementById('ex2s1').classList.add('active');
+    const tags = document.querySelectorAll('#ex2Steps .step-tag');
+    tags[0].classList.remove('active'); tags[0].classList.add('done');
+    tags[1].classList.add('active');
+  } else {
+    showFB(fb, '有些数错了哦，仔细数一数！🧐', 'error');
+  }
+}
+
+function checkEx2Step1() {
+  const fb = document.getElementById('ex2s1fb');
+  if (!choiceState['ex2s1']) { showFB(fb, '请选一个答案！', 'error'); return; }
+  const btns = document.querySelectorAll('#ex2s1choices .choice-btn');
+  btns.forEach(b => {
+    if (b.textContent.includes('颜色')) b.classList.add('correct');
+    else if (b.classList.contains('selected') && !b.textContent.includes('颜色')) b.classList.add('wrong');
+  });
+  if (choiceState['ex2s1'] === 'color') {
+    showFB(fb, '🎉 对！这些标志颜色不同（红色、黄色、蓝色），可以按颜色继续分类！', 'success');
+    exerciseResults.ex2 = true;
+    markExDone(2);
+  } else {
+    showFB(fb, '再想想哦，这些标志最明显的另一个不同是什么？🤔', 'error');
+    exerciseResults.ex2 = false;
+  }
+}
+
+// ===== Exercise 3: Expression Classification =====
+const expressions = [
+  {expr:'28−4', subtrahend:1, id:'e0'},
+  {expr:'18−3', subtrahend:1, id:'e1'},
+  {expr:'10−3', subtrahend:1, id:'e2'},
+  {expr:'30−7', subtrahend:1, id:'e3'},
+  {expr:'38−21', subtrahend:2, id:'e4'},
+  {expr:'20−5', subtrahend:1, id:'e5'},
+  {expr:'30−22', subtrahend:2, id:'e6'},
+  {expr:'34−11', subtrahend:2, id:'e7'},
+];
+
+const chipStates = {}; // 0=none, 1=groupA(减一位数), 2=groupB(减两位数)
+
+function renderEx3Chips() {
+  const area = document.getElementById('ex3Chips');
+  const shuffled = [...expressions].sort(() => Math.random() - 0.5);
+  shuffled.forEach(e => {
+    const chip = document.createElement('div');
+    chip.className = 'expr-chip';
+    chip.id = 'chip_' + e.id;
+    chip.textContent = e.expr;
+    chipStates[e.id] = 0;
+    chip.onclick = () => toggleChip(e.id);
+    area.appendChild(chip);
+  });
+}
+
+function toggleChip(id) {
+  chipStates[id] = (chipStates[id] + 1) % 3;
+  const chip = document.getElementById('chip_' + id);
+  chip.classList.remove('selected-a', 'selected-b');
+  if (chipStates[id] === 1) chip.classList.add('selected-a');
+  else if (chipStates[id] === 2) chip.classList.add('selected-b');
+}
+
+function checkEx3() {
+  const fb = document.getElementById('ex3fb');
+  // Check all assigned
+  const unassigned = expressions.filter(e => chipStates[e.id] === 0);
+  if (unassigned.length > 0) {
+    showFB(fb, `还有${unassigned.length}道算式没有分类哦！`, 'error');
+    return;
+  }
+
+  let allCorrect = true;
+  expressions.forEach(e => {
+    const chip = document.getElementById('chip_' + e.id);
+    const assigned = chipStates[e.id]; // 1=A(减一位数), 2=B(减两位数)
+    if ((e.subtrahend === 1 && assigned === 1) || (e.subtrahend === 2 && assigned === 2)) {
+      chip.style.boxShadow = '0 0 0 3px var(--green)';
+    } else {
+      chip.style.boxShadow = '0 0 0 3px var(--red)';
+      allCorrect = false;
+    }
+    chip.classList.add('locked');
+  });
+
+  if (allCorrect) {
+    showFB(fb, '🎉 太棒了！减一位数有5个，减两位数有3个！', 'success');
+    document.getElementById('ex3Result').style.display = 'block';
+    exerciseResults.ex3 = true;
+    markExDone(3);
+  } else {
+    showFB(fb, '有些算式分错了！看看减号后面的数是一位数还是两位数？🧐', 'error');
+    // Unlock after 2s
+    setTimeout(() => {
+      expressions.forEach(e => {
+        const chip = document.getElementById('chip_' + e.id);
+        chip.classList.remove('locked');
+        chip.style.boxShadow = '';
+      });
+    }, 2000);
+    exerciseResults.ex3 = false;
+  }
+}
+
+// ===== Exercise 4: Solid Shapes =====
+const ex4Shapes = [
+  {emoji:'🧊', name:'正方体', type:'cube'},
+  {emoji:'🧊', name:'正方体', type:'cube'},
+  {emoji:'📦', name:'长方体', type:'cuboid'},
+  {emoji:'📦', name:'长方体', type:'cuboid'},
+  {emoji:'📦', name:'长方体', type:'cuboid'},
+  {emoji:'🥫', name:'圆柱', type:'cylinder'},
+  {emoji:'🥫', name:'圆柱', type:'cylinder'},
+  {emoji:'⚽', name:'球', type:'sphere'},
+  {emoji:'⚽', name:'球', type:'sphere'},
+];
+
+const standardAnswers = {
+  'flat_round': {g1label:'🔲 全是平面的', g2label:'🔵 有曲面的', g1:5, g2:4},
+  'roll': {g1label:'🔄 能滚动的', g2label:'📦 不能滚动的', g1:4, g2:5},
+  'stack': {g1label:'📚 能叠稳的', g2label:'⚽ 不能叠稳的', g1:7, g2:2},
+};
+
+function renderEx4Solids() {
+  const area = document.getElementById('ex4Solids');
+  const shuffled = [...ex4Shapes].sort(() => Math.random() - 0.5);
+  shuffled.forEach(s => {
+    const el = document.createElement('div');
+    el.className = 'solid-item';
+    el.innerHTML = s.emoji;
+    el.title = s.name;
+    area.appendChild(el);
+  });
+}
+
+function checkEx4Step0() {
+  const fb = document.getElementById('ex4s0fb');
+  if (!choiceState['ex4s0']) { showFB(fb, '请选一个分类标准！', 'error'); return; }
+
+  const btns = document.querySelectorAll('#ex4s0choices .choice-btn');
+  btns.forEach(b => { if (b.classList.contains('selected')) b.classList.add('correct'); });
+
+  const std = choiceState['ex4s0'];
+  const ans = standardAnswers[std];
+  showFB(fb, '🎉 好标准！现在来数一数每组有几个！', 'success');
+
+  // Set up step 2
+  document.getElementById('ex4g1label').textContent = ans.g1label;
+  document.getElementById('ex4g2label').textContent = ans.g2label;
+
+  // Advance
+  setTimeout(() => {
+    document.getElementById('ex4s0').classList.remove('active');
+    document.getElementById('ex4s1').classList.add('active');
+    const tags = document.querySelectorAll('#ex4Steps .step-tag');
+    tags[0].classList.remove('active'); tags[0].classList.add('done');
+    tags[1].classList.add('active');
+  }, 1000);
+}
+
+function checkEx4Step1() {
+  const fb = document.getElementById('ex4s1fb');
+  const std = choiceState['ex4s0'];
+  const ans = standardAnswers[std];
+  const g1 = parseInt(document.getElementById('ex4_g1').value);
+  const g2 = parseInt(document.getElementById('ex4_g2').value);
+  const total = parseInt(document.getElementById('ex4_total').value);
+
+  if ([g1,g2,total].some(isNaN)) { showFB(fb, '请把表格填完哦！', 'error'); return; }
+
+  const g1ok = g1 === ans.g1;
+  const g2ok = g2 === ans.g2;
+  const tok = total === 9;
+  markInput('ex4_g1', g1ok);
+  markInput('ex4_g2', g2ok);
+  markInput('ex4_total', tok);
+
+  if (g1ok && g2ok && tok) {
+    showFB(fb, `🎉 完全正确！${ans.g1label}有${ans.g1}个，${ans.g2label}有${ans.g2}个，一共9个！`, 'success');
+    exerciseResults.ex4 = true;
+    markExDone(4);
+  } else {
+    if (!tok && g1ok && g2ok) {
+      showFB(fb, '两组的数量对了，但是合计不对哦！两组加起来应该是9个。', 'error');
+    } else {
+      showFB(fb, '有些数错了哦，再仔细数一数！🧐', 'error');
+    }
+    exerciseResults.ex4 = false;
+  }
+}
+
+// ===== Helpers =====
+function showFB(el, text, type) {
+  el.textContent = text;
+  el.className = `feedback show ${type}`;
+  if (type === 'error') setTimeout(() => el.classList.remove('show'), 4000);
+}
+
+function markInput(id, correct) {
+  const el = document.getElementById(id);
+  el.classList.remove('correct', 'wrong');
+  el.classList.add(correct ? 'correct' : 'wrong');
+}
+
+function markExDone(n) {
+  completedCount++;
+  updateProgress2();
+  if (completedCount >= 4) {
+    setTimeout(showScoreCard, 800);
+  }
+}
+
+function updateProgress2() {
+  const pct = (completedCount / 4 * 100).toFixed(0);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `${completedCount}/4`;
+}
+
+function showScoreCard() {
+  const card = document.getElementById('scoreCard');
+  let correct = 0;
+  const details = document.getElementById('scoreDetails');
+  details.innerHTML = '';
+
+  const labels = ['练习一 卡片分类','练习二 交通标志','练习三 算式分类','练习四 立体图形'];
+  const keys = ['ex1','ex2','ex3','ex4'];
+
+  keys.forEach((k, i) => {
+    const ok = exerciseResults[k] === true;
+    if (ok) correct++;
+    const item = document.createElement('div');
+    item.className = 'result-item';
+    item.innerHTML = `<div class="q">${labels[i]}</div><div class="r">${ok ? '✅ 正确' : '❌ 再练练'}</div>`;
+    details.appendChild(item);
+  });
+
+  document.getElementById('scoreNum').textContent = `${correct}/4`;
+
+  let stars = '', msg = '';
+  if (correct === 4) { stars = '⭐⭐⭐'; msg = '太厉害了！全对！你是分类小达人！🏆'; }
+  else if (correct >= 3) { stars = '⭐⭐'; msg = '很棒！再练练就能全对了！💪'; }
+  else if (correct >= 2) { stars = '⭐'; msg = '不错的开始！回去复习一下再来？📖'; }
+  else { stars = '🌟'; msg = '别灰心！回去看看讲解再来试试吧！📖'; }
+
+  document.getElementById('scoreStars').textContent = stars;
+  document.getElementById('scoreMsg').textContent = msg;
+  card.classList.add('show');
+  card.scrollIntoView({behavior:'smooth', block:'center'});
+  launchConfetti();
+}
+
+// ===== TTS =====
+let currentUtterance = null;
+
+function getPreferredVoice() {
+  const voices = speechSynthesis.getVoices();
+  let best = null, fallback = null;
+  for (const v of voices) {
+    if (v.lang.startsWith('zh') && v.name.includes('Xiaoxiao') && v.name.includes('Online')) return v;
+    if (v.lang.startsWith('zh') && v.name.includes('Online') && v.name.includes('Natural') && !best) best = v;
+    if (v.lang.startsWith('zh') && !fallback) fallback = v;
+  }
+  return best || fallback || null;
+}
+
+function speak(text) {
+  speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'zh-CN';
+  utter.rate = 0.9;
+  utter.pitch = 1.1;
+  const voice = getPreferredVoice();
+  if (voice) utter.voice = voice;
+
+  // Find and highlight the button
+  document.querySelectorAll('.tts-btn.playing').forEach(b => b.classList.remove('playing'));
+
+  utter.onend = () => {
+    document.querySelectorAll('.tts-btn.playing').forEach(b => b.classList.remove('playing'));
+    currentUtterance = null;
+  };
+  utter.onerror = utter.onend;
+
+  currentUtterance = utter;
+  speechSynthesis.speak(utter);
+}
+
+// ===== Confetti =====
+function launchConfetti() {
+  const container = document.getElementById('confettiContainer');
+  const colors = ['#ff6b9d','#4ecdc4','#ffe66d','#ff8a5c','#a78bfa','#6bcb77'];
+  for (let i = 0; i < 50; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.left = Math.random() * 100 + '%';
+    c.style.animationDelay = Math.random() * 1.5 + 's';
+    c.style.animationDuration = 2 + Math.random() * 2 + 's';
+    c.style.background = colors[Math.floor(Math.random() * colors.length)];
+    c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    c.style.width = 6 + Math.random() * 8 + 'px';
+    c.style.height = 6 + Math.random() * 8 + 'px';
+    container.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
+  }
+}
+
+// ===== Scroll Animation =====
+function initScrollAnimations() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, {threshold: 0.1});
+  document.querySelectorAll('.section').forEach(sec => observer.observe(sec));
+}
+
+// ===== Init =====
+function init() {
+  renderEx1Cards();
+  renderEx2Signs();
+  renderEx3Chips();
+  renderEx4Solids();
+  initScrollAnimations();
+
+  if (speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = () => {};
+  }
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+  <footer class="footer" lang="zh-CN"><p><strong>版权声明</strong>：本页讲解与配图<strong>均为本页自行编写</strong>，未复制任何教材插图或扫描件；人民教育出版社《数学》二年级上册（2024 年审核）的文字与插图著作权归原出版社及作者所有。</p><p>本页为<strong>家庭自用学习辅助</strong>：不含教材插图、不含扫描件、不用于任何商业用途、不做搜索收录。如权利人认为不妥，请告知即刻下线。</p><p>本页文字与插图均为自绘自拟；<strong>部分练习沿用课本原有题型，个别题目文字与课本原题相近</strong>，均已标注对应页码，仅作家庭自用学习辅助。教材版本已按<strong>课本封面照片核实</strong>：人民教育出版社《数学》二年级上册，封面标注「国家教材委员会专家委员会审核 2024」；第一单元<strong>分类与整理</strong>已按课本<strong>目录页照片</strong>核实，课本自第 1 页起（目录：第二单元「1~6 的表内乘法」自第 10 页起）。例题与情境均为本页自拟，请以课本为准。</p><p>朗读用浏览器语音，建议用 Edge 打开，中文音色最自然。</p></footer>
+</body>
+</html>

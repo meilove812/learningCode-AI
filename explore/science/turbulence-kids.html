@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco科学科普讲解：飞机为什么会颠簸">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>飞机为什么会颠簸？| 语音讲解</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            font-family: -apple-system, 'PingFang SC', sans-serif;
+            background: #0a0a1a;
+            touch-action: pan-y;
+        }
+
+        /* Pages container */
+        .pages {
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .page {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Page backgrounds */
+        .page-1 { background: linear-gradient(180deg, #87CEEB 0%, #4a90d9 100%); }
+        .page-2 { background: linear-gradient(180deg, #2193b0 0%, #6dd5ed 100%); }
+        .page-3 { background: linear-gradient(180deg, #f5af19 0%, #f12711 100%); }
+        .page-4 { background: linear-gradient(180deg, #667eea 0%, #764ba2 100%); }
+        .page-5 { background: linear-gradient(180deg, #11998e 0%, #38ef7d 100%); }
+        .page-6 { background: linear-gradient(180deg, #fc5c7d 0%, #6a82fb 100%); }
+        .page-7 { background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%); }
+
+        /* Animation scene on each page */
+        .scene {
+            width: 100%;
+            max-width: 350px;
+            height: 200px;
+            position: relative;
+            margin: 20px 0;
+            border-radius: 20px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        /* Text */
+        .page-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
+        }
+        .page-text {
+            font-size: 1.2em;
+            color: rgba(255,255,255,0.95);
+            text-align: center;
+            line-height: 1.8;
+            max-width: 340px;
+            text-shadow: 0 1px 5px rgba(0,0,0,0.2);
+        }
+
+        /* Navigation */
+        .nav-hint {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85em;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-8px); }
+        }
+
+        /* Dots indicator */
+        .dots {
+            position: fixed;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 100;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transition: all 0.3s;
+        }
+        .dot.active {
+            background: #fff;
+            transform: scale(1.4);
+            box-shadow: 0 0 8px rgba(255,255,255,0.6);
+        }
+
+        /* Voice button */
+        .voice-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            font-size: 1.4em;
+            cursor: pointer;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .voice-btn:hover { background: rgba(255,255,255,0.35); transform: scale(1.1); }
+        .voice-btn.speaking { animation: pulse 1s infinite; background: rgba(255,255,255,0.4); }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
+            50% { box-shadow: 0 0 0 12px rgba(255,255,255,0); }
+        }
+
+        /* Auto-play toggle */
+        .auto-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            font-size: 0.85em;
+            cursor: pointer;
+            z-index: 200;
+            transition: all 0.3s;
+        }
+        .auto-btn.active { background: rgba(76,175,80,0.6); }
+
+        /* === Page 1: Airplane in smooth sky === */
+        .p1-plane {
+            position: absolute;
+            font-size: 50px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: p1Float 3s ease-in-out infinite;
+        }
+        .p1-cloud {
+            position: absolute;
+            font-size: 35px;
+            opacity: 0.6;
+            animation: p1CloudMove 6s linear infinite;
+        }
+        .p1-cloud:nth-child(1) { top: 20%; left: -40px; animation-delay: 0s; }
+        .p1-cloud:nth-child(2) { top: 60%; left: -40px; animation-delay: 2s; }
+        .p1-cloud:nth-child(3) { top: 40%; left: -40px; animation-delay: 4s; }
+        @keyframes p1Float { 0%,100% { transform: translate(-50%,-50%) rotate(0); } 50% { transform: translate(-50%,calc(-50% - 5px)) rotate(0.5deg); } }
+        @keyframes p1CloudMove { from { transform: translateX(0); } to { transform: translateX(400px); } }
+
+        /* === Page 2: Air flow arrows === */
+        .p2-air {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        .p2-arrow {
+            position: absolute;
+            font-size: 28px;
+            color: rgba(255,255,255,0.7);
+            animation: p2Flow 2s linear infinite;
+        }
+        .p2-arrow:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .p2-arrow:nth-child(2) { top: 40%; left: 30%; animation-delay: 0.4s; }
+        .p2-arrow:nth-child(3) { top: 60%; left: 50%; animation-delay: 0.8s; }
+        .p2-arrow:nth-child(4) { top: 30%; left: 70%; animation-delay: 1.2s; }
+        .p2-arrow:nth-child(5) { top: 50%; left: 85%; animation-delay: 0.2s; }
+        .p2-plane { position: absolute; top: 45%; left: 45%; font-size: 40px; transform: translate(-50%,-50%); }
+        @keyframes p2Flow { 0% { transform: translateX(0); opacity: 1; } 100% { transform: translateX(30px); opacity: 0; } }
+
+        /* === Page 3: Hot air rising === */
+        .p3-ground {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(0deg, #8B4513, #D2691E);
+            border-radius: 0 0 20px 20px;
+        }
+        .p3-sun { position: absolute; top: 10px; right: 20px; font-size: 40px; }
+        .p3-heat {
+            position: absolute;
+            bottom: 40px;
+            font-size: 20px;
+            animation: p3Rise 2s ease-out infinite;
+            opacity: 0;
+        }
+        .p3-heat:nth-child(2) { left: 20%; animation-delay: 0s; }
+        .p3-heat:nth-child(3) { left: 40%; animation-delay: 0.5s; }
+        .p3-heat:nth-child(4) { left: 60%; animation-delay: 1s; }
+        .p3-heat:nth-child(5) { left: 80%; animation-delay: 1.5s; }
+        .p3-plane { position: absolute; top: 30%; left: 50%; transform: translateX(-50%); font-size: 35px; animation: p3Bump 1s ease-in-out infinite; }
+        @keyframes p3Rise { 0% { transform: translateY(0); opacity: 0.8; } 100% { transform: translateY(-120px); opacity: 0; } }
+        @keyframes p3Bump { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-10px); } }
+
+        /* === Page 4: Mountain waves === */
+        .p4-mountain {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 80px;
+        }
+        .p4-mountain::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 10%;
+            width: 0; height: 0;
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-bottom: 80px solid #4a5568;
+        }
+        .p4-mountain::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 45%;
+            width: 0; height: 0;
+            border-left: 80px solid transparent;
+            border-right: 80px solid transparent;
+            border-bottom: 100px solid #2d3748;
+        }
+        .p4-wave {
+            position: absolute;
+            width: 200px;
+            height: 60px;
+            border: 3px solid rgba(255,255,255,0.4);
+            border-radius: 50%;
+            top: 25%;
+            left: 30%;
+            animation: p4Wave 2s ease-in-out infinite;
+        }
+        .p4-wave:nth-child(2) { top: 15%; left: 40%; animation-delay: 0.5s; width: 160px; height: 50px; }
+        .p4-plane { position: absolute; top: 25%; left: 55%; font-size: 35px; animation: p3Bump 0.8s ease-in-out infinite; }
+        @keyframes p4Wave { 0%,100% { transform: scaleY(1); opacity: 0.6; } 50% { transform: scaleY(1.3); opacity: 0.3; } }
+
+        /* === Page 5: Airplane is strong === */
+        .p5-wing {
+            position: absolute;
+            top: 50%;
+            left: 20%;
+            width: 60%;
+            height: 6px;
+            background: linear-gradient(90deg, #ccc, #fff);
+            border-radius: 3px;
+            transform-origin: left center;
+            animation: p5Flex 2s ease-in-out infinite;
+        }
+        .p5-body {
+            position: absolute;
+            top: 35%;
+            left: 15%;
+            width: 30px;
+            height: 50px;
+            background: #ddd;
+            border-radius: 15px 15px 8px 8px;
+        }
+        .p5-label {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.8);
+            font-size: 0.8em;
+            white-space: nowrap;
+        }
+        @keyframes p5Flex { 0%,100% { transform: rotate(0); } 25% { transform: rotate(4deg); } 75% { transform: rotate(-3deg); } }
+
+        /* === Page 6: Seatbelt === */
+        .p6-seat {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            font-size: 80px;
+        }
+        .p6-belt {
+            position: absolute;
+            top: 62%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 6px;
+            background: #ffd700;
+            border-radius: 3px;
+            animation: p6Belt 1.5s ease-in-out infinite;
+        }
+        @keyframes p6Belt { 0%,100% { transform: translateX(-50%) scaleX(1); } 50% { transform: translateX(-50%) scaleX(1.1); } }
+
+        /* === Page 7: Summary === */
+        .p7-stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+        .p7-star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #fff;
+            border-radius: 50%;
+            animation: p7Twinkle 2s infinite;
+        }
+        .p7-star:nth-child(1) { top: 10%; left: 15%; animation-delay: 0s; }
+        .p7-star:nth-child(2) { top: 25%; left: 70%; animation-delay: 0.5s; }
+        .p7-star:nth-child(3) { top: 60%; left: 30%; animation-delay: 1s; }
+        .p7-star:nth-child(4) { top: 40%; left: 85%; animation-delay: 1.5s; }
+        .p7-star:nth-child(5) { top: 75%; left: 55%; animation-delay: 0.3s; }
+        @keyframes p7Twinkle { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
+    </style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+    <!-- Dots -->
+    <div class="dots" id="dots"></div>
+
+    <!-- Voice button -->
+    <button class="voice-btn" id="voiceBtn" onclick="toggleVoice()">🔊</button>
+    <button class="auto-btn" id="autoBtn" onclick="toggleAuto()">▶️ 自动播放</button>
+
+    <!-- Pages -->
+    <div class="pages" id="pages">
+        <!-- Page 1: Intro -->
+        <div class="page page-1" data-narration="飞机在天上飞的时候，有时候会抖一抖，像坐在颠簸的小船上。这就是我们说的'气流颠簸'。别怕，这是很正常的事情哦！我们来看看为什么会颠簸。">
+            <div class="scene">
+                <span class="p1-cloud">☁️</span>
+                <span class="p1-cloud">☁️</span>
+                <span class="p1-cloud">⛅</span>
+                <span class="p1-plane">✈️</span>
+            </div>
+            <h1 class="page-title">飞机为什么会抖抖？🤔</h1>
+            <p class="page-text">飞机飞着飞着突然抖起来<br>像坐在颠簸的小船上<br>这是怎么回事呢？</p>
+            <div class="nav-hint">👆 向上滑动翻页</div>
+        </div>
+
+        <!-- Page 2: Air is like a river -->
+        <div class="page page-2" data-narration="空气虽然看不见，但它其实像一条条河流，一直在流动。飞机飞在空气里，就像小船漂在河流上。当空气流动很平稳的时候，飞机就飞得很平稳。">
+            <div class="scene">
+                <div class="p2-air">
+                    <span class="p2-arrow">→</span>
+                    <span class="p2-arrow">→</span>
+                    <span class="p2-arrow">→</span>
+                    <span class="p2-arrow">→</span>
+                    <span class="p2-arrow">→</span>
+                </div>
+                <span class="p2-plane">✈️</span>
+            </div>
+            <h1 class="page-title">空气是看不见的河流 🌊</h1>
+            <p class="page-text">空气虽然看不见<br>但它一直在流动<br>就像一条条透明的河<br>飞机就漂在这条河上面</p>
+        </div>
+
+        <!-- Page 3: Hot air causes bumps -->
+        <div class="page page-3" data-narration="太阳把地面晒得热热的，热空气就会往上冲，就像烧开水时的泡泡往上跑一样。飞机飞过这些往上冲的热空气，就会被顶一下，抖一抖。这是最常见的颠簸原因。">
+            <div class="scene">
+                <span class="p3-sun">☀️</span>
+                <span class="p3-heat">🔥</span>
+                <span class="p3-heat">🔥</span>
+                <span class="p3-heat">🔥</span>
+                <span class="p3-heat">🔥</span>
+                <span class="p3-plane">✈️</span>
+                <div class="p3-ground"></div>
+            </div>
+            <h1 class="page-title">热气泡往上冲！☀️</h1>
+            <p class="page-text">太阳把地面晒热了<br>热空气像泡泡一样往上跑<br>飞机碰到热泡泡<br>就会被顶一下——"咚！"</p>
+        </div>
+
+        <!-- Page 4: Mountains change airflow -->
+        <div class="page page-4" data-narration="当风吹过高山的时候，空气会像海浪一样翻滚起来，形成'山脉波'。飞机飞过山顶上空，就像冲浪一样被这些空气的浪推来推去，也会颠簸。">
+            <div class="scene">
+                <div class="p4-wave"></div>
+                <div class="p4-wave"></div>
+                <span class="p4-plane">✈️</span>
+                <div class="p4-mountain"></div>
+            </div>
+            <h1 class="page-title">山让空气变成浪 🏔️</h1>
+            <p class="page-text">风吹过高高的山<br>空气也会像海浪一样翻滚<br>飞机飞过去<br>就像冲浪一样颠簸起来</p>
+        </div>
+
+        <!-- Page 5: Airplane is very strong -->
+        <div class="page page-5" data-narration="飞机的翅膀特别特别结实！它可以像柳树枝一样弯来弯去，弯很大也不会断。工程师设计的时候，让它能承受比颠簸大好几倍的力气。所以不管怎么抖，飞机都不会散架哦！">
+            <div class="scene">
+                <div class="p5-body"></div>
+                <div class="p5-wing"></div>
+                <div class="p5-label">👈 看，翅膀弯弯的，但不会断！</div>
+            </div>
+            <h1 class="page-title">飞机超级结实！💪</h1>
+            <p class="page-text">飞机翅膀像柳树枝<br>可以弯来弯去不会断<br>工程师让它能扛住<br>比颠簸大好几倍的力气</p>
+        </div>
+
+        <!-- Page 6: Seatbelt is the key -->
+        <div class="page page-6" data-narration="颠簸的时候飞机很安全，但是如果不系安全带，人可能会被弹起来碰到头。所以坐飞机的时候，一定要系好安全带哦！系上安全带，颠簸就只是像坐过山车一样好玩。">
+            <div class="scene">
+                <span class="p6-seat">💺</span>
+                <div class="p6-belt"></div>
+            </div>
+            <h1 class="page-title">安全带是魔法盾牌 🛡️</h1>
+            <p class="page-text">颠簸时飞机很安全<br>但不系安全带<br>人可能会被弹起来碰到头<br>系上安全带 = 无敌！</p>
+        </div>
+
+        <!-- Page 7: Summary -->
+        <div class="page page-7" data-narration="现在你知道啦！飞机颠簸就像汽车走在不平的路上一样正常。空气有时候调皮，飞机就会抖一抖。但飞机非常结实，系好安全带就完全不用怕。下次坐飞机颠簸的时候，你可以跟旁边的人说：这只是空气在调皮啦！">
+            <div class="scene" style="background:transparent;">
+                <div class="p7-stars">
+                    <div class="p7-star"></div>
+                    <div class="p7-star"></div>
+                    <div class="p7-star"></div>
+                    <div class="p7-star"></div>
+                    <div class="p7-star"></div>
+                </div>
+            </div>
+            <h1 class="page-title">记住三句话就够了 ✨</h1>
+            <p class="page-text">1️⃣ 颠簸 = 空气在调皮<br><br>2️⃣ 飞机超结实，抖不坏<br><br>3️⃣ 系好安全带就是无敌<br><br>🎉 完全不用怕！</p>
+        </div>
+    </div>
+
+    <script>
+        // ===== Page Navigation =====
+        const pages = document.querySelectorAll('.page');
+        const pagesContainer = document.getElementById('pages');
+        const totalPages = pages.length;
+        let currentPage = 0;
+        let startY = 0;
+        let isDragging = false;
+        let autoPlay = false;
+        let autoTimer = null;
+
+        // Create dots
+        const dotsContainer = document.getElementById('dots');
+        for (let i = 0; i < totalPages; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'dot' + (i === 0 ? ' active' : '');
+            dot.onclick = () => goToPage(i);
+            dotsContainer.appendChild(dot);
+        }
+
+        function goToPage(n) {
+            if (n < 0 || n >= totalPages) return;
+            currentPage = n;
+            pagesContainer.style.transform = `translateY(-${n * 100}vh)`;
+            // Update dots
+            document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === n));
+            // Narrate
+            if (autoPlay || window._justSwiped) {
+                setTimeout(() => narratePage(n), 400);
+                window._justSwiped = false;
+            }
+        }
+
+        // Touch events
+        document.addEventListener('touchstart', e => {
+            startY = e.touches[0].clientY;
+            isDragging = true;
+        });
+        document.addEventListener('touchend', e => {
+            if (!isDragging) return;
+            isDragging = false;
+            const diff = startY - e.changedTouches[0].clientY;
+            if (Math.abs(diff) > 50) {
+                window._justSwiped = true;
+                if (diff > 0) goToPage(currentPage + 1);
+                else goToPage(currentPage - 1);
+            }
+        });
+
+        // Mouse wheel
+        let wheelTimeout = false;
+        document.addEventListener('wheel', e => {
+            if (wheelTimeout) return;
+            wheelTimeout = true;
+            setTimeout(() => wheelTimeout = false, 800);
+            window._justSwiped = true;
+            if (e.deltaY > 0) goToPage(currentPage + 1);
+            else goToPage(currentPage - 1);
+        });
+
+        // Keyboard
+        document.addEventListener('keydown', e => {
+            window._justSwiped = true;
+            if (e.key === 'ArrowDown' || e.key === ' ') goToPage(currentPage + 1);
+            else if (e.key === 'ArrowUp') goToPage(currentPage - 1);
+        });
+
+        // ===== Voice / TTS =====
+        let speaking = false;
+        let synth = window.speechSynthesis;
+        let preferredVoice = null;
+
+        function loadVoice() {
+            const voices = synth.getVoices();
+            // Prefer Microsoft Online Natural Chinese voice
+            preferredVoice = voices.find(v => v.name.includes('Xiaoxiao') && v.name.includes('Online'));
+            if (!preferredVoice) preferredVoice = voices.find(v => v.name.includes('Online') && v.lang.startsWith('zh'));
+            if (!preferredVoice) preferredVoice = voices.find(v => v.lang.startsWith('zh'));
+        }
+        synth.onvoiceschanged = loadVoice;
+        loadVoice();
+
+        function narratePage(n) {
+            synth.cancel();
+            const text = pages[n].getAttribute('data-narration');
+            if (!text) return;
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.lang = 'zh-CN';
+            utter.rate = 0.9;
+            utter.pitch = 1.1;
+            if (preferredVoice) utter.voice = preferredVoice;
+            utter.onstart = () => {
+                speaking = true;
+                document.getElementById('voiceBtn').classList.add('speaking');
+            };
+            utter.onend = () => {
+                speaking = false;
+                document.getElementById('voiceBtn').classList.remove('speaking');
+                // Auto advance
+                if (autoPlay && currentPage < totalPages - 1) {
+                    autoTimer = setTimeout(() => {
+                        window._justSwiped = true;
+                        goToPage(currentPage + 1);
+                    }, 1500);
+                }
+            };
+            synth.speak(utter);
+        }
+
+        function toggleVoice() {
+            if (speaking) {
+                synth.cancel();
+                speaking = false;
+                document.getElementById('voiceBtn').classList.remove('speaking');
+            } else {
+                narratePage(currentPage);
+            }
+        }
+
+        function toggleAuto() {
+            autoPlay = !autoPlay;
+            const btn = document.getElementById('autoBtn');
+            btn.classList.toggle('active', autoPlay);
+            btn.textContent = autoPlay ? '⏸️ 自动播放中' : '▶️ 自动播放';
+            if (autoPlay) {
+                narratePage(currentPage);
+            } else {
+                synth.cancel();
+                clearTimeout(autoTimer);
+            }
+        }
+
+        // Start first page narration hint
+        setTimeout(() => {
+            if (!speaking && !autoPlay) {
+                // gentle hint - don't auto narrate unless user taps
+            }
+        }, 1000);
+    </script>
+<script src="../../assets/site.js"></script></body>
+</html>

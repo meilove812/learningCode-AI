@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco科学科普讲解：飞机窗户怎样变暗">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>✈️ 飞机窗户电控调光原理</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  min-height: 100vh;
+  color: #fff;
+}
+.container { max-width: 860px; margin: 0 auto; padding: 20px; }
+h1 { text-align: center; font-size: 1.8em; margin-bottom: 6px; }
+.subtitle { text-align: center; color: #aac; margin-bottom: 20px; font-size: 0.95em; }
+
+/* Window Demo */
+.demo-section {
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  padding: 30px 20px;
+  margin-bottom: 25px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.demo-title { text-align: center; font-size: 1.2em; margin-bottom: 20px; color: #74b9ff; }
+
+.window-demo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: nowrap;
+}
+
+/* Airplane window frame */
+.window-frame {
+  position: relative;
+  width: 140px;
+  height: 220px;
+  flex-shrink: 0;
+  background: #c0c8d0;
+  border-radius: 60px 60px 45px 45px;
+  padding: 10px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.3);
+}
+.window-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 52px 52px 38px 38px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #888;
+}
+.window-sky {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #4a90d9 0%, #87CEEB 40%, #fff 90%);
+  position: relative;
+}
+.window-sky .sun {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  width: 40px;
+  height: 40px;
+  background: #ffd700;
+  border-radius: 50%;
+  box-shadow: 0 0 20px #ffd700, 0 0 40px rgba(255,215,0,0.3);
+}
+.window-sky .cloud-w {
+  position: absolute;
+  background: white;
+  border-radius: 20px;
+  opacity: 0.8;
+}
+.window-sky .c1 { width: 50px; height: 18px; top: 60px; left: 15px; }
+.window-sky .c2 { width: 35px; height: 14px; top: 100px; right: 20px; }
+
+/* Tint overlay */
+.tint-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #1a237e;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  pointer-events: none;
+}
+
+/* Control buttons */
+.control-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.control-panel label {
+  font-size: 0.9em;
+  color: #aaa;
+}
+.dim-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.dim-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dim-btn:hover { transform: scale(1.1); }
+.dim-btn.active { border-color: #74b9ff; box-shadow: 0 0 12px rgba(116,185,255,0.5); }
+.dim-btn[data-level="0"] { background: rgba(255,255,255,0.9); color: #333; }
+.dim-btn[data-level="1"] { background: rgba(100,140,200,0.5); color: #fff; }
+.dim-btn[data-level="2"] { background: rgba(50,70,120,0.7); color: #fff; }
+.dim-btn[data-level="3"] { background: rgba(20,30,80,0.85); color: #fff; }
+.dim-btn[data-level="4"] { background: rgba(10,15,50,0.95); color: #fff; }
+
+.level-label {
+  text-align: center;
+  font-size: 0.85em;
+  color: #74b9ff;
+  margin-top: 8px;
+  min-height: 20px;
+}
+
+/* Cross-section diagram */
+.cross-section {
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  padding: 25px 20px;
+  margin-bottom: 25px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.cross-section h2 { text-align: center; color: #74b9ff; margin-bottom: 15px; font-size: 1.1em; }
+.cross-svg { width: 100%; max-height: 320px; }
+
+/* Principle cards */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+.card {
+  background: rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  text-align: center;
+}
+.card-icon { font-size: 2.2em; margin-bottom: 8px; }
+.card-title { font-weight: bold; color: #74b9ff; margin-bottom: 6px; font-size: 1em; }
+.card-desc { color: #bbb; font-size: 0.88em; line-height: 1.6; }
+
+/* Steps */
+.steps-box {
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  padding: 25px 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.steps-box h2 { text-align: center; color: #74b9ff; margin-bottom: 15px; }
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 12px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+}
+.step-num {
+  background: #3498db;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: bold; font-size: 0.9em;
+  flex-shrink: 0;
+}
+.step-text { color: #ccc; line-height: 1.6; font-size: 0.92em; }
+.step-text strong { color: #fff; }
+
+/* Speaker */
+.speaker-btn {
+  position: fixed; bottom: 20px; right: 20px;
+  width: 50px; height: 50px; border-radius: 50%;
+  background: #3498db; color: white; border: none;
+  font-size: 24px; cursor: pointer;
+  box-shadow: 0 3px 15px rgba(52,152,219,0.4); z-index: 100;
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+<div class="container">
+  <h1>✈️ 飞机窗户按钮调光原理</h1>
+  <p class="subtitle">波音787等新型客机 — 电致变色玻璃技术</p>
+
+  <!-- Interactive Demo -->
+  <div class="demo-section">
+    <div class="demo-title">👆 点击按钮，体验调光效果</div>
+    <div class="window-demo">
+      <div class="window-frame">
+        <div class="window-inner">
+          <div class="window-sky">
+            <div class="sun"></div>
+            <div class="cloud-w c1"></div>
+            <div class="cloud-w c2"></div>
+          </div>
+          <div class="tint-overlay" id="tintOverlay"></div>
+        </div>
+      </div>
+      <div class="control-panel">
+        <label>调光按钮</label>
+        <div class="dim-buttons">
+          <button class="dim-btn active" data-level="0" onclick="setDim(0)">☀️</button>
+          <button class="dim-btn" data-level="1" onclick="setDim(1)">🌤</button>
+          <button class="dim-btn" data-level="2" onclick="setDim(2)">⛅</button>
+          <button class="dim-btn" data-level="3" onclick="setDim(3)">🌥</button>
+          <button class="dim-btn" data-level="4" onclick="setDim(4)">🌑</button>
+        </div>
+        <div class="level-label" id="levelLabel">透明 — 100% 光线通过</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cross-section Diagram -->
+  <div class="cross-section">
+    <h2>🔬 玻璃截面结构图（电致变色原理）</h2>
+    <svg class="cross-svg" viewBox="0 0 600 300" preserveAspectRatio="xMidYMid meet">
+      <!-- Outer pane -->
+      <rect x="30" y="30" width="540" height="240" rx="8" fill="none" stroke="#555" stroke-width="1" stroke-dasharray="4"/>
+      
+      <!-- Glass layer 1 (outer) -->
+      <rect x="50" y="50" width="30" height="200" rx="4" fill="#b8d4e8" stroke="#6a9fc0" stroke-width="1.5"/>
+      <text x="65" y="270" text-anchor="middle" font-size="11" fill="#8ab">外层玻璃</text>
+      
+      <!-- Transparent conductor 1 -->
+      <rect x="90" y="50" width="15" height="200" rx="2" fill="#ffd700" stroke="#cca300" stroke-width="1" opacity="0.8"/>
+      <text x="97" y="270" text-anchor="middle" font-size="9" fill="#dda">导电层</text>
+      
+      <!-- Electrochromic layer (this changes!) -->
+      <rect x="115" y="50" width="50" height="200" rx="3" fill="#4a6fa5" stroke="#345080" stroke-width="1.5" id="ecLayer">
+        <animate id="ecAnim" attributeName="fill" values="#4a6fa5;#1a1a4e;#4a6fa5" dur="4s" repeatCount="indefinite"/>
+      </rect>
+      <text x="140" y="270" text-anchor="middle" font-size="10" fill="#8af" font-weight="bold">变色层</text>
+      <text x="140" y="285" text-anchor="middle" font-size="9" fill="#68a">（氧化钨）</text>
+      
+      <!-- Ion conductor (electrolyte) -->
+      <rect x="175" y="50" width="30" height="200" rx="2" fill="#98d4a0" stroke="#5a9a60" stroke-width="1" opacity="0.7"/>
+      <text x="190" y="270" text-anchor="middle" font-size="10" fill="#8c8">电解质</text>
+      
+      <!-- Ion storage layer -->
+      <rect x="215" y="50" width="40" height="200" rx="3" fill="#c8a8e0" stroke="#8868a0" stroke-width="1.5"/>
+      <text x="235" y="270" text-anchor="middle" font-size="10" fill="#b8a">离子储存层</text>
+      
+      <!-- Transparent conductor 2 -->
+      <rect x="265" y="50" width="15" height="200" rx="2" fill="#ffd700" stroke="#cca300" stroke-width="1" opacity="0.8"/>
+      <text x="272" y="270" text-anchor="middle" font-size="9" fill="#dda">导电层</text>
+      
+      <!-- Glass layer 2 (inner) -->
+      <rect x="290" y="50" width="30" height="200" rx="4" fill="#b8d4e8" stroke="#6a9fc0" stroke-width="1.5"/>
+      <text x="305" y="270" text-anchor="middle" font-size="11" fill="#8ab">内层玻璃</text>
+
+      <!-- Voltage/battery symbol -->
+      <rect x="370" y="80" width="180" height="140" rx="12" fill="rgba(255,255,255,0.05)" stroke="#555" stroke-width="1"/>
+      <text x="460" y="105" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">⚡ 通电过程</text>
+      
+      <!-- Battery -->
+      <rect x="430" y="120" width="60" height="30" rx="4" fill="#333" stroke="#ffd700" stroke-width="1.5"/>
+      <rect x="490" y="128" width="5" height="14" rx="2" fill="#ffd700"/>
+      <text x="460" y="140" text-anchor="middle" font-size="10" fill="#ffd700">电压</text>
+      
+      <!-- Ion movement arrows -->
+      <text x="460" y="175" text-anchor="middle" font-size="11" fill="#98d4a0">离子移动 →</text>
+      <text x="460" y="195" text-anchor="middle" font-size="11" fill="#c8a8e0">← 离子回流</text>
+      
+      <!-- Animated ions -->
+      <circle r="4" fill="#98d4a0" opacity="0.9">
+        <animateMotion dur="2s" repeatCount="indefinite" path="M 140,120 L 230,120"/>
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <circle r="4" fill="#98d4a0" opacity="0.7">
+        <animateMotion dur="2.3s" repeatCount="indefinite" path="M 140,150 L 230,150" begin="0.5s"/>
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="2.3s" repeatCount="indefinite"/>
+      </circle>
+      <circle r="3" fill="#c8a8e0" opacity="0.8">
+        <animateMotion dur="2.5s" repeatCount="indefinite" path="M 230,180 L 140,180"/>
+        <animate attributeName="opacity" values="0.3;1;0.3" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+      
+      <!-- Light rays -->
+      <text x="460" y="225" text-anchor="middle" font-size="10" fill="#aaa">通电→离子进入变色层→玻璃变暗</text>
+      
+      <!-- Light arrows left side -->
+      <line x1="15" y1="100" x2="45" y2="100" stroke="#ffd700" stroke-width="2" marker-end="url(#lightArr)" opacity="0.8"/>
+      <line x1="15" y1="150" x2="45" y2="150" stroke="#ffd700" stroke-width="2" opacity="0.8"/>
+      <line x1="15" y1="200" x2="45" y2="200" stroke="#ffd700" stroke-width="2" opacity="0.8"/>
+      <text x="15" y="85" font-size="10" fill="#ffd700">光线☀️</text>
+      
+      <defs>
+        <marker id="lightArr" markerWidth="6" markerHeight="4" refX="6" refY="2" orient="auto">
+          <polygon points="0 0,6 2,0 4" fill="#ffd700"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- Principle Cards -->
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">🧪</div>
+      <div class="card-title">电致变色材料</div>
+      <div class="card-desc">使用氧化钨（WO₃）薄膜，通电后颜色从透明变为深蓝</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">低电压控制</div>
+      <div class="card-desc">只需0.5~1.5V电压，比一节电池还少，非常省电</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔄</div>
+      <div class="card-title">可逆反应</div>
+      <div class="card-desc">断电→离子回流→玻璃恢复透明，可反复切换数万次</div>
+    </div>
+    <div class="card">
+      <div class="card-icon">✈️</div>
+      <div class="card-title">应用机型</div>
+      <div class="card-desc">波音787梦想客机首创，国产C919部分型号也有使用</div>
+    </div>
+  </div>
+
+  <!-- Steps -->
+  <div class="steps-box">
+    <h2>🔬 工作原理步骤</h2>
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text"><strong>按下调暗按钮</strong> — 电路接通，向玻璃夹层施加微小电压（约1V）</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text"><strong>离子开始迁移</strong> — 锂离子从储存层通过电解质，移向变色层（氧化钨）</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text"><strong>变色反应发生</strong> — 离子嵌入氧化钨 → WO₃变成LiₓWO₃ → 材料从透明变为深蓝色</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-text"><strong>光线被吸收</strong> — 深色的变色层吸收大部分可见光，窗户变暗，阻挡刺眼阳光</div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-text"><strong>按调亮按钮</strong> — 反向电压 → 离子回流到储存层 → 玻璃恢复透明！</div>
+    </div>
+    <div class="step">
+      <div class="step-num">💡</div>
+      <div class="step-text"><strong>记忆效果</strong> — 断电后保持当前状态不变，不耗电也能保持暗色，非常节能！</div>
+    </div>
+  </div>
+</div>
+
+<button class="speaker-btn" onclick="speak()">🔊</button>
+
+<script>
+// Edge High-Fidelity TTS: auto-select best voice
+var _edgeTTSVoice = null;
+function _initEdgeVoice() {
+  var voices = speechSynthesis.getVoices();
+  if (!voices.length) return;
+  var zh = voices.filter(function(v) { return /^zh-CN|^zh$|^cmn/i.test(v.lang)&&!/^zh-HK|^zh-TW/i.test(v.lang); });
+  _edgeTTSVoice = zh.find(function(v){ return v.name.indexOf('Xiaoxiao')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Online')>=0 && v.name.indexOf('Natural')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Yunxi')>=0; })
+    || zh.find(function(v){ return v.name.indexOf('Microsoft')>=0; })
+    || zh[0] || null;
+}
+_initEdgeVoice();
+if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = function(){ _initEdgeVoice(); };
+
+const tintOverlay = document.getElementById('tintOverlay');
+const levelLabel = document.getElementById('levelLabel');
+const buttons = document.querySelectorAll('.dim-btn');
+
+const levels = [
+  { opacity: 0, text: '透明 — 100% 光线通过' },
+  { opacity: 0.25, text: '轻微变暗 — 75% 光线通过' },
+  { opacity: 0.5, text: '中等变暗 — 50% 光线通过' },
+  { opacity: 0.75, text: '深度变暗 — 25% 光线通过' },
+  { opacity: 0.92, text: '最暗 — 几乎不透光' }
+];
+
+function setDim(level) {
+  tintOverlay.style.opacity = levels[level].opacity;
+  levelLabel.textContent = levels[level].text;
+  buttons.forEach(b => b.classList.remove('active'));
+  buttons[level].classList.add('active');
+}
+
+function speak() {
+  const text = '飞机窗户按钮调光是怎么工作的？这用到了一种叫做电致变色的技术。飞机窗户其实是多层玻璃，中间夹了一层特殊材料，叫氧化钨。当你按下调暗按钮时，一个很小的电压加在玻璃上，大约只有1伏特。这时候，很小很小的锂离子就开始移动，跑进氧化钨层里面。离子进去以后，氧化钨的颜色就从透明变成了深蓝色，就像墨水染上去一样。深蓝色的材料会吸收光线，窗户就变暗了！想要变亮的时候，只要反过来加电压，离子就跑回去了，窗户又变透明了。最厉害的是，断电以后窗户会保持当前状态，不会自动变回去，所以非常省电！波音787梦想客机就是用的这个技术。';
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN'; u.rate = 0.85;if(_edgeTTSVoice)u.voice=_edgeTTSVoice; u.pitch = 1.1;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+</script>
+<script src="../../assets/site.js"></script></body>
+</html>

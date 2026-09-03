@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧩 6×6 数独讲解 · 动画演示</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 16px;
+}
+h1 { font-size: 24px; color: #fff; margin: 8px 0; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+.subtitle { color: rgba(255,255,255,0.85); margin-bottom: 12px; font-size: 14px; text-align: center; }
+
+/* Voice Bar */
+.voice-bar {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin: 8px 0 12px; flex-wrap: wrap;
+}
+.voice-toggle {
+  padding: 6px 16px; border-radius: 20px; border: 2px solid #fff;
+  background: rgba(255,255,255,0.2); color: #fff; font-weight: bold; font-size: 13px;
+  cursor: pointer; backdrop-filter: blur(4px);
+}
+.voice-toggle.muted { background: rgba(0,0,0,0.3); }
+.voice-select {
+  padding: 5px 8px; border-radius: 12px; border: 2px solid rgba(255,255,255,0.4);
+  font-size: 12px; max-width: 180px; background: rgba(255,255,255,0.9);
+}
+.speed-control { display: flex; align-items: center; gap: 4px; color: #fff; font-size: 12px; }
+.speed-control input { width: 60px; }
+
+/* Bottom Tabs */
+.tab-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  display: flex; background: rgba(30,20,60,0.95);
+  backdrop-filter: blur(10px); z-index: 100;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.tab-item {
+  flex: 1; padding: 10px 4px 14px; text-align: center;
+  color: rgba(255,255,255,0.5); font-size: 11px; cursor: pointer;
+  transition: all 0.3s; border: none; background: none;
+}
+.tab-item.active { color: #f093fb; }
+.tab-item .tab-icon { font-size: 20px; display: block; margin-bottom: 2px; }
+.tab-item .tab-label { display: block; }
+
+/* Main Scene */
+.scene {
+  width: 100%; max-width: 500px;
+  background: rgba(255,255,255,0.95); border-radius: 24px;
+  padding: 20px 16px; margin-bottom: 80px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.scene-title { font-size: 18px; font-weight: bold; color: #4a148c; text-align: center; margin-bottom: 6px; }
+.scene-desc { font-size: 13px; color: #666; text-align: center; margin-bottom: 16px; line-height: 1.6; }
+
+/* 6x6 Sudoku Grid */
+.sudoku-container { display: flex; justify-content: center; margin: 12px 0; }
+.sudoku-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  border: 3px solid #1a237e;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 270px; height: 270px;
+}
+.sudoku-cell {
+  display: flex; align-items: center; justify-content: center;
+  width: 45px; height: 45px;
+  font-size: 22px; font-weight: bold; color: #1a237e;
+  border: 1px solid #bbb; position: relative;
+  transition: all 0.4s ease; background: #fff;
+}
+.sudoku-cell.given { color: #333; background: #f5f5f5; }
+.sudoku-cell.highlight-row { background: #fff9c4 !important; }
+.sudoku-cell.highlight-col { background: #bbdefb !important; }
+.sudoku-cell.highlight-box { background: #c8e6c9 !important; }
+.sudoku-cell.highlight-target { background: #ffab91 !important; box-shadow: inset 0 0 0 3px #e65100; }
+.sudoku-cell.filled-anim { animation: popIn 0.5s ease; background: #e1f5fe !important; }
+.sudoku-cell.highlight-error { background: #ffcdd2 !important; animation: shake 0.4s ease; }
+
+/* Box borders for 6x6: 2 rows × 3 cols */
+.sudoku-cell.border-right-thick { border-right: 2.5px solid #1a237e !important; }
+.sudoku-cell.border-bottom-thick { border-bottom: 2.5px solid #1a237e !important; }
+
+/* Candidate display */
+.candidate-display {
+  display: flex; justify-content: center; gap: 8px; margin: 10px 0; flex-wrap: wrap;
+}
+.cand-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: bold; color: #fff;
+  background: #7c4dff; transition: all 0.4s;
+}
+.cand-num.eliminated { background: #e0e0e0; color: #999; text-decoration: line-through; transform: scale(0.8); }
+.cand-num.answer { background: #4caf50; animation: popIn 0.5s ease; transform: scale(1.2); }
+
+/* Step narration */
+.narration-box {
+  background: linear-gradient(135deg, #ede7f6, #e8eaf6);
+  border-radius: 16px; padding: 14px 16px; margin: 12px 0;
+  text-align: center; min-height: 60px;
+  display: flex; align-items: center; justify-content: center;
+}
+.narration-text { font-size: 15px; color: #4a148c; font-weight: 500; line-height: 1.6; }
+
+/* Controls */
+.controls { display: flex; gap: 10px; justify-content: center; margin: 14px 0; flex-wrap: wrap; }
+.btn {
+  padding: 12px 24px; border: none; border-radius: 25px;
+  font-size: 15px; font-weight: bold; cursor: pointer;
+  transition: all 0.3s; color: #fff;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+.btn.primary { background: linear-gradient(135deg, #7c4dff, #e040fb); }
+.btn.secondary { background: linear-gradient(135deg, #78909c, #90a4ae); }
+.btn.autoplay { background: linear-gradient(135deg, #00bcd4, #26c6da); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* Progress dots */
+.progress-dots { display: flex; justify-content: center; gap: 6px; margin: 8px 0; flex-wrap: wrap; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: #e0e0e0; transition: all 0.3s; }
+.dot.active { background: #7c4dff; transform: scale(1.3); }
+.dot.done { background: #4caf50; }
+
+/* Step counter */
+.step-counter {
+  text-align: center; font-size: 12px; color: #999; margin-top: 6px;
+}
+
+/* Particles */
+.particle {
+  position: fixed; pointer-events: none; font-size: 20px;
+  animation: particleFly 1.5s ease-out forwards; z-index: 999;
+}
+@keyframes particleFly {
+  0% { opacity: 1; transform: translate(0, 0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.3); }
+}
+@keyframes popIn {
+  0% { transform: scale(0.3); } 50% { transform: scale(1.3); } 100% { transform: scale(1); }
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+@media (max-width: 400px) {
+  .sudoku-grid { width: 240px; height: 240px; }
+  .sudoku-cell { width: 40px; height: 40px; font-size: 18px; }
+  .scene { padding: 16px 10px; }
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../index.html">首页</a><a href="../grade1-down/index.html">一年级</a><a href="../grade2-up/index.html">二年级</a><a href="../explore/science/index.html">科普</a><a href="../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<h1>🧩 6×6 数独讲解</h1>
+<p class="subtitle">Coco 的数独课 ✨ 看动画一步步学会解题！</p>
+
+<div class="voice-bar">
+  <button class="voice-toggle" id="voiceToggle" onclick="toggleVoice()">🔊 语音</button>
+  <select class="voice-select" id="cnVoiceSelect" onchange="selectVoice()"></select>
+  <div class="speed-control">
+    <span>语速</span>
+    <input type="range" min="0.5" max="1.5" step="0.1" value="0.85" id="speedSlider" onchange="updateSpeed()">
+    <span id="speedLabel">0.85</span>
+  </div>
+</div>
+
+<div class="scene" id="scene"></div>
+
+<div class="tab-bar">
+  <button class="tab-item active" onclick="switchTab(0)"><span class="tab-icon">①</span><span class="tab-label">题目1</span></button>
+  <button class="tab-item" onclick="switchTab(1)"><span class="tab-icon">②</span><span class="tab-label">题目2</span></button>
+  <button class="tab-item" onclick="switchTab(2)"><span class="tab-icon">③</span><span class="tab-label">题目3</span></button>
+  <button class="tab-item" onclick="switchTab(3)"><span class="tab-icon">④</span><span class="tab-label">题目4</span></button>
+</div>
+
+<script>
+// ===== Voice Engine =====
+let voiceEnabled = true;
+let selectedVoice = null;
+let speechRate = 0.85;
+let speaking = false;
+let currentTab = 0;
+let animating = false;
+let timeouts = [];
+let stepIndex = 0;
+
+const cnPref = ['Microsoft Xiaoxiao','Microsoft Yunxi','Microsoft Xiaoxiao Online (Natural)','Microsoft Yunxi Online (Natural)','Online (Natural)','Tingting','Google 普通话','Enhanced','Premium','Natural'];
+function scoreV(v) {
+  for (let i = 0; i < cnPref.length; i++) if (v.name.includes(cnPref[i])) return cnPref.length - i + 100;
+  let s = 0; if (/enhanced|premium|natural/i.test(v.name)) s += 50; if (/compact/i.test(v.name)) s -= 20; return s;
+}
+function populateVoices() {
+  const vs = speechSynthesis.getVoices().filter(v => (/^zh-CN|^zh$|^cmn/i.test(v.lang))&&!/^zh-HK|^zh-TW/i.test(v.lang));
+  vs.sort((a, b) => scoreV(b) - scoreV(a));
+  const sel = document.getElementById('cnVoiceSelect');
+  sel.innerHTML = vs.map((v, i) => `<option value="${v.name}" ${i === 0 ? 'selected' : ''}>${v.name}</option>`).join('');
+  if (vs.length) selectedVoice = vs[0];
+}
+function selectVoice() { selectedVoice = speechSynthesis.getVoices().find(v => v.name === document.getElementById('cnVoiceSelect').value); }
+function toggleVoice() {
+  voiceEnabled = !voiceEnabled;
+  const b = document.getElementById('voiceToggle');
+  b.textContent = voiceEnabled ? '🔊 语音' : '🔇 静音';
+  b.classList.toggle('muted', !voiceEnabled);
+  if (!voiceEnabled) { speechSynthesis.cancel(); speaking = false; }
+}
+function updateSpeed() {
+  speechRate = parseFloat(document.getElementById('speedSlider').value);
+  document.getElementById('speedLabel').textContent = speechRate.toFixed(2);
+}
+function speak(text, cb) {
+  if (!voiceEnabled || !text) { if (cb) setTimeout(cb, 300); return; }
+  speechSynthesis.cancel();
+  speaking = true;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN'; u.rate = speechRate; u.pitch = 1.05;
+  if (selectedVoice) u.voice = selectedVoice;
+  u.onend = () => { speaking = false; if (cb) cb(); };
+  u.onerror = () => { speaking = false; if (cb) cb(); };
+  speechSynthesis.speak(u);
+}
+function initVoices() { populateVoices(); if (!speechSynthesis.getVoices().length) speechSynthesis.addEventListener('voiceschanged', populateVoices, { once: true }); }
+initVoices(); setTimeout(initVoices, 500); setTimeout(initVoices, 1500);
+
+// ===== Particles =====
+function spawnParticles(x, y, count = 12) {
+  const emojis = ['✨', '⭐', '🌟', '💫', '🎉', '🎊'];
+  for (let i = 0; i < count; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    p.style.left = x + 'px'; p.style.top = y + 'px';
+    p.style.setProperty('--dx', (Math.random() - 0.5) * 200 + 'px');
+    p.style.setProperty('--dy', (Math.random() - 0.5) * 200 - 50 + 'px');
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 1500);
+  }
+}
+
+// ===== Tab Switching =====
+function switchTab(idx) {
+  stopAnimation();
+  currentTab = idx;
+  document.querySelectorAll('.tab-item').forEach((t, i) => t.classList.toggle('active', i === idx));
+  renderTab();
+}
+function stopAnimation() {
+  timeouts.forEach(t => clearTimeout(t));
+  timeouts = [];
+  animating = false;
+  stepIndex = 0;
+  speechSynthesis.cancel();
+  speaking = false;
+}
+
+// ===== PUZZLES DATA =====
+const puzzles = [
+  {
+    title: '题目 1',
+    difficulty: '⭐ 入门',
+    given: [
+      [3,6,4,0,5,2],
+      [1,0,2,3,4,6],
+      [2,0,5,4,6,3],
+      [0,3,6,0,2,0],
+      [5,2,1,6,0,4],
+      [6,4,0,2,1,5]
+    ],
+    solution: [
+      [3,6,4,1,5,2],
+      [1,5,2,3,4,6],
+      [2,1,5,4,6,3],
+      [4,3,6,5,2,1],
+      [5,2,1,6,3,4],
+      [6,4,3,2,1,5]
+    ]
+  },
+  {
+    title: '题目 2',
+    difficulty: '⭐ 入门',
+    given: [
+      [0,6,3,2,5,4],
+      [0,5,4,1,6,3],
+      [3,2,5,0,0,6],
+      [4,1,6,0,0,0],
+      [0,0,1,6,4,2],
+      [0,0,2,5,3,1]
+    ],
+    solution: [
+      [1,6,3,2,5,4],
+      [2,5,4,1,6,3],
+      [3,2,5,4,1,6],
+      [4,1,6,3,2,5],
+      [5,3,1,6,4,2],
+      [6,4,2,5,3,1]
+    ]
+  },
+  {
+    title: '题目 3',
+    difficulty: '⭐⭐ 进阶',
+    given: [
+      [3,0,4,0,2,0],
+      [0,6,5,0,1,3],
+      [5,4,0,1,0,0],
+      [0,2,0,0,3,4],
+      [6,0,0,3,0,0],
+      [0,0,1,2,0,6]
+    ],
+    solution: [
+      [3,1,4,6,2,5],
+      [2,6,5,4,1,3],
+      [5,4,3,1,6,2],
+      [1,2,6,5,3,4],
+      [6,5,2,3,4,1],
+      [4,3,1,2,5,6]
+    ]
+  },
+  {
+    title: '题目 4',
+    difficulty: '⭐⭐ 进阶',
+    given: [
+      [6,4,0,2,0,0],
+      [3,0,5,0,0,4],
+      [0,3,0,0,6,0],
+      [0,0,6,3,2,0],
+      [0,0,3,0,4,6],
+      [1,6,0,5,0,0]
+    ],
+    solution: [
+      [6,4,1,2,5,3],
+      [3,2,5,6,1,4],
+      [5,3,2,4,6,1],
+      [4,1,6,3,2,5],
+      [2,5,3,1,4,6],
+      [1,6,4,5,3,2]
+    ]
+  }
+];
+
+// ===== Solve Order Generator =====
+// Generate step-by-step solving order using logic (find cells solvable by elimination)
+function generateSolveSteps(puzzle) {
+  const { given, solution } = puzzle;
+  const steps = [];
+  const current = given.map(r => [...r]);
+  const emptyCells = [];
+  
+  for (let r = 0; r < 6; r++)
+    for (let c = 0; c < 6; c++)
+      if (given[r][c] === 0) emptyCells.push([r, c]);
+  
+  // Repeatedly find cells that can be solved by elimination
+  let changed = true;
+  while (changed && emptyCells.length > 0) {
+    changed = false;
+    for (let i = emptyCells.length - 1; i >= 0; i--) {
+      const [r, c] = emptyCells[i];
+      if (current[r][c] !== 0) { emptyCells.splice(i, 1); continue; }
+      
+      const candidates = getCandidates(current, r, c);
+      if (candidates.length === 1) {
+        const answer = candidates[0];
+        const reasoning = buildReasoning(current, r, c, answer);
+        steps.push({ row: r, col: c, answer, reasoning, method: 'elimination' });
+        current[r][c] = answer;
+        emptyCells.splice(i, 1);
+        changed = true;
+      }
+    }
+    // Also check for hidden singles in boxes
+    if (!changed) {
+      for (let boxR = 0; boxR < 3; boxR++) {
+        for (let boxC = 0; boxC < 2; boxC++) {
+          for (let num = 1; num <= 6; num++) {
+            const positions = [];
+            for (let r = boxR * 2; r < boxR * 2 + 2; r++) {
+              for (let c = boxC * 3; c < boxC * 3 + 3; c++) {
+                if (current[r][c] === num) { positions.length = 0; break; }
+                if (current[r][c] === 0 && getCandidates(current, r, c).includes(num)) {
+                  positions.push([r, c]);
+                }
+              }
+              if (positions.length === 0) break;
+            }
+            if (positions.length === 1) {
+              const [r, c] = positions[0];
+              const reasoning = `在这个宫里，数字${num}只能放在这一个位置！`;
+              steps.push({ row: r, col: c, answer: num, reasoning, method: 'hidden-single' });
+              current[r][c] = num;
+              const idx = emptyCells.findIndex(([er, ec]) => er === r && ec === c);
+              if (idx >= 0) emptyCells.splice(idx, 1);
+              changed = true;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  // If any remain (shouldn't for well-designed puzzles), just add them
+  for (const [r, c] of emptyCells) {
+    if (current[r][c] === 0) {
+      steps.push({ row: r, col: c, answer: solution[r][c], reasoning: '综合排除后，这个格子只能填' + solution[r][c], method: 'elimination' });
+      current[r][c] = solution[r][c];
+    }
+  }
+  
+  return steps;
+}
+
+function getCandidates(grid, row, col) {
+  const used = new Set();
+  // Row
+  for (let c = 0; c < 6; c++) if (grid[row][c] !== 0) used.add(grid[row][c]);
+  // Col
+  for (let r = 0; r < 6; r++) if (grid[r][col] !== 0) used.add(grid[r][col]);
+  // Box (2×3)
+  const boxR = Math.floor(row / 2) * 2;
+  const boxC = Math.floor(col / 3) * 3;
+  for (let r = boxR; r < boxR + 2; r++)
+    for (let c = boxC; c < boxC + 3; c++)
+      if (grid[r][c] !== 0) used.add(grid[r][c]);
+  
+  const candidates = [];
+  for (let n = 1; n <= 6; n++) if (!used.has(n)) candidates.push(n);
+  return candidates;
+}
+
+function buildReasoning(grid, row, col, answer) {
+  const rowNums = [];
+  for (let c = 0; c < 6; c++) if (grid[row][c] !== 0) rowNums.push(grid[row][c]);
+  const colNums = [];
+  for (let r = 0; r < 6; r++) if (grid[r][col] !== 0) colNums.push(grid[r][col]);
+  const boxNums = [];
+  const boxR = Math.floor(row / 2) * 2;
+  const boxC = Math.floor(col / 3) * 3;
+  for (let r = boxR; r < boxR + 2; r++)
+    for (let c = boxC; c < boxC + 3; c++)
+      if (grid[r][c] !== 0) boxNums.push(grid[r][c]);
+  
+  return { rowNums, colNums, boxNums };
+}
+
+// ===== Rendering =====
+function renderTab() {
+  const puzzle = puzzles[currentTab];
+  const steps = generateSolveSteps(puzzle);
+  const scene = document.getElementById('scene');
+  
+  scene.innerHTML = `
+    <div class="scene-title">${puzzle.title} ${puzzle.difficulty}</div>
+    <div class="scene-desc">6×6 数独 · 每行/每列/每个宫(2×3)都要填 1~6 不重复<br>共 ${steps.length} 步讲解 · 点击演示或逐步查看</div>
+    <div class="sudoku-container"><div class="sudoku-grid" id="sudokuGrid"></div></div>
+    <div class="candidate-display" id="candDisplay"></div>
+    <div class="narration-box"><div class="narration-text" id="narrText">点击「开始讲解」，看 Coco 一步步解出来！🪄</div></div>
+    <div class="progress-dots" id="progressDots">
+      ${steps.map((_, i) => `<div class="dot" id="dot-${i}"></div>`).join('')}
+    </div>
+    <div class="step-counter" id="stepCounter">0 / ${steps.length}</div>
+    <div class="controls">
+      <button class="btn autoplay" id="autoBtn" onclick="autoPlay()">▶️ 自动讲解</button>
+      <button class="btn primary" id="nextBtn" onclick="nextStep()">👉 下一步</button>
+      <button class="btn secondary" onclick="stopAnimation(); renderTab()">🔄 重来</button>
+    </div>
+  `;
+  
+  renderGrid(puzzle.given);
+  
+  // Store steps on window for access
+  window._steps = steps;
+  window._puzzle = puzzle;
+  window._currentGrid = puzzle.given.map(r => [...r]);
+  stepIndex = 0;
+}
+
+function renderGrid(grid) {
+  const container = document.getElementById('sudokuGrid');
+  container.innerHTML = '';
+  for (let r = 0; r < 6; r++) {
+    for (let c = 0; c < 6; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'sudoku-cell';
+      cell.id = `cell-${r}-${c}`;
+      // Box borders: 2 rows × 3 cols
+      if (c === 2 || c === 5) cell.classList.add('border-right-thick');
+      if (r === 1 || r === 3 || r === 5) cell.classList.add('border-bottom-thick');
+      if (grid[r][c] !== 0) {
+        cell.textContent = grid[r][c];
+        cell.classList.add('given');
+      }
+      container.appendChild(cell);
+    }
+  }
+}
+
+function clearHighlights() {
+  for (let r = 0; r < 6; r++) {
+    for (let c = 0; c < 6; c++) {
+      const cell = document.getElementById(`cell-${r}-${c}`);
+      cell.classList.remove('highlight-row', 'highlight-col', 'highlight-box', 'highlight-target', 'highlight-error');
+    }
+  }
+}
+
+function renderCandidateNums(eliminated, answer) {
+  const container = document.getElementById('candDisplay');
+  container.innerHTML = [1,2,3,4,5,6].map(n => {
+    let cls = 'cand-num';
+    if (answer === n) cls += ' answer';
+    else if (eliminated.includes(n)) cls += ' eliminated';
+    return `<div class="${cls}">${n}</div>`;
+  }).join('');
+}
+
+// ===== Step-by-step Execution =====
+function nextStep() {
+  if (animating) return;
+  const steps = window._steps;
+  if (stepIndex >= steps.length) {
+    document.getElementById('narrText').textContent = '🎉 全部解完啦！太棒了！';
+    speak('全部解完啦！Coco你真棒！');
+    return;
+  }
+  
+  executeStep(steps[stepIndex], () => {
+    stepIndex++;
+    document.getElementById('stepCounter').textContent = `${stepIndex} / ${steps.length}`;
+  });
+}
+
+function autoPlay() {
+  if (animating) return;
+  animating = true;
+  document.getElementById('autoBtn').disabled = true;
+  document.getElementById('nextBtn').disabled = true;
+  
+  function playNext() {
+    if (!animating || stepIndex >= window._steps.length) {
+      animating = false;
+      document.getElementById('autoBtn').disabled = false;
+      document.getElementById('nextBtn').disabled = false;
+      if (stepIndex >= window._steps.length) {
+        document.getElementById('narrText').textContent = '🎉 全部解完啦！太棒了！';
+        speak('恭喜！全部解完了！Coco你真是数独小高手！');
+      }
+      return;
+    }
+    executeStep(window._steps[stepIndex], () => {
+      stepIndex++;
+      document.getElementById('stepCounter').textContent = `${stepIndex} / ${window._steps.length}`;
+      timeouts.push(setTimeout(playNext, 400));
+    });
+  }
+  playNext();
+}
+
+function executeStep(step, onDone) {
+  const { row, col, answer, reasoning, method } = step;
+  const grid = window._currentGrid;
+  
+  clearHighlights();
+  
+  // Phase 1: Highlight target cell
+  const targetCell = document.getElementById(`cell-${row}-${col}`);
+  targetCell.classList.add('highlight-target');
+  targetCell.textContent = '?';
+  targetCell.style.color = '#e65100';
+  targetCell.style.fontSize = '18px';
+  
+  let narr, voice;
+  let eliminated = [];
+  
+  if (method === 'elimination' && typeof reasoning === 'object') {
+    const { rowNums, colNums, boxNums } = reasoning;
+    const allUsed = [...new Set([...rowNums, ...colNums, ...boxNums])];
+    eliminated = allUsed;
+    
+    // Highlight row, col, box
+    for (let c = 0; c < 6; c++) if (c !== col) {
+      const cell = document.getElementById(`cell-${row}-${c}`);
+      if (grid[row][c] !== 0) cell.classList.add('highlight-row');
+    }
+    for (let r = 0; r < 6; r++) if (r !== row) {
+      const cell = document.getElementById(`cell-${r}-${col}`);
+      if (grid[r][col] !== 0) cell.classList.add('highlight-col');
+    }
+    const boxR = Math.floor(row / 2) * 2;
+    const boxC = Math.floor(col / 3) * 3;
+    for (let r = boxR; r < boxR + 2; r++)
+      for (let c = boxC; c < boxC + 3; c++)
+        if ((r !== row || c !== col) && grid[r][c] !== 0) {
+          document.getElementById(`cell-${r}-${c}`).classList.add('highlight-box');
+        }
+    
+    narr = `第${row+1}行第${col+1}列 → 行有[${rowNums.sort().join(',')}] 列有[${colNums.sort().join(',')}] → 只能填 ${answer}！`;
+    voice = `第${row+1}行第${col+1}列。行里已经有${rowNums.join('、')}，列里有${colNums.join('、')}，排除后只能填${answer}！`;
+  } else {
+    narr = `第${row+1}行第${col+1}列 → ${typeof reasoning === 'string' ? reasoning : '填' + answer}`;
+    voice = `第${row+1}行第${col+1}列。${typeof reasoning === 'string' ? reasoning : '这里填' + answer}`;
+    // Highlight the box for hidden single
+    const boxR = Math.floor(row / 2) * 2;
+    const boxC = Math.floor(col / 3) * 3;
+    for (let r = boxR; r < boxR + 2; r++)
+      for (let c = boxC; c < boxC + 3; c++)
+        if (r !== row || c !== col) {
+          document.getElementById(`cell-${r}-${c}`).classList.add('highlight-box');
+        }
+  }
+  
+  renderCandidateNums(eliminated, null);
+  document.getElementById('narrText').textContent = narr;
+  
+  // Update progress dot
+  const dot = document.getElementById(`dot-${stepIndex}`);
+  if (dot) { dot.classList.add('active'); }
+  if (stepIndex > 0) {
+    const prevDot = document.getElementById(`dot-${stepIndex - 1}`);
+    if (prevDot) { prevDot.classList.remove('active'); prevDot.classList.add('done'); }
+  }
+  
+  speak(voice, () => {
+    // Phase 2: Fill the answer
+    clearHighlights();
+    targetCell.textContent = answer;
+    targetCell.style.color = '#2e7d32';
+    targetCell.style.fontSize = '22px';
+    targetCell.classList.add('filled-anim');
+    targetCell.classList.remove('highlight-target');
+    grid[row][col] = answer;
+    renderCandidateNums(eliminated, answer);
+    
+    // Particles on last step
+    if (stepIndex === window._steps.length - 1) {
+      const rect = targetCell.getBoundingClientRect();
+      spawnParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 20);
+    }
+    
+    timeouts.push(setTimeout(() => {
+      renderCandidateNums([], null);
+      if (onDone) onDone();
+    }, 600));
+  });
+}
+
+// ===== Init =====
+function switchTab(idx) {
+  stopAnimation();
+  currentTab = idx;
+  document.querySelectorAll('.tab-item').forEach((t, i) => t.classList.toggle('active', i === idx));
+  renderTab();
+}
+
+renderTab();
+</script>
+</body>
+</html>

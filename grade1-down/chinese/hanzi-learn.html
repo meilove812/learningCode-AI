@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>汉字讲解</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { 
+  height: 100%; 
+  overflow: hidden;
+  font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+body {
+  background: linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  touch-action: pan-y;
+}
+
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  max-width: 420px;
+  margin: 0 auto;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Top nav */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  flex-shrink: 0;
+}
+.progress {
+  font-size: 13px;
+  color: #64748b;
+}
+.progress .current { color: #60a5fa; font-weight: 600; }
+
+/* Main character area */
+.char-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 0;
+}
+
+.pinyin {
+  font-size: 22px;
+  color: #93c5fd;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+
+.big-char {
+  font-size: 120px;
+  font-weight: 400;
+  color: #fff;
+  text-shadow: 0 0 40px rgba(96, 165, 250, 0.3);
+  line-height: 1.2;
+  cursor: pointer;
+  transition: transform 0.2s;
+  font-family: 'KaiTi', 'STKaiti', 'AR PL UKai CN', serif;
+}
+.big-char:active { transform: scale(0.95); }
+
+.char-meaning {
+  font-size: 15px;
+  color: #94a3b8;
+  text-align: center;
+  margin-top: 4px;
+}
+
+/* Structure info */
+.structure-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 8px;
+}
+.struct-tag {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 12px;
+  color: #a5b4fc;
+}
+
+/* Words section */
+.words-section {
+  flex-shrink: 0;
+  padding: 16px 0;
+}
+.section-label {
+  font-size: 12px;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+.word-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.word-chip {
+  background: rgba(30, 58, 95, 0.8);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  border-radius: 12px;
+  padding: 8px 14px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.word-chip:active {
+  background: rgba(96, 165, 250, 0.2);
+  border-color: rgba(96, 165, 250, 0.5);
+}
+.word-chip .wp { font-size: 11px; color: #64748b; display: block; margin-top: 2px; }
+
+/* Sentence */
+.sentence-box {
+  flex-shrink: 0;
+  background: rgba(30, 58, 95, 0.5);
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin: 8px 0;
+  border-left: 3px solid #6366f1;
+  cursor: pointer;
+}
+.sentence-box:active { background: rgba(30, 58, 95, 0.8); }
+.sentence-text {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #e2e8f0;
+}
+.sentence-text .hl { color: #fbbf24; font-weight: 600; }
+
+/* Bottom controls */
+.controls {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0 20px;
+  gap: 12px;
+}
+
+.btn {
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: rgba(30, 58, 95, 0.8);
+  color: #94a3b8;
+  border: 1px solid rgba(100, 116, 139, 0.3);
+}
+.btn:active { transform: scale(0.9); }
+
+.btn-play {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  font-size: 24px;
+  border: none;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+}
+
+.btn-nav { font-size: 22px; }
+
+/* Voice selector */
+.voice-status {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  font-size: 11px;
+  color: #475569;
+  background: rgba(15, 23, 42, 0.8);
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
+/* Speed control */
+.speed-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.speed-btn {
+  background: none;
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  border-radius: 6px;
+  color: #94a3b8;
+  padding: 4px 8px;
+  font-size: 11px;
+  cursor: pointer;
+}
+.speed-btn.active {
+  border-color: #6366f1;
+  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.15);
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.3s ease-out; }
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="container">
+  <div class="top-bar">
+    <div class="progress"><span class="current" id="currentIdx">1</span> / <span id="totalCount">8</span></div>
+    <div class="speed-control">
+      <button class="speed-btn" data-rate="0.7">慢</button>
+      <button class="speed-btn active" data-rate="1.0">常</button>
+      <button class="speed-btn" data-rate="1.3">快</button>
+    </div>
+  </div>
+
+  <div class="char-main" id="charMain">
+    <div class="pinyin" id="pinyin"></div>
+    <div class="big-char" id="bigChar" onclick="speakChar()"></div>
+    <div class="char-meaning" id="charMeaning"></div>
+    <div class="structure-row" id="structRow"></div>
+  </div>
+
+  <div class="words-section">
+    <div class="section-label">常用词语</div>
+    <div class="word-list" id="wordList"></div>
+  </div>
+
+  <div class="sentence-box" id="sentenceBox" onclick="speakSentence()">
+    <div class="sentence-text" id="sentenceText"></div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-nav" onclick="prevChar()">‹</button>
+    <button class="btn btn-play" onclick="playAll()">🔊</button>
+    <button class="btn btn-nav" onclick="nextChar()">›</button>
+  </div>
+</div>
+
+<div class="voice-status" id="voiceStatus">加载语音...</div>
+
+<script>
+// Character data
+const chars = [
+  {
+    char: '春', pinyin: 'chūn', meaning: '春天，一年四季的第一季',
+    structure: ['上下结构', '9画'],
+    words: [
+      { word: '春天', pinyin: 'chūn tiān' },
+      { word: '春风', pinyin: 'chūn fēng' },
+      { word: '春雨', pinyin: 'chūn yǔ' },
+      { word: '春节', pinyin: 'chūn jié' }
+    ],
+    sentence: '春天来了，花儿都开了。',
+    highlight: '春天'
+  },
+  {
+    char: '风', pinyin: 'fēng', meaning: '空气流动形成的自然现象',
+    structure: ['半包围结构', '4画'],
+    words: [
+      { word: '大风', pinyin: 'dà fēng' },
+      { word: '风车', pinyin: 'fēng chē' },
+      { word: '春风', pinyin: 'chūn fēng' },
+      { word: '风筝', pinyin: 'fēng zhēng' }
+    ],
+    sentence: '一阵大风吹过来，树叶沙沙响。',
+    highlight: '大风'
+  },
+  {
+    char: '花', pinyin: 'huā', meaning: '植物开出的美丽部分',
+    structure: ['上下结构', '7画'],
+    words: [
+      { word: '花朵', pinyin: 'huā duǒ' },
+      { word: '花园', pinyin: 'huā yuán' },
+      { word: '开花', pinyin: 'kāi huā' },
+      { word: '雪花', pinyin: 'xuě huā' }
+    ],
+    sentence: '花园里的花朵五颜六色，真漂亮！',
+    highlight: '花'
+  },
+  {
+    char: '飞', pinyin: 'fēi', meaning: '在空中移动，像鸟一样',
+    structure: ['独体字', '3画'],
+    words: [
+      { word: '飞机', pinyin: 'fēi jī' },
+      { word: '飞鸟', pinyin: 'fēi niǎo' },
+      { word: '起飞', pinyin: 'qǐ fēi' },
+      { word: '飞快', pinyin: 'fēi kuài' }
+    ],
+    sentence: '小鸟在天空中飞来飞去。',
+    highlight: '飞'
+  },
+  {
+    char: '雨', pinyin: 'yǔ', meaning: '从云中落下的水滴',
+    structure: ['独体字', '8画'],
+    words: [
+      { word: '下雨', pinyin: 'xià yǔ' },
+      { word: '雨伞', pinyin: 'yǔ sǎn' },
+      { word: '雷雨', pinyin: 'léi yǔ' },
+      { word: '雨水', pinyin: 'yǔ shuǐ' }
+    ],
+    sentence: '下雨了，别忘了带雨伞。',
+    highlight: '雨'
+  },
+  {
+    char: '草', pinyin: 'cǎo', meaning: '地上长的绿色植物',
+    structure: ['上下结构', '9画'],
+    words: [
+      { word: '小草', pinyin: 'xiǎo cǎo' },
+      { word: '草地', pinyin: 'cǎo dì' },
+      { word: '花草', pinyin: 'huā cǎo' },
+      { word: '草原', pinyin: 'cǎo yuán' }
+    ],
+    sentence: '春天到了，小草从泥土里钻出来。',
+    highlight: '草'
+  },
+  {
+    char: '鱼', pinyin: 'yú', meaning: '生活在水里的动物',
+    structure: ['上下结构', '8画'],
+    words: [
+      { word: '小鱼', pinyin: 'xiǎo yú' },
+      { word: '金鱼', pinyin: 'jīn yú' },
+      { word: '鱼儿', pinyin: 'yú er' },
+      { word: '钓鱼', pinyin: 'diào yú' }
+    ],
+    sentence: '河里的小鱼游来游去，真可爱。',
+    highlight: '鱼'
+  },
+  {
+    char: '鸟', pinyin: 'niǎo', meaning: '有翅膀会飞的动物',
+    structure: ['独体字', '5画'],
+    words: [
+      { word: '小鸟', pinyin: 'xiǎo niǎo' },
+      { word: '鸟儿', pinyin: 'niǎo er' },
+      { word: '飞鸟', pinyin: 'fēi niǎo' },
+      { word: '鸟巢', pinyin: 'niǎo cháo' }
+    ],
+    sentence: '树上有一只小鸟在唱歌。',
+    highlight: '鸟'
+  }
+];
+
+let currentIndex = 0;
+let speechRate = 1.0;
+let selectedVoice = null;
+
+// TTS setup - prefer Edge high-fidelity Chinese voice
+function initVoice() {
+  const setVoice = () => {
+    const voices = speechSynthesis.getVoices();
+    // Priority: Microsoft Xiaoxiao Online (Natural) > any Online Natural zh > any zh
+    const priorities = [
+      v => /xiaoxiao.*online.*natural/i.test(v.name) && /zh/i.test(v.lang),
+      v => /microsoft.*online.*natural/i.test(v.name) && /zh/i.test(v.lang),
+      v => /microsoft/i.test(v.name) && /zh/i.test(v.lang),
+      v => /zh/i.test(v.lang)
+    ];
+    for (const pred of priorities) {
+      const found = voices.find(pred);
+      if (found) { selectedVoice = found; break; }
+    }
+    const status = document.getElementById('voiceStatus');
+    if (selectedVoice) {
+      status.textContent = selectedVoice.name.replace(/Microsoft /, '').replace(/ \- .*/, '');
+      setTimeout(() => status.style.opacity = '0', 2000);
+    } else {
+      status.textContent = '未找到中文语音';
+    }
+  };
+  
+  speechSynthesis.onvoiceschanged = setVoice;
+  setVoice();
+}
+
+function speak(text, rate) {
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  if (selectedVoice) u.voice = selectedVoice;
+  u.lang = 'zh-CN';
+  u.rate = rate || speechRate;
+  u.pitch = 1.0;
+  speechSynthesis.speak(u);
+}
+
+function speakChar() {
+  const c = chars[currentIndex];
+  speak(c.char, 0.8);
+}
+
+function speakSentence() {
+  const c = chars[currentIndex];
+  speak(c.sentence);
+}
+
+function playAll() {
+  const c = chars[currentIndex];
+  speechSynthesis.cancel();
+  
+  // Sequence: char → pinyin pause → meaning → words → sentence
+  const steps = [
+    { text: c.char, rate: 0.7, delay: 0 },
+    { text: c.meaning, rate: speechRate, delay: 800 },
+    { text: c.words.map(w => w.word).join('，'), rate: speechRate, delay: 600 },
+    { text: c.sentence, rate: speechRate, delay: 600 }
+  ];
+  
+  let totalDelay = 0;
+  steps.forEach((step, i) => {
+    totalDelay += step.delay;
+    setTimeout(() => {
+      const u = new SpeechSynthesisUtterance(step.text);
+      if (selectedVoice) u.voice = selectedVoice;
+      u.lang = 'zh-CN';
+      u.rate = step.rate;
+      speechSynthesis.speak(u);
+    }, totalDelay + i * 1200);
+  });
+}
+
+function render() {
+  const c = chars[currentIndex];
+  const main = document.getElementById('charMain');
+  main.classList.remove('fade-in');
+  void main.offsetWidth;
+  main.classList.add('fade-in');
+  
+  document.getElementById('currentIdx').textContent = currentIndex + 1;
+  document.getElementById('totalCount').textContent = chars.length;
+  document.getElementById('pinyin').textContent = c.pinyin;
+  document.getElementById('bigChar').textContent = c.char;
+  document.getElementById('charMeaning').textContent = c.meaning;
+  
+  document.getElementById('structRow').innerHTML = 
+    c.structure.map(s => `<span class="struct-tag">${s}</span>`).join('');
+  
+  document.getElementById('wordList').innerHTML = 
+    c.words.map(w => `<div class="word-chip" onclick="speak('${w.word}')">${w.word}<span class="wp">${w.pinyin}</span></div>`).join('');
+  
+  const sentHTML = c.sentence.replace(c.highlight, `<span class="hl">${c.highlight}</span>`);
+  document.getElementById('sentenceText').innerHTML = sentHTML;
+}
+
+function nextChar() {
+  currentIndex = (currentIndex + 1) % chars.length;
+  speechSynthesis.cancel();
+  render();
+}
+
+function prevChar() {
+  currentIndex = (currentIndex - 1 + chars.length) % chars.length;
+  speechSynthesis.cancel();
+  render();
+}
+
+// Speed buttons
+document.querySelectorAll('.speed-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    speechRate = parseFloat(btn.dataset.rate);
+  });
+});
+
+// Swipe support
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', e => {
+  const diff = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(diff) > 60) {
+    diff > 0 ? prevChar() : nextChar();
+  }
+});
+
+// Init
+initVoice();
+render();
+</script>
+</body>
+</html>

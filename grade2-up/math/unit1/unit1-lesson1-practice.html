@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>练一练 · 数据收集整理 | 二年级数学上册</title>
+<style>
+/* ===== Reset & Base ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans SC',system-ui,sans-serif;
+  background:linear-gradient(135deg,#fff5f5 0%,#fef3e2 50%,#f0fdf4 100%);
+  min-height:100vh;color:#334155;line-height:1.6;
+  padding-bottom:120px;
+}
+
+/* ===== Top Nav Bar ===== */
+.top-nav{
+  position:sticky;top:0;z-index:100;
+  background:linear-gradient(135deg,#f87171,#fb923c);
+  padding:12px 16px;display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 2px 12px rgba(248,113,113,.3);
+}
+.top-nav a{color:#fff;text-decoration:none;font-size:.9rem;font-weight:600;
+  display:flex;align-items:center;gap:4px;padding:6px 12px;border-radius:20px;
+  background:rgba(255,255,255,.2);transition:background .2s}
+.top-nav a:active{background:rgba(255,255,255,.35)}
+.top-nav .title{color:#fff;font-size:1rem;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.15)}
+
+/* ===== Progress Bar ===== */
+.progress-wrap{
+  background:#fff;padding:12px 16px;border-bottom:1px solid #fecaca;
+  position:sticky;top:52px;z-index:90;
+}
+.progress-label{font-size:.85rem;color:#64748b;margin-bottom:6px;font-weight:600}
+.progress-bar{height:14px;background:#fee2e2;border-radius:7px;overflow:hidden;position:relative}
+.progress-fill{height:100%;background:linear-gradient(90deg,#f87171,#fb923c);border-radius:7px;
+  transition:width .5s cubic-bezier(.4,0,.2,1);width:0}
+.progress-text{position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  font-size:.7rem;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.2)}
+
+/* ===== Page Header ===== */
+.page-header{text-align:center;padding:24px 16px 12px}
+.page-header h1{font-size:1.5rem;color:#dc2626;margin-bottom:4px}
+.page-header .sub{font-size:.9rem;color:#64748b}
+
+/* ===== Exercise Card ===== */
+.exercise-card{
+  background:#fff;margin:16px;border-radius:16px;
+  border-left:5px solid #f87171;
+  box-shadow:0 4px 16px rgba(0,0,0,.06);
+  overflow:hidden;transition:box-shadow .3s;
+}
+.exercise-card.completed{border-left-color:#22c55e;box-shadow:0 4px 16px rgba(34,197,94,.12)}
+.exercise-header{
+  padding:16px 20px;background:linear-gradient(135deg,#fff5f5,#fef3e2);
+  display:flex;align-items:center;gap:10px;
+}
+.exercise-num{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,#f87171,#fb923c);
+  color:#fff;font-weight:800;font-size:1.1rem;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.exercise-card.completed .exercise-num{background:linear-gradient(135deg,#22c55e,#4ade80)}
+.exercise-title{font-size:1.05rem;font-weight:700;color:#1e293b}
+
+.exercise-body{padding:16px 20px}
+
+/* ===== Visual Area ===== */
+.visual-area{
+  background:linear-gradient(135deg,#fffbeb,#fef3c7);
+  border:2px dashed #fbbf24;border-radius:12px;
+  padding:16px;margin-bottom:16px;text-align:center;
+}
+.visual-area .items{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.visual-area .item{
+  font-size:1.6rem;width:48px;height:48px;
+  background:#fff;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(0,0,0,.08);
+  transition:transform .2s;
+}
+.visual-area .item:active{transform:scale(1.15)}
+
+/* ===== Task Instruction ===== */
+.task-instruction{
+  background:#eff6ff;border-left:4px solid #3b82f6;
+  padding:10px 14px;border-radius:0 8px 8px 0;
+  font-size:.95rem;color:#1e40af;font-weight:600;
+  margin-bottom:14px;
+}
+
+/* ===== Data Table ===== */
+.data-table{width:100%;border-collapse:collapse;margin-bottom:14px}
+.data-table th,.data-table td{
+  border:2px solid #e2e8f0;padding:10px 6px;text-align:center;font-size:.95rem;
+}
+.data-table th{background:#fef3e2;color:#92400e;font-weight:700}
+.data-table td{background:#fff}
+.data-table input[type="number"]{
+  width:52px;height:40px;border:2px solid #d1d5db;border-radius:8px;
+  text-align:center;font-size:1.1rem;font-weight:700;color:#1e293b;
+  background:#f8fafc;-moz-appearance:textfield;
+}
+.data-table input[type="number"]::-webkit-inner-spin-button,
+.data-table input[type="number"]::-webkit-outer-spin-button{-webkit-appearance:none}
+.data-table input:focus{outline:none;border-color:#f87171;background:#fff;box-shadow:0 0 0 3px rgba(248,113,113,.15)}
+.data-table input.correct{border-color:#22c55e;background:#f0fdf4;color:#16a34a}
+.data-table input.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626;animation:shake .4s}
+
+/* ===== Choice Buttons ===== */
+.choice-group{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 14px}
+.choice-btn{
+  padding:10px 20px;border:2px solid #d1d5db;border-radius:12px;
+  background:#fff;font-size:1rem;font-weight:600;color:#334155;
+  cursor:pointer;transition:all .2s;min-width:80px;text-align:center;
+}
+.choice-btn:active{transform:scale(.96)}
+.choice-btn.selected{border-color:#3b82f6;background:#eff6ff;color:#1d4ed8}
+.choice-btn.correct-choice{border-color:#22c55e;background:#f0fdf4;color:#16a34a}
+.choice-btn.wrong-choice{border-color:#ef4444;background:#fef2f2;color:#dc2626;animation:shake .4s}
+.choice-btn:disabled{opacity:.7;cursor:default}
+
+/* ===== Number Input (standalone) ===== */
+.number-input-wrap{display:flex;align-items:center;gap:10px;margin:10px 0 14px}
+.number-input-wrap input[type="number"]{
+  width:60px;height:44px;border:2px solid #d1d5db;border-radius:10px;
+  text-align:center;font-size:1.2rem;font-weight:700;color:#1e293b;
+  background:#f8fafc;-moz-appearance:textfield;
+}
+.number-input-wrap input::-webkit-inner-spin-button,
+.number-input-wrap input::-webkit-outer-spin-button{-webkit-appearance:none}
+.number-input-wrap input:focus{outline:none;border-color:#f87171;background:#fff;box-shadow:0 0 0 3px rgba(248,113,113,.15)}
+.number-input-wrap input.correct{border-color:#22c55e;background:#f0fdf4;color:#16a34a}
+.number-input-wrap input.wrong{border-color:#ef4444;background:#fef2f2;color:#dc2626;animation:shake .4s}
+.number-input-wrap .unit{font-size:1rem;color:#64748b;font-weight:600}
+
+/* ===== Check Button ===== */
+.check-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 28px;border:none;border-radius:12px;
+  background:linear-gradient(135deg,#f87171,#fb923c);
+  color:#fff;font-size:1rem;font-weight:700;cursor:pointer;
+  box-shadow:0 4px 12px rgba(248,113,113,.3);
+  transition:all .2s;margin-top:8px;
+}
+.check-btn:active{transform:scale(.96);box-shadow:0 2px 8px rgba(248,113,113,.3)}
+.check-btn:disabled{background:#d1d5db;box-shadow:none;cursor:default}
+.check-btn.done{background:linear-gradient(135deg,#22c55e,#4ade80)}
+
+/* ===== Feedback ===== */
+.feedback{
+  padding:10px 14px;border-radius:10px;margin-top:10px;
+  font-size:.95rem;font-weight:600;display:none;
+  animation:fadeIn .3s;
+}
+.feedback.show{display:block}
+.feedback.correct{background:#f0fdf4;border:2px solid #86efac;color:#16a34a}
+.feedback.wrong{background:#fef2f2;border:2px solid #fca5a5;color:#dc2626}
+
+/* ===== Sub-question label ===== */
+.sub-q-label{
+  font-size:.95rem;font-weight:700;color:#475569;margin:14px 0 6px;
+  display:flex;align-items:center;gap:6px;
+}
+.sub-q-label .dot{width:8px;height:8px;border-radius:50%;background:#f87171;flex-shrink:0}
+
+/* ===== Answer Card ===== */
+.answer-card{
+  display:none;margin:20px 16px;background:#fff;border-radius:16px;
+  box-shadow:0 8px 32px rgba(0,0,0,.1);overflow:hidden;
+  animation:slideUp .5s cubic-bezier(.4,0,.2,1);
+}
+.answer-card.show{display:block}
+.answer-card-header{
+  background:linear-gradient(135deg,#f87171,#fb923c);
+  padding:20px;text-align:center;color:#fff;
+}
+.answer-card-header h2{font-size:1.3rem;margin-bottom:4px}
+.answer-card-header .stars{font-size:2rem;margin-top:6px}
+.answer-card-body{padding:16px 20px}
+.answer-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 0;border-bottom:1px solid #f1f5f9;
+}
+.answer-row:last-child{border-bottom:none}
+.answer-row .q-name{font-weight:600;color:#334155;font-size:.95rem}
+.answer-row .q-result{font-weight:700;font-size:.95rem}
+.answer-row .q-result.pass{color:#16a34a}
+.answer-row .q-result.fail{color:#dc2626}
+.answer-card-score{
+  text-align:center;padding:16px 20px;
+  border-top:2px dashed #e2e8f0;
+}
+.answer-card-score .big-score{font-size:1.6rem;font-weight:800;color:#f87171}
+.answer-card-score .label{font-size:.9rem;color:#64748b;margin-top:4px}
+.answer-card-actions{
+  display:flex;gap:12px;padding:16px 20px;justify-content:center;flex-wrap:wrap;
+}
+.card-action-btn{
+  padding:12px 28px;border:none;border-radius:12px;
+  font-size:1rem;font-weight:700;cursor:pointer;transition:all .2s;
+}
+.card-action-btn:active{transform:scale(.96)}
+.card-action-btn.retry{background:linear-gradient(135deg,#f87171,#fb923c);color:#fff;
+  box-shadow:0 4px 12px rgba(248,113,113,.3)}
+.card-action-btn.back{background:#f1f5f9;color:#64748b;border:2px solid #e2e8f0}
+
+/* ===== Animations ===== */
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.pop-in{animation:pop .4s cubic-bezier(.4,0,.2,1)}
+
+/* ===== Confetti (fun!) ===== */
+.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;overflow:hidden}
+.confetti{position:absolute;width:10px;height:10px;border-radius:2px;animation:confettiFall 3s ease-in forwards}
+@keyframes confettiFall{
+  0%{transform:translateY(-10px) rotate(0deg);opacity:1}
+  100%{transform:translateY(100vh) rotate(720deg);opacity:0}
+}
+
+/* ===== Responsive ===== */
+@media(max-width:380px){
+  .exercise-body{padding:12px 14px}
+  .visual-area .item{width:40px;height:40px;font-size:1.3rem}
+  .data-table th,.data-table td{padding:8px 4px;font-size:.85rem}
+  .data-table input[type="number"]{width:44px;height:36px;font-size:1rem}
+}
+</style>
+<style id="public-local-controls">/* 公开站：语音工具就近放置，不使用固定全站通栏 */
+.bottom-bar,.ttsbar,.voice-fab{position:static!important;inset:auto!important;margin:18px auto!important;transform:none!important}.voice-panel{position:static!important;display:block!important;margin:8px auto!important}body{padding-bottom:0!important}
+</style></head>
+<body>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <a href="unit1-lesson1-teach.html">← 听课</a>
+  <span class="title">✏️ 练一练</span>
+  <a href="unit1-lesson2-teach.html">下一课 →</a>
+</nav>
+
+<!-- Progress Bar -->
+<div class="progress-wrap">
+  <div class="progress-label">📊 做题进度</div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill"></div>
+    <span class="progress-text" id="progressText">0 / 3</span>
+  </div>
+</div>
+
+<!-- Page Header -->
+<div class="page-header">
+  <h1>✏️ 练一练</h1>
+  <div class="sub">分类整理专题 · 第1课 数据收集整理</div>
+</div>
+
+<!-- ========== Exercise 1: 树叶分类 ========== -->
+<div class="exercise-card" id="ex1Card">
+  <div class="exercise-header">
+    <div class="exercise-num">1</div>
+    <div class="exercise-title">🍃 树叶分类</div>
+  </div>
+  <div class="exercise-body">
+    <div class="visual-area">
+      <div class="items" id="leafItems">
+        <!-- filled by JS -->
+      </div>
+    </div>
+    <div class="task-instruction">📝 按形状分一分，数一数每种有几个，填在表格里</div>
+    <div class="exercise-q" id="ex1q">
+      <table class="data-table">
+        <tr>
+          <th>种类</th><th>🌺花</th><th>🍃大叶</th><th>🍂银杏叶</th><th>🌿小豆荚</th>
+        </tr>
+        <tr>
+          <th>个数</th>
+          <td><input type="number" id="ex1a1" min="0" max="20" inputmode="numeric"></td>
+          <td><input type="number" id="ex1a2" min="0" max="20" inputmode="numeric"></td>
+          <td><input type="number" id="ex1a3" min="0" max="20" inputmode="numeric"></td>
+          <td><input type="number" id="ex1a4" min="0" max="20" inputmode="numeric"></td>
+        </tr>
+      </table>
+      <button class="check-btn" id="ex1Check" onclick="checkEx1()">✅ 检查答案</button>
+      <div class="feedback" id="ex1Feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== Exercise 2: 蔬菜分类 ========== -->
+<div class="exercise-card" id="ex2Card">
+  <div class="exercise-header">
+    <div class="exercise-num">2</div>
+    <div class="exercise-title">🥕 蔬菜分类</div>
+  </div>
+  <div class="exercise-body">
+    <div class="visual-area">
+      <div class="items" id="vegItems">
+        <!-- filled by JS -->
+      </div>
+    </div>
+
+    <!-- Task 1: Count table -->
+    <div class="task-instruction">📝 数一数每种蔬菜有几个</div>
+    <div class="exercise-q" id="ex2q1">
+      <table class="data-table">
+        <tr>
+          <th>种类</th><th>🥕</th><th>🍅</th><th>🫑</th><th>🧅</th><th>🥒</th><th>🌶️</th>
+        </tr>
+        <tr>
+          <th>个数</th>
+          <td><input type="number" id="ex2a1" min="0" max="20" inputmode="numeric"></td>
+          <td><input type="number" id="ex2a2" min="0" max="20" inputmode="numeric"></td>
+          <td><input type="number" id="ex2a3" min="0" max="20" inputmode="numeric"></td>
+          <td><input type="number" id="ex2a4" min="0" max="20" inputmode="numeric"></td>
+          <td><input type="number" id="ex2a5" min="0" max="20" inputmode="numeric"></td>
+          <td><input type="number" id="ex2a6" min="0" max="20" inputmode="numeric"></td>
+        </tr>
+      </table>
+      <button class="check-btn" id="ex2q1Check" onclick="checkEx2Q1()">✅ 检查答案</button>
+      <div class="feedback" id="ex2q1Feedback"></div>
+    </div>
+
+    <!-- Task 2: Which vegetable most? -->
+    <div class="sub-q-label"><span class="dot"></span>哪种蔬菜最多？（可以选多个）</div>
+    <div class="exercise-q" id="ex2q2">
+      <div class="choice-group" id="ex2q2Choices">
+        <button class="choice-btn" onclick="toggleChoice(this,'ex2q2')">🥕 胡萝卜</button>
+        <button class="choice-btn" onclick="toggleChoice(this,'ex2q2')">🍅 小番茄</button>
+        <button class="choice-btn" onclick="toggleChoice(this,'ex2q2')">🫑 青椒</button>
+        <button class="choice-btn" onclick="toggleChoice(this,'ex2q2')">🧅 洋葱</button>
+        <button class="choice-btn" onclick="toggleChoice(this,'ex2q2')">🥒 黄瓜</button>
+        <button class="choice-btn" onclick="toggleChoice(this,'ex2q2')">🌶️ 辣椒</button>
+      </div>
+      <button class="check-btn" id="ex2q2Check" onclick="checkEx2Q2()">✅ 检查答案</button>
+      <div class="feedback" id="ex2q2Feedback"></div>
+    </div>
+
+    <!-- Task 3: Which vegetable least? -->
+    <div class="sub-q-label"><span class="dot"></span>哪种蔬菜最少？</div>
+    <div class="exercise-q" id="ex2q3">
+      <div class="choice-group" id="ex2q3Choices">
+        <button class="choice-btn" onclick="selectChoice(this,'ex2q3')">🥕 胡萝卜</button>
+        <button class="choice-btn" onclick="selectChoice(this,'ex2q3')">🍅 小番茄</button>
+        <button class="choice-btn" onclick="selectChoice(this,'ex2q3')">🫑 青椒</button>
+        <button class="choice-btn" onclick="selectChoice(this,'ex2q3')">🧅 洋葱</button>
+        <button class="choice-btn" onclick="selectChoice(this,'ex2q3')">🥒 黄瓜</button>
+        <button class="choice-btn" onclick="selectChoice(this,'ex2q3')">🌶️ 辣椒</button>
+      </div>
+      <button class="check-btn" id="ex2q3Check" onclick="checkEx2Q3()">✅ 检查答案</button>
+      <div class="feedback" id="ex2q3Feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== Exercise 3: 比多少 ========== -->
+<div class="exercise-card" id="ex3Card">
+  <div class="exercise-header">
+    <div class="exercise-num">3</div>
+    <div class="exercise-title">🎈 比多少</div>
+  </div>
+  <div class="exercise-body">
+    <div class="visual-area">
+      <div style="font-size:1.1rem;margin-bottom:10px;font-weight:600;color:#92400e">气球统计</div>
+      <div class="items">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin:0 12px">
+          <div style="font-size:2rem">🌸🌸🌸</div>
+          <div style="font-weight:700;color:#be185d;font-size:.9rem">花形 3个</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin:0 12px">
+          <div style="font-size:2rem">💗💗💗💗</div>
+          <div style="font-weight:700;color:#e11d48;font-size:.9rem">心形 4个</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;margin:0 12px">
+          <div style="font-size:2rem">🎈🎈🎈🎈🎈</div>
+          <div style="font-weight:700;color:#dc2626;font-size:.9rem">圆形 5个</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q1: Which balloon most? -->
+    <div class="sub-q-label"><span class="dot"></span>哪种气球最多？</div>
+    <div class="exercise-q" id="ex3q1">
+      <div class="choice-group" id="ex3q1Choices">
+        <button class="choice-btn" onclick="selectChoice(this,'ex3q1')">🌸 花形</button>
+        <button class="choice-btn" onclick="selectChoice(this,'ex3q1')">💗 心形</button>
+        <button class="choice-btn" onclick="selectChoice(this,'ex3q1')">🎈 圆形</button>
+      </div>
+      <button class="check-btn" id="ex3q1Check" onclick="checkEx3Q1()">✅ 检查答案</button>
+      <div class="feedback" id="ex3q1Feedback"></div>
+    </div>
+
+    <!-- Q2: Which balloon least? -->
+    <div class="sub-q-label"><span class="dot"></span>哪种气球最少？</div>
+    <div class="exercise-q" id="ex3q2">
+      <div class="choice-group" id="ex3q2Choices">
+        <button class="choice-btn" onclick="selectChoice(this,'ex3q2')">🌸 花形</button>
+        <button class="choice-btn" onclick="selectChoice(this,'ex3q2')">💗 心形</button>
+        <button class="choice-btn" onclick="selectChoice(this,'ex3q2')">🎈 圆形</button>
+      </div>
+      <button class="check-btn" id="ex3q2Check" onclick="checkEx3Q2()">✅ 检查答案</button>
+      <div class="feedback" id="ex3q2Feedback"></div>
+    </div>
+
+    <!-- Q3: How many more? -->
+    <div class="sub-q-label"><span class="dot"></span>圆形比花形多几个？</div>
+    <div class="exercise-q" id="ex3q3">
+      <div class="number-input-wrap">
+        <span style="font-weight:600;color:#475569">答：多</span>
+        <input type="number" id="ex3a3" min="0" max="20" inputmode="numeric">
+        <span class="unit">个</span>
+      </div>
+      <button class="check-btn" id="ex3q3Check" onclick="checkEx3Q3()">✅ 检查答案</button>
+      <div class="feedback" id="ex3q3Feedback"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== Answer Card ========== -->
+<div class="answer-card" id="answerCard">
+  <div class="answer-card-header">
+    <h2>📋 我的答题卡</h2>
+    <div class="stars" id="starRating"></div>
+  </div>
+  <div class="answer-card-body" id="answerCardBody">
+    <!-- Filled by JS -->
+  </div>
+  <div class="answer-card-score">
+    <div class="big-score" id="totalScore"></div>
+    <div class="label" id="scoreLabel"></div>
+  </div>
+  <div class="answer-card-actions">
+    <button class="card-action-btn retry" onclick="resetAll()">🔄 再做一次</button>
+    <button class="card-action-btn back" onclick="location.href='unit1-lesson1-teach.html'">📖 回去听课</button>
+  </div>
+</div>
+
+<!-- Confetti container -->
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+/* ===== State ===== */
+const state = {
+  // Answers storage: null = not answered, 'correct'/'wrong', or detail
+  ex1: { done: false, correct: 0, total: 4, answers: [null,null,null,null] },
+  ex2q1: { done: false, correct: 0, total: 6, answers: [null,null,null,null,null,null] },
+  ex2q2: { done: false, correct: false, answer: null },
+  ex2q3: { done: false, correct: false, answer: null },
+  ex3q1: { done: false, correct: false, answer: null },
+  ex3q2: { done: false, correct: false, answer: null },
+  ex3q3: { done: false, correct: false, answer: null },
+};
+
+const totalQuestions = 3; // exercise count for progress
+let completedExercises = 0;
+
+/* ===== Populate Visual Items ===== */
+function populateItems() {
+  // Leaves: randomized order
+  const leaves = [
+    ...Array(3).fill('🌺'),
+    ...Array(4).fill('🍃'),
+    ...Array(2).fill('🍂'),
+    ...Array(3).fill('🌿')
+  ];
+  shuffle(leaves);
+  const leafEl = document.getElementById('leafItems');
+  leaves.forEach(e => {
+    const d = document.createElement('div');
+    d.className = 'item';
+    d.textContent = e;
+    leafEl.appendChild(d);
+  });
+
+  // Vegetables: randomized order
+  const vegs = [
+    ...Array(2).fill('🥕'),
+    ...Array(3).fill('🍅'),
+    ...Array(2).fill('🫑'),
+    ...Array(1).fill('🧅'),
+    ...Array(2).fill('🥒'),
+    ...Array(3).fill('🌶️')
+  ];
+  shuffle(vegs);
+  const vegEl = document.getElementById('vegItems');
+  vegs.forEach(e => {
+    const d = document.createElement('div');
+    d.className = 'item';
+    d.textContent = e;
+    vegEl.appendChild(d);
+  });
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+/* ===== TTS ===== */
+let ttsVoice = null;
+function initTTS() {
+  if (!window.speechSynthesis) return;
+  const loadVoices = () => {
+    const voices = speechSynthesis.getVoices();
+    // Prefer Microsoft Xiaoxiao Online (Natural)
+    ttsVoice = voices.find(v => /xiaoxiao.*online.*natural/i.test(v.name))
+      || voices.find(v => /xiaoxiao/i.test(v.name))
+      || voices.find(v => /online.*natural/i.test(v.name) && /zh/i.test(v.lang))
+      || voices.find(v => /zh/i.test(v.lang))
+      || null;
+  };
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  u.rate = 0.9;
+  u.pitch = 1.1;
+  if (ttsVoice) u.voice = ttsVoice;
+  speechSynthesis.speak(u);
+}
+
+const encourageCorrect = ['太棒了！', '答对啦！', '真聪明！', '好厉害！', '完全正确！'];
+const encourageWrong = ['再想想哦～', '别着急，再试一次', '加油，仔细数一数'];
+function randomPick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+/* ===== Progress ===== */
+function updateProgress() {
+  let done = 0;
+  if (state.ex1.done) done++;
+  if (state.ex2q1.done && state.ex2q2.done && state.ex2q3.done) done++;
+  if (state.ex3q1.done && state.ex3q2.done && state.ex3q3.done) done++;
+  completedExercises = done;
+
+  const pct = (done / totalQuestions) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = done + ' / ' + totalQuestions;
+
+  // Mark cards
+  if (state.ex1.done) document.getElementById('ex1Card').classList.add('completed');
+  if (state.ex2q1.done && state.ex2q2.done && state.ex2q3.done)
+    document.getElementById('ex2Card').classList.add('completed');
+  if (state.ex3q1.done && state.ex3q2.done && state.ex3q3.done)
+    document.getElementById('ex3Card').classList.add('completed');
+
+  // If all done, show answer card
+  if (done === totalQuestions) {
+    setTimeout(showAnswerCard, 600);
+  }
+}
+
+/* ===== Exercise 1: 树叶分类 ===== */
+function checkEx1() {
+  const correct = [3, 4, 2, 3];
+  const inputs = [
+    document.getElementById('ex1a1'),
+    document.getElementById('ex1a2'),
+    document.getElementById('ex1a3'),
+    document.getElementById('ex1a4')
+  ];
+
+  let allCorrect = true;
+  let allFilled = true;
+  let correctCount = 0;
+
+  inputs.forEach((inp, i) => {
+    const val = inp.value.trim();
+    if (val === '') {
+      allFilled = false;
+      return;
+    }
+    state.ex1.answers[i] = parseInt(val);
+    if (parseInt(val) === correct[i]) {
+      inp.className = 'correct';
+      inp.disabled = true;
+      correctCount++;
+    } else {
+      inp.className = 'wrong';
+      allCorrect = false;
+    }
+  });
+
+  if (!allFilled) {
+    showFeedback('ex1Feedback', '请把每个空都填上哦！', false);
+    speak('请把每个空都填上哦');
+    return;
+  }
+
+  state.ex1.correct = correctCount;
+
+  if (allCorrect) {
+    state.ex1.done = true;
+    const msg = randomPick(encourageCorrect);
+    showFeedback('ex1Feedback', '✅ ' + msg + ' 全部正确！', true);
+    speak(msg);
+    document.getElementById('ex1Check').disabled = true;
+    document.getElementById('ex1Check').classList.add('done');
+    document.getElementById('ex1Check').textContent = '✅ 全对！';
+  } else {
+    const msg = randomPick(encourageWrong);
+    showFeedback('ex1Feedback', '❌ ' + msg + '（红色的格子再数数看）', false);
+    speak(msg);
+    // Allow retry on wrong inputs
+    setTimeout(() => {
+      inputs.forEach((inp, i) => {
+        if (parseInt(inp.value) !== correct[i]) {
+          inp.value = '';
+          inp.className = '';
+          inp.disabled = false;
+          inp.focus();
+        }
+      });
+    }, 1200);
+  }
+
+  updateProgress();
+}
+
+/* ===== Exercise 2 Q1: 蔬菜数量 ===== */
+function checkEx2Q1() {
+  const correct = [2, 3, 2, 1, 2, 3];
+  const inputs = [
+    document.getElementById('ex2a1'),
+    document.getElementById('ex2a2'),
+    document.getElementById('ex2a3'),
+    document.getElementById('ex2a4'),
+    document.getElementById('ex2a5'),
+    document.getElementById('ex2a6')
+  ];
+
+  let allCorrect = true;
+  let allFilled = true;
+  let correctCount = 0;
+
+  inputs.forEach((inp, i) => {
+    const val = inp.value.trim();
+    if (val === '') {
+      allFilled = false;
+      return;
+    }
+    state.ex2q1.answers[i] = parseInt(val);
+    if (parseInt(val) === correct[i]) {
+      inp.className = 'correct';
+      inp.disabled = true;
+      correctCount++;
+    } else {
+      inp.className = 'wrong';
+      allCorrect = false;
+    }
+  });
+
+  if (!allFilled) {
+    showFeedback('ex2q1Feedback', '请把每个空都填上哦！', false);
+    speak('请把每个空都填上哦');
+    return;
+  }
+
+  state.ex2q1.correct = correctCount;
+
+  if (allCorrect) {
+    state.ex2q1.done = true;
+    const msg = randomPick(encourageCorrect);
+    showFeedback('ex2q1Feedback', '✅ ' + msg + ' 全部正确！', true);
+    speak(msg);
+    document.getElementById('ex2q1Check').disabled = true;
+    document.getElementById('ex2q1Check').classList.add('done');
+    document.getElementById('ex2q1Check').textContent = '✅ 全对！';
+  } else {
+    const msg = randomPick(encourageWrong);
+    showFeedback('ex2q1Feedback', '❌ ' + msg + '（红色的格子再数数看）', false);
+    speak(msg);
+    setTimeout(() => {
+      inputs.forEach((inp, i) => {
+        if (parseInt(inp.value) !== correct[i]) {
+          inp.value = '';
+          inp.className = '';
+          inp.disabled = false;
+        }
+      });
+    }, 1200);
+  }
+
+  updateProgress();
+}
+
+/* ===== Multi-select toggle (for "most" question with ties) ===== */
+function toggleChoice(btn, groupId) {
+  if (btn.disabled) return;
+  btn.classList.toggle('selected');
+}
+
+/* ===== Single-select ===== */
+function selectChoice(btn, groupId) {
+  if (btn.disabled) return;
+  const group = document.getElementById(groupId + 'Choices') || btn.parentElement;
+  group.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+/* ===== Exercise 2 Q2: 哪种最多 ===== */
+function checkEx2Q2() {
+  const group = document.getElementById('ex2q2Choices');
+  const btns = group.querySelectorAll('.choice-btn');
+  const selected = [...btns].filter(b => b.classList.contains('selected'));
+
+  if (selected.length === 0) {
+    showFeedback('ex2q2Feedback', '请先选一个答案哦！', false);
+    speak('请先选一个答案');
+    return;
+  }
+
+  // Correct answers: 小番茄 (index 1) and 辣椒 (index 5) both have 3
+  const correctIndices = [1, 5];
+  const selectedIndices = selected.map(b => [...btns].indexOf(b));
+
+  state.ex2q2.answer = selected.map(b => b.textContent.trim()).join('、');
+
+  // Check: must select exactly the two tied items (or at least one of them for partial credit)
+  // Full correct: selected exactly {1,5}
+  const selectedSet = new Set(selectedIndices);
+  const correctSet = new Set(correctIndices);
+  const isFullyCorrect = selectedSet.size === correctSet.size &&
+    [...selectedSet].every(i => correctSet.has(i));
+
+  // Partial: selected only correct items but not all
+  const allSelectedAreCorrect = selectedIndices.every(i => correctSet.has(i));
+
+  if (isFullyCorrect) {
+    state.ex2q2.done = true;
+    state.ex2q2.correct = true;
+    btns.forEach(b => b.disabled = true);
+    selected.forEach(b => { b.classList.add('correct-choice'); b.classList.remove('selected'); });
+    const msg = randomPick(encourageCorrect);
+    showFeedback('ex2q2Feedback', '✅ ' + msg + ' 小番茄和辣椒都是3个，并列最多！', true);
+    speak(msg + '小番茄和辣椒都是3个，并列最多');
+    document.getElementById('ex2q2Check').disabled = true;
+    document.getElementById('ex2q2Check').classList.add('done');
+    document.getElementById('ex2q2Check').textContent = '✅ 正确！';
+  } else if (allSelectedAreCorrect && selectedSet.size < correctSet.size) {
+    // Selected one correct but missed the tie
+    showFeedback('ex2q2Feedback', '💡 对了一半！还有一种蔬菜也是3个哦，找找看～', false);
+    speak('对了一半，还有一种蔬菜也是3个，找找看');
+  } else {
+    selected.forEach(b => { b.classList.add('wrong-choice'); b.classList.remove('selected'); });
+    const msg = randomPick(encourageWrong);
+    showFeedback('ex2q2Feedback', '❌ ' + msg + ' 数数哪种蔬菜数量最多？', false);
+    speak(msg);
+    setTimeout(() => {
+      btns.forEach(b => { b.classList.remove('wrong-choice', 'selected'); });
+    }, 1200);
+  }
+
+  updateProgress();
+}
+
+/* ===== Exercise 2 Q3: 哪种最少 ===== */
+function checkEx2Q3() {
+  const group = document.getElementById('ex2q3Choices');
+  const btns = group.querySelectorAll('.choice-btn');
+  const selected = [...btns].find(b => b.classList.contains('selected'));
+
+  if (!selected) {
+    showFeedback('ex2q3Feedback', '请先选一个答案哦！', false);
+    speak('请先选一个答案');
+    return;
+  }
+
+  state.ex2q3.answer = selected.textContent.trim();
+  const idx = [...btns].indexOf(selected);
+
+  // Correct: 洋葱 (index 3)
+  if (idx === 3) {
+    state.ex2q3.done = true;
+    state.ex2q3.correct = true;
+    btns.forEach(b => b.disabled = true);
+    selected.classList.add('correct-choice');
+    selected.classList.remove('selected');
+    const msg = randomPick(encourageCorrect);
+    showFeedback('ex2q3Feedback', '✅ ' + msg + ' 洋葱只有1个，最少！', true);
+    speak(msg + '洋葱只有1个，最少');
+    document.getElementById('ex2q3Check').disabled = true;
+    document.getElementById('ex2q3Check').classList.add('done');
+    document.getElementById('ex2q3Check').textContent = '✅ 正确！';
+  } else {
+    selected.classList.add('wrong-choice');
+    selected.classList.remove('selected');
+    const msg = randomPick(encourageWrong);
+    showFeedback('ex2q3Feedback', '❌ ' + msg + ' 数数哪种只有1个？', false);
+    speak(msg);
+    setTimeout(() => {
+      btns.forEach(b => b.classList.remove('wrong-choice', 'selected'));
+    }, 1200);
+  }
+
+  updateProgress();
+}
+
+/* ===== Exercise 3 Q1: 哪种气球最多 ===== */
+function checkEx3Q1() {
+  const group = document.getElementById('ex3q1Choices');
+  const btns = group.querySelectorAll('.choice-btn');
+  const selected = [...btns].find(b => b.classList.contains('selected'));
+
+  if (!selected) {
+    showFeedback('ex3q1Feedback', '请先选一个答案哦！', false);
+    speak('请先选一个答案');
+    return;
+  }
+
+  state.ex3q1.answer = selected.textContent.trim();
+  const idx = [...btns].indexOf(selected);
+
+  // Correct: 圆形 (index 2)
+  if (idx === 2) {
+    state.ex3q1.done = true;
+    state.ex3q1.correct = true;
+    btns.forEach(b => b.disabled = true);
+    selected.classList.add('correct-choice');
+    selected.classList.remove('selected');
+    const msg = randomPick(encourageCorrect);
+    showFeedback('ex3q1Feedback', '✅ ' + msg + ' 圆形有5个，最多！', true);
+    speak(msg);
+    document.getElementById('ex3q1Check').disabled = true;
+    document.getElementById('ex3q1Check').classList.add('done');
+    document.getElementById('ex3q1Check').textContent = '✅ 正确！';
+  } else {
+    selected.classList.add('wrong-choice');
+    selected.classList.remove('selected');
+    const msg = randomPick(encourageWrong);
+    showFeedback('ex3q1Feedback', '❌ ' + msg + ' 比一比 3、4、5 哪个最大？', false);
+    speak(msg);
+    setTimeout(() => {
+      btns.forEach(b => b.classList.remove('wrong-choice', 'selected'));
+    }, 1200);
+  }
+
+  updateProgress();
+}
+
+/* ===== Exercise 3 Q2: 哪种气球最少 ===== */
+function checkEx3Q2() {
+  const group = document.getElementById('ex3q2Choices');
+  const btns = group.querySelectorAll('.choice-btn');
+  const selected = [...btns].find(b => b.classList.contains('selected'));
+
+  if (!selected) {
+    showFeedback('ex3q2Feedback', '请先选一个答案哦！', false);
+    speak('请先选一个答案');
+    return;
+  }
+
+  state.ex3q2.answer = selected.textContent.trim();
+  const idx = [...btns].indexOf(selected);
+
+  // Correct: 花形 (index 0)
+  if (idx === 0) {
+    state.ex3q2.done = true;
+    state.ex3q2.correct = true;
+    btns.forEach(b => b.disabled = true);
+    selected.classList.add('correct-choice');
+    selected.classList.remove('selected');
+    const msg = randomPick(encourageCorrect);
+    showFeedback('ex3q2Feedback', '✅ ' + msg + ' 花形只有3个，最少！', true);
+    speak(msg);
+    document.getElementById('ex3q2Check').disabled = true;
+    document.getElementById('ex3q2Check').classList.add('done');
+    document.getElementById('ex3q2Check').textContent = '✅ 正确！';
+  } else {
+    selected.classList.add('wrong-choice');
+    selected.classList.remove('selected');
+    const msg = randomPick(encourageWrong);
+    showFeedback('ex3q2Feedback', '❌ ' + msg + ' 比一比 3、4、5 哪个最小？', false);
+    speak(msg);
+    setTimeout(() => {
+      btns.forEach(b => b.classList.remove('wrong-choice', 'selected'));
+    }, 1200);
+  }
+
+  updateProgress();
+}
+
+/* ===== Exercise 3 Q3: 圆形比花形多几个 ===== */
+function checkEx3Q3() {
+  const inp = document.getElementById('ex3a3');
+  const val = inp.value.trim();
+
+  if (val === '') {
+    showFeedback('ex3q3Feedback', '请填写答案哦！', false);
+    speak('请填写答案');
+    return;
+  }
+
+  state.ex3q3.answer = parseInt(val);
+
+  // Correct: 5 - 3 = 2
+  if (parseInt(val) === 2) {
+    state.ex3q3.done = true;
+    state.ex3q3.correct = true;
+    inp.classList.add('correct');
+    inp.disabled = true;
+    const msg = randomPick(encourageCorrect);
+    showFeedback('ex3q3Feedback', '✅ ' + msg + ' 5 - 3 = 2，圆形比花形多2个！', true);
+    speak(msg + '5减3等于2');
+    document.getElementById('ex3q3Check').disabled = true;
+    document.getElementById('ex3q3Check').classList.add('done');
+    document.getElementById('ex3q3Check').textContent = '✅ 正确！';
+  } else {
+    inp.classList.add('wrong');
+    const msg = randomPick(encourageWrong);
+    showFeedback('ex3q3Feedback', '❌ ' + msg + ' 圆形有5个，花形有3个，多几个呢？', false);
+    speak(msg);
+    setTimeout(() => {
+      inp.value = '';
+      inp.classList.remove('wrong');
+      inp.disabled = false;
+      inp.focus();
+    }, 1200);
+  }
+
+  updateProgress();
+}
+
+/* ===== Show Feedback ===== */
+function showFeedback(id, text, isCorrect) {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.className = 'feedback show ' + (isCorrect ? 'correct' : 'wrong');
+}
+
+/* ===== Answer Card ===== */
+function showAnswerCard() {
+  const card = document.getElementById('answerCard');
+  const body = document.getElementById('answerCardBody');
+  body.innerHTML = '';
+
+  let totalCorrect = 0;
+  let totalPossible = 0;
+
+  // Exercise 1
+  const ex1Correct = state.ex1.correct;
+  const ex1Total = state.ex1.total;
+  totalCorrect += ex1Correct;
+  totalPossible += ex1Total;
+  addAnswerRow(body, '第1题 树叶分类', ex1Correct === ex1Total ? '✅ 全对' : `❌ ${ex1Correct}/${ex1Total}对`, ex1Correct === ex1Total);
+
+  // Exercise 2: 3 sub-questions (q1 counts as 6 sub-items, q2 and q3 as 1 each)
+  // Simplify: count q1 as 1 exercise (all or nothing for display), q2 as 1, q3 as 1
+  const ex2q1Ok = state.ex2q1.correct === state.ex2q1.total;
+  const ex2q2Ok = state.ex2q2.correct;
+  const ex2q3Ok = state.ex2q3.correct;
+  const ex2Score = (ex2q1Ok ? 1 : 0) + (ex2q2Ok ? 1 : 0) + (ex2q3Ok ? 1 : 0);
+  totalCorrect += ex2Score;
+  totalPossible += 3;
+  addAnswerRow(body, '第2题 蔬菜分类', ex2Score === 3 ? '✅ 全对' : `❌ ${ex2Score}/3对`, ex2Score === 3);
+
+  // Exercise 3: 3 sub-questions
+  const ex3q1Ok = state.ex3q1.correct;
+  const ex3q2Ok = state.ex3q2.correct;
+  const ex3q3Ok = state.ex3q3.correct;
+  const ex3Score = (ex3q1Ok ? 1 : 0) + (ex3q2Ok ? 1 : 0) + (ex3q3Ok ? 1 : 0);
+  totalCorrect += ex3Score;
+  totalPossible += 3;
+  addAnswerRow(body, '第3题 比多少', ex3Score === 3 ? '✅ 全对' : `❌ ${ex3Score}/3对`, ex3Score === 3);
+
+  // Score
+  document.getElementById('totalScore').textContent = `${totalCorrect} / ${totalPossible} 题做对了`;
+
+  // Star rating
+  const pct = totalCorrect / totalPossible;
+  let stars, label;
+  if (pct >= 0.9) { stars = '⭐⭐⭐'; label = '太棒了！你是数学小天才！🎉'; }
+  else if (pct >= 0.7) { stars = '⭐⭐'; label = '很不错！再练练就更好了！💪'; }
+  else if (pct >= 0.5) { stars = '⭐'; label = '加油，多练习就会了！📚'; }
+  else { stars = '🌟'; label = '别灰心，再来一次！💖'; }
+
+  document.getElementById('starRating').textContent = stars;
+  document.getElementById('scoreLabel').textContent = label;
+
+  // Speak summary
+  if (pct >= 0.9) speak('你做得真好！全部答对了，太棒了！');
+  else if (pct >= 0.7) speak('做得不错！再练练就更好了！');
+  else speak('加油，多练习就会了！');
+
+  card.classList.add('show');
+
+  // Confetti if great score
+  if (pct >= 0.7) launchConfetti();
+
+  // Scroll to card
+  setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
+}
+
+function addAnswerRow(container, name, result, pass) {
+  const row = document.createElement('div');
+  row.className = 'answer-row';
+  row.innerHTML = `
+    <span class="q-name">${name}</span>
+    <span class="q-result ${pass ? 'pass' : 'fail'}">${result}</span>
+  `;
+  container.appendChild(row);
+}
+
+/* ===== Confetti ===== */
+function launchConfetti() {
+  const container = document.getElementById('confettiContainer');
+  const colors = ['#f87171','#fb923c','#facc15','#4ade80','#60a5fa','#c084fc','#f472b6'];
+  for (let i = 0; i < 60; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti';
+    el.style.left = Math.random() * 100 + '%';
+    el.style.background = colors[Math.floor(Math.random() * colors.length)];
+    el.style.animationDelay = Math.random() * 2 + 's';
+    el.style.animationDuration = (2 + Math.random() * 2) + 's';
+    el.style.width = (6 + Math.random() * 8) + 'px';
+    el.style.height = (6 + Math.random() * 8) + 'px';
+    el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    container.appendChild(el);
+  }
+  setTimeout(() => { container.innerHTML = ''; }, 4000);
+}
+
+/* ===== Reset All ===== */
+function resetAll() {
+  // Reset state
+  state.ex1 = { done: false, correct: 0, total: 4, answers: [null,null,null,null] };
+  state.ex2q1 = { done: false, correct: 0, total: 6, answers: [null,null,null,null,null,null] };
+  state.ex2q2 = { done: false, correct: false, answer: null };
+  state.ex2q3 = { done: false, correct: false, answer: null };
+  state.ex3q1 = { done: false, correct: false, answer: null };
+  state.ex3q2 = { done: false, correct: false, answer: null };
+  state.ex3q3 = { done: false, correct: false, answer: null };
+
+  // Reset all inputs
+  document.querySelectorAll('input[type="number"]').forEach(inp => {
+    inp.value = '';
+    inp.className = '';
+    inp.disabled = false;
+  });
+
+  // Reset all choice buttons
+  document.querySelectorAll('.choice-btn').forEach(btn => {
+    btn.className = 'choice-btn';
+    btn.disabled = false;
+  });
+
+  // Reset check buttons
+  document.querySelectorAll('.check-btn').forEach(btn => {
+    btn.disabled = false;
+    btn.classList.remove('done');
+    if (btn.textContent.includes('全对') || btn.textContent.includes('正确')) {
+      btn.textContent = '✅ 检查答案';
+    }
+  });
+
+  // Reset feedback
+  document.querySelectorAll('.feedback').forEach(fb => {
+    fb.className = 'feedback';
+    fb.textContent = '';
+  });
+
+  // Reset exercise cards
+  document.querySelectorAll('.exercise-card').forEach(c => c.classList.remove('completed'));
+
+  // Hide answer card
+  document.getElementById('answerCard').classList.remove('show');
+
+  // Reset progress
+  updateProgress();
+
+  // Re-shuffle visual items
+  document.getElementById('leafItems').innerHTML = '';
+  document.getElementById('vegItems').innerHTML = '';
+  populateItems();
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  speak('好，我们再来一次！');
+}
+
+/* ===== Init ===== */
+document.addEventListener('DOMContentLoaded', () => {
+  populateItems();
+  initTTS();
+  updateProgress();
+});
+</script>
+  <footer class="footer" lang="zh-CN"><p><strong>版权声明</strong>：本页讲解与配图<strong>均为本页自行编写</strong>，未复制任何教材插图或扫描件；人民教育出版社《数学》二年级上册（2024 年审核）的文字与插图著作权归原出版社及作者所有。</p><p>本页为<strong>家庭自用学习辅助</strong>：不含教材插图、不含扫描件、不用于任何商业用途、不做搜索收录。如权利人认为不妥，请告知即刻下线。</p><p>本页文字与插图均为自绘自拟；<strong>部分练习沿用课本原有题型，个别题目文字与课本原题相近</strong>，均已标注对应页码，仅作家庭自用学习辅助。教材版本已按<strong>课本封面照片核实</strong>：人民教育出版社《数学》二年级上册，封面标注「国家教材委员会专家委员会审核 2024」；第一单元<strong>分类与整理</strong>已按课本<strong>目录页照片</strong>核实，课本自第 1 页起（目录：第二单元「1~6 的表内乘法」自第 10 页起）。例题与情境均为本页自拟，请以课本为准。</p><p>朗读用浏览器语音，建议用 Edge 打开，中文音色最自然。</p></footer>
+</body>
+</html>

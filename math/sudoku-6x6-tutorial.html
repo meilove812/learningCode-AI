@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧩 数独解题秘籍 · 六宫格方法教学</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #d299f0 100%);
+  min-height: 100vh; padding: 16px 12px 100px;
+}
+h1 { font-size: 22px; color: #4a148c; text-align: center; margin: 8px 0 4px; }
+.subtitle { color: #666; text-align: center; font-size: 13px; margin-bottom: 12px; }
+
+/* Voice Bar */
+.voice-bar {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin: 8px auto 16px; flex-wrap: wrap; max-width: 500px;
+}
+.voice-toggle {
+  padding: 6px 14px; border-radius: 20px; border: 2px solid #9c27b0;
+  background: #f3e5f5; color: #6a1b9a; font-weight: bold; font-size: 13px; cursor: pointer;
+}
+.voice-toggle.muted { background: #eee; color: #999; border-color: #ccc; }
+.voice-select { padding: 5px 8px; border-radius: 12px; border: 2px solid #ce93d8; font-size: 12px; max-width: 160px; }
+.speed-ctrl { display: flex; align-items: center; gap: 4px; font-size: 12px; color: #666; }
+.speed-ctrl input { width: 55px; }
+
+/* Tab Navigation */
+.tab-nav {
+  display: flex; gap: 8px; justify-content: center; margin: 12px auto; max-width: 500px; flex-wrap: wrap;
+}
+.tab-btn {
+  padding: 10px 16px; border-radius: 25px; border: 2px solid #ce93d8;
+  background: #fff; color: #6a1b9a; font-weight: bold; font-size: 14px;
+  cursor: pointer; transition: all 0.3s;
+}
+.tab-btn.active { background: linear-gradient(135deg, #9c27b0, #e040fb); color: #fff; border-color: transparent; transform: scale(1.05); }
+
+/* Scene Card */
+.scene {
+  max-width: 520px; margin: 16px auto;
+  background: rgba(255,255,255,0.95); border-radius: 24px;
+  padding: 20px 16px; box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+}
+.method-title { font-size: 20px; font-weight: bold; color: #4a148c; text-align: center; margin-bottom: 4px; }
+.method-desc { font-size: 13px; color: #666; text-align: center; margin-bottom: 16px; line-height: 1.6; }
+.method-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: bold; color: #fff; margin-bottom: 8px; }
+.badge-easy { background: #4caf50; }
+.badge-mid { background: #ff9800; }
+.badge-hard { background: #f44336; }
+
+/* Sudoku Grid */
+.grid-wrap { display: flex; justify-content: center; margin: 12px 0; }
+.sudoku {
+  display: grid; grid-template-columns: repeat(6, 48px); grid-template-rows: repeat(6, 48px);
+  border: 3px solid #311b92; border-radius: 8px; overflow: hidden;
+}
+.cell {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; font-weight: bold; color: #1a237e;
+  border: 1px solid #bbb; background: #fff; position: relative;
+  transition: all 0.4s ease; cursor: default;
+}
+.cell.given { color: #333; background: #f5f5f5; }
+.cell.target { background: #ffcc80 !important; box-shadow: inset 0 0 0 3px #e65100; animation: pulse 1s ease infinite; }
+.cell.hl-row { background: #fff9c4 !important; }
+.cell.hl-col { background: #bbdefb !important; }
+.cell.hl-box { background: #c8e6c9 !important; }
+.cell.excluded { position: relative; }
+.cell.excluded::after {
+  content: '✕'; position: absolute; color: #e53935; font-size: 28px; font-weight: bold;
+  opacity: 0; animation: crossIn 0.4s ease forwards;
+}
+.cell.found { background: #a5d6a7 !important; animation: popIn 0.5s ease; color: #1b5e20; }
+.cell.clickable { cursor: pointer; background: #fff3e0; }
+.cell.clickable:hover { background: #ffe0b2; transform: scale(1.05); }
+.cell.correct { background: #a5d6a7 !important; animation: popIn 0.5s ease; }
+.cell.wrong { background: #ef9a9a !important; animation: shake 0.4s ease; }
+/* Box borders (2×3 boxes) */
+.cell.br { border-right: 2.5px solid #311b92 !important; }
+.cell.bb { border-bottom: 2.5px solid #311b92 !important; }
+
+@keyframes pulse { 0%,100% { box-shadow: inset 0 0 0 3px #e65100; } 50% { box-shadow: inset 0 0 0 3px #ff6d00, 0 0 12px rgba(255,109,0,0.4); } }
+@keyframes crossIn { from { opacity: 0; transform: scale(0.3) rotate(-45deg); } to { opacity: 1; transform: scale(1) rotate(0); } }
+@keyframes popIn { 0% { transform: scale(0.3); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+@keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(3px); } }
+
+/* Narration */
+.narr-box {
+  background: linear-gradient(135deg, #ede7f6, #fce4ec);
+  border-radius: 16px; padding: 14px 16px; margin: 12px 0;
+  text-align: center; min-height: 56px;
+  display: flex; align-items: center; justify-content: center;
+}
+.narr-text { font-size: 15px; color: #4a148c; font-weight: 500; line-height: 1.6; }
+
+/* Candidate Pills */
+.cand-row { display: flex; justify-content: center; gap: 8px; margin: 10px 0; flex-wrap: wrap; }
+.cand-pill {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: bold; color: #fff;
+  background: #7c4dff; transition: all 0.4s;
+}
+.cand-pill.out { background: #e0e0e0; color: #aaa; text-decoration: line-through; transform: scale(0.75); }
+.cand-pill.win { background: #4caf50; transform: scale(1.2); animation: popIn 0.5s ease; }
+
+/* Buttons */
+.btns { display: flex; gap: 10px; justify-content: center; margin: 14px 0; flex-wrap: wrap; }
+.btn {
+  padding: 12px 22px; border: none; border-radius: 25px;
+  font-size: 15px; font-weight: bold; cursor: pointer;
+  transition: all 0.3s; color: #fff;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.btn-go { background: linear-gradient(135deg, #7c4dff, #e040fb); }
+.btn-try { background: linear-gradient(135deg, #ff6f00, #ffa726); }
+.btn-reset { background: linear-gradient(135deg, #78909c, #b0bec5); }
+
+/* Number Picker Popup */
+.num-picker {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  background: #fff; border-radius: 20px; padding: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3); z-index: 200;
+  display: none; text-align: center;
+}
+.num-picker.show { display: block; animation: popIn 0.3s ease; }
+.num-picker h3 { margin-bottom: 12px; color: #4a148c; font-size: 16px; }
+.num-picker .nums { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.num-pick-btn {
+  width: 48px; height: 48px; border-radius: 50%; border: 2px solid #ce93d8;
+  font-size: 22px; font-weight: bold; background: #f3e5f5; color: #6a1b9a;
+  cursor: pointer; transition: all 0.2s;
+}
+.num-pick-btn:hover { background: #ce93d8; color: #fff; transform: scale(1.1); }
+.overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.3); z-index: 199; display: none; }
+.overlay.show { display: block; }
+
+/* Summary Card */
+.summary-card {
+  max-width: 520px; margin: 20px auto;
+  background: linear-gradient(135deg, #fff8e1, #fff3e0);
+  border-radius: 20px; padding: 20px; border: 2px solid #ffcc02;
+}
+.summary-card h3 { text-align: center; color: #e65100; margin-bottom: 12px; }
+.summary-item { margin: 10px 0; padding: 10px; background: #fff; border-radius: 12px; }
+.summary-item strong { color: #6a1b9a; }
+
+/* Confetti */
+.confetti { position: fixed; pointer-events: none; font-size: 22px; z-index: 999; animation: confettiFall 2s ease-out forwards; }
+@keyframes confettiFall { 0% { opacity: 1; transform: translateY(0) rotate(0); } 100% { opacity: 0; transform: translateY(400px) rotate(720deg); } }
+
+@media (max-width: 400px) {
+  .sudoku { grid-template-columns: repeat(6, 42px); grid-template-rows: repeat(6, 42px); }
+  .cell { font-size: 20px; }
+  .scene { padding: 16px 10px; }
+  .tab-btn { padding: 8px 12px; font-size: 12px; }
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../index.html">首页</a><a href="../grade1-down/index.html">一年级</a><a href="../grade2-up/index.html">二年级</a><a href="../explore/science/index.html">科普</a><a href="../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<h1>🧩 数独解题秘籍</h1>
+<p class="subtitle">学会三招，六宫格数独轻松搞定！✨</p>
+
+<div class="voice-bar">
+  <button class="voice-toggle" id="voiceToggle" onclick="toggleVoice()">🔊 语音开</button>
+  <select class="voice-select" id="voiceSel" onchange="pickVoice()"></select>
+  <div class="speed-ctrl">
+    <span>语速</span>
+    <input type="range" min="0.5" max="1.5" step="0.1" value="0.85" id="speedR" oninput="updSpeed()">
+    <span id="speedV">0.85</span>
+  </div>
+</div>
+
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="goTab(0)">💡 第一招</button>
+  <button class="tab-btn" onclick="goTab(1)">🔍 第二招</button>
+  <button class="tab-btn" onclick="goTab(2)">🧠 第三招</button>
+</div>
+
+<div class="scene" id="scene"></div>
+
+<div class="summary-card">
+  <h3>📝 三招口诀</h3>
+  <div class="summary-item">
+    <strong>第一招 · 排除法：</strong>看这个格子的同一横排、同一竖列、同一个小方块，把出现过的数字划掉，剩下的就是答案！
+  </div>
+  <div class="summary-item">
+    <strong>第二招 · 宫排除法：</strong>找某个数字在小方块里能放哪儿——如果只有一个位置能放，那就是它！
+  </div>
+  <div class="summary-item">
+    <strong>第三招 · 区块排除法：</strong>如果一个数字在小方块里只能放在同一横排，那这一横排其他小方块就不能放这个数字了！
+  </div>
+</div>
+
+<!-- Number picker popup -->
+<div class="overlay" id="overlay" onclick="closePicker()"></div>
+<div class="num-picker" id="picker">
+  <h3>选一个数字填进去 👇</h3>
+  <div class="nums">
+    <button class="num-pick-btn" onclick="pickNum(1)">1</button>
+    <button class="num-pick-btn" onclick="pickNum(2)">2</button>
+    <button class="num-pick-btn" onclick="pickNum(3)">3</button>
+    <button class="num-pick-btn" onclick="pickNum(4)">4</button>
+    <button class="num-pick-btn" onclick="pickNum(5)">5</button>
+    <button class="num-pick-btn" onclick="pickNum(6)">6</button>
+  </div>
+</div>
+
+<script>
+// ===== Voice Engine =====
+let voiceOn = true, selVoice = null, rate = 0.85, speaking = false;
+let curTab = 0, animRunning = false, timers = [];
+let practiceTarget = null; // {row, col, answer}
+
+const cnPref = ['Microsoft Xiaoxiao','Microsoft Yunxi','Microsoft Xiaoxiao Online (Natural)','Microsoft Yunxi Online (Natural)','Online (Natural)','Tingting','Google 普通话','Enhanced','Premium','Natural'];
+function scoreV(v) {
+  for (let i = 0; i < cnPref.length; i++) if (v.name.includes(cnPref[i])) return cnPref.length - i + 100;
+  let s = 0; if (/enhanced|premium|natural/i.test(v.name)) s += 50; if (/compact/i.test(v.name)) s -= 20; return s;
+}
+function loadVoices() {
+  const vs = speechSynthesis.getVoices().filter(v => (/^zh-CN|^zh$|^cmn/i.test(v.lang))&&!/^zh-HK|^zh-TW/i.test(v.lang));
+  vs.sort((a, b) => scoreV(b) - scoreV(a));
+  const sel = document.getElementById('voiceSel');
+  sel.innerHTML = vs.map((v, i) => `<option value="${v.name}" ${i===0?'selected':''}>${v.name.slice(0,25)}</option>`).join('');
+  if (vs.length) selVoice = vs[0];
+}
+function pickVoice() { selVoice = speechSynthesis.getVoices().find(v => v.name === document.getElementById('voiceSel').value); }
+function toggleVoice() {
+  voiceOn = !voiceOn;
+  const b = document.getElementById('voiceToggle');
+  b.textContent = voiceOn ? '🔊 语音开' : '🔇 已静音';
+  b.classList.toggle('muted', !voiceOn);
+  if (!voiceOn) { speechSynthesis.cancel(); speaking = false; }
+}
+function updSpeed() { rate = parseFloat(document.getElementById('speedR').value); document.getElementById('speedV').textContent = rate.toFixed(1); }
+
+function speak(text, cb) {
+  if (!voiceOn || !text) { if (cb) setTimeout(cb, 400); return; }
+  speechSynthesis.cancel(); speaking = true;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN'; u.rate = rate; u.pitch = 1.05;
+  if (selVoice) u.voice = selVoice;
+  u.onend = () => { speaking = false; if (cb) cb(); };
+  u.onerror = () => { speaking = false; if (cb) cb(); };
+  speechSynthesis.speak(u);
+}
+loadVoices(); setTimeout(loadVoices, 500);
+speechSynthesis.addEventListener('voiceschanged', loadVoices, { once: true });
+
+// ===== Tab =====
+function goTab(idx) {
+  stopAnim(); curTab = idx;
+  document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  render();
+}
+function stopAnim() { timers.forEach(clearTimeout); timers = []; animRunning = false; speechSynthesis.cancel(); speaking = false; practiceTarget = null; }
+
+// ===== Confetti =====
+function confetti(n = 15) {
+  const em = ['🎉','⭐','✨','🌟','💫','🎊','🥳'];
+  for (let i = 0; i < n; i++) {
+    const d = document.createElement('div');
+    d.className = 'confetti'; d.textContent = em[Math.floor(Math.random()*em.length)];
+    d.style.left = (Math.random()*80+10)+'%'; d.style.top = '-20px';
+    d.style.animationDelay = (Math.random()*0.5)+'s';
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 2500);
+  }
+}
+
+// ===== DATA: Three teaching modules =====
+// Module 1: 排除法 (Naked Single)
+// Module 2: 宫排除法 (Hidden Single in Box)
+// Module 3: 区块排除法 (Pointing)
+
+const MODULES = [
+  {
+    title: '💡 第一招：排除法',
+    badge: '入门', badgeClass: 'badge-easy',
+    desc: '看一个格子，把同一横排、同一竖列、同一个小方块里已经有的数字全划掉，剩下的就是答案！',
+    // Demo puzzle: target cell (2,4) -> answer is 5
+    demoGrid: [
+      [3,6,4,1,0,2],
+      [1,5,2,3,4,6],
+      [2,1,0,4,6,3],
+      [4,3,6,5,2,1],
+      [5,2,1,6,3,4],
+      [6,4,3,2,1,5]
+    ],
+    demoTarget: {row: 0, col: 4, answer: 5},
+    demoSteps: [
+      { action: 'intro', text: '小朋友，我们来看第1横排第5个格子，里面该填什么呢？🤔' },
+      { action: 'hl-row', text: '先看同一横排——已经有 3、6、4、1、2 了' },
+      { action: 'hl-col', text: '再看同一竖列——已经有 4、6、2、3、1 了' },
+      { action: 'hl-box', text: '最后看同一个小方块——已经有 1、4、6、3 了' },
+      { action: 'eliminate', text: '把 1、2、3、4、6 全划掉，1到6里只剩下 5 了！' },
+      { action: 'fill', text: '答案就是 5！填进去！🎉' }
+    ],
+    // Practice puzzle: target (0,3) -> answer 6
+    practiceGrid: [
+      [2,5,0,0,1,4],
+      [1,4,6,3,2,5],
+      [4,2,1,5,6,3],
+      [6,3,5,4,0,0],
+      [5,1,4,2,3,6],
+      [3,6,2,1,0,0]
+    ],
+    practiceTarget: {row: 0, col: 3, answer: 6},
+    practiceHint: '看第1横排第4个格子，横排有2、5、1、4，竖列有3、5、4、2、1，小方块有……剩下哪个数字？'
+  },
+  {
+    title: '🔍 第二招：宫排除法',
+    badge: '中等', badgeClass: 'badge-mid',
+    desc: '有时候排除法找不出来。换个思路：找一个数字在某个小方块里能放哪儿，如果只有一个位置——就是那里！',
+    // Demo: in box(0,0), number 4 can only go at (1,2)
+    demoGrid: [
+      [0,6,0,1,5,2],
+      [1,5,0,3,0,6],
+      [2,1,5,4,6,3],
+      [0,3,6,5,2,1],
+      [5,2,1,6,3,4],
+      [6,4,3,2,1,5]
+    ],
+    demoTarget: {row: 1, col: 2, answer: 4},
+    demoSteps: [
+      { action: 'intro', text: '这次我们换个方法！找找数字 4 应该放在左上角小方块的哪里？🔍' },
+      { action: 'show-box', text: '左上角小方块有6个格子，已经填了 6、1、5，空着3个格子' },
+      { action: 'check-r0', text: '第1横排——已经有数字 1、5、2，而且别的小方块里第1横排有4了，所以第1横排不能放4' },
+      { action: 'check-r1c0', text: '第2横排第1个格子？这里同一竖列已经有4了（看下面第4横排位置），不能放！' },
+      { action: 'only-one', text: '只剩第2横排第3个格子能放 4！就是这里！✨' },
+      { action: 'fill', text: '答案确定：第2横排第3个格子填4！🎉' }
+    ],
+    // Practice: in box(1,1) top-right, number 2 can only go at (2,5) -- let me design a better one
+    practiceGrid: [
+      [3,1,4,6,2,5],
+      [0,6,5,0,1,3],
+      [5,4,0,1,0,0],
+      [0,2,0,0,3,4],
+      [6,0,0,3,0,0],
+      [0,0,1,2,0,6]
+    ],
+    practiceTarget: {row: 1, col: 0, answer: 2},
+    practiceHint: '左上角小方块里，数字2该放哪里？第1横排已经有2了，第2横排哪个位置竖列没有2？'
+  },
+  {
+    title: '🧠 第三招：区块排除法',
+    badge: '进阶', badgeClass: 'badge-hard',
+    desc: '如果一个数字在某个小方块里只能出现在同一横排，那这一横排的其他小方块就不能放这个数字了！连环排除，厉害吧？',
+    demoGrid: [
+      [0,0,4,1,5,2],
+      [1,5,2,3,4,6],
+      [2,0,0,4,6,3],
+      [4,3,6,5,2,1],
+      [5,2,1,6,3,4],
+      [6,4,3,2,1,5]
+    ],
+    demoTarget: {row: 0, col: 0, answer: 3},
+    demoSteps: [
+      { action: 'intro', text: '这招有点难，但学会了超级厉害！👑 看第1横排，有两个空格子' },
+      { action: 'show-constraint', text: '数字3在右上角小方块里没有出现。但第2横排已经有3了，所以右上角小方块里3只能放在第1横排！' },
+      { action: 'block-effect', text: '这意味着：第1横排右边的小方块已经"占用"了3。所以左上角小方块里第1横排不能放3！' },
+      { action: 'deduce', text: '等等——左上角小方块中，第2横排有1和5，第1横排空着(0,0)和(0,1)。3不能在第1横排，但其实第2横排也放不了3（1、5、2都满了）……' },
+      { action: 'resolve', text: '换个角度：(0,0)排除法——横排有4、1、5、2，竖列有1、2、4、5、6——只剩3！' },
+      { action: 'fill', text: '用区块排除+排除法配合：第1横排第1个填3！🎉' }
+    ],
+    practiceGrid: [
+      [0,0,4,1,5,2],
+      [1,5,2,3,4,6],
+      [2,0,0,4,6,3],
+      [4,3,6,5,2,1],
+      [5,2,1,6,3,4],
+      [6,4,3,2,1,5]
+    ],
+    practiceTarget: {row: 0, col: 1, answer: 6},
+    practiceHint: '第1横排第2个格子——横排已经有4、1、5、2、3（刚才填的），那只剩几？'
+  }
+];
+
+// ===== Render =====
+function render() {
+  const m = MODULES[curTab];
+  const scene = document.getElementById('scene');
+  scene.innerHTML = `
+    <div class="method-title">${m.title}</div>
+    <span class="method-badge ${m.badgeClass}">${m.badge}</span>
+    <div class="method-desc">${m.desc}</div>
+    <div class="grid-wrap"><div class="sudoku" id="grid"></div></div>
+    <div class="cand-row" id="cands"></div>
+    <div class="narr-box"><div class="narr-text" id="narr">点击「看动画」，一步步教你怎么做！🪄</div></div>
+    <div class="btns">
+      <button class="btn btn-go" id="demoBtn" onclick="runDemo()">🎬 看动画</button>
+      <button class="btn btn-try" id="tryBtn" onclick="startPractice()" style="display:none">✏️ 我来试试</button>
+      <button class="btn btn-reset" onclick="stopAnim();render()">🔄 重来</button>
+    </div>
+  `;
+  drawGrid(m.demoGrid);
+}
+
+function drawGrid(grid) {
+  const g = document.getElementById('grid');
+  g.innerHTML = '';
+  for (let r = 0; r < 6; r++) {
+    for (let c = 0; c < 6; c++) {
+      const d = document.createElement('div');
+      d.className = 'cell'; d.id = `c${r}${c}`;
+      // box borders: rows 1,3 get bottom thick; cols 2,5 get right thick
+      if (c === 2 || c === 5) d.classList.add('br');
+      if (r === 1 || r === 3 || r === 5) d.classList.add('bb');
+      if (grid[r][c] !== 0) { d.textContent = grid[r][c]; d.classList.add('given'); }
+      g.appendChild(d);
+    }
+  }
+}
+
+function setNarr(text) { document.getElementById('narr').textContent = text; }
+function getCell(r, c) { return document.getElementById(`c${r}${c}`); }
+function clearHL() { document.querySelectorAll('.cell').forEach(c => c.classList.remove('target','hl-row','hl-col','hl-box','excluded','found','clickable','correct','wrong')); }
+
+function showCands(eliminated, answer) {
+  const box = document.getElementById('cands');
+  box.innerHTML = [1,2,3,4,5,6].map(n => {
+    let cls = 'cand-pill';
+    if (n === answer) cls += ' win';
+    else if (eliminated.includes(n)) cls += ' out';
+    return `<div class="${cls}">${n}</div>`;
+  }).join('');
+}
+
+// ===== Demo Animation =====
+function runDemo() {
+  if (animRunning) return;
+  stopAnim();
+  render(); // reset grid
+  animRunning = true;
+  document.getElementById('demoBtn').disabled = true;
+
+  const m = MODULES[curTab];
+  const steps = m.demoSteps;
+  const t = m.demoTarget;
+  let idx = 0;
+
+  function next() {
+    if (!animRunning || idx >= steps.length) {
+      animRunning = false;
+      document.getElementById('demoBtn').disabled = false;
+      document.getElementById('tryBtn').style.display = '';
+      return;
+    }
+    const step = steps[idx]; idx++;
+    executeDemo(m, t, step, () => { timers.push(setTimeout(next, 600)); });
+  }
+  next();
+}
+
+function executeDemo(m, t, step, cb) {
+  const {row, col, answer} = t;
+  const grid = m.demoGrid;
+
+  switch(step.action) {
+    case 'intro':
+      clearHL();
+      getCell(row, col).classList.add('target');
+      getCell(row, col).textContent = '?';
+      setNarr(step.text);
+      speak(step.text, cb);
+      break;
+
+    case 'hl-row':
+      clearHL();
+      getCell(row, col).classList.add('target');
+      getCell(row, col).textContent = '?';
+      for (let c = 0; c < 6; c++) { if (c !== col && grid[row][c] !== 0) getCell(row, c).classList.add('hl-row'); }
+      setNarr(step.text);
+      // Note: 行 = háng (row), not xíng
+      speak(step.text, cb);
+      break;
+
+    case 'hl-col':
+      clearHL();
+      getCell(row, col).classList.add('target');
+      getCell(row, col).textContent = '?';
+      for (let r = 0; r < 6; r++) { if (r !== row && grid[r][col] !== 0) getCell(r, col).classList.add('hl-col'); }
+      // keep row highlights too
+      for (let c = 0; c < 6; c++) { if (c !== col && grid[row][c] !== 0) getCell(row, c).classList.add('hl-row'); }
+      setNarr(step.text);
+      speak(step.text, cb);
+      break;
+
+    case 'hl-box':
+      clearHL();
+      getCell(row, col).classList.add('target');
+      getCell(row, col).textContent = '?';
+      const bR = Math.floor(row/2)*2, bC = Math.floor(col/3)*3;
+      for (let r = bR; r < bR+2; r++)
+        for (let c = bC; c < bC+3; c++)
+          if ((r!==row||c!==col) && grid[r][c]!==0) getCell(r,c).classList.add('hl-box');
+      for (let c = 0; c < 6; c++) { if (c !== col && grid[row][c] !== 0) getCell(row, c).classList.add('hl-row'); }
+      for (let r = 0; r < 6; r++) { if (r !== row && grid[r][col] !== 0) getCell(r, col).classList.add('hl-col'); }
+      setNarr(step.text);
+      speak(step.text, cb);
+      break;
+
+    case 'eliminate': {
+      // Collect all used numbers
+      const used = new Set();
+      for (let c = 0; c < 6; c++) if (grid[row][c] !== 0) used.add(grid[row][c]);
+      for (let r = 0; r < 6; r++) if (grid[r][col] !== 0) used.add(grid[r][col]);
+      const bR2 = Math.floor(row/2)*2, bC2 = Math.floor(col/3)*3;
+      for (let r = bR2; r < bR2+2; r++) for (let c = bC2; c < bC2+3; c++) if (grid[r][c]!==0) used.add(grid[r][c]);
+      showCands([...used], null);
+      setNarr(step.text);
+      speak(step.text, cb);
+      break;
+    }
+
+    case 'fill':
+      clearHL();
+      getCell(row, col).textContent = answer;
+      getCell(row, col).classList.add('found');
+      const used2 = new Set();
+      for (let c = 0; c < 6; c++) if (grid[row][c] !== 0) used2.add(grid[row][c]);
+      for (let r = 0; r < 6; r++) if (grid[r][col] !== 0) used2.add(grid[r][col]);
+      const bR3 = Math.floor(row/2)*2, bC3 = Math.floor(col/3)*3;
+      for (let r = bR3; r < bR3+2; r++) for (let c = bC3; c < bC3+3; c++) if (grid[r][c]!==0) used2.add(grid[r][c]);
+      showCands([...used2], answer);
+      setNarr(step.text);
+      confetti(12);
+      speak(step.text, cb);
+      break;
+
+    // Module 2 specific actions
+    case 'show-box': {
+      clearHL();
+      const bR4 = Math.floor(row/2)*2, bC4 = Math.floor(col/3)*3;
+      for (let r = bR4; r < bR4+2; r++)
+        for (let c = bC4; c < bC4+3; c++) getCell(r,c).classList.add('hl-box');
+      getCell(row, col).classList.add('target');
+      getCell(row, col).textContent = '?';
+      setNarr(step.text);
+      speak(step.text, cb);
+      break;
+    }
+    case 'check-r0':
+    case 'check-r1c0':
+    case 'only-one':
+      clearHL();
+      getCell(row, col).classList.add('target');
+      getCell(row, col).textContent = '?';
+      setNarr(step.text);
+      speak(step.text, cb);
+      break;
+
+    // Module 3 specific
+    case 'show-constraint':
+    case 'block-effect':
+    case 'deduce':
+    case 'resolve':
+      clearHL();
+      getCell(row, col).classList.add('target');
+      getCell(row, col).textContent = '?';
+      setNarr(step.text);
+      speak(step.text, cb);
+      break;
+
+    default:
+      setNarr(step.text);
+      speak(step.text, cb);
+  }
+}
+
+// ===== Practice Mode =====
+function startPractice() {
+  stopAnim();
+  const m = MODULES[curTab];
+  drawGrid(m.practiceGrid);
+  const t = m.practiceTarget;
+  practiceTarget = t;
+
+  // Mark target cell as clickable
+  const cell = getCell(t.row, t.col);
+  cell.classList.add('clickable');
+  cell.textContent = '?';
+  cell.onclick = () => openPicker();
+
+  setNarr('💪 轮到你了！点击 ? 格子，选一个数字填进去！');
+  speak('轮到你了！点那个问号格子，选一个数字填进去吧！');
+  document.getElementById('cands').innerHTML = '';
+  document.getElementById('tryBtn').style.display = 'none';
+}
+
+function openPicker() {
+  document.getElementById('overlay').classList.add('show');
+  document.getElementById('picker').classList.add('show');
+}
+function closePicker() {
+  document.getElementById('overlay').classList.remove('show');
+  document.getElementById('picker').classList.remove('show');
+}
+
+function pickNum(n) {
+  closePicker();
+  if (!practiceTarget) return;
+  const {row, col, answer} = practiceTarget;
+  const cell = getCell(row, col);
+
+  if (n === answer) {
+    cell.textContent = answer;
+    cell.classList.remove('clickable');
+    cell.classList.add('correct');
+    cell.onclick = null;
+    confetti(20);
+    setNarr('🎉 太棒了！答对啦！你真是数独小天才！');
+    speak('太棒了！答对啦！你真是数独小天才！');
+    practiceTarget = null;
+  } else {
+    cell.classList.add('wrong');
+    setNarr(`🤔 不对哦，${n} 不是答案。再想想？提示：${MODULES[curTab].practiceHint}`);
+    speak(`不对哦。再想想？${MODULES[curTab].practiceHint}`);
+    setTimeout(() => cell.classList.remove('wrong'), 600);
+  }
+}
+
+// ===== Init =====
+render();
+</script>
+</body>
+</html>

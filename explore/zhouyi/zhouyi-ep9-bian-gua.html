@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco传统文化讲解：变卦与动爻">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>周易讲解 · 第九期：变卦与动爻</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'PingFang SC', 'Noto Serif SC', serif;
+  background: #0a0a0f;
+  color: #e8e0d0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.pages-wrapper { width: 100%; height: 100%; position: relative; }
+.page {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 40px 24px;
+  opacity: 0; transform: translateX(100%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none; overflow: hidden;
+}
+.page.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.page.prev { opacity: 0; transform: translateX(-100%); }
+
+/* Backgrounds */
+.bg-void { background: radial-gradient(ellipse at center, #080808 0%, #000 70%); }
+.bg-cosmos { background: radial-gradient(ellipse at center, #0f0a1e 0%, #060410 70%); }
+.bg-dawn { background: linear-gradient(180deg, #0a0820 0%, #1a1545 50%, #0f0d25 100%); }
+.bg-light { background: linear-gradient(135deg, #1a1508 0%, #0f0d05 50%, #080604 100%); }
+.bg-dual { background: linear-gradient(135deg, #0a0a18 0%, #080812 100%); }
+.bg-nature { background: linear-gradient(180deg, #050a10 0%, #0a1520 50%, #050a0f 100%); }
+.bg-flow { background: radial-gradient(ellipse at 50% 60%, #0a1020 0%, #060810 70%); }
+.bg-balance { background: radial-gradient(ellipse at center, #100a18 0%, #080510 70%); }
+.bg-final { background: radial-gradient(ellipse at center, #0f0818 0%, #060410 70%); }
+.bg-change { background: linear-gradient(135deg, #0f0a08 0%, #0a0810 50%, #080612 100%); }
+
+/* Typography */
+.title-main {
+  font-size: clamp(2.2em, 8vw, 3.5em);
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, #c0c0c0 50%, #ffd700 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-align: center; line-height: 1.3;
+  animation: textGlow 4s ease-in-out infinite;
+}
+@keyframes textGlow {
+  0%,100% { filter: brightness(1) drop-shadow(0 0 8px rgba(255,255,255,0.1)); }
+  50% { filter: brightness(1.15) drop-shadow(0 0 20px rgba(255,215,0,0.3)); }
+}
+.subtitle { font-size: clamp(0.85em, 3.2vw, 1.1em); color: #5a5040; margin-top: 12px; text-align: center; letter-spacing: 4px; }
+.page-title {
+  font-size: clamp(1.4em, 5.5vw, 2em); font-weight: 800;
+  color: #ffd700; text-align: center; margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(255,215,0,0.15);
+}
+.page-text {
+  font-size: clamp(0.95em, 3.8vw, 1.15em); line-height: 2;
+  text-align: center; color: #c8bca0; max-width: 560px;
+}
+.page-text .em { color: #ffd700; font-weight: bold; }
+.page-text .light { color: #f0f0f0; font-weight: bold; }
+.page-text .dark { color: #6a7a8a; }
+.fact-card {
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15);
+  border-radius: 12px; padding: 14px 18px; margin-top: 18px;
+  max-width: 480px; text-align: left; font-size: 0.88em; line-height: 1.8; color: #a89878;
+}
+.fact-card .label { color: #ffd700; font-weight: bold; margin-bottom: 4px; }
+
+/* Animations */
+.ani { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.page.active .ani { opacity: 1; transform: translateY(0); }
+.page.active .ani:nth-child(2) { transition-delay: 0.15s; }
+.page.active .ani:nth-child(3) { transition-delay: 0.3s; }
+.page.active .ani:nth-child(4) { transition-delay: 0.45s; }
+.page.active .ani:nth-child(5) { transition-delay: 0.6s; }
+.page.active .ani:nth-child(6) { transition-delay: 0.75s; }
+
+/* Particles */
+.particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.particle {
+  position: absolute; border-radius: 50%; opacity: 0;
+  animation: floatUp 7s ease-in-out infinite;
+}
+.particle-gold { background: radial-gradient(circle, #ffd700, transparent); }
+.particle-white { background: radial-gradient(circle, rgba(255,255,255,0.8), transparent); }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(100vh) scale(0.3); }
+  15% { opacity: 0.7; } 85% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(0.8); }
+}
+
+/* Stars */
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.star {
+  position: absolute; background: #fff; border-radius: 50%;
+  animation: twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.85; transform: scale(1.2); } }
+
+/* Navigation */
+.nav-hint {
+  position: fixed; bottom: 18px; left: 0; right: 0;
+  text-align: center; color: rgba(255,255,255,0.25); font-size: 0.75em;
+  pointer-events: none; transition: opacity 0.5s; z-index: 100;
+}
+.nav-dots {
+  position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 7px; z-index: 100;
+}
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); transition: all 0.3s; cursor: pointer;
+}
+.nav-dot.active { background: #ffd700; box-shadow: 0 0 6px rgba(255,215,0,0.5); transform: scale(1.4); }
+
+.audio-btn {
+  position: fixed; top: 14px; right: 14px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: #ffd700; font-size: 1.1em;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 200; backdrop-filter: blur(10px); transition: all 0.3s;
+}
+.audio-btn:active { transform: scale(0.9); }
+.audio-btn.playing { background: rgba(255,215,0,0.15); box-shadow: 0 0 12px rgba(255,215,0,0.2); }
+.page-num { position: fixed; top: 16px; left: 16px; font-size: 0.7em; color: rgba(255,255,255,0.2); z-index: 100; }
+
+/* Voice panel */
+.voice-panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(10,10,15,0.96); backdrop-filter: blur(20px);
+  padding: 20px; border-top: 1px solid rgba(255,215,0,0.15);
+  transform: translateY(100%); transition: transform 0.3s; z-index: 300;
+  border-radius: 18px 18px 0 0;
+}
+.voice-panel.show { transform: translateY(0); }
+.voice-panel label { display: block; color: #7a6a5a; font-size: 0.82em; margin-bottom: 6px; }
+.voice-panel select, .voice-panel input[type="range"] {
+  width: 100%; padding: 10px; border-radius: 8px;
+  border: 1px solid rgba(255,215,0,0.15); background: rgba(255,255,255,0.04);
+  color: #d4c8b0; font-size: 0.95em; margin-bottom: 12px;
+}
+.voice-panel .close-panel { text-align: center; color: #ffd700; cursor: pointer; padding: 8px; }
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
+<div class="page-num" id="pageNum">1 / 10</div>
+<div class="nav-dots" id="navDots"></div>
+<div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
+
+<div class="pages-wrapper">
+
+  <!-- Page 1: Cover -->
+  <div class="page bg-cosmos active" data-page="0">
+    <div class="particles" id="p0"></div>
+    <div class="ani" style="margin-bottom:20px;">
+      <svg width="220" height="200" viewBox="0 0 220 200">
+        <defs>
+          <linearGradient id="gGold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ffd700"/>
+            <stop offset="100%" stop-color="#b8860b"/>
+          </linearGradient>
+          <linearGradient id="gSilver" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#c0c0c0"/>
+            <stop offset="100%" stop-color="#606060"/>
+          </linearGradient>
+          <filter id="glowF">
+            <feGaussianBlur stdDeviation="2" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- Left trigram (Qian - all yang) -->
+        <g opacity="0.9">
+          <rect x="20" y="30" width="60" height="10" rx="2" fill="url(#gGold)"/>
+          <rect x="20" y="55" width="60" height="10" rx="2" fill="url(#gGold)"/>
+          <rect x="20" y="80" width="60" height="10" rx="2" fill="url(#gGold)"/>
+          <rect x="20" y="105" width="60" height="10" rx="2" fill="url(#gGold)"/>
+          <rect x="20" y="130" width="60" height="10" rx="2" fill="url(#gGold)"/>
+          <rect x="20" y="155" width="60" height="10" rx="2" fill="url(#gGold)"/>
+          <text x="50" y="185" text-anchor="middle" font-size="11" fill="#ffd700">乾卦</text>
+        </g>
+        <!-- Arrow with animation -->
+        <g>
+          <path d="M95,95 L125,95" fill="none" stroke="#ffd700" stroke-width="2" stroke-dasharray="4 3" opacity="0.7">
+            <animate attributeName="stroke-dashoffset" values="7;0" dur="1s" repeatCount="indefinite"/>
+          </path>
+          <polygon points="127,90 137,95 127,100" fill="#ffd700" opacity="0.7"/>
+          <text x="116" y="82" text-anchor="middle" font-size="9" fill="#ff6b35">变!</text>
+        </g>
+        <!-- Right trigram (after change - first yao broken) -->
+        <g opacity="0.9">
+          <rect x="145" y="30" width="60" height="10" rx="2" fill="url(#gGold)"/>
+          <rect x="145" y="55" width="60" height="10" rx="2" fill="url(#gGold)"/>
+          <rect x="145" y="80" width="60" height="10" rx="2" fill="url(#gGold)"/>
+          <rect x="145" y="105" width="60" height="10" rx="2" fill="url(#gGold)"/>
+          <rect x="145" y="130" width="60" height="10" rx="2" fill="url(#gGold)"/>
+          <!-- Broken line (yin yao) with flash -->
+          <rect x="145" y="155" width="25" height="10" rx="2" fill="url(#gSilver)">
+            <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="180" y="155" width="25" height="10" rx="2" fill="url(#gSilver)">
+            <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <text x="175" y="185" text-anchor="middle" font-size="11" fill="#c0c0c0">姤卦</text>
+        </g>
+      </svg>
+    </div>
+    <div class="title-main ani">变卦与动爻</div>
+    <div class="subtitle ani">第九期 · 唯一不变的是变化</div>
+  </div>
+
+  <!-- Page 2: What is Dong Yao -->
+  <div class="page bg-void" data-page="1">
+    <div class="stars" id="s1"></div>
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="200" height="160" viewBox="0 0 200 160">
+        <defs>
+          <linearGradient id="gYang2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#b8860b"/>
+          </linearGradient>
+        </defs>
+        <!-- Six yao lines -->
+        <rect x="50" y="10" width="100" height="10" rx="2" fill="url(#gYang2)" opacity="0.5"/>
+        <rect x="50" y="35" width="100" height="10" rx="2" fill="url(#gYang2)" opacity="0.5"/>
+        <rect x="50" y="60" width="100" height="10" rx="2" fill="url(#gYang2)" opacity="0.5"/>
+        <!-- The moving yao (dong yao) - flashing between yang and yin -->
+        <g>
+          <rect x="50" y="85" width="100" height="10" rx="2" fill="#ff6b35">
+            <animate attributeName="width" values="100;42;100;42" dur="3s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="108" y="85" width="42" height="10" rx="2" fill="#ff6b35" opacity="0">
+            <animate attributeName="opacity" values="0;1;0;1" dur="3s" repeatCount="indefinite"/>
+          </rect>
+          <!-- Glow around dong yao -->
+          <rect x="48" y="83" width="104" height="14" rx="3" fill="none" stroke="#ff6b35" stroke-width="1" opacity="0.5">
+            <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <text x="168" y="94" font-size="10" fill="#ff6b35" font-weight="bold">← 动爻!</text>
+        </g>
+        <rect x="50" y="110" width="100" height="10" rx="2" fill="url(#gYang2)" opacity="0.5"/>
+        <rect x="50" y="135" width="100" height="10" rx="2" fill="url(#gYang2)" opacity="0.5"/>
+      </svg>
+    </div>
+    <div class="page-title ani">什么是动爻？</div>
+    <div class="page-text ani">
+      一个卦有<span class="em">六条爻</span>，<br>
+      其中正在变化的那一条，<br>
+      就叫<span class="em">「动爻」</span>。<br><br>
+      动爻有两种变化：<br>
+      <span class="em">阳爻 → 变成阴爻</span><br>
+      <span class="em">阴爻 → 变成阳爻</span><br><br>
+      <span class="dark">它正在"动"，所以叫动爻。</span>
+    </div>
+  </div>
+
+  <!-- Page 3: Concept of Bian Gua -->
+  <div class="page bg-cosmos" data-page="2">
+    <div class="particles" id="p2"></div>
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="280" height="130" viewBox="0 0 280 130">
+        <defs>
+          <linearGradient id="gY3" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#b8860b"/>
+          </linearGradient>
+        </defs>
+        <!-- Original Gua -->
+        <g>
+          <rect x="20" y="20" width="70" height="8" rx="2" fill="url(#gY3)"/>
+          <rect x="20" y="38" width="70" height="8" rx="2" fill="url(#gY3)"/>
+          <rect x="20" y="56" width="30" height="8" rx="2" fill="#6080c0"/>
+          <rect x="60" y="56" width="30" height="8" rx="2" fill="#6080c0"/>
+          <rect x="20" y="74" width="70" height="8" rx="2" fill="url(#gY3)"/>
+          <rect x="20" y="92" width="30" height="8" rx="2" fill="#6080c0"/>
+          <rect x="60" y="92" width="30" height="8" rx="2" fill="#6080c0"/>
+          <text x="55" y="118" text-anchor="middle" font-size="11" fill="#ffd700">本卦</text>
+          <text x="55" y="12" text-anchor="middle" font-size="9" fill="#a89878">（现在）</text>
+        </g>
+        <!-- Arrow -->
+        <g>
+          <path d="M105,60 L155,60" fill="none" stroke="#ff6b35" stroke-width="2" stroke-dasharray="4 3">
+            <animate attributeName="stroke-dashoffset" values="7;0" dur="1s" repeatCount="indefinite"/>
+          </path>
+          <polygon points="157,55 167,60 157,65" fill="#ff6b35"/>
+          <text x="136" y="48" text-anchor="middle" font-size="10" fill="#ff6b35">动爻变</text>
+        </g>
+        <!-- Changed Gua -->
+        <g>
+          <rect x="180" y="20" width="70" height="8" rx="2" fill="url(#gY3)"/>
+          <rect x="180" y="38" width="70" height="8" rx="2" fill="url(#gY3)"/>
+          <rect x="180" y="56" width="70" height="8" rx="2" fill="#ffd700">
+            <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="180" y="74" width="70" height="8" rx="2" fill="url(#gY3)"/>
+          <rect x="180" y="92" width="30" height="8" rx="2" fill="#6080c0"/>
+          <rect x="220" y="92" width="30" height="8" rx="2" fill="#6080c0"/>
+          <text x="215" y="118" text-anchor="middle" font-size="11" fill="#c0c0c0">变卦</text>
+          <text x="215" y="12" text-anchor="middle" font-size="9" fill="#a89878">（将来）</text>
+        </g>
+      </svg>
+    </div>
+    <div class="page-title ani">什么是变卦？</div>
+    <div class="page-text ani">
+      当动爻发生变化后，<br>
+      原来的卦就变成了<span class="em">另一个卦</span>。<br><br>
+      变化前的卦 = <span class="em">本卦</span>（原卦）<br>
+      变化后的卦 = <span class="em">变卦</span>（之卦）<br><br>
+      <span class="dark">就像毛毛虫变蝴蝶，</span><br>
+      <span class="dark">还是同一个生命，但形态变了。</span>
+    </div>
+  </div>
+
+  <!-- Page 4: Example - Qian to Gou -->
+  <div class="page bg-dawn" data-page="3">
+    <div class="stars" id="s3"></div>
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="280" height="150" viewBox="0 0 280 150">
+        <defs>
+          <linearGradient id="gY4" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#b8860b"/>
+          </linearGradient>
+        </defs>
+        <!-- Qian Gua (all yang) -->
+        <g>
+          <rect x="20" y="15" width="70" height="9" rx="2" fill="url(#gY4)"/>
+          <rect x="20" y="35" width="70" height="9" rx="2" fill="url(#gY4)"/>
+          <rect x="20" y="55" width="70" height="9" rx="2" fill="url(#gY4)"/>
+          <rect x="20" y="75" width="70" height="9" rx="2" fill="url(#gY4)"/>
+          <rect x="20" y="95" width="70" height="9" rx="2" fill="url(#gY4)"/>
+          <!-- First yao highlighted -->
+          <rect x="20" y="115" width="70" height="9" rx="2" fill="#ff6b35">
+            <animate attributeName="opacity" values="1;0.4;1" dur="1.5s" repeatCount="indefinite"/>
+          </rect>
+          <text x="6" y="122" font-size="8" fill="#ff6b35">初爻→</text>
+          <text x="55" y="145" text-anchor="middle" font-size="12" fill="#ffd700" font-weight="bold">☰ 乾</text>
+        </g>
+        <!-- Arrow -->
+        <path d="M105,70 L155,70" fill="none" stroke="#ff6b35" stroke-width="2" stroke-dasharray="4 3">
+          <animate attributeName="stroke-dashoffset" values="7;0" dur="1s" repeatCount="indefinite"/>
+        </path>
+        <polygon points="157,65 167,70 157,75" fill="#ff6b35"/>
+        <text x="136" y="58" text-anchor="middle" font-size="9" fill="#ff6b35">初爻变</text>
+        <!-- Gou Gua (first yao becomes yin) -->
+        <g>
+          <rect x="180" y="15" width="70" height="9" rx="2" fill="url(#gY4)"/>
+          <rect x="180" y="35" width="70" height="9" rx="2" fill="url(#gY4)"/>
+          <rect x="180" y="55" width="70" height="9" rx="2" fill="url(#gY4)"/>
+          <rect x="180" y="75" width="70" height="9" rx="2" fill="url(#gY4)"/>
+          <rect x="180" y="95" width="70" height="9" rx="2" fill="url(#gY4)"/>
+          <!-- Broken yin line -->
+          <rect x="180" y="115" width="28" height="9" rx="2" fill="#6080c0">
+            <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="222" y="115" width="28" height="9" rx="2" fill="#6080c0">
+            <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <text x="215" y="145" text-anchor="middle" font-size="12" fill="#c0c0c0" font-weight="bold">☴ 天风姤</text>
+        </g>
+      </svg>
+    </div>
+    <div class="page-title ani">举个例子</div>
+    <div class="page-text ani">
+      <span class="em">乾卦</span>（六条全是阳爻）<br>
+      如果<span class="em">初爻</span>（最下面一条）动了：<br><br>
+      阳爻 → 变成阴爻<br><br>
+      乾卦就变成了<span class="em">天风姤</span>卦！<br><br>
+      <span class="dark">只变了一条爻，</span><br>
+      <span class="dark">整个卦的含义就不同了。</span>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">💡 小知识</div>
+      "姤"是相遇的意思。<br>
+      一阴初生于下，像风从地面吹起，<br>
+      天与风相遇。
+    </div>
+  </div>
+
+  <!-- Page 5: Why look at Bian Gua -->
+  <div class="page bg-dual" data-page="4">
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="260" height="100" viewBox="0 0 260 100">
+        <!-- Ben Gua box -->
+        <rect x="10" y="20" width="80" height="60" rx="8" fill="none" stroke="#ffd700" stroke-width="1.5"/>
+        <text x="50" y="45" text-anchor="middle" font-size="11" fill="#ffd700" font-weight="bold">本卦</text>
+        <text x="50" y="62" text-anchor="middle" font-size="9" fill="#a89878">你现在的状况</text>
+        <!-- Arrow -->
+        <path d="M100,50 L150,50" fill="none" stroke="rgba(255,215,0,0.5)" stroke-width="1.5" stroke-dasharray="4 3">
+          <animate attributeName="stroke-dashoffset" values="7;0" dur="1.2s" repeatCount="indefinite"/>
+        </path>
+        <polygon points="152,45 162,50 152,55" fill="rgba(255,215,0,0.5)"/>
+        <!-- Bian Gua box -->
+        <rect x="170" y="20" width="80" height="60" rx="8" fill="none" stroke="#c0c0c0" stroke-width="1.5"/>
+        <text x="210" y="45" text-anchor="middle" font-size="11" fill="#c0c0c0" font-weight="bold">变卦</text>
+        <text x="210" y="62" text-anchor="middle" font-size="9" fill="#a89878">未来的趋势</text>
+      </svg>
+    </div>
+    <div class="page-title ani">为什么要看变卦？</div>
+    <div class="page-text ani">
+      <span class="em">本卦</span> = 你<span class="em">现在</span>的处境<br>
+      <span class="em">变卦</span> = 事情的<span class="em">发展趋势</span><br><br>
+      就像看地图：<br>
+      本卦是"<span class="em">你在哪里</span>"<br>
+      变卦是"<span class="em">你要去哪里</span>"<br><br>
+      <span class="dark">两个卦合在一起看，</span><br>
+      <span class="dark">才能看清事情的全貌。</span>
+    </div>
+  </div>
+
+  <!-- Page 6: Number of Dong Yao -->
+  <div class="page bg-flow" data-page="5">
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="240" height="130" viewBox="0 0 240 130">
+        <defs>
+          <linearGradient id="gY6" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#b8860b"/>
+          </linearGradient>
+        </defs>
+        <!-- One moving -->
+        <g>
+          <rect x="10" y="15" width="50" height="6" rx="1" fill="url(#gY6)" opacity="0.4"/>
+          <rect x="10" y="28" width="50" height="6" rx="1" fill="url(#gY6)" opacity="0.4"/>
+          <rect x="10" y="41" width="50" height="6" rx="1" fill="url(#gY6)" opacity="0.4"/>
+          <rect x="10" y="54" width="50" height="6" rx="1" fill="url(#gY6)" opacity="0.4"/>
+          <rect x="10" y="67" width="50" height="6" rx="1" fill="url(#gY6)" opacity="0.4"/>
+          <rect x="10" y="80" width="50" height="6" rx="1" fill="#ff6b35">
+            <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+          </rect>
+          <text x="35" y="105" text-anchor="middle" font-size="9" fill="#ffd700">一爻动</text>
+          <text x="35" y="120" text-anchor="middle" font-size="8" fill="#a89878">最清晰</text>
+        </g>
+        <!-- Multiple moving -->
+        <g>
+          <rect x="90" y="15" width="50" height="6" rx="1" fill="url(#gY6)" opacity="0.4"/>
+          <rect x="90" y="28" width="50" height="6" rx="1" fill="#ff6b35">
+            <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="0.3s"/>
+          </rect>
+          <rect x="90" y="41" width="50" height="6" rx="1" fill="url(#gY6)" opacity="0.4"/>
+          <rect x="90" y="54" width="50" height="6" rx="1" fill="#ff6b35">
+            <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+          </rect>
+          <rect x="90" y="67" width="50" height="6" rx="1" fill="url(#gY6)" opacity="0.4"/>
+          <rect x="90" y="80" width="50" height="6" rx="1" fill="#ff6b35">
+            <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite" begin="0.9s"/>
+          </rect>
+          <text x="115" y="105" text-anchor="middle" font-size="9" fill="#ff6b35">多爻动</text>
+          <text x="115" y="120" text-anchor="middle" font-size="8" fill="#a89878">较复杂</text>
+        </g>
+        <!-- All moving -->
+        <g>
+          <rect x="170" y="15" width="50" height="6" rx="1" fill="#ff6b35">
+            <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite"/>
+          </rect>
+          <rect x="170" y="28" width="50" height="6" rx="1" fill="#ff6b35">
+            <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite" begin="0.2s"/>
+          </rect>
+          <rect x="170" y="41" width="50" height="6" rx="1" fill="#ff6b35">
+            <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite" begin="0.4s"/>
+          </rect>
+          <rect x="170" y="54" width="50" height="6" rx="1" fill="#ff6b35">
+            <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite" begin="0.6s"/>
+          </rect>
+          <rect x="170" y="67" width="50" height="6" rx="1" fill="#ff6b35">
+            <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite" begin="0.8s"/>
+          </rect>
+          <rect x="170" y="80" width="50" height="6" rx="1" fill="#ff6b35">
+            <animate attributeName="opacity" values="0.4;1;0.4" dur="1.5s" repeatCount="indefinite" begin="1s"/>
+          </rect>
+          <text x="195" y="105" text-anchor="middle" font-size="9" fill="#e74c3c">六爻全动</text>
+          <text x="195" y="120" text-anchor="middle" font-size="8" fill="#a89878">完全翻转</text>
+        </g>
+      </svg>
+    </div>
+    <div class="page-title ani">动爻的数量</div>
+    <div class="page-text ani">
+      <span class="em">一爻动</span> — 变化最清晰<br>
+      看那一条动爻的爻辞。<br><br>
+      <span class="em">多爻动</span> — 情况较复杂<br>
+      多种力量同时在变化。<br><br>
+      <span class="em">六爻全动</span> — 天翻地覆<br>
+      整个卦完全变成对面！<br>
+      乾变坤，坤变乾。
+    </div>
+  </div>
+
+  <!-- Page 7: Core of Yi - Change -->
+  <div class="page bg-nature" data-page="6">
+    <div class="stars" id="s6"></div>
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="200" height="120" viewBox="0 0 200 120">
+        <!-- Flowing transformation loop -->
+        <defs>
+          <linearGradient id="gFlow7" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#ffd700"/>
+            <stop offset="50%" stop-color="#ff6b35"/>
+            <stop offset="100%" stop-color="#6080c0"/>
+          </linearGradient>
+        </defs>
+        <!-- Infinity / flow symbol -->
+        <path d="M30,60 C30,30 70,30 100,60 C130,90 170,90 170,60 C170,30 130,30 100,60 C70,90 30,90 30,60 Z" 
+              fill="none" stroke="url(#gFlow7)" stroke-width="2.5" stroke-linecap="round" opacity="0.7">
+          <animate attributeName="stroke-dasharray" values="0 500;500 0" dur="4s" repeatCount="indefinite"/>
+        </path>
+        <!-- Moving dot along path -->
+        <circle r="5" fill="#ffd700">
+          <animateMotion dur="4s" repeatCount="indefinite" path="M30,60 C30,30 70,30 100,60 C130,90 170,90 170,60 C170,30 130,30 100,60 C70,90 30,90 30,60 Z"/>
+        </circle>
+        <!-- Yi character -->
+        <text x="100" y="60" text-anchor="middle" dominant-baseline="middle" font-size="24" fill="#ffd700" opacity="0.3" font-weight="bold">易</text>
+      </svg>
+    </div>
+    <div class="page-title ani">"易"的核心：变化</div>
+    <div class="page-text ani">
+      "周<span class="em">易</span>"的"易"，<br>
+      最重要的意思就是<span class="em">变化</span>。<br><br>
+      没有永恒不变的卦象，<br>
+      一切都在<span class="em">流动</span>。<br><br>
+      今天的好运，明天可能变；<br>
+      今天的困难，明天也会变。<br><br>
+      <span class="em">变，才是唯一的不变。</span>
+    </div>
+  </div>
+
+  <!-- Page 8: Life Metaphor - Weather -->
+  <div class="page bg-balance" data-page="7">
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="280" height="110" viewBox="0 0 280 110">
+        <!-- Sunny -->
+        <g>
+          <circle cx="50" cy="45" r="20" fill="#ffd700" opacity="0.8">
+            <animate attributeName="r" values="18;22;18" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <!-- Sun rays -->
+          <line x1="50" y1="18" x2="50" y2="12" stroke="#ffd700" stroke-width="2" opacity="0.5"/>
+          <line x1="70" y1="25" x2="74" y2="21" stroke="#ffd700" stroke-width="2" opacity="0.5"/>
+          <line x1="30" y1="25" x2="26" y2="21" stroke="#ffd700" stroke-width="2" opacity="0.5"/>
+          <text x="50" y="80" text-anchor="middle" font-size="9" fill="#ffd700">本卦：晴天</text>
+          <text x="50" y="95" text-anchor="middle" font-size="8" fill="#a89878">现在的状况</text>
+        </g>
+        <!-- Arrow 1 -->
+        <path d="M85,45 L115,45" fill="none" stroke="rgba(255,215,0,0.4)" stroke-width="1" stroke-dasharray="3 2">
+          <animate attributeName="stroke-dashoffset" values="5;0" dur="1s" repeatCount="indefinite"/>
+        </path>
+        <polygon points="117,41 124,45 117,49" fill="rgba(255,215,0,0.4)"/>
+        <!-- Cloudy -->
+        <g>
+          <ellipse cx="140" cy="40" rx="22" ry="14" fill="#8090a0" opacity="0.6"/>
+          <ellipse cx="150" cy="45" rx="18" ry="12" fill="#6a7a8a" opacity="0.7"/>
+          <circle cx="50" cy="45" r="3" fill="#ffd700" opacity="0" transform="translate(80,-5)">
+            <animate attributeName="opacity" values="0;0.6;0" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <text x="140" y="80" text-anchor="middle" font-size="9" fill="#8090a0">动爻：转多云</text>
+          <text x="140" y="95" text-anchor="middle" font-size="8" fill="#a89878">正在变化</text>
+        </g>
+        <!-- Arrow 2 -->
+        <path d="M175,45 L205,45" fill="none" stroke="rgba(100,120,180,0.4)" stroke-width="1" stroke-dasharray="3 2">
+          <animate attributeName="stroke-dashoffset" values="5;0" dur="1s" repeatCount="indefinite"/>
+        </path>
+        <polygon points="207,41 214,45 207,49" fill="rgba(100,120,180,0.4)"/>
+        <!-- Rainy -->
+        <g>
+          <ellipse cx="235" cy="35" rx="22" ry="14" fill="#4a5a6a" opacity="0.8"/>
+          <ellipse cx="243" cy="38" rx="16" ry="10" fill="#3a4a5a" opacity="0.8"/>
+          <!-- Rain drops -->
+          <line x1="228" y1="55" x2="226" y2="65" stroke="#6080c0" stroke-width="1.5" opacity="0.6">
+            <animate attributeName="y1" values="52;58;52" dur="1s" repeatCount="indefinite"/>
+            <animate attributeName="y2" values="62;68;62" dur="1s" repeatCount="indefinite"/>
+          </line>
+          <line x1="238" y1="55" x2="236" y2="65" stroke="#6080c0" stroke-width="1.5" opacity="0.6">
+            <animate attributeName="y1" values="55;61;55" dur="1s" repeatCount="indefinite" begin="0.3s"/>
+            <animate attributeName="y2" values="65;71;65" dur="1s" repeatCount="indefinite" begin="0.3s"/>
+          </line>
+          <line x1="248" y1="53" x2="246" y2="63" stroke="#6080c0" stroke-width="1.5" opacity="0.6">
+            <animate attributeName="y1" values="50;56;50" dur="1s" repeatCount="indefinite" begin="0.6s"/>
+            <animate attributeName="y2" values="60;66;60" dur="1s" repeatCount="indefinite" begin="0.6s"/>
+          </line>
+          <text x="235" y="80" text-anchor="middle" font-size="9" fill="#6080c0">变卦：下雨</text>
+          <text x="235" y="95" text-anchor="middle" font-size="8" fill="#a89878">未来的趋势</text>
+        </g>
+      </svg>
+    </div>
+    <div class="page-title ani">生活中的变卦</div>
+    <div class="page-text ani">
+      变卦就像<span class="em">天气变化</span>：<br><br>
+      ☀️ 现在是晴天 → <span class="em">本卦</span><br>
+      ⛅ 正在转多云 → <span class="em">动爻</span><br>
+      🌧️ 即将要下雨 → <span class="em">变卦</span><br><br>
+      看到云来了，你就知道<br>
+      该<span class="em">带伞</span>出门了！<br><br>
+      <span class="dark">变卦帮我们提前做准备。</span>
+    </div>
+  </div>
+
+  <!-- Page 9: Three Yi - Change, Unchanging, Simple -->
+  <div class="page bg-change" data-page="8">
+    <div class="particles" id="p8"></div>
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="240" height="120" viewBox="0 0 240 120">
+        <!-- Three circles representing three Yi -->
+        <!-- Bian Yi (Change) -->
+        <g>
+          <circle cx="50" cy="50" r="30" fill="none" stroke="#ff6b35" stroke-width="1.5" stroke-dasharray="4 2">
+            <animateTransform attributeName="transform" type="rotate" values="0 50 50;360 50 50" dur="8s" repeatCount="indefinite"/>
+          </circle>
+          <text x="50" y="50" text-anchor="middle" dominant-baseline="middle" font-size="14" fill="#ff6b35" font-weight="bold">变易</text>
+          <text x="50" y="95" text-anchor="middle" font-size="9" fill="#a89878">万物在变</text>
+        </g>
+        <!-- Bu Yi (Unchanging) -->
+        <g>
+          <circle cx="120" cy="50" r="30" fill="none" stroke="#ffd700" stroke-width="2"/>
+          <text x="120" y="50" text-anchor="middle" dominant-baseline="middle" font-size="14" fill="#ffd700" font-weight="bold">不易</text>
+          <text x="120" y="95" text-anchor="middle" font-size="9" fill="#a89878">规律不变</text>
+        </g>
+        <!-- Jian Yi (Simple) -->
+        <g>
+          <circle cx="190" cy="50" r="30" fill="none" stroke="#90c090" stroke-width="1.5"/>
+          <text x="190" y="50" text-anchor="middle" dominant-baseline="middle" font-size="14" fill="#90c090" font-weight="bold">简易</text>
+          <text x="190" y="95" text-anchor="middle" font-size="9" fill="#a89878">大道至简</text>
+        </g>
+      </svg>
+    </div>
+    <div class="page-title ani">"变"与"不变"</div>
+    <div class="page-text ani">
+      周易讲了三种"易"：<br><br>
+      <span class="em">变易</span> — 一切都在变化<br>
+      春夏秋冬，日出日落。<br><br>
+      <span class="em">不易</span> — 规律永远不变<br>
+      太阳总会升起，四季总会轮转。<br><br>
+      <span class="em">简易</span> — 道理其实很简单<br>
+      阴阳变化，就这么朴素。
+    </div>
+    <div class="fact-card ani">
+      <div class="label">🧒 举个例子</div>
+      树叶会变黄（变易），<br>
+      但每年秋天都会变黄（不易），<br>
+      原因就是天冷了（简易）。
+    </div>
+  </div>
+
+  <!-- Page 10: Summary -->
+  <div class="page bg-final" data-page="9">
+    <div class="particles" id="p9"></div>
+    <div class="ani" style="margin-bottom:10px;">
+      <svg width="120" height="80" viewBox="0 0 120 80">
+        <!-- Small transformation animation -->
+        <rect x="10" y="20" width="40" height="6" rx="1" fill="#ffd700" opacity="0.6"/>
+        <rect x="10" y="34" width="40" height="6" rx="1" fill="#ffd700" opacity="0.6"/>
+        <rect x="10" y="48" width="40" height="6" rx="1" fill="#ff6b35">
+          <animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/>
+        </rect>
+        <path d="M58,38 L72,38" fill="none" stroke="#ffd700" stroke-width="1.5" stroke-dasharray="3 2">
+          <animate attributeName="stroke-dashoffset" values="5;0" dur="1s" repeatCount="indefinite"/>
+        </path>
+        <polygon points="74,35 80,38 74,41" fill="#ffd700" opacity="0.7"/>
+        <rect x="85" y="20" width="40" height="6" rx="1" fill="#ffd700" opacity="0.6"/>
+        <rect x="85" y="34" width="40" height="6" rx="1" fill="#ffd700" opacity="0.6"/>
+        <rect x="85" y="48" width="16" height="6" rx="1" fill="#6080c0" opacity="0.8"/>
+        <rect x="109" y="48" width="16" height="6" rx="1" fill="#6080c0" opacity="0.8"/>
+      </svg>
+    </div>
+    <div class="page-title ani">小结</div>
+    <div class="page-text ani">
+      <span class="em">动爻</span> = 正在变化的那条爻<br>
+      <span class="em">变卦</span> = 动爻变化后得到的新卦<br><br>
+      本卦看<span class="em">现在</span>，变卦看<span class="em">趋势</span>。<br><br>
+      周易的"易"= <span class="em">变化</span><br>
+      <span class="dark">变易 · 不易 · 简易</span><br><br>
+      <span class="em">唯一不变的，就是变化本身。</span>
+    </div>
+    <div class="ani" style="margin-top:20px;padding:12px 20px;border:1px solid rgba(255,215,0,0.15);border-radius:10px;text-align:center;">
+      <div style="color:#ffd700;font-size:1em;font-weight:bold;">下一期预告</div>
+      <div style="color:#6a5a4a;margin-top:5px;">第十期 · 周易与时 — 时机的智慧</div>
+    </div>
+    <div class="ani" style="margin-top:12px;color:#3a3a3a;font-size:0.72em;">— 周易讲解 · 第九期 完 —</div>
+  </div>
+
+</div>
+
+<!-- Voice Panel -->
+<div class="voice-panel" id="voicePanel">
+  <label>🗣️ 声音 <select id="voiceSelect"></select></label>
+  <label>🔊 语速: <span id="rateVal">0.9</span>x <input type="range" id="rateRange" min="0.5" max="1.5" step="0.1" value="0.9"></label>
+  <div class="close-panel" onclick="toggleVoicePanel()">✕ 关闭</div>
+</div>
+
+<script>
+let cur = 0;
+const pages = document.querySelectorAll('.page');
+const total = pages.length;
+let animating = false, speaking = false;
+
+const navDots = document.getElementById('navDots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => go(i);
+  navDots.appendChild(d);
+}
+
+function go(idx) {
+  if (idx < 0 || idx >= total || idx === cur || animating) return;
+  animating = true;
+  window.speechSynthesis.cancel();
+  const old = pages[cur], nw = pages[idx], dir = idx > cur ? 1 : -1;
+  old.classList.remove('active'); old.classList.add('prev');
+  if (dir < 0) { old.style.transform = 'translateX(100%)'; old.style.opacity = '0'; }
+  nw.style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+  nw.classList.remove('prev');
+  requestAnimationFrame(() => {
+    nw.classList.add('active'); nw.style.transform = '';
+    cur = idx; updateUI();
+    setTimeout(() => {
+      animating = false;
+      old.classList.remove('prev'); old.style.transform = ''; old.style.opacity = '';
+      if (speaking) speakPage(cur);
+    }, 650);
+  });
+}
+
+function updateUI() {
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.getElementById('pageNum').textContent = `${cur + 1} / ${total}`;
+  document.getElementById('navHint').style.opacity = '0';
+}
+
+let tx = 0, ty = 0, tt = 0;
+document.addEventListener('touchstart', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY; tt = Date.now();
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty, dt = Date.now() - tt;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 500) { dx < 0 ? go(cur+1) : go(cur-1); return; }
+  if (dt < 300 && Math.abs(dx) < 15 && Math.abs(dy) < 15) {
+    e.changedTouches[0].clientX > window.innerWidth * 0.4 ? go(cur+1) : go(cur-1);
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur+1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur-1); }
+});
+
+// TTS
+const narrations = [
+  "变卦与动爻。第九期，唯一不变的是变化。",
+  "一个卦有六条爻，其中正在变化的那一条，就叫动爻。动爻有两种变化：阳爻变成阴爻，或者阴爻变成阳爻。它正在动，所以叫动爻。",
+  "当动爻发生变化后，原来的卦就变成了另一个卦。变化前的卦叫本卦，也叫原卦。变化后的卦叫变卦，也叫之卦。就像毛毛虫变蝴蝶，还是同一个生命，但形态变了。",
+  "举个例子。乾卦，六条全是阳爻。如果初爻，也就是最下面一条动了，阳爻变成阴爻，乾卦就变成了天风姤卦！只变了一条爻，整个卦的含义就不同了。姤是相遇的意思，一阴初生于下，像风从地面吹起，天与风相遇。",
+  "为什么要看变卦呢？本卦代表你现在的处境，变卦代表事情的发展趋势。就像看地图：本卦是你在哪里，变卦是你要去哪里。两个卦合在一起看，才能看清事情的全貌。",
+  "动爻的数量不同，解读也不同。一爻动，变化最清晰，看那一条动爻的爻辞。多爻动，情况较复杂，多种力量同时在变化。六爻全动，天翻地覆，整个卦完全变成对面！乾变坤，坤变乾。",
+  "周易的易，最重要的意思就是变化。没有永恒不变的卦象，一切都在流动。今天的好运，明天可能变；今天的困难，明天也会变。变，才是唯一的不变。",
+  "变卦就像天气变化。现在是晴天，这是本卦。正在转多云，这是动爻在变。即将要下雨，这是变卦。看到云来了，你就知道该带伞出门了！变卦帮我们提前做准备。",
+  "周易讲了三种易。变易，一切都在变化，春夏秋冬，日出日落。不易，规律永远不变，太阳总会升起，四季总会轮转。简易，道理其实很简单，阴阳变化，就这么朴素。比如树叶会变黄，这是变易。但每年秋天都会变黄，这是不易。原因就是天冷了，这是简易。",
+  "小结。动爻是正在变化的那条爻，变卦是动爻变化后得到的新卦。本卦看现在，变卦看趋势。周易的易就是变化。变易、不易、简易。唯一不变的，就是变化本身。下一期，我们来讲周易与时，时机的智慧。"
+];
+
+let voices = [];
+function loadVoices() {
+  voices = window.speechSynthesis.getVoices();
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+  const zh = voices.filter(v => (v.lang.startsWith('zh-CN')||v.lang==='zh')&&!v.lang.startsWith('zh-HK')&&!v.lang.startsWith('zh-TW'));
+  // Sort: Edge Online (Natural) first
+  zh.sort((a, b) => {
+    const aOnline = a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Online') && a.name.includes('Natural') ? 2 : a.name.includes('Microsoft') ? 1 : 0;
+    const bOnline = b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Online') && b.name.includes('Natural') ? 2 : b.name.includes('Microsoft') ? 1 : 0;
+    return bOnline - aOnline;
+  });
+  (zh.length ? zh : voices.slice(0, 8)).forEach(v => {
+    const o = document.createElement('option');
+    o.value = voices.indexOf(v);
+    o.textContent = v.name.replace(/Microsoft |Google |Apple /g, '');
+    sel.appendChild(o);
+  });
+}
+window.speechSynthesis.onvoiceschanged = loadVoices;
+setTimeout(loadVoices, 300);
+document.getElementById('rateRange').addEventListener('input', function() {
+  document.getElementById('rateVal').textContent = this.value;
+});
+
+function speakPage(idx) {
+  window.speechSynthesis.cancel();
+  if (!narrations[idx]) return;
+  const u = new SpeechSynthesisUtterance(narrations[idx]);
+  u.lang = 'zh-CN'; u.rate = parseFloat(document.getElementById('rateRange').value);
+  const sv = document.getElementById('voiceSelect');
+  if (sv.value && voices[sv.value]) u.voice = voices[sv.value];
+  u.onend = () => {
+    if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
+    else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
+  };
+  window.speechSynthesis.speak(u);
+}
+
+function toggleAudio() {
+  if (speaking) { speaking = false; window.speechSynthesis.cancel(); }
+  else { speaking = true; speakPage(cur); }
+  updateAudioBtn();
+}
+function updateAudioBtn() {
+  const b = document.getElementById('audioBtn');
+  b.textContent = speaking ? '🔊' : '🔇';
+  b.classList.toggle('playing', speaking);
+}
+
+let lpt;
+document.getElementById('audioBtn').addEventListener('touchstart', e => {
+  lpt = setTimeout(() => { toggleVoicePanel(); e.preventDefault(); }, 600);
+}, { passive: false });
+document.getElementById('audioBtn').addEventListener('touchend', () => clearTimeout(lpt));
+function toggleVoicePanel() { document.getElementById('voicePanel').classList.toggle('show'); }
+
+// Particles & Stars
+function mkParticles(id, n=15) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle ' + (Math.random() > 0.5 ? 'particle-gold' : 'particle-white');
+    p.style.left = Math.random()*100+'%';
+    p.style.animationDelay = Math.random()*7+'s';
+    p.style.animationDuration = (5+Math.random()*4)+'s';
+    const s = 2+Math.random()*4; p.style.width = s+'px'; p.style.height = s+'px';
+    c.appendChild(p);
+  }
+}
+function mkStars(id, n=35) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = Math.random()*4+'s';
+    const sz = 1+Math.random()*2; s.style.width = sz+'px'; s.style.height = sz+'px';
+    c.appendChild(s);
+  }
+}
+
+mkParticles('p0', 18); mkParticles('p2', 14); mkParticles('p8', 16); mkParticles('p9', 12);
+mkStars('s1', 30); mkStars('s3', 35); mkStars('s6', 30);
+
+setTimeout(() => { document.getElementById('navHint').style.opacity = '0'; }, 4500);
+document.addEventListener('dblclick', e => e.preventDefault());
+</script>
+<script src="../../assets/site.js"></script></body>
+</html>

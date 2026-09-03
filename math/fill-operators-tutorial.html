@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧮 凑数填符号 · 解题秘籍</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  min-height: 100vh;
+  padding: 16px;
+  color: #333;
+}
+.header {
+  text-align: center;
+  padding: 20px 0 10px;
+  color: white;
+}
+.header h1 {
+  font-size: 2em;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  margin-bottom: 6px;
+}
+.header p { opacity: 0.9; font-size: 1.05em; }
+
+/* Voice controls */
+.voice-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  margin: 12px 0;
+}
+.voice-bar select, .voice-bar input {
+  padding: 6px 10px;
+  border-radius: 15px;
+  border: 2px solid rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.9);
+  font-size: 0.9em;
+}
+.voice-bar label { color: white; font-size: 0.9em; }
+
+/* Lesson container */
+.lesson {
+  max-width: 700px;
+  margin: 16px auto;
+  background: rgba(255,255,255,0.97);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+/* Lesson steps */
+.lesson-step {
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+.lesson-step:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.lesson-step.playing {
+  border-color: #6c5ce7;
+  box-shadow: 0 0 20px rgba(108,92,231,0.3);
+}
+.lesson-step.type1 { background: linear-gradient(135deg, #fff3e0, #ffe0b2); }
+.lesson-step.type2 { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); }
+.lesson-step.type3 { background: linear-gradient(135deg, #e3f2fd, #bbdefb); }
+.lesson-step.type4 { background: linear-gradient(135deg, #fce4ec, #f8bbd0); }
+.lesson-step.type5 { background: linear-gradient(135deg, #f3e5f5, #e1bee7); }
+
+.step-num {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 1.1em;
+  box-shadow: 0 3px 10px rgba(108,92,231,0.4);
+}
+.step-title {
+  font-size: 1.2em;
+  font-weight: 800;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.step-body {
+  font-size: 1.05em;
+  line-height: 1.8;
+}
+.step-body .big {
+  font-size: 1.4em;
+  font-weight: 900;
+  color: #6c5ce7;
+  display: block;
+  text-align: center;
+  margin: 10px 0;
+  letter-spacing: 2px;
+}
+.step-body .highlight {
+  background: rgba(108,92,231,0.12);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+.step-body .key {
+  color: #e74c3c;
+  font-weight: 900;
+  font-size: 1.1em;
+}
+.step-body ul {
+  padding-left: 20px;
+  margin: 8px 0;
+}
+.step-body li { margin-bottom: 4px; }
+
+.speak-icon {
+  display: inline-block;
+  font-size: 1.2em;
+  animation: bounce 1.5s infinite;
+  margin-left: 6px;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* Play all button */
+.play-all-bar {
+  text-align: center;
+  margin: 16px 0;
+}
+.play-all-btn {
+  padding: 14px 36px;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  color: white;
+  font-size: 1.2em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 5px 20px rgba(108,92,231,0.4);
+}
+.play-all-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(108,92,231,0.5);
+}
+.play-all-btn.playing {
+  background: linear-gradient(135deg, #e74c3c, #ff6b6b);
+}
+
+/* Progress */
+.progress {
+  max-width: 700px;
+  margin: 8px auto;
+  height: 6px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: white;
+  border-radius: 3px;
+  transition: width 0.5s;
+  width: 0%;
+}
+
+/* Section switcher */
+.section-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+.sec-tab {
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: 2px solid rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.sec-tab:hover { background: rgba(255,255,255,0.3); }
+.sec-tab.active {
+  background: white;
+  color: #6c5ce7;
+  border-color: white;
+}
+
+.lesson-section { display: none; }
+.lesson-section.active { display: block; }
+
+/* Rhyme card */
+.rhyme-card {
+  background: linear-gradient(135deg, #ffecd2, #fcb69f);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 16px 0;
+  text-align: center;
+  font-size: 1.3em;
+  font-weight: bold;
+  line-height: 2;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 3px solid #f9a825;
+}
+.rhyme-card:hover { transform: scale(1.02); }
+
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.5em; }
+  .lesson { padding: 16px; }
+  .lesson-step { padding: 16px; }
+  .step-body .big { font-size: 1.2em; }
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../index.html">首页</a><a href="../grade1-down/index.html">一年级</a><a href="../grade2-up/index.html">二年级</a><a href="../explore/science/index.html">科普</a><a href="../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="header">
+  <h1>🧮 凑数填符号 · 解题秘籍</h1>
+  <p>点击每一步听讲解 🔊 或一键连续播放</p>
+</div>
+
+<div class="voice-bar">
+  <label>🎤 声音:</label>
+  <select id="voiceSelect"></select>
+  <label>⚡ 语速:</label>
+  <input type="range" id="rateSlider" min="0.6" max="1.2" step="0.1" value="0.8">
+</div>
+
+<div class="section-tabs">
+  <div class="sec-tab active" onclick="switchSection(0)">🌟 连续数凑100</div>
+  <div class="sec-tab" onclick="switchSection(1)">🎯 混合数凑目标</div>
+</div>
+
+<div class="play-all-bar">
+  <button class="play-all-btn" id="playAllBtn" onclick="togglePlayAll()">▶️ 从头听讲解</button>
+</div>
+
+<div class="progress">
+  <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<!-- Section 1: 连续数凑100 -->
+<div class="lesson-section active" id="section0">
+<div class="lesson">
+
+  <div class="lesson-step type1" onclick="playStep(0, 0)">
+    <div class="step-num">1</div>
+    <div class="step-title">🎬 什么是这种题?<span class="speak-icon">🔊</span></div>
+    <div class="step-body">
+      题目给你数字 1、2、3、4、5、6、7、8、9,<br>
+      让你在中间填 <span class="highlight">加号</span> 或 <span class="highlight">减号</span>,<br>
+      也可以把相邻的数字<span class="highlight">拼在一起</span>变成两位数,<br>
+      最后要让答案 <span class="key">等于100</span>!
+      <span class="big">1 _ 2 _ 3 _ 4 _ 5 _ 6 _ 7 _ 8 _ 9 = 100</span>
+    </div>
+  </div>
+
+  <div class="lesson-step type2" onclick="playStep(0, 1)">
+    <div class="step-num">2</div>
+    <div class="step-title">🤔 先想一想:全加起来是多少?<span class="speak-icon">🔊</span></div>
+    <div class="step-body">
+      如果把 1到9 每个数字都加起来:<br>
+      <span class="big">1+2+3+4+5+6+7+8+9 = 45</span>
+      45 离 100 差好远呀!差了 55 呢!<br>
+      所以光靠一个一个加是不够的,<br>
+      我们<span class="key">必须把一些数字拼成两位数</span>,才能凑到100!
+    </div>
+  </div>
+
+  <div class="lesson-step type3" onclick="playStep(0, 2)">
+    <div class="step-num">3</div>
+    <div class="step-title">🎯 秘诀第一招:找"大块头"!<span class="speak-icon">🔊</span></div>
+    <div class="step-body">
+      把8和9拼在一起变成 <span class="key">89</span>,这是我们的"大块头"!<br><br>
+      为什么选89?因为89离100<span class="highlight">只差11</span>!<br>
+      差的不多,剩下的小数字1234567很容易凑出11。<br><br>
+      就像搭积木,先放一块最大的,再用小积木补上缺口!🧱
+    </div>
+  </div>
+
+  <div class="lesson-step type4" onclick="playStep(0, 3)">
+    <div class="step-num">4</div>
+    <div class="step-title">🔧 秘诀第二招:凑差值!<span class="speak-icon">🔊</span></div>
+    <div class="step-body">
+      现在的任务:用1234567凑出 <span class="key">+11</span><br><br>
+      我们把12也拼起来,这样:<br>
+      <span class="big">12 - 3 - 4 + 5 - 6 + 7 = 11</span>
+      验算一下:12减3等于9,9减4等于5,5加5等于10,10减6等于4,4加7等于11。✅<br><br>
+      太好了!11 + 89 = 100!🎉
+    </div>
+  </div>
+
+  <div class="lesson-step type5" onclick="playStep(0, 4)">
+    <div class="step-num">5</div>
+    <div class="step-title">✅ 完整答案<span class="speak-icon">🔊</span></div>
+    <div class="step-body">
+      <span class="big">12 - 3 - 4 + 5 - 6 + 7 + 89 = 100</span>
+      验算:
+      <ul>
+        <li>12 → 减3 → <strong>9</strong></li>
+        <li>9 → 减4 → <strong>5</strong></li>
+        <li>5 → 加5 → <strong>10</strong></li>
+        <li>10 → 减6 → <strong>4</strong></li>
+        <li>4 → 加7 → <strong>11</strong></li>
+        <li>11 → 加89 → <strong style="color:#6c5ce7;font-size:1.2em;">100</strong> 🎉</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="lesson-step type1" onclick="playStep(0, 5)">
+    <div class="step-num">6</div>
+    <div class="step-title">⚠️ 小心陷阱!<span class="speak-icon">🔊</span></div>
+    <div class="step-body">
+      有些同学看到123,以为是把1、2、3拼成了一百二十三,<br>
+      然后算 123 - 4 - 5 - 6 - 7 - 89...<br><br>
+      其实这等于 <span class="key">12</span>,不是100!❌<br><br>
+      记住:做完以后一定要<span class="highlight">从左到右一步一步验算</span>,不要跳步哦!
+    </div>
+  </div>
+
+  <div class="rhyme-card" onclick="playRhyme(0)">
+    📝 记住口诀 📝<br>
+    🎵 八九拼一起,离百只差一点点<br>
+    🎵 前面凑个十一,答案刚好一百整!
+  </div>
+
+</div>
+</div>
+
+<!-- Section 2: 混合数凑目标 -->
+<div class="lesson-section" id="section1">
+<div class="lesson">
+
+  <div class="lesson-step type1" onclick="playStep(1, 0)">
+    <div class="step-num">1</div>
+    <div class="step-title">🎬 这种题长什么样?<span class="speak-icon">🔊</span></div>
+    <div class="step-body">
+      题目给你一组数字,比如:<br>
+      <span class="big">17 ○ 3 ○ 4 ○ 9 ○ 7 ○ 6 ○ 4 = 20</span>
+      每个圆圈里要填 <span class="highlight">加号</span> 或 <span class="highlight">减号</span>,<br>
+      数字顺序不能变,让最后等于目标数!
+    </div>
+  </div>
+
+  <div class="lesson-step type2" onclick="playStep(1, 1)">
+    <div class="step-num">2</div>
+    <div class="step-title">🧮 第一步:全部加起来试试!<span class="speak-icon">🔊</span></div>
+    <div class="step-body">
+      先假装所有符号都是加号:<br>
+      <span class="big">17+3+4+9+7+6+4 = 50</span>
+      全部加起来等于 <span class="key">50</span>!<br><br>
+      但目标是20呀,50比20<span class="highlight">大好多</span>!<br>
+      说明有些数字不应该加,应该<span class="key">减掉</span>!
+    </div>
+  </div>
+
+  <div class="lesson-step type3" onclick="playStep(1, 2)">
+    <div class="step-num">3</div>
+    <div class="step-title">🤔 第二步:多了30,怎么变小?<span class="speak-icon">🔊</span></div>
+    <div class="step-body">
+      50 要变成20,中间差了多少呢?<br>
+      <span class="big">50 - 20 = 30,多了30!</span>
+      所以我们要把一些加号换成减号,让总数变小。<br><br>
+      换一个数的符号能少多少呢?<br>
+      比如本来<span class="highlight">加9</span>,现在变成<span class="highlight">减9</span>:<br>
+      用手指算:本来往上走9步,现在反过来往下走9步,<br>
+      一共差了 9加9 等于 <span class="key">18步</span>!<br><br>
+      所以我们要找:哪两个数加起来等于<span class="key">15</span>?<br>
+      (因为15加15等于30嘛!)<br>
+      看看数字:<span class="key">9 + 6 = 15</span> !找到了!
+    </div>
+  </div>
+
+  <div class="lesson-step type4" onclick="playStep(1, 3)">
+    <div class="step-num">4</div>
+    <div class="step-title">🔍 窍门：用手指算！<span class="speak-icon">🔊</span></div>
+    <div class="step-body">
+      本来一个数是加的，现在变成减的，会少多少呢？<br>
+      用手指比划：本来往上走9步，现在往下走9步，<br>
+      一共差了 <span class="highlight">9+9=18步</span>！<br><br>
+      我们要总共少30。把9和6换成减号：<br>
+      少了 9+9=18，再少 6+6=12<br>
+      一共少了 <span class="key">18+12=30</span>！刚好！✅<br><br>
+      所以把 <span class="key">9</span> 和 <span class="key">6</span> 前面的加号换成减号！
+    </div>
+  </div>
+
+  <div class="lesson-step type5" onclick="playStep(1, 4)">
+    <div class="step-num">5</div>
+    <div class="step-title">✅ 验算答案<span class="speak-icon">🔊</span></div>
+    <div class="step-body">
+      <span class="big">17 + 3 + 4 - 9 + 7 - 6 + 4 = 20</span>
+      一步一步算:
+      <ul>
+        <li>17 → 加3 → <strong>20</strong></li>
+        <li>20 → 加4 → <strong>24</strong></li>
+        <li>24 → 减9 → <strong>15</strong></li>
+        <li>15 → 加7 → <strong>22</strong></li>
+        <li>22 → 减6 → <strong>16</strong></li>
+        <li>16 → 加4 → <strong style="color:#6c5ce7;font-size:1.2em;">20</strong> 🎉</li>
+      </ul>
+      完美!等于20!
+    </div>
+  </div>
+
+  <div class="lesson-step type1" onclick="playStep(1, 5)">
+    <div class="step-num">6</div>
+    <div class="step-title">⚡ 考试小技巧：一条一条试！<span class="speak-icon">🔊</span></div>
+    <div class="step-body">
+      如果是选择题，有个超简单的方法：<br>
+      <span class="highlight">直接把每个选项的符号填进去算</span>！<br><br>
+      就像走迷宫，每条路都试一试：<br>
+      <ul>
+        <li>A选项：从左到右加加减减算一遍</li>
+        <li>B选项：从左到右加加减减算一遍</li>
+        <li>...</li>
+      </ul>
+      哪条路的终点是目标数，就选哪个！<br><br>
+      记住：<span class="key">一步一步算，不要跳步</span>，就不会算错！
+    </div>
+  </div>
+
+  <div class="rhyme-card" onclick="playRhyme(1)">
+    📝 记住口诀 📝<br>
+    🎵 全部加起来，看看多了几<br>
+    🎵 换个减号试一试，差多少就凑多少<br>
+    🎵 选择题嘛，一条一条试，算对的就是它！
+  </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+// ===== Voice Setup =====
+const cnPref = ['Microsoft Xiaoxiao','Microsoft Yunxi','Microsoft Xiaoxiao Online (Natural)','Microsoft Yunxi Online (Natural)','Online (Natural)','Tingting','Google 普通话','Enhanced','Premium','Natural'];
+let voices = [];
+let selectedVoice = null;
+
+function scoreV(v) {
+  for (let i = 0; i < cnPref.length; i++)
+    if (v.name.includes(cnPref[i])) return cnPref.length - i + 100;
+  let s = 0;
+  if (/zh-CN|^zh$|cmn/i.test(v.lang)&&!/zh-HK|zh-TW/i.test(v.lang)) s += 30;
+  if (/enhanced|premium|natural/i.test(v.name)) s += 50;
+  if (/compact/i.test(v.name)) s -= 20;
+  return s;
+}
+
+function loadVoices() {
+  voices = speechSynthesis.getVoices().filter(v => /zh-CN|^zh$|cmn/i.test(v.lang)&&!/zh-HK|zh-TW/i.test(v.lang));
+  if (voices.length === 0) voices = speechSynthesis.getVoices();
+  voices.sort((a, b) => scoreV(b) - scoreV(a));
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+  voices.forEach((v, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = v.name.substring(0, 25);
+    sel.appendChild(opt);
+  });
+  selectedVoice = voices[0] || null;
+  sel.onchange = () => { selectedVoice = voices[sel.value]; };
+}
+speechSynthesis.onvoiceschanged = loadVoices;
+setTimeout(loadVoices, 500);
+
+function speak(text, cb) {
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.voice = selectedVoice;
+  u.lang = 'zh-CN';
+  u.rate = parseFloat(document.getElementById('rateSlider').value);
+  if (cb) u.onend = cb;
+  speechSynthesis.speak(u);
+}
+
+// ===== Narration Scripts (kid-friendly!) =====
+const narrations = [
+  // Section 0: 连续数凑100
+  [
+    "小朋友你好!今天我们来学一种超酷的数学题。题目给你1到9这九个数字,让你在中间填加号或者减号,还可以把旁边的数字拼成两位数,最后让答案等于一百!听起来难吗?别怕,跟我一起学秘诀!",
+    "我们先想一想,如果把1到9每个数字都加起来,得多少呢?1加2加3,一直加到9,等于45!45离100差好远呀,差了55呢!所以光靠一个一个加是不够的,我们必须把一些数字拼成两位数,才能凑到100!",
+    "秘诀来了!我们把8和9拼在一起,变成89!89就是我们的大块头!为什么选89呢?因为89离100只差11!差的不多,剩下的小数字1234567很容易就能凑出11。就像搭积木,先放一块最大的,再用小积木补上缺口!",
+    "现在任务变简单了!用1到7凑出正11就行。我们把1和2也拼起来变成12。然后:12减3等于9,减4等于5,加5等于10,减6等于4,加7等于11!太好了,11加89刚好等于100!",
+    "完整答案就是:12减3减4加5减6加7加89等于100!我们来验算:12减3等于9,减4等于5,加5等于10,减6等于4,加7等于11,加89等于100!完美!",
+    "最后提醒你一个陷阱!有的选项写123减4减5减6减7减89,看起来挺像回事,但其实等于12,不是100哦!所以做完一定要从左到右,一步一步验算,千万不要跳步!"
+  ],
+  // Section 1: 混合数凑目标
+  [
+    "接下来学第二种题!题目给你一组数字:17、3、4、9、7、6、4。在中间填加号或者减号,让最后的答案等于20。数字顺序不能变哦!来,跟我一起想办法!",
+    "第一步,我们先全部用加号加起来试试看!17加3等于20,再加4等于24,再加9等于33,再加7等于40,再加6等于46,再加4等于50。全加起来等于50!但是我们要的是20呀,50比20大好多!说明有些数字不应该加,应该减掉!",
+    "第二步,我们想一想:50要变成20,中间差了多少呢?50减20等于30。我们加多了30!所以要把一些加号换成减号,让总数变小。现在我们来找:把哪些数字换成减号,能刚好少掉30呢?",
+    "这里有个小窍门!本来一个数是加的,现在变成减的,会少多少呢?比如本来加9,现在变成减9。我们用手指算:本来要往上数9步,现在反过来往下数9步,一共差了9加9等于18步!所以换一个数的符号,会少掉这个数加这个数,就是两个这么多!那我们要少30,想想哪两个数加起来等于15呢?因为15加15等于30嘛!看看数字:9加6等于15!找到了!",
+    "所以我们把9和6前面的加号换成减号!来验算一下:17加3等于20,加4等于24,减9等于15,加7等于22,减6等于16,加4等于20!耶!刚好等于20!太棒了!",
+    "最后教你一个考试小技巧:如果是选择题,不用自己算!直接把每个选项的加号减号填进去,从左到右一步一步算,看哪个等于目标数就选哪个!就像走迷宫,每条路都试一试,走通的那条就是答案!"
+  ]
+];
+
+const rhymes = [
+  "记住口诀:八九拼一起,离百只差一点点。前面凑个十一,答案刚好一百整!",
+  "记住口诀:全部加起来,看看多了几。换个减号试一试,差多少就凑多少。选择题嘛,一条一条试,算对的就是它!"
+];
+
+// ===== Section switching =====
+let currentSection = 0;
+
+function switchSection(idx) {
+  currentSection = idx;
+  document.querySelectorAll('.sec-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  document.querySelectorAll('.lesson-section').forEach((s, i) => s.classList.toggle('active', i === idx));
+  stopPlayAll();
+}
+
+// ===== Play individual step =====
+function playStep(section, step) {
+  stopPlayAll();
+  const steps = document.querySelectorAll(`#section${section} .lesson-step`);
+  steps.forEach(s => s.classList.remove('playing'));
+  if (steps[step]) steps[step].classList.add('playing');
+  speak(narrations[section][step], () => {
+    if (steps[step]) steps[step].classList.remove('playing');
+  });
+}
+
+function playRhyme(section) {
+  stopPlayAll();
+  speak(rhymes[section]);
+}
+
+// ===== Play All =====
+let isPlayingAll = false;
+let playAllIndex = 0;
+
+function togglePlayAll() {
+  if (isPlayingAll) {
+    stopPlayAll();
+  } else {
+    startPlayAll();
+  }
+}
+
+function startPlayAll() {
+  isPlayingAll = true;
+  playAllIndex = 0;
+  const btn = document.getElementById('playAllBtn');
+  btn.textContent = '⏹️ 停止播放';
+  btn.classList.add('playing');
+  playNextInSequence();
+}
+
+function stopPlayAll() {
+  isPlayingAll = false;
+  playAllIndex = 0;
+  speechSynthesis.cancel();
+  const btn = document.getElementById('playAllBtn');
+  btn.textContent = '▶️ 从头听讲解';
+  btn.classList.remove('playing');
+  document.getElementById('progressFill').style.width = '0%';
+  document.querySelectorAll('.lesson-step').forEach(s => s.classList.remove('playing'));
+}
+
+function playNextInSequence() {
+  if (!isPlayingAll) return;
+  const scripts = narrations[currentSection];
+  const total = scripts.length + 1; // +1 for rhyme
+
+  if (playAllIndex >= total) {
+    stopPlayAll();
+    return;
+  }
+
+  const progress = ((playAllIndex + 1) / total * 100);
+  document.getElementById('progressFill').style.width = progress + '%';
+
+  const steps = document.querySelectorAll(`#section${currentSection} .lesson-step`);
+  steps.forEach(s => s.classList.remove('playing'));
+
+  if (playAllIndex < scripts.length) {
+    if (steps[playAllIndex]) steps[playAllIndex].classList.add('playing');
+    if (steps[playAllIndex]) steps[playAllIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    speak(scripts[playAllIndex], () => {
+      if (steps[playAllIndex]) steps[playAllIndex].classList.remove('playing');
+      playAllIndex++;
+      setTimeout(playNextInSequence, 500);
+    });
+  } else {
+    // Play rhyme
+    const rhymeCard = document.querySelector(`#section${currentSection} .rhyme-card`);
+    if (rhymeCard) rhymeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    speak(rhymes[currentSection], () => {
+      playAllIndex++;
+      setTimeout(playNextInSequence, 500);
+    });
+  }
+}
+</script>
+</body>
+</html>

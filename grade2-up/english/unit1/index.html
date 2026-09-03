@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="description" content="Unit 1 It's Time to Get Up · 对话跟读与认时间">
+<title>Unit 1 · It's Time to Get Up</title>
+<link rel="stylesheet" href="../../../assets/site.css">
+<style>
+.goal{background:#f3f0ff;border-left:6px solid var(--brand);padding:16px 18px;border-radius:14px}
+.goal p{margin:6px 0}
+.dlg{display:grid;gap:12px;margin:14px 0 6px}
+.line{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;
+  background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px}
+.who-tag{font-weight:900;font-size:.85rem;padding:5px 11px;border-radius:999px;white-space:nowrap}
+.t-dad{background:#e4f1fb;color:#1d6fa5}
+.t-bao{background:#eafaf1;color:#1f8f52}
+.en{margin:0;font-size:clamp(1.05rem,4.2vw,1.45rem);line-height:1.35;font-weight:700}
+.cn{margin:4px 0 0;color:var(--muted);font-size:.92rem}
+.play{border:0;background:var(--brand);color:#fff;border-radius:999px;width:50px;height:50px;
+  font-size:1.3rem;cursor:pointer;flex:none}
+.play:focus-visible{outline:3px solid #c9c0ff}
+.coco-speaking{background:#fff8dd;border-radius:10px}
+.clockwrap{display:grid;gap:16px;justify-items:center;margin:10px 0 4px}
+.hours{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;width:min(420px,100%)}
+.hours button{border:2px solid #ddd8ee;background:#fff;border-radius:14px;padding:12px 0;
+  font:inherit;font-weight:900;font-size:1.05rem;cursor:pointer}
+.hours button[aria-pressed=true]{border-color:var(--brand);background:#f3f0ff;color:#5645c7}
+.hours button:focus-visible{outline:3px solid #c9c0ff}
+.saybox{font-size:clamp(1.1rem,4.6vw,1.6rem);font-weight:800;min-height:1.6em;text-align:center}
+.pattern{display:grid;gap:10px;margin:10px 0 0}
+.lyr{display:grid;gap:8px;margin:12px 0 0}
+.story-grid{display:grid;gap:12px;margin:14px 0 0}
+.tickbox{display:grid;gap:14px;margin:14px 0 0}
+.drawwrap{display:grid;gap:14px;justify-items:center;margin:14px 0 0}
+.cards{display:flex;gap:11px;flex-wrap:wrap;margin:6px 0 0}
+.mat{background:#fff8dd;border:2px solid #ffe0ab;border-radius:14px;padding:12px 14px;margin:12px 0}
+.rh{color:#d6336c;font-weight:900}
+.assess{display:grid;gap:12px;margin:14px 0 0}
+.arow{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px}
+.aemo{font-size:1.7rem}
+.aen{margin:0;font-weight:800;font-size:1.02rem}
+.acn{margin:3px 0 0;color:var(--muted);font-size:.88rem}
+.marks{display:flex;gap:6px}
+.mk{border:0;background:none;font-size:1.7rem;line-height:1;cursor:pointer;padding:2px;filter:grayscale(1);opacity:.35}
+.mk.on{filter:none;opacity:1}
+.mk:focus-visible{outline:3px solid #c9c0ff;border-radius:8px}
+@media(max-width:600px){.arow{grid-template-columns:auto 1fr;row-gap:8px}.marks{grid-column:2}}
+.steps{margin:12px 0 0;padding-left:1.4em;line-height:1.9;font-weight:700}
+.steps li{margin:2px 0}
+.blank{display:inline-block;min-width:2.6em;border-bottom:3px solid #b23a68;color:#b23a68;text-align:center}
+.card{flex:1 1 130px;border:3px solid #ddd8ee;background:#fff;border-radius:16px;padding:14px 8px;font:inherit;font-weight:800;cursor:pointer;text-align:center;line-height:1.3}
+.card .cemo{display:block;font-size:2rem;margin-bottom:4px}
+.card .cen{display:block;font-size:1.02rem}
+.card .ccn{display:block;font-size:.85rem;font-weight:600;color:var(--muted);margin-top:2px}
+.card:focus-visible{outline:3px solid #c9c0ff}
+.card.good{border-color:#2fa96b;background:#eafaf1}
+.card.bad{border-color:#e0a0a0;background:#fdf0f0;opacity:.6}
+.card[aria-pressed=true]{border-color:var(--brand);background:#f3f0ff;color:#5645c7}
+.pickl{margin:18px 0 4px;font-weight:900;color:#5645c7}
+.dprog{font-weight:900;color:#5645c7;background:#f3f0ff;border-radius:999px;padding:5px 16px;margin:0}
+.roles{display:grid;gap:11px;margin:14px 0 0}
+.role{background:#fff;border:3px solid #ddd8ee;border-radius:16px;padding:14px 16px;font:inherit;font-weight:800;font-size:1.02rem;cursor:pointer;text-align:left}
+.role[aria-pressed=true]{border-color:var(--brand);background:#f3f0ff;color:#5645c7}
+.role:focus-visible{outline:3px solid #c9c0ff}
+.role small{display:block;font-weight:600;color:var(--muted);margin-top:3px}
+.stage{background:linear-gradient(#fff6fa,#fdeef4);border:2px solid #f4cede;border-radius:18px;padding:18px 16px;margin:14px 0 0;text-align:center}
+.stline{margin:0;font-size:clamp(1.05rem,4.4vw,1.5rem);font-weight:800;min-height:1.5em}
+.stcn{margin:6px 0 0;color:var(--muted);font-size:.95rem;min-height:1.3em}
+.stbtns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.yours{color:#b23a68}
+.tgroup{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px}
+.thead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.tno{font-weight:900;background:#e8f4ff;color:#1d6fa5;border-radius:999px;padding:3px 12px;font-size:.85rem}
+.tscene{color:var(--muted);font-size:.92rem}
+.tlisten{border:0;background:#38a3db;color:#fff;border-radius:999px;padding:9px 18px;font:inherit;font-weight:800;cursor:pointer}
+.tlisten:focus-visible{outline:3px solid #9ad4f0}
+.opts{display:flex;gap:12px;flex-wrap:wrap}
+.opt{flex:1 1 120px;border:3px solid #ddd8ee;background:#fff;border-radius:16px;padding:16px 8px;font:inherit;font-weight:900;font-size:1.5rem;cursor:pointer;font-variant-numeric:tabular-nums}
+.opt:focus-visible{outline:3px solid #c9c0ff}
+.opt.good{border-color:#2fa96b;background:#eafaf1;color:#1f8f52}
+.opt.bad{border-color:#e0a0a0;background:#fdf0f0;opacity:.6}
+.tmsg{margin:10px 0 0;font-weight:800;min-height:1.4em}
+.talk-model{background:#f3f0ff;border-left:6px solid var(--brand);border-radius:14px;padding:14px 16px;margin:14px 0}
+.tq,.ta{margin:4px 0;font-weight:700;font-size:1.02rem}
+.scenes{display:grid;gap:12px;margin:12px 0 0}
+.scene{background:#fffaf0;border:2px solid #ffe0ab;border-radius:16px;padding:14px 16px;font:inherit;font-weight:800;font-size:1.02rem;cursor:pointer;text-align:left}
+.scene:focus-visible{outline:3px solid #ffd166}
+.scene small{display:block;font-weight:600;color:var(--muted);margin-top:4px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px 16px}
+.pno{font-weight:900;color:#8a5a12;background:#ffe9c9;border-radius:999px;display:inline-flex;align-items:center;gap:8px;padding:3px 12px;font-size:.85rem;margin-bottom:8px}
+.pline{display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:center;margin:8px 0}
+.t-baby{background:#fdeef4;color:#b23a68}
+.t-mum{background:#eef0fd;color:#4a4ab5}
+.t-tea{background:#f0ecdd;color:#7a5c1e}
+@media(max-width:600px){.pline{grid-template-columns:auto 1fr;row-gap:6px}}
+.lrow{border:2px solid #d8ecf8;background:#f7fcff;border-radius:14px;padding:12px 14px;font:inherit;font-size:1.05rem;font-weight:700;cursor:pointer;text-align:left}
+.lrow:focus-visible{outline:3px solid #9ad4f0}
+.tm{display:inline-block;margin-left:8px;background:#ffe9c9;color:#8a5a12;border-radius:999px;padding:2px 9px;font-size:.82rem;font-weight:900}
+.pat{background:#fffaf0;border:2px solid #ffe0ab;border-radius:16px;padding:13px 15px;
+  font-size:1.02rem;font-weight:700;cursor:pointer;text-align:left;font-family:inherit}
+.pat:focus-visible{outline:3px solid #ffd166}
+.pat small{display:block;font-weight:600;color:var(--muted);margin-top:3px}
+@media(max-width:600px){
+ .line{grid-template-columns:auto 1fr;row-gap:8px}
+ .play{grid-column:2;justify-self:start;width:auto;padding:0 18px;height:42px}
+ .hours{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap"><a class="brand" href="../index.html" aria-label="返回英语首页">← 英语</a></div>
+  <nav class="site-links" aria-label="全站导航">
+    <a href="../../../index.html">首页</a>
+    <a href="../../../grade1-down/index.html">一年级</a>
+    <a href="../../../grade2-up/index.html">二年级</a>
+    <a href="../../../explore/science/index.html">科普</a>
+    <a href="../../../explore/zhouyi/index.html">传统文化</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <nav class="crumb" aria-label="面包屑">
+    <a href="../../../index.html">首页</a> → <a href="../../index.html">二年级上</a> →
+    <a href="../index.html">英语</a> → Unit 1
+  </nav>
+
+  <section class="hero">
+    <span class="badge">Unit One · P1–P8 全</span>
+    <h1 lang="en-US" data-speak="It's Time to Get Up">It's Time to Get Up</h1>
+    <p lang="zh-CN">该起床啦。学会问时间、说时间，再说说这个点该做什么。</p>
+  </section>
+
+  <section class="lesson">
+    <div class="goal">
+      <h2 lang="zh-CN" style="margin-top:0">这个单元学完，我能做到</h2>
+      <p lang="en-US" data-speak="By the end of this unit, I will be able to tell the time and talk about what to do at different times.">
+        By the end of this unit, I will be able to tell the time and talk about what to do at different times.</p>
+      <p class="cn" lang="zh-CN">能说出时间，并说说不同时间该做什么。</p>
+    </div>
+  </section>
+
+  <section class="lesson" data-audio-region data-audio-lang="en-US" aria-label="课文对话，可逐句点读或连续播放">
+    <h2 lang="zh-CN">课文对话 · 早上 7:00</h2>
+    <p lang="zh-CN">爸爸推门进来叫 Baobao 起床。点右边的 🔊 一句一句听。</p>
+
+    <div class="dlg">
+      <div class="line">
+        <span class="who-tag t-dad" lang="en-US">Dad</span>
+        <div>
+          <p class="en" lang="en-US">Good morning, Baobao!</p>
+          <p class="cn" lang="zh-CN">早上好，宝宝！</p>
+        </div>
+        <button class="play" type="button" aria-label="朗读 Good morning, Baobao"
+          onclick="speakText('Good morning, Baobao!','en-US',this.closest('.line').querySelector('.en'))">🔊</button>
+      </div>
+
+      <div class="line">
+        <span class="who-tag t-bao" lang="en-US">Baobao</span>
+        <div>
+          <p class="en" lang="en-US">Good morning, Dad! What time is it?</p>
+          <p class="cn" lang="zh-CN">早上好，爸爸！现在几点了？</p>
+        </div>
+        <button class="play" type="button" aria-label="朗读 Good morning Dad, What time is it"
+          onclick="speakText('Good morning, Dad! What time is it?','en-US',this.closest('.line').querySelector('.en'))">🔊</button>
+      </div>
+
+      <div class="line">
+        <span class="who-tag t-dad" lang="en-US">Dad</span>
+        <div>
+          <p class="en" lang="en-US">It's seven o'clock. It's time to get up.</p>
+          <p class="cn" lang="zh-CN">七点了，该起床啦。</p>
+        </div>
+        <button class="play" type="button" aria-label="朗读 It's seven o'clock, It's time to get up"
+          onclick="speakText(&quot;It's seven o'clock. It's time to get up.&quot;,'en-US',this.closest('.line').querySelector('.en'))">🔊</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="lesson">
+    <h2 lang="zh-CN">转到几点，就说几点</h2>
+    <p lang="zh-CN">点下面的数字，指针会走过去，同时把这句话念给你听。</p>
+    <div class="clockwrap">
+      <svg viewBox="0 0 200 200" width="230" height="230" role="img" aria-label="时钟，当前七点">
+        <circle cx="100" cy="100" r="94" fill="#fff" stroke="#38a3db" stroke-width="7"/>
+        <g id="ticks" stroke="#98a2b3" stroke-width="3"></g>
+        <g id="nums" font-size="15" font-weight="800" fill="#25324b" text-anchor="middle"></g>
+        <line id="hourHand" x1="100" y1="100" x2="100" y2="52" stroke="#25324b" stroke-width="8" stroke-linecap="round"/>
+        <line x1="100" y1="100" x2="100" y2="34" stroke="#ff7aa2" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="100" cy="100" r="7" fill="#25324b"/>
+      </svg>
+      <div class="hours" id="hours" role="group" aria-label="选择小时"></div>
+      <p class="saybox" id="say" lang="en-US">It's seven o'clock.</p>
+    </div>
+  </section>
+
+    <section class="lesson" data-audio-region data-audio-lang="en-US" aria-label="Let's Sing 歌词，可逐行点读或连续播放">
+    <h2 lang="zh-CN">🎵 唱一首 · It&#39;s Seven O&#39;clock</h2>
+    <p lang="zh-CN">课本第 2 页的歌。点每一行听，或者用上面的连续播放整首听下来。</p>
+    <div class="lyr">
+      <button class="lrow" type="button" lang="en-US" onclick="speakText('Tick tock, tick tock!','en-US',this)">Tick tock, tick tock!</button>
+      <button class="lrow" type="button" lang="en-US" onclick="speakText('What time is it?','en-US',this)">What time is it?</button>
+      <button class="lrow" type="button" lang="en-US" onclick="speakText(&quot;It's seven o'clock, seven o'clock.&quot;,'en-US',this)">It&#39;s seven o&#39;clock, seven o&#39;clock.</button>
+      <button class="lrow" type="button" lang="en-US" onclick="speakText(&quot;It's time to get up.&quot;,'en-US',this)">It&#39;s time to get up. <span class="tm">7:00</span></button>
+      <button class="lrow" type="button" lang="en-US" onclick="speakText(&quot;It's eight o'clock, eight o'clock.&quot;,'en-US',this)">It&#39;s eight o&#39;clock, eight o&#39;clock.</button>
+      <button class="lrow" type="button" lang="en-US" onclick="speakText(&quot;It's time to go to school.&quot;,'en-US',this)">It&#39;s time to go to school. <span class="tm">8:00</span></button>
+      <button class="lrow" type="button" lang="en-US" onclick="speakText(&quot;It's four o'clock, four o'clock.&quot;,'en-US',this)">It&#39;s four o&#39;clock, four o&#39;clock.</button>
+      <button class="lrow" type="button" lang="en-US" onclick="speakText(&quot;It's time to go home.&quot;,'en-US',this)">It&#39;s time to go home. <span class="tm">4:00</span></button>
+    </div>
+    <button class="speak" type="button" style="margin-top:14px"
+      onclick="speakText(&quot;Tick tock, tick tock! What time is it? It's seven o'clock, seven o'clock. It's time to get up. It's eight o'clock, eight o'clock. It's time to go to school. It's four o'clock, four o'clock. It's time to go home.&quot;,'en-US',this)">🎶 整首连起来听</button>
+  </section>
+
+<section class="lesson" data-audio-region data-audio-lang="en-US" aria-label="Let&#39;s Read 六格故事，可逐句点读">
+    <h2 lang="zh-CN">📖 读一篇 · Please Go to Bed Early</h2>
+    <p lang="zh-CN">课本第 4 页的故事，六格。小兔子晚上不肯睡，第二天该玩的时候趴在桌子上睡着了。</p>
+    <div class="story-grid"><div class="panel"><div class="pno">1<span class="tm">9:00</span></div><div class="pline"><span class="who-tag t-baby" lang="en-US">Baby</span><div><p class="en" lang="en-US">Mum, what time is it?</p><p class="cn" lang="zh-CN">妈妈，几点了？</p></div><button class="play" type="button" aria-label="朗读这句" onclick="speakText('Mum, what time is it?','en-US',this.closest(&quot;.pline&quot;).querySelector(&quot;.en&quot;))">🔊</button></div><div class="pline"><span class="who-tag t-mum" lang="en-US">Mum</span><div><p class="en" lang="en-US">It&#39;s 9:00. It&#39;s time to go to bed.</p><p class="cn" lang="zh-CN">九点了，该睡觉了。</p></div><button class="play" type="button" aria-label="朗读这句" onclick="speakText(&quot;It's 9:00. It's time to go to bed.&quot;,'en-US',this.closest(&quot;.pline&quot;).querySelector(&quot;.en&quot;))">🔊</button></div></div><div class="panel"><div class="pno">2</div><div class="pline"><span class="who-tag t-baby" lang="en-US">Baby</span><div><p class="en" lang="en-US">I want to play.</p><p class="cn" lang="zh-CN">我还想玩。</p></div><button class="play" type="button" aria-label="朗读这句" onclick="speakText('I want to play.','en-US',this.closest(&quot;.pline&quot;).querySelector(&quot;.en&quot;))">🔊</button></div></div><div class="panel"><div class="pno">3<span class="tm">7:00</span></div><div class="pline"><span class="who-tag t-baby" lang="en-US">Baby</span><div><p class="en" lang="en-US">Mum, what time is it?</p><p class="cn" lang="zh-CN">妈妈，几点了？</p></div><button class="play" type="button" aria-label="朗读这句" onclick="speakText('Mum, what time is it?','en-US',this.closest(&quot;.pline&quot;).querySelector(&quot;.en&quot;))">🔊</button></div><div class="pline"><span class="who-tag t-mum" lang="en-US">Mum</span><div><p class="en" lang="en-US">It&#39;s 7:00. It&#39;s time to get up.</p><p class="cn" lang="zh-CN">七点了，该起床了。</p></div><button class="play" type="button" aria-label="朗读这句" onclick="speakText(&quot;It's 7:00. It's time to get up.&quot;,'en-US',this.closest(&quot;.pline&quot;).querySelector(&quot;.en&quot;))">🔊</button></div></div><div class="panel"><div class="pno">4<span class="tm">8:00</span></div><div class="pline"><span class="who-tag t-mum" lang="en-US">Mum</span><div><p class="en" lang="en-US">It&#39;s 8:00. It&#39;s time to go to school.</p><p class="cn" lang="zh-CN">八点了，该上学了。</p></div><button class="play" type="button" aria-label="朗读这句" onclick="speakText(&quot;It's 8:00. It's time to go to school.&quot;,'en-US',this.closest(&quot;.pline&quot;).querySelector(&quot;.en&quot;))">🔊</button></div></div><div class="panel"><div class="pno">5<span class="tm">11:00</span></div><div class="pline"><span class="who-tag t-tea" lang="en-US">Teacher</span><div><p class="en" lang="en-US">It&#39;s 11:00. It&#39;s time to play. Hooray!</p><p class="cn" lang="zh-CN">十一点了，该玩啦！万岁！</p></div><button class="play" type="button" aria-label="朗读这句" onclick="speakText(&quot;It's 11:00. It's time to play. Hooray!&quot;,'en-US',this.closest(&quot;.pline&quot;).querySelector(&quot;.en&quot;))">🔊</button></div></div><div class="panel"><div class="pno">6</div><div class="pline"><span class="who-tag t-baby" lang="en-US">Baby</span><div><p class="en" lang="en-US">Sorry. I want to sleep.</p><p class="cn" lang="zh-CN">对不起，我想睡觉。</p></div><button class="play" type="button" aria-label="朗读这句" onclick="speakText('Sorry. I want to sleep.','en-US',this.closest(&quot;.pline&quot;).querySelector(&quot;.en&quot;))">🔊</button></div><div class="pline"><span class="who-tag t-tea" lang="en-US">Teacher</span><div><p class="en" lang="en-US">Huh? Please go to bed early tonight!</p><p class="cn" lang="zh-CN">啊？今晚请早点睡觉！</p></div><button class="play" type="button" aria-label="朗读这句" onclick="speakText('Huh? Please go to bed early tonight!','en-US',this.closest(&quot;.pline&quot;).querySelector(&quot;.en&quot;))">🔊</button></div></div></div>
+    <button class="speak" type="button" style="margin-top:14px" onclick="speakText(&quot;Mum, what time is it? It's 9:00. It's time to go to bed. I want to play. Mum, what time is it? It's 7:00. It's time to get up. It's 8:00. It's time to go to school. It's 11:00. It's time to play. Hooray! Sorry. I want to sleep. Huh? Please go to bed early tonight!&quot;,'en-US',this)">📖 整个故事连起来听</button>
+    <div class="tip" lang="zh-CN" style="margin-top:14px"><strong>读完问一句：</strong>小兔子为什么上课想睡觉？这个故事把「早睡」讲成了后果，不是讲成了道理。</div>
+  </section>
+
+  <section class="lesson" data-audio-region data-audio-lang="en-US" aria-label="句型替换，可点读">
+    <h2 lang="zh-CN">这个点该做什么</h2>
+    <p lang="zh-CN">同一个句子，换掉后半截就能说一整天。这三句都是课本原句。</p>
+    <div class="pattern">
+      <button class="pat" type="button" lang="en-US"
+        onclick="speakText(&quot;It's seven o'clock. It's time to get up.&quot;,'en-US',this)">
+        It&#39;s seven o&#39;clock. It&#39;s time to get up.<small lang="zh-CN">七点，该起床了</small></button>
+      <button class="pat" type="button" lang="en-US"
+        onclick="speakText(&quot;It's eight o'clock. It's time to go to school.&quot;,'en-US',this)">
+        It&#39;s eight o&#39;clock. It&#39;s time to go to school.<small lang="zh-CN">八点，该上学了</small></button>
+      <button class="pat" type="button" lang="en-US"
+        onclick="speakText(&quot;It's four o'clock. It's time to go home.&quot;,'en-US',this)">
+        It&#39;s four o&#39;clock. It&#39;s time to go home.<small lang="zh-CN">四点，该回家了</small></button>
+    </div>
+  </section>
+
+  <section class="lesson" aria-label="听一听，点对的那个钟">
+    <h2 lang="zh-CN">🎧 听一听，点对的那个钟</h2>
+    <p lang="zh-CN">课本第 3 页的活动。点「🔊 听」，然后点你听到的那个时间。听不清可以再听。</p>
+    <div id="tickBox" class="tickbox"></div>
+    <p class="cn" lang="zh-CN" style="margin-top:12px">题目里的钟和场景来自课本，念的句子由本页生成，不是课本配套录音。</p>
+  </section>
+
+  <section class="lesson" aria-label="看图说话">
+    <h2 lang="zh-CN">💬 看图说话</h2>
+    <p lang="zh-CN">课本第 3 页的样子：一个人举着图问，一个人答。点一个场景，两句话都念给你听。</p>
+    <div class="talk-model" lang="en-US">
+      <p class="tq">A: What time is it?</p>
+      <p class="ta">B: It&#39;s eight o&#39;clock. It&#39;s time to go to school.</p>
+      <p class="cn" lang="zh-CN">这是课本给的例子。下面三个场景照着说。</p>
+    </div>
+    <div id="talkBox" class="scenes"></div>
+    <div class="tip" lang="zh-CN" style="margin-top:14px"><strong>轮流玩：</strong>你举手机问 What time is it?，她答；再换过来她问你。答对了就换下一个场景。</div>
+  </section>
+
+  <section class="lesson" aria-label="听音画指针">
+    <h2 lang="zh-CN">✏️ 听一听，把指针拨到那个点</h2>
+    <p lang="zh-CN">课本第 5 页是四个空钟，自己画指针。这里点数字就等于画。四道题。</p>
+    <div class="drawwrap">
+      <p class="dprog" id="dProg" lang="zh-CN">第 1 题 / 4</p>
+      <svg viewBox="0 0 200 200" width="200" height="200" role="img" id="dClock" aria-label="待拨的时钟">
+        <circle cx="100" cy="100" r="94" fill="#fff" stroke="#7b6ee0" stroke-width="7"/>
+        <g id="dTicks" stroke="#98a2b3" stroke-width="3"></g>
+        <g id="dNums" font-size="15" font-weight="800" fill="#25324b" text-anchor="middle"></g>
+        <line id="dHour" x1="100" y1="100" x2="100" y2="52" stroke="#25324b" stroke-width="8" stroke-linecap="round" opacity="0"/>
+        <line x1="100" y1="100" x2="100" y2="34" stroke="#ff7aa2" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="100" cy="100" r="7" fill="#25324b"/>
+      </svg>
+      <button class="tlisten" type="button" id="dListen">🔊 再听一遍</button>
+      <div class="hours" id="dHours" role="group" aria-label="拨到几点"></div>
+      <p class="tmsg" id="dMsg" role="status"></p>
+    </div>
+    <p class="cn" lang="zh-CN" style="margin-top:12px">题目由本页随机出，不是课本配套录音。</p>
+  </section>
+
+  <section class="lesson" aria-label="演故事">
+    <h2 lang="zh-CN">🎭 演故事 · 一个人也能演</h2>
+    <p lang="zh-CN">课本第 5 页要四个人戴头饰上台演。在家没人配戏？选一个角色，其他角色我来念，念到你就停下等你说。</p>
+    <div class="roles" id="roleBox" role="group" aria-label="选一个角色"></div>
+    <div class="stage" id="stage" hidden>
+      <p class="stline" id="stLine" lang="en-US"></p>
+      <p class="stcn" id="stCn" lang="zh-CN"></p>
+      <div class="stbtns">
+        <button class="tlisten" type="button" id="stNext">下一句 →</button>
+        <button class="speak" type="button" id="stHint" hidden>🔊 提示我这句怎么说</button>
+        <button class="speak" type="button" id="stAgain" hidden>🔄 重新演</button>
+      </div>
+    </div>
+    <div class="tip" lang="zh-CN" style="margin-top:14px"><strong>玩法：</strong>第一遍演小兔（台词最多），第二遍演兔妈妈，第三遍演熊老师。三遍下来整个故事就会说了。</div>
+  </section>
+
+  <section class="lesson" aria-label="听音连线">
+    <h2 lang="zh-CN">🔗 听一听，点对应的那张图</h2>
+    <p lang="zh-CN">课本第 6 页 Fun Time 的连线题。听一句，点那件事。</p>
+    <button class="tlisten" type="button" id="mListen" style="margin:6px 0 12px">🔊 听</button>
+    <div class="cards" id="mBox"></div>
+    <p class="tmsg" id="mMsg" role="status"></p>
+    <p class="cn" lang="zh-CN" style="margin-top:10px">时间由本页随机出，不是课本配套录音。</p>
+  </section>
+
+  <section class="lesson" aria-label="做动作、选一个、说出来">
+    <h2 lang="zh-CN">🤸 做动作、选一个、说出来</h2>
+    <div class="talk-model" lang="en-US">
+      <p class="tq">A: What time is it?</p>
+      <p class="ta">B: It&#39;s 3:00. It&#39;s time to swim.</p>
+      <p class="cn" lang="zh-CN">课本第 6 页的例子。注意：swim 前面不加 go。</p>
+    </div>
+    <p lang="zh-CN">书上是三步：先<strong>做那个动作</strong>，再<strong>选一个词</strong>，最后<strong>说出来</strong>。下面先选点钟，再选动作。</p>
+    <p class="pickl" lang="zh-CN">① 几点</p>
+    <div class="hours" id="tPick" role="group" aria-label="选几点"></div>
+    <p class="pickl" lang="zh-CN">② 做什么</p>
+    <div class="cards" id="aPick" role="group" aria-label="选一个动作"></div>
+    <p class="saybox" id="cSay" lang="en-US">先选一个点，再选一件事</p>
+    <div class="tip" lang="zh-CN" style="margin-top:12px"><strong>别光坐着说：</strong>书名叫 Act，说 swim 就划两下水，说 go to bed 就趴下。动作做出来，词才记得住。</div>
+  </section>
+
+  <section class="lesson" data-audio-region data-audio-lang="en-US" aria-label="做一个钟">
+    <h2 lang="zh-CN">🛠️ Step 1 · 做一个钟</h2>
+    <p lang="zh-CN">课本第 7 页。<strong>这一步不在屏幕上做</strong>，要真剪真装 —— 手转过的点，比看过的点记得牢。</p>
+    <p class="mat" lang="zh-CN">📌 <strong>模板在书末第 51 页</strong>，直接剪，不用另画。另备：图钉或按扣一个、剪刀、笔。</p>
+    <ol class="steps" lang="zh-CN">
+      <li>剪下圆盘</li>
+      <li>沿边写上 1 到 12</li>
+      <li>剪两根指针，一长一短</li>
+      <li>两根指针叠好，扎在圆心</li>
+      <li>用手拨一拨，看能不能转</li>
+      <li>拨到一个点 —— 做好了</li>
+    </ol>
+    <p class="cn" lang="zh-CN">步骤是我照书上六张图写的，书上这几张图没有文字。</p>
+    <div class="pattern" style="margin-top:12px">
+      <button class="pat" type="button" lang="en-US" onclick="speakText('Make a clock.','en-US',this)">Make a clock.<small lang="zh-CN">做一个钟（书上原话）</small></button>
+      <button class="pat" type="button" lang="en-US" onclick="speakText('Do and talk.','en-US',this)">Do and talk.<small lang="zh-CN">动手，然后说（书上原话）</small></button>
+    </div>
+  </section>
+
+  <section class="lesson" aria-label="拿你做的钟来问答">
+    <h2 lang="zh-CN">💬 Step 2 · 拿你做的钟来问答</h2>
+    <div class="talk-model" lang="en-US">
+      <p class="tq">A: What time is it?</p>
+      <p class="ta">B: It&#39;s <b class="blank">…</b> . It&#39;s time to <b class="blank">…</b> .</p>
+      <p class="cn" lang="zh-CN">书上这两处是空的 —— <strong>整个单元就到这一步</strong>：前面六页都给你句子，这里两个空全靠自己填。</p>
+    </div>
+    <p lang="zh-CN">把你做的纸钟拨到一个点，然后按这个按钮。我问，你答。</p>
+    <button class="tlisten" type="button" id="mkAsk" style="font-size:1.05rem;padding:13px 22px">🔊 What time is it?</button>
+    <p class="tmsg" id="mkTip" role="status" lang="zh-CN"></p>
+    <p class="pickl" lang="zh-CN">想不起来动作怎么说？点一下听</p>
+    <div class="cards" id="mkHints" role="group" aria-label="动作提示"></div>
+    <div class="tip" lang="zh-CN" style="margin-top:14px"><strong>为什么这一步最重要：</strong>前面所有活动都是照着说，这一步是<strong>她自己决定说什么</strong>。钟拨到几点由她定，做什么也由她定 —— 这才叫会用了。</div>
+  </section>
+
+  <section class="lesson" data-audio-region data-audio-lang="en-US" aria-label="Let&#39;s chant 童谣，可逐行点读">
+    <h2 lang="zh-CN">🎤 念一段 · Tick tock</h2>
+    <p lang="zh-CN">课本第 8 页。老鼠爬上老座钟，钟敲一下，老鼠跑下来。点每行听。</p>
+    <div class="lyr">
+      <button class="lrow" type="button" lang="en-US" onclick="speakText('Tick tock, tick tock!','en-US',this)">Tick t<b class="rh">ock</b>, tick t<b class="rh">ock</b>!</button>
+      <button class="lrow" type="button" lang="en-US" onclick="speakText('A mouse runs up a clock.','en-US',this)">A mouse runs up a cl<b class="rh">ock</b>.</button>
+      <button class="lrow" type="button" lang="en-US" onclick="speakText('The clock hits one,','en-US',this)">The cl<b class="rh">ock</b> hits one,</button>
+      <button class="lrow" type="button" lang="en-US" onclick="speakText('The mouse runs down.','en-US',this)">The mouse runs down.</button>
+      <button class="lrow" type="button" lang="en-US" onclick="speakText('Tick tick tock!','en-US',this)">Tick tick t<b class="rh">ock</b>!</button>
+    </div>
+    <button class="speak" type="button" style="margin-top:14px"
+      onclick="speakText('Tick tock, tick tock! A mouse runs up a clock. The clock hits one, The mouse runs down. Tick tick tock!','en-US',this)">🎶 整段连起来念</button>
+    <div class="tip" lang="zh-CN" style="margin-top:14px"><strong>书上为什么把这几个字标红：</strong>标红的全是 <b class="rh">ock</b> —— t<b class="rh">ock</b>、cl<b class="rh">ock</b>。这一段练的是<strong>听出同一个韵尾</strong>，不是背意思。念的时候把 ock 咬重一点，她自己会听出来这几个字尾巴一样。</div>
+    <div class="pattern" style="margin-top:12px">
+      <button class="pat" type="button" lang="en-US" onclick="speakText('tock, clock, tock','en-US',this)">tock · clock · tock<small lang="zh-CN">连着听三个 ock，尾巴一模一样</small></button>
+    </div>
+  </section>
+
+  <section class="lesson" aria-label="自己给自己打分">
+    <h2 lang="zh-CN">⭐ Self-assessment · 自己给自己打</h2>
+    <p lang="zh-CN">课本第 8 页最后一格。<strong>这里我不判分，她自己点。</strong>点几个就是几个，点完存下来，下次打开还在。</p>
+    <div class="assess" id="assessBox"></div>
+    <button class="speak" type="button" id="asReset" style="margin-top:14px">🔄 清空重新打</button>
+    <div class="tip" lang="zh-CN" style="margin-top:14px"><strong>这三项正好是这个单元的三条主线：</strong>唱（P2 那首歌）、演（P4 故事 + P5 轮演）、说时间（P1、P3、P6、P7）。哪一行只点了一颗，就回去玩那一块。</div>
+  </section>
+
+  <p class="notice" lang="zh-CN">✅ Unit One 八页全做完了：对话、歌、故事、听力、演故事、做钟、童谣、自评。剩下五个单元照这个样子做。</p>
+
+  <footer class="footer" lang="zh-CN">
+    <p><strong>版权声明</strong>：本页英文句子<strong>全部出自</strong>北京出版社《英语（预备级）二年级上册》Unit One 第 1–8 页，
+    文字著作权归原出版社及作者所有。本页为<strong>家庭自用学习辅助</strong>：不含教材插图、不含扫描件、
+    不用于任何商业用途、不做搜索收录。如权利人认为不妥，请告知即刻下线。</p>
+    <p>中文释义与操作提示为本页自行编写，仅作朗读与练习引导之用；页面不含课本之外自拟的英文句子。</p>
+    <p>朗读用浏览器语音，建议用 Edge 打开，英语音色最自然。</p>
+  </footer>
+</main>
+
+<script src="../../../assets/site.js"></script>
+<script>
+var WORDS=['one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve'];
+(function(){
+  var ticks=document.getElementById('ticks'), nums=document.getElementById('nums');
+  for(var i=0;i<12;i++){
+    var a=i*30*Math.PI/180;
+    var x1=100+Math.sin(a)*84, y1=100-Math.cos(a)*84;
+    var x2=100+Math.sin(a)*74, y2=100-Math.cos(a)*74;
+    var l=document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',x1.toFixed(1));l.setAttribute('y1',y1.toFixed(1));
+    l.setAttribute('x2',x2.toFixed(1));l.setAttribute('y2',y2.toFixed(1));
+    ticks.appendChild(l);
+    var n=document.createElementNS('http://www.w3.org/2000/svg','text');
+    n.setAttribute('x',(100+Math.sin(a)*62).toFixed(1));
+    n.setAttribute('y',(100-Math.cos(a)*62+5).toFixed(1));
+    n.textContent=String(i===0?12:i);
+    nums.appendChild(n);
+  }
+  var box=document.getElementById('hours');
+  for(var h=1;h<=12;h++){
+    var b=document.createElement('button');
+    b.type='button';b.textContent=String(h);b.dataset.h=String(h);
+    b.setAttribute('aria-pressed',h===7?'true':'false');
+    b.addEventListener('click',function(){setHour(Number(this.dataset.h),true)});
+    box.appendChild(b);
+  }
+  setHour(7,false);
+})();
+function setHour(h,speak){
+  var hand=document.getElementById('hourHand');
+  hand.setAttribute('transform','rotate('+(h%12)*30+' 100 100)');
+  document.querySelectorAll('#hours button').forEach(function(b){
+    b.setAttribute('aria-pressed', Number(b.dataset.h)===h ? 'true':'false');
+  });
+  var s="It's "+WORDS[h-1]+" o'clock.";
+  var say=document.getElementById('say');
+  say.textContent=s;
+  document.querySelector('svg[role=img]').setAttribute('aria-label','时钟，当前'+h+'点');
+  if(speak) speakText(s,'en-US',say);
+}
+
+var TICK=[
+ {no:1,scene:'在床上伸懒腰',act:'get up',actCn:'起床',opts:[7,6]},
+ {no:2,scene:'走到学校门口',act:'go to school',actCn:'上学',opts:[9,8]},
+ {no:3,scene:'推开家门',act:'go home',actCn:'回家',opts:[4,5]}
+];
+function sentOf(h,act){return "It's "+WORDS[h-1]+" o'clock. It's time to "+act+".";}
+function pad(h){return h+":00";}
+(function buildTick(){
+  var box=document.getElementById('tickBox');
+  TICK.forEach(function(g){
+    var wrap=document.createElement('div');wrap.className='tgroup';
+    var head=document.createElement('div');head.className='thead';
+    var no=document.createElement('span');no.className='tno';no.textContent=String(g.no);
+    var sc=document.createElement('span');sc.className='tscene';sc.lang='zh-CN';sc.textContent=g.scene+' · '+g.actCn;
+    var btn=document.createElement('button');btn.type='button';btn.className='tlisten';btn.textContent='🔊 听';
+    head.appendChild(no);head.appendChild(sc);head.appendChild(btn);
+    var opts=document.createElement('div');opts.className='opts';
+    var msg=document.createElement('p');msg.className='tmsg';msg.setAttribute('role','status');
+    g.target=g.opts[Math.floor(Math.random()*2)];
+    g.opts.forEach(function(h){
+      var o=document.createElement('button');o.type='button';o.className='opt';
+      o.textContent=pad(h);o.dataset.h=String(h);
+      o.setAttribute('aria-label',h+'点');
+      o.addEventListener('click',function(){
+        if(Number(this.dataset.h)===g.target){
+          this.classList.add('good');this.classList.remove('bad');
+          msg.textContent='✅ 对了！'+sentOf(g.target,g.act);
+          speakText(sentOf(g.target,g.act),'en-US',msg);
+        }else{
+          this.classList.add('bad');
+          msg.textContent='再听一遍试试';
+          btn.click();
+        }
+      });
+      opts.appendChild(o);
+    });
+    btn.addEventListener('click',function(){
+      speakText(sentOf(g.target,g.act),'en-US',msg);
+    });
+    wrap.appendChild(head);wrap.appendChild(opts);wrap.appendChild(msg);
+    box.appendChild(wrap);
+  });
+})();
+
+var SCENES=[
+ {emo:'⏰',h:7,act:'get up',cn:'七点，起床'},
+ {emo:'🎒',h:8,act:'go to school',cn:'八点，上学'},
+ {emo:'🚪',h:4,act:'go home',cn:'四点，回家'}
+];
+(function buildTalk(){
+  var box=document.getElementById('talkBox');
+  SCENES.forEach(function(sc){
+    var b=document.createElement('button');b.type='button';b.className='scene';b.lang='en-US';
+    var ans=sentOf(sc.h,sc.act);
+    b.innerHTML=sc.emo+' What time is it? &nbsp;→&nbsp; '+ans.replace(/'/g,'&#39;')+
+      '<small lang="zh-CN">'+sc.cn+'</small>';
+    b.addEventListener('click',function(){
+      speakText('What time is it? '+ans,'en-US',b);
+    });
+    box.appendChild(b);
+  });
+})();
+
+(function drawGame(){
+  var t=document.getElementById('dTicks'), n=document.getElementById('dNums');
+  for(var i=0;i<12;i++){
+    var a=i*30*Math.PI/180;
+    var l=document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',(100+Math.sin(a)*84).toFixed(1));l.setAttribute('y1',(100-Math.cos(a)*84).toFixed(1));
+    l.setAttribute('x2',(100+Math.sin(a)*74).toFixed(1));l.setAttribute('y2',(100-Math.cos(a)*74).toFixed(1));
+    t.appendChild(l);
+    var x=document.createElementNS('http://www.w3.org/2000/svg','text');
+    x.setAttribute('x',(100+Math.sin(a)*62).toFixed(1));
+    x.setAttribute('y',(100-Math.cos(a)*62+5).toFixed(1));
+    x.textContent=String(i===0?12:i); n.appendChild(x);
+  }
+  var q=0, total=4, target=0, done=false;
+  var prog=document.getElementById('dProg'), msg=document.getElementById('dMsg');
+  var hand=document.getElementById('dHour');
+  function say(){ speakText("It's "+WORDS[target-1]+" o'clock.",'en-US',msg); }
+  function newQ(){
+    target=1+Math.floor(Math.random()*12);
+    hand.setAttribute('opacity','0');
+    prog.textContent='第 '+(q+1)+' 题 / '+total;
+    msg.textContent=''; msg.classList.remove('yours');
+    document.querySelectorAll('#dHours button').forEach(function(b){b.setAttribute('aria-pressed','false')});
+    setTimeout(say,350);
+  }
+  var box=document.getElementById('dHours');
+  for(var h=1;h<=12;h++){
+    var b=document.createElement('button'); b.type='button'; b.textContent=String(h);
+    b.dataset.h=String(h); b.setAttribute('aria-pressed','false');
+    b.addEventListener('click',function(){
+      if(done) return;
+      var v=Number(this.dataset.h);
+      hand.setAttribute('opacity','1');
+      hand.setAttribute('transform','rotate('+(v%12)*30+' 100 100)');
+      document.querySelectorAll('#dHours button').forEach(function(x){
+        x.setAttribute('aria-pressed', Number(x.dataset.h)===v?'true':'false')});
+      if(v===target){
+        msg.textContent="✅ 对了！It's "+WORDS[target-1]+" o'clock.";
+        speakText("Yes! It's "+WORDS[target-1]+" o'clock.",'en-US',msg);
+        q++;
+        if(q>=total){ done=true; prog.textContent='四题全对 🎉'; }
+        else setTimeout(newQ,1600);
+      }else{
+        msg.textContent='不是这个点，再听一遍'; setTimeout(say,400);
+      }
+    });
+    box.appendChild(b);
+  }
+  document.getElementById('dListen').addEventListener('click',say);
+  newQ();
+})();
+
+var STORY=[
+ {r:'baby',en:'Mum, what time is it?',cn:'妈妈，几点了？'},
+ {r:'mum', en:"It's 9:00. It's time to go to bed.",cn:'九点了，该睡觉了。'},
+ {r:'baby',en:'I want to play.',cn:'我还想玩。'},
+ {r:'baby',en:'Mum, what time is it?',cn:'妈妈，几点了？'},
+ {r:'mum', en:"It's 7:00. It's time to get up.",cn:'七点了，该起床了。'},
+ {r:'mum', en:"It's 8:00. It's time to go to school.",cn:'八点了，该上学了。'},
+ {r:'tea', en:"It's 11:00. It's time to play. Hooray!",cn:'十一点了，该玩啦！万岁！'},
+ {r:'baby',en:'Sorry. I want to sleep.',cn:'对不起，我想睡觉。'},
+ {r:'tea', en:'Huh? Please go to bed early tonight!',cn:'啊？今晚请早点睡觉！'}
+];
+var ROLES=[
+ {id:'baby',emo:'🐰',name:'小兔 Baby',note:'台词最多，4 句 — 先演这个'},
+ {id:'mum', emo:'👩',name:'兔妈妈 Mum',note:'3 句，全是说时间'},
+ {id:'tea', emo:'🐻',name:'熊老师 Teacher',note:'2 句，最后一句最有戏'}
+];
+(function actGame(){
+  var myRole=null, i=0;
+  var box=document.getElementById('roleBox'), stage=document.getElementById('stage');
+  var line=document.getElementById('stLine'), cn=document.getElementById('stCn');
+  var next=document.getElementById('stNext'), hint=document.getElementById('stHint'), again=document.getElementById('stAgain');
+  ROLES.forEach(function(r){
+    var b=document.createElement('button'); b.type='button'; b.className='role';
+    b.setAttribute('aria-pressed','false');
+    b.innerHTML=r.emo+' 我演 '+r.name+'<small lang="zh-CN">'+r.note+'</small>';
+    b.addEventListener('click',function(){
+      myRole=r.id; i=0;
+      document.querySelectorAll('.role').forEach(function(x){x.setAttribute('aria-pressed','false')});
+      b.setAttribute('aria-pressed','true');
+      stage.hidden=false; again.hidden=true; next.hidden=false;
+      step();
+    });
+    box.appendChild(b);
+  });
+  function step(){
+    if(i>=STORY.length){
+      line.textContent='🎉 演完了！'; line.classList.remove('yours');
+      cn.textContent='换一个角色再演一遍，整个故事就都会说了。';
+      next.hidden=true; hint.hidden=true; again.hidden=false; return;
+    }
+    var s=STORY[i];
+    line.textContent=s.en; cn.textContent=s.cn;
+    if(s.r===myRole){
+      line.classList.add('yours');
+      cn.textContent='👉 轮到你说这句。说完点「下一句」。';
+      hint.hidden=false;
+      next.textContent='我说完了 →';
+    }else{
+      line.classList.remove('yours');
+      hint.hidden=true;
+      next.textContent='下一句 →';
+      speakText(s.en,'en-US',line);
+    }
+  }
+  next.addEventListener('click',function(){ i++; step(); });
+  hint.addEventListener('click',function(){ speakText(STORY[i].en,'en-US',line); });
+  again.addEventListener('click',function(){ i=0; again.hidden=true; next.hidden=false; step(); });
+})();
+
+var ACTS=[
+ {id:'swim',emo:'🏊',en:'swim',cn:'游泳',phrase:'swim'},
+ {id:'home',emo:'🚪',en:'go home',cn:'回家',phrase:'go home'},
+ {id:'bed', emo:'🛏️',en:'go to bed',cn:'睡觉',phrase:'go to bed'},
+ {id:'up',  emo:'🌅',en:'get up',cn:'起床',phrase:'get up'},
+ {id:'school',emo:'🎒',en:'go to school',cn:'上学',phrase:'go to school'}
+];
+function timeSent(h,phrase){return "It's "+WORDS[h-1]+" o'clock. It's time to "+phrase+".";}
+function mkCard(a){
+  var b=document.createElement('button'); b.type='button'; b.className='card'; b.lang='en-US';
+  b.setAttribute('aria-label',a.en+' '+a.cn);
+  b.innerHTML='<span class="cemo" aria-hidden="true">'+a.emo+'</span>'+
+    '<span class="cen">'+a.en+'</span><span class="ccn" lang="zh-CN">'+a.cn+'</span>';
+  b.dataset.id=a.id; return b;
+}
+(function matchGame(){
+  var pool=ACTS.slice(0,3);
+  var box=document.getElementById('mBox'), msg=document.getElementById('mMsg');
+  var cur=null;
+  function newQ(){
+    cur={a:pool[Math.floor(Math.random()*pool.length)],h:1+Math.floor(Math.random()*12)};
+    box.querySelectorAll('.card').forEach(function(c){c.classList.remove('good','bad')});
+    msg.textContent='';
+    say();
+  }
+  function say(){ if(cur) speakText(timeSent(cur.h,cur.a.phrase),'en-US',msg); }
+  pool.forEach(function(a){
+    var b=mkCard(a);
+    b.addEventListener('click',function(){
+      if(!cur) return;
+      if(this.dataset.id===cur.a.id){
+        this.classList.add('good');
+        msg.textContent='✅ 对了！'+timeSent(cur.h,cur.a.phrase);
+        setTimeout(newQ,1900);
+      }else{
+        this.classList.add('bad'); msg.textContent='不是这件事，再听一遍';
+        setTimeout(say,400);
+      }
+    });
+    box.appendChild(b);
+  });
+  document.getElementById('mListen').addEventListener('click',function(){ cur?say():newQ(); });
+  newQ();
+})();
+
+(function chooseTalk(){
+  var h=null, act=null;
+  var out=document.getElementById('cSay');
+  var tp=document.getElementById('tPick'), ap=document.getElementById('aPick');
+  for(var i=1;i<=12;i++){
+    var b=document.createElement('button'); b.type='button'; b.textContent=String(i);
+    b.dataset.h=String(i); b.setAttribute('aria-pressed','false');
+    b.addEventListener('click',function(){
+      h=Number(this.dataset.h);
+      tp.querySelectorAll('button').forEach(function(x){
+        x.setAttribute('aria-pressed', Number(x.dataset.h)===h?'true':'false')});
+      fire();
+    });
+    tp.appendChild(b);
+  }
+  ACTS.forEach(function(a){
+    var c=mkCard(a); c.setAttribute('aria-pressed','false');
+    c.addEventListener('click',function(){
+      act=a;
+      ap.querySelectorAll('.card').forEach(function(x){
+        x.setAttribute('aria-pressed', x.dataset.id===a.id?'true':'false')});
+      fire();
+    });
+    ap.appendChild(c);
+  });
+  function fire(){
+    if(h===null||!act){ out.textContent='先选一个点，再选一件事'; return; }
+    var s=timeSent(h,act.phrase);
+    out.textContent=s;
+    speakText('What time is it? '+s,'en-US',out);
+  }
+})();
+
+(function makeTalk(){
+  var ask=document.getElementById('mkAsk'), tip=document.getElementById('mkTip');
+  var n=0;
+  ask.addEventListener('click',function(){
+    speakText('What time is it?','en-US',ask);
+    n++;
+    tip.textContent = n===1
+      ? "👉 该你了：It's ___ o'clock. It's time to ___."
+      : '👉 再答一个 —— 把钟拨到别的点（第 '+n+' 次）';
+  });
+  var box=document.getElementById('mkHints');
+  ACTS.forEach(function(a){
+    var c=mkCard(a);
+    c.addEventListener('click',function(){ speakText("It's time to "+a.phrase+".",'en-US',c); });
+    box.appendChild(c);
+  });
+})();
+
+var ASSESS=[
+ {id:'sing',emo:'🎤',en:'I can sing the song.',cn:'我会唱那首歌',mark:'⭐'},
+ {id:'act', emo:'🎭',en:'I can act out the story.',cn:'我会演那个故事',mark:'🌸'},
+ {id:'time',emo:'💬',en:'I can tell the time.',cn:'我会说时间',mark:'🎗️'}
+];
+(function selfAssess(){
+  var KEY='u1-self';
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY))||{}; }catch(e){ return {}; } }
+  function save(o){ try{ localStorage.setItem(KEY,JSON.stringify(o)); }catch(e){} }
+  var state=load(), box=document.getElementById('assessBox');
+  ASSESS.forEach(function(a){
+    var row=document.createElement('div'); row.className='arow';
+    var emo=document.createElement('span'); emo.className='aemo'; emo.textContent=a.emo;
+    emo.setAttribute('aria-hidden','true');
+    var mid=document.createElement('div');
+    var en=document.createElement('p'); en.className='aen'; en.lang='en-US'; en.textContent=a.en;
+    var cn=document.createElement('p'); cn.className='acn'; cn.lang='zh-CN'; cn.textContent=a.cn+'（点句子可以听）';
+    mid.appendChild(en); mid.appendChild(cn);
+    en.style.cursor='pointer';
+    en.addEventListener('click',function(){ speakText(a.en,'en-US',en); });
+    var marks=document.createElement('div'); marks.className='marks';
+    marks.setAttribute('role','group'); marks.setAttribute('aria-label',a.cn+' 打分');
+    for(var i=1;i<=3;i++){
+      var b=document.createElement('button'); b.type='button'; b.className='mk';
+      b.textContent=a.mark; b.dataset.v=String(i);
+      b.setAttribute('aria-label',a.cn+' 打 '+i+' 个');
+      b.addEventListener('click',function(){
+        var v=Number(this.dataset.v);
+        state[a.id]=(state[a.id]===v)?0:v;
+        save(state); paint(a.id,marks);
+        if(state[a.id]===3) speakText('Great! '+a.en,'en-US',en);
+      });
+      marks.appendChild(b);
+    }
+    row.appendChild(emo); row.appendChild(mid); row.appendChild(marks);
+    box.appendChild(row);
+    paint(a.id,marks);
+  });
+  function paint(id,marks){
+    var v=state[id]||0;
+    marks.querySelectorAll('.mk').forEach(function(b){
+      var on=Number(b.dataset.v)<=v;
+      b.classList.toggle('on',on);
+      b.setAttribute('aria-pressed',on?'true':'false');
+    });
+  }
+  document.getElementById('asReset').addEventListener('click',function(){
+    state={}; save(state);
+    ASSESS.forEach(function(a,i){ paint(a.id, box.children[i].querySelector('.marks')); });
+  });
+})();
+</script>
+</body>
+</html>

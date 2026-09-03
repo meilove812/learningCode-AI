@@ -1,0 +1,37 @@
+name: Mirror main to gh-pages
+
+# 为什么是这个 workflow：
+# 本仓库的 GitHub Pages 源设置为「Deploy from a branch → gh-pages」，
+# 实际发布由平台内置的 "pages build and deployment" 完成。
+# 原先的 actions/deploy-pages 工作流要求 Pages 源为「GitHub Actions」，
+# 与当前设置冲突，因此每次推送都在 2 秒内失败（无实际影响，但一直发失败通知）。
+# 现在改为：推送 main 后自动同步到 gh-pages，由内置构建器发布。
+# 好处：只需 push main，不必再手动 `git push origin main:gh-pages`。
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mirror-gh-pages
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fast-forward gh-pages to main
+        run: |
+          set -euo pipefail
+          echo "main is at $(git rev-parse --short HEAD)"
+          git push origin HEAD:refs/heads/gh-pages
+          echo "gh-pages now at $(git rev-parse --short HEAD)"

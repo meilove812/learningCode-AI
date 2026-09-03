@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏜️ 玄奘取经 - 动画讲解</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+  color: #fff;
+}
+
+.header {
+  text-align: center;
+  padding: 30px 20px 10px;
+  position: relative;
+}
+
+.header h1 {
+  font-size: 2.2em;
+  background: linear-gradient(45deg, #f5af19, #f12711, #f5af19);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.3); }
+}
+
+.subtitle {
+  color: #aaa;
+  margin-top: 8px;
+  font-size: 1em;
+}
+
+/* Scene Container */
+.scene-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 0 15px;
+}
+
+.scene {
+  display: none;
+  animation: fadeInUp 0.8s ease;
+  background: rgba(255,255,255,0.05);
+  border-radius: 20px;
+  padding: 25px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+}
+
+.scene.active {
+  display: block;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Animation Canvas */
+.animation-box {
+  width: 100%;
+  height: 280px;
+  border-radius: 15px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+/* Scene 1: 长安城 */
+.scene1-bg {
+  background: linear-gradient(180deg, #87CEEB 0%, #87CEEB 60%, #8B7355 60%, #6B4226 100%);
+}
+
+.palace {
+  position: absolute;
+  bottom: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 120px;
+}
+
+.palace-roof {
+  width: 200px;
+  height: 40px;
+  background: #8B0000;
+  clip-path: polygon(0% 100%, 10% 0%, 90% 0%, 100% 100%);
+  position: absolute;
+  top: 0;
+}
+
+.palace-body {
+  width: 160px;
+  height: 70px;
+  background: #DAA520;
+  position: absolute;
+  top: 38px;
+  left: 20px;
+  border: 2px solid #B8860B;
+}
+
+.palace-door {
+  width: 30px;
+  height: 45px;
+  background: #8B4513;
+  border-radius: 15px 15px 0 0;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.monk-scene1 {
+  position: absolute;
+  bottom: 40%;
+  left: 15%;
+  animation: walkRight 8s linear infinite;
+  font-size: 50px;
+}
+
+@keyframes walkRight {
+  0% { left: 5%; }
+  100% { left: 85%; }
+}
+
+.cloud {
+  position: absolute;
+  top: 10%;
+  font-size: 30px;
+  opacity: 0.7;
+  animation: floatCloud 15s linear infinite;
+}
+
+.cloud:nth-child(2) { top: 5%; animation-delay: -5s; }
+.cloud:nth-child(3) { top: 15%; animation-delay: -10s; font-size: 20px; }
+
+@keyframes floatCloud {
+  0% { left: -10%; }
+  100% { left: 110%; }
+}
+
+/* Scene 2: 沙漠 */
+.scene2-bg {
+  background: linear-gradient(180deg, #FF6B35 0%, #FF8C42 30%, #F4D03F 70%, #E6B800 100%);
+}
+
+.sun {
+  position: absolute;
+  top: 15%;
+  right: 20%;
+  width: 60px;
+  height: 60px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 40px #fff, 0 0 80px #FFD700;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.dune {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40%;
+  background: #D4A537;
+  border-radius: 50% 50% 0 0 / 30% 30% 0 0;
+}
+
+.dune2 {
+  position: absolute;
+  bottom: 0;
+  left: 30%;
+  width: 70%;
+  height: 35%;
+  background: #C49B30;
+  border-radius: 50% 50% 0 0 / 40% 20% 0 0;
+}
+
+.monk-desert {
+  position: absolute;
+  bottom: 30%;
+  font-size: 45px;
+  animation: trudge 6s ease-in-out infinite;
+}
+
+@keyframes trudge {
+  0%, 100% { left: 10%; transform: translateY(0); }
+  25% { transform: translateY(-5px); }
+  50% { left: 50%; transform: translateY(0); }
+  75% { transform: translateY(-5px); }
+  100% { left: 80%; }
+}
+
+.heat-wave {
+  position: absolute;
+  bottom: 35%;
+  width: 100%;
+  height: 20px;
+  background: repeating-linear-gradient(90deg, transparent, rgba(255,255,255,0.1) 50%, transparent);
+  animation: heatWave 2s linear infinite;
+}
+
+@keyframes heatWave {
+  0% { transform: translateX(0) scaleY(1); }
+  50% { transform: translateX(10px) scaleY(1.5); }
+  100% { transform: translateX(0) scaleY(1); }
+}
+
+/* Scene 3: 雪山 */
+.scene3-bg {
+  background: linear-gradient(180deg, #1B2838 0%, #2C3E50 30%, #5DADE2 60%, #fff 100%);
+}
+
+.mountain {
+  position: absolute;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 120px solid transparent;
+  border-right: 120px solid transparent;
+  border-bottom: 200px solid #7F8C8D;
+}
+
+.mountain::after {
+  content: '';
+  position: absolute;
+  top: -200px;
+  left: -60px;
+  width: 0;
+  height: 0;
+  border-left: 60px solid transparent;
+  border-right: 60px solid transparent;
+  border-bottom: 80px solid #ECF0F1;
+}
+
+.mountain1 { left: 10%; }
+.mountain2 { left: 40%; border-bottom-width: 250px; }
+.mountain3 { left: 65%; border-bottom-width: 180px; }
+
+.snow-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #fff;
+  border-radius: 50%;
+  animation: snowfall 3s linear infinite;
+}
+
+@keyframes snowfall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(280px) rotate(360deg); opacity: 0.3; }
+}
+
+.monk-mountain {
+  position: absolute;
+  bottom: 35%;
+  left: 30%;
+  font-size: 40px;
+  animation: climbUp 4s ease-in-out infinite;
+}
+
+@keyframes climbUp {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+/* Scene 4: 天竺 - India */
+.scene4-bg {
+  background: linear-gradient(180deg, #4A0E8F 0%, #7B2FF7 30%, #C56CF0 60%, #FFB347 100%);
+}
+
+.temple {
+  position: absolute;
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.temple-dome {
+  width: 80px;
+  height: 80px;
+  background: #FFD700;
+  border-radius: 50% 50% 0 0;
+  margin: 0 auto;
+  position: relative;
+}
+
+.temple-dome::after {
+  content: '🕉️';
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 30px;
+}
+
+.temple-body-india {
+  width: 120px;
+  height: 80px;
+  background: linear-gradient(#FFF8DC, #FAEBD7);
+  margin: 0 auto;
+  border: 2px solid #DAA520;
+}
+
+.temple-steps {
+  width: 140px;
+  height: 20px;
+  background: #DEB887;
+  margin: 0 auto;
+}
+
+.sparkle {
+  position: absolute;
+  font-size: 20px;
+  animation: twinkle 1.5s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.monk-india {
+  position: absolute;
+  bottom: 20%;
+  left: 20%;
+  font-size: 45px;
+  animation: bow 3s ease-in-out infinite;
+}
+
+@keyframes bow {
+  0%, 70%, 100% { transform: rotate(0deg); }
+  80% { transform: rotate(15deg); }
+  90% { transform: rotate(0deg); }
+}
+
+/* Scene 5: 归来 */
+.scene5-bg {
+  background: linear-gradient(180deg, #FFD700 0%, #FFA500 30%, #FF6347 60%, #8B0000 100%);
+}
+
+.scroll {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 60px;
+  animation: floatScroll 2s ease-in-out infinite;
+}
+
+@keyframes floatScroll {
+  0%, 100% { transform: translateX(-50%) translateY(0) rotate(-5deg); }
+  50% { transform: translateX(-50%) translateY(-15px) rotate(5deg); }
+}
+
+.firework {
+  position: absolute;
+  font-size: 25px;
+  animation: fireworkBurst 2s ease-out infinite;
+}
+
+@keyframes fireworkBurst {
+  0% { transform: scale(0); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.8; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+.monk-return {
+  position: absolute;
+  bottom: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 55px;
+  animation: celebrate 1s ease-in-out infinite;
+}
+
+@keyframes celebrate {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-10px); }
+}
+
+/* Text Styles */
+.scene-title {
+  font-size: 1.5em;
+  color: #FFD700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.scene-text {
+  font-size: 1.1em;
+  line-height: 1.8;
+  color: #ddd;
+  margin-bottom: 15px;
+}
+
+.scene-text .highlight {
+  color: #FFD700;
+  font-weight: bold;
+}
+
+.fact-box {
+  background: rgba(255, 215, 0, 0.1);
+  border-left: 4px solid #FFD700;
+  padding: 12px 15px;
+  border-radius: 0 10px 10px 0;
+  margin: 15px 0;
+  font-size: 0.95em;
+}
+
+.fact-box .label {
+  color: #FFD700;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+  flex-wrap: wrap;
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(transparent, #1a1a2e 30%);
+  padding-top: 40px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn:active { transform: scale(0.95); }
+
+.btn-prev {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.btn-next {
+  background: linear-gradient(135deg, #f5af19, #f12711);
+  color: #fff;
+}
+
+.btn-play {
+  background: linear-gradient(135deg, #11998e, #38ef7d);
+  color: #fff;
+}
+
+.btn-auto {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Progress */
+.progress-bar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 15px;
+}
+
+.progress-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.progress-dot.active {
+  background: #FFD700;
+  transform: scale(1.3);
+  box-shadow: 0 0 10px #FFD700;
+}
+
+.progress-dot.visited {
+  background: rgba(255, 215, 0, 0.5);
+}
+
+/* Voice selector */
+.voice-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  flex-wrap: wrap;
+}
+
+.voice-controls select, .voice-controls input {
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  font-size: 0.9em;
+}
+
+.voice-controls label {
+  color: #aaa;
+  font-size: 0.85em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Timeline */
+.timeline {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  display: none;
+}
+
+.timeline.show { display: block; }
+
+.timeline-item {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 10px;
+  transition: background 0.3s;
+}
+
+.timeline-item:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.timeline-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #FFD700;
+  flex-shrink: 0;
+  margin-top: 3px;
+  position: relative;
+}
+
+.timeline-dot::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 40px;
+  background: rgba(255,215,0,0.3);
+}
+
+.timeline-item:last-child .timeline-dot::after { display: none; }
+
+.timeline-content h3 {
+  color: #FFD700;
+  font-size: 1.1em;
+}
+
+.timeline-content p {
+  color: #aaa;
+  font-size: 0.9em;
+  margin-top: 4px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .header h1 { font-size: 1.6em; }
+  .animation-box { height: 200px; }
+  .btn { padding: 10px 18px; font-size: 0.9em; }
+  .scene { padding: 18px; }
+  .scene-text { font-size: 1em; }
+}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="header">
+  <h1>🏜️ 玄奘取经</h1>
+  <p class="subtitle">一个人的万里西行 · 动画讲解</p>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-dot active" onclick="goToScene(0)"></div>
+  <div class="progress-dot" onclick="goToScene(1)"></div>
+  <div class="progress-dot" onclick="goToScene(2)"></div>
+  <div class="progress-dot" onclick="goToScene(3)"></div>
+  <div class="progress-dot" onclick="goToScene(4)"></div>
+</div>
+
+<div class="scene-container">
+  <!-- Scene 1: 出发 -->
+  <div class="scene active" id="scene-0">
+    <div class="animation-box scene1-bg">
+      <div class="cloud">☁️</div>
+      <div class="cloud">☁️</div>
+      <div class="cloud">☁️</div>
+      <div class="palace">
+        <div class="palace-roof"></div>
+        <div class="palace-body">
+          <div class="palace-door"></div>
+        </div>
+      </div>
+      <div class="monk-scene1">🧑‍🦲</div>
+    </div>
+    <div class="scene-title">📖 第一章：离开长安</div>
+    <div class="scene-text">
+      <span class="highlight">公元627年</span>，大唐长安城里，有一位叫<span class="highlight">玄奘</span>的僧人。<br><br>
+      他从13岁就开始学习佛经，发现很多佛经翻译得不够准确，理解起来有矛盾。<br><br>
+      于是他做了一个大胆的决定：<span class="highlight">亲自去印度取真经！</span>
+    </div>
+    <div class="fact-box">
+      <div class="label">📌 小知识</div>
+      玄奘出发时只有<strong>27岁</strong>，当时朝廷不允许百姓私自出国，他是"偷渡"出去的！
+    </div>
+  </div>
+
+  <!-- Scene 2: 沙漠 -->
+  <div class="scene" id="scene-1">
+    <div class="animation-box scene2-bg">
+      <div class="sun"></div>
+      <div class="heat-wave"></div>
+      <div class="dune"></div>
+      <div class="dune2"></div>
+      <div class="monk-desert">🧑‍🦲</div>
+    </div>
+    <div class="scene-title">🏜️ 第二章：穿越大沙漠</div>
+    <div class="scene-text">
+      出了玉门关，玄奘进入了<span class="highlight">莫贺延碛大沙漠</span>（今天的戈壁沙漠）。<br><br>
+      这里白天热得像火炉🔥，晚上冷得像冰窖❄️。走了<span class="highlight">五天四夜</span>没有水喝！<br><br>
+      他差点渴死，靠着一匹识途老马找到了水源，才活了下来。
+    </div>
+    <div class="fact-box">
+      <div class="label">📌 小知识</div>
+      玄奘在沙漠中差点放弃回头，但他发了誓："宁可向西而死，绝不东归一步！"这就是<strong>坚持</strong>的力量。
+    </div>
+  </div>
+
+  <!-- Scene 3: 雪山 -->
+  <div class="scene" id="scene-2">
+    <div class="animation-box scene3-bg">
+      <div class="mountain mountain1"></div>
+      <div class="mountain mountain2"></div>
+      <div class="mountain mountain3"></div>
+      <div class="monk-mountain">🧑‍🦲</div>
+      <!-- Snow particles generated by JS -->
+    </div>
+    <div class="scene-title">🏔️ 第三章：翻越葱岭雪山</div>
+    <div class="scene-text">
+      经过沙漠后，玄奘来到了<span class="highlight">葱岭</span>（今天的帕米尔高原）。<br><br>
+      这里的雪山海拔超过<span class="highlight">七千米</span>，终年积雪不化，暴风雪随时会来。<br><br>
+      同行的商人中有好几人冻死在山上，但玄奘凭借顽强的意志翻越了这片死亡之地。
+    </div>
+    <div class="fact-box">
+      <div class="label">📌 小知识</div>
+      葱岭就是今天的<strong>帕米尔高原</strong>，在中国新疆和塔吉克斯坦交界处。冬天气温可达零下50度！
+    </div>
+  </div>
+
+  <!-- Scene 4: 到达天竺 -->
+  <div class="scene" id="scene-3">
+    <div class="animation-box scene4-bg">
+      <div class="sparkle" style="top:10%;left:20%;animation-delay:0s">✨</div>
+      <div class="sparkle" style="top:15%;left:70%;animation-delay:0.5s">✨</div>
+      <div class="sparkle" style="top:5%;left:45%;animation-delay:1s">✨</div>
+      <div class="sparkle" style="top:25%;left:85%;animation-delay:0.3s">⭐</div>
+      <div class="sparkle" style="top:8%;left:10%;animation-delay:0.8s">⭐</div>
+      <div class="temple">
+        <div class="temple-dome"></div>
+        <div class="temple-body-india"></div>
+        <div class="temple-steps"></div>
+      </div>
+      <div class="monk-india">🧑‍🦲</div>
+    </div>
+    <div class="scene-title">🇮🇳 第四章：到达天竺</div>
+    <div class="scene-text">
+      历经<span class="highlight">两年</span>的艰难跋涉，玄奘终于到达了<span class="highlight">天竺</span>（古印度）！<br><br>
+      他在印度最著名的佛教大学——<span class="highlight">那烂陀寺</span>学习了整整<span class="highlight">五年</span>，师从高僧戒贤法师。<br><br>
+      玄奘的辩论水平惊艳全印度，被称为"<span class="highlight">大乘天</span>"和"<span class="highlight">解脱天</span>"！
+    </div>
+    <div class="fact-box">
+      <div class="label">📌 小知识</div>
+      那烂陀寺当时有<strong>一万多名学生</strong>，是全世界最大的大学！玄奘在那里成了最优秀的学生之一。
+    </div>
+  </div>
+
+  <!-- Scene 5: 归来 -->
+  <div class="scene" id="scene-4">
+    <div class="animation-box scene5-bg">
+      <div class="scroll">📜</div>
+      <div class="firework" style="top:10%;left:15%;animation-delay:0s">🎆</div>
+      <div class="firework" style="top:5%;left:75%;animation-delay:0.7s">🎇</div>
+      <div class="firework" style="top:20%;left:50%;animation-delay:1.2s">🎆</div>
+      <div class="firework" style="top:8%;left:30%;animation-delay:0.4s">🎇</div>
+      <div class="monk-return">🧑‍🦲</div>
+    </div>
+    <div class="scene-title">🏆 第五章：满载而归</div>
+    <div class="scene-text">
+      <span class="highlight">公元645年</span>，离开<span class="highlight">17年</span>后，玄奘终于回到了长安！<br><br>
+      他带回了<span class="highlight">657部</span>佛经，还有各种佛像和种子。唐太宗亲自迎接他！<br><br>
+      之后他用了<span class="highlight">19年</span>翻译佛经，翻译了<span class="highlight">1335卷</span>，还写下了《大唐西域记》，记录了沿途100多个国家。
+    </div>
+    <div class="fact-box">
+      <div class="label">📌 小知识</div>
+      玄奘的《大唐西域记》是今天研究古代中亚和印度历史的<strong>重要文献</strong>，很多古国遗址都是靠这本书找到的！
+    </div>
+  </div>
+</div>
+
+<!-- Voice Controls -->
+<div class="voice-controls">
+  <label>🔊 语速:
+    <input type="range" id="rate-slider" min="0.5" max="1.5" step="0.1" value="0.9">
+    <span id="rate-display">0.9x</span>
+  </label>
+  <label>🗣️ 声音:
+    <select id="voice-select"></select>
+  </label>
+</div>
+
+<div class="controls">
+  <button class="btn btn-prev" id="btn-prev" onclick="prevScene()" disabled>⬅️ 上一章</button>
+  <button class="btn btn-play" id="btn-speak" onclick="speakCurrent()">🔊 朗读</button>
+  <button class="btn btn-auto" id="btn-auto" onclick="autoPlay()">▶️ 自动播放</button>
+  <button class="btn btn-next" id="btn-next" onclick="nextScene()">下一章 ➡️</button>
+</div>
+
+<script>
+// Scene management
+let currentScene = 0;
+const totalScenes = 5;
+let isAutoPlaying = false;
+let autoPlayTimer = null;
+
+// Narration texts for each scene
+const narrations = [
+  "公元627年，大唐长安城里，有一位叫玄奘的僧人。他从13岁就开始学习佛经，发现很多佛经翻译得不够准确。于是他做了一个大胆的决定：亲自去印度取真经！当时他只有27岁，而且朝廷不允许百姓私自出国，他是偷渡出去的！",
+  "出了玉门关，玄奘进入了莫贺延碛大沙漠。白天热得像火炉，晚上冷得像冰窖。他走了五天四夜没有水喝，差点渴死！他对自己说：宁可向西而死，绝不东归一步！最终靠着一匹识途老马找到了水源。",
+  "经过沙漠后，玄奘来到了葱岭，也就是今天的帕米尔高原。这里的雪山海拔超过七千米，暴风雪随时会来。同行的商人中有好几人冻死在山上，但玄奘凭借顽强的意志翻越了这片死亡之地。",
+  "历经两年的艰难跋涉，玄奘终于到达了天竺，也就是古印度！他在最著名的那烂陀寺学习了整整五年。玄奘的辩论水平惊艳全印度，被尊称为大乘天和解脱天！",
+  "公元645年，离开17年后，玄奘终于回到了长安！他带回了657部佛经。之后他用了19年翻译佛经，翻译了1335卷，还写下了大唐西域记，记录了沿途100多个国家的风土人情。"
+];
+
+function goToScene(index) {
+  if (index < 0 || index >= totalScenes) return;
+  
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.progress-dot').forEach(d => d.classList.remove('active'));
+  
+  currentScene = index;
+  document.getElementById(`scene-${index}`).classList.add('active');
+  
+  const dots = document.querySelectorAll('.progress-dot');
+  dots[index].classList.add('active');
+  for (let i = 0; i < index; i++) dots[i].classList.add('visited');
+  
+  document.getElementById('btn-prev').disabled = (index === 0);
+  document.getElementById('btn-next').disabled = (index === totalScenes - 1);
+  
+  // Stop any ongoing speech
+  window.speechSynthesis.cancel();
+}
+
+function nextScene() {
+  if (currentScene < totalScenes - 1) goToScene(currentScene + 1);
+}
+
+function prevScene() {
+  if (currentScene > 0) goToScene(currentScene - 1);
+}
+
+// TTS
+function getSelectedVoice() {
+  const select = document.getElementById('voice-select');
+  const voices = window.speechSynthesis.getVoices();
+  return voices[select.selectedIndex] || null;
+}
+
+function speakCurrent() {
+  window.speechSynthesis.cancel();
+  
+  const text = narrations[currentScene];
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'zh-CN';
+  utterance.rate = parseFloat(document.getElementById('rate-slider').value);
+  
+  const voice = getSelectedVoice();
+  if (voice) utterance.voice = voice;
+  
+  const btn = document.getElementById('btn-speak');
+  btn.textContent = '⏹️ 停止';
+  btn.onclick = () => {
+    window.speechSynthesis.cancel();
+    btn.textContent = '🔊 朗读';
+    btn.onclick = speakCurrent;
+  };
+  
+  utterance.onend = () => {
+    btn.textContent = '🔊 朗读';
+    btn.onclick = speakCurrent;
+    
+    if (isAutoPlaying && currentScene < totalScenes - 1) {
+      autoPlayTimer = setTimeout(() => {
+        nextScene();
+        setTimeout(speakCurrent, 800);
+      }, 1500);
+    } else if (isAutoPlaying) {
+      stopAutoPlay();
+    }
+  };
+  
+  window.speechSynthesis.speak(utterance);
+}
+
+function autoPlay() {
+  if (isAutoPlaying) {
+    stopAutoPlay();
+    return;
+  }
+  
+  isAutoPlaying = true;
+  const btn = document.getElementById('btn-auto');
+  btn.textContent = '⏸️ 暂停';
+  btn.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
+  
+  speakCurrent();
+}
+
+function stopAutoPlay() {
+  isAutoPlaying = false;
+  window.speechSynthesis.cancel();
+  clearTimeout(autoPlayTimer);
+  
+  const btn = document.getElementById('btn-auto');
+  btn.textContent = '▶️ 自动播放';
+  btn.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+}
+
+// Voice setup
+function populateVoices() {
+  const voices = window.speechSynthesis.getVoices();
+  const select = document.getElementById('voice-select');
+  select.innerHTML = '';
+  
+  const zhVoices = voices.filter(v => (v.lang.startsWith('zh-CN')||v.lang==='zh')&&!v.lang.startsWith('zh-HK')&&!v.lang.startsWith('zh-TW'));
+  // Edge high-fidelity: sort Online (Natural) to top
+  zhVoices.sort((a, b) => {
+    const aS = a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Online') && a.name.includes('Natural') ? 2 : a.name.includes('Microsoft') ? 1 : 0;
+    const bS = b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Online') && b.name.includes('Natural') ? 2 : b.name.includes('Microsoft') ? 1 : 0;
+    return bS - aS;
+  });
+  const displayVoices = zhVoices.length > 0 ? zhVoices : voices.slice(0, 10);
+  
+  displayVoices.forEach((voice, i) => {
+    const option = document.createElement('option');
+    option.value = i;
+    option.textContent = `${voice.name} (${voice.lang})`;
+    select.appendChild(option);
+  });
+}
+
+window.speechSynthesis.onvoiceschanged = populateVoices;
+setTimeout(populateVoices, 500);
+
+// Rate slider
+document.getElementById('rate-slider').addEventListener('input', function() {
+  document.getElementById('rate-display').textContent = this.value + 'x';
+});
+
+// Generate snow particles for scene 3
+const scene3 = document.querySelector('.scene3-bg');
+for (let i = 0; i < 20; i++) {
+  const snow = document.createElement('div');
+  snow.className = 'snow-particle';
+  snow.style.left = Math.random() * 100 + '%';
+  snow.style.animationDelay = Math.random() * 3 + 's';
+  snow.style.animationDuration = (2 + Math.random() * 2) + 's';
+  scene3.appendChild(snow);
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') nextScene();
+  else if (e.key === 'ArrowLeft') prevScene();
+  else if (e.key === ' ') { e.preventDefault(); speakCurrent(); }
+});
+
+// Touch swipe
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', e => {
+  const diff = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(diff) > 60) {
+    if (diff < 0) nextScene();
+    else prevScene();
+  }
+});
+</script>
+
+</body>
+</html>
