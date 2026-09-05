@@ -754,7 +754,9 @@ document.getElementById('rateRange').addEventListener('input', function() {
   document.getElementById('rateVal').textContent = this.value;
 });
 
-// 朗读：优先播放预生成的语音文件（微信内置浏览器不提供 Web Speech），失败再回退浏览器朗读。
+// 朗读优先级：① Web Speech API（Edge 高保真 Microsoft Xiaoxiao Online Natural，可调语速/换声音）
+//            ② 无 Web Speech 时（如微信内置浏览器）回退到预生成的 Edge TTS 晓晓语音文件
+//            ③ 两者都不可用时提示改用系统浏览器
 function onSegmentEnd() {
   if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
   else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
@@ -768,28 +770,40 @@ function stopAudio() {
 function speakPage(idx) {
   stopAudio();
   if (!narrations[idx]) return;
+  if (speakBrowser(idx)) return;   // 首选 Web Speech API
+  speakFile(idx);                  // 回退预生成语音文件
+}
+
+// 首选：Web Speech API。成功返回 true，不可用返回 false 交给回退。
+function speakBrowser(idx) {
+  if (!HAS_TTS) return false;
+  const sv = document.getElementById('voiceSelect');
+  const picked = (sv && sv.value !== '' && voices[sv.value]) ? voices[sv.value] : null;
+  if (!picked) return false;       // 语音列表为空（部分内核有对象无声音）也走回退
+  try {
+    const u = new SpeechSynthesisUtterance(narrations[idx]);
+    const rr = document.getElementById('rateRange');
+    u.lang = 'zh-CN';
+    u.rate = rr ? parseFloat(rr.value) : 1;
+    u.voice = picked;
+    u.onend = onSegmentEnd;
+    u.onerror = () => speakFile(idx);
+    window.speechSynthesis.speak(u);
+    return true;
+  } catch (e) { return false; }
+}
+
+// 回退：预生成的 Edge TTS 晓晓语音文件（微信内置浏览器不提供 Web Speech）
+function speakFile(idx) {
   const rr = document.getElementById('rateRange');
   const rate = rr ? parseFloat(rr.value) : 1;
   const a = new Audio(AUDIO_PREFIX + idx + '.mp3');
   a.playbackRate = Math.max(0.5, Math.min(2, rate || 1));
   a.onended = onSegmentEnd;
-  a.onerror = () => { audioEl = null; speakBrowser(idx); };
+  a.onerror = () => { audioEl = null; showNoAudio(); };
   audioEl = a;
   const pr = a.play();
-  if (pr && pr.catch) pr.catch(() => { audioEl = null; speakBrowser(idx); });
-}
-
-function speakBrowser(idx) {
-  if (!HAS_TTS) { showNoAudio(); return; }
-  try {
-    const u = new SpeechSynthesisUtterance(narrations[idx]);
-    const rr = document.getElementById('rateRange');
-    u.lang = 'zh-CN'; u.rate = rr ? parseFloat(rr.value) : 1;
-    const sv = document.getElementById('voiceSelect');
-    if (sv && sv.value && voices[sv.value]) u.voice = voices[sv.value];
-    u.onend = onSegmentEnd;
-    window.speechSynthesis.speak(u);
-  } catch (e) { showNoAudio(); }
+  if (pr && pr.catch) pr.catch(() => { audioEl = null; showNoAudio(); });
 }
 
 function showNoAudio() {
