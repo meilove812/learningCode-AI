@@ -858,13 +858,14 @@ let ttsUnlocked = false;
 function toggleAudio() {
   if (speaking) { speaking = false; stopAudio(); }
   else {
-    // iOS 要求首次 speak() 处在用户手势的同步调用栈内，这里用一次空白朗读解锁
-    if (HAS_TTS && !ttsUnlocked) {
-      ttsUnlocked = true;
-      try { window.speechSynthesis.speak(new SpeechSynthesisUtterance(' ')); } catch (e) {}
-    }
     speaking = true;
-    speakPage(cur);
+    if (!ttsUnlocked) {
+      // 首次必须同步调用 speak()，中间不能插 setTimeout，否则 iOS 判定已离开用户手势栈而静默不发声
+      ttsUnlocked = true;
+      doSpeak(cur);
+    } else {
+      speakPage(cur);
+    }
   }
   updateAudioBtn();
 }
