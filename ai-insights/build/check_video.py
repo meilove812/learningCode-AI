@@ -3,6 +3,12 @@ import argparse, html, json, re, subprocess, datetime, urllib.request, urllib.er
 from pathlib import Path
 ap=argparse.ArgumentParser();ap.add_argument('--config',required=True);ap.add_argument('--html',required=True)
 ap.add_argument('--skip-net',action='store_true',help='跳过来源链接联网核验（仅离线自检，发布前不要用）')
+# 档位：tactical=战术判断档（当日事件，来源必须新鲜）；insight=洞察档。
+# insight 存在的唯一理由：有一类选题是「公开数据里一条被普遍读错的曲线」，
+# 价值不来自新鲜度而来自误读仍在影响判断，来源天然是数月前的数据集版本。
+# 放开时效不等于放松：insight 下改由「引文逐字命中当前线上页面」+「不得使用时效词」承担把关，
+# 前者保证引用的是数据集当前版本，后者禁止把旧数据包装成今天刚发生。
+ap.add_argument('--profile',choices=['tactical','insight'],default='tactical',help='校验档位')
 a=ap.parse_args()
 d=json.loads(Path(a.config).read_text(encoding='utf-8'));h=Path(a.html).read_text(encoding='utf-8')
 errors=[]; slides=d.get('slides',[]); tts=''.join(x.get('tts','') for x in slides)
@@ -136,7 +142,8 @@ else:
         elif ep_date:
             gap=(ep_date-datetime.date(*map(int,sdate.split('-')))).days
             if gap<0: errors.append(f'sources[{i}] 来源日期晚于本期日期')
-            elif gap>30: errors.append(f'sources[{i}] 来源过时：距本期 {gap} 天，上限 30')
+            elif gap>30 and a.profile=='tactical':
+                errors.append(f'sources[{i}] 来源过时：距本期 {gap} 天，上限 30')
         if url.startswith('https://') and not a.skip_net:
             try:
                 req=urllib.request.Request(url,method='HEAD',headers={'User-Agent':'ai-insight-checker'})
@@ -147,6 +154,22 @@ else:
     # derivation 必须指向真实存在的来源编号，不能空口说「据某研究」
     if deriv and not any(1<=n<=len(sources) for n in (int(x) for x in re.findall(r'\d+',deriv))):
         errors.append(f'derivation 未引用有效来源编号（当前 {len(sources)} 条来源）')
+
+# ---- insight 档的补偿关卡：放开来源时效之后，必须由这三关顶上 ----
+if a.profile=='insight':
+    _screen=json.dumps(d.get('slides',[]),ensure_ascii=False)
+    # 1) 不得把旧数据包装成刚发生。注意只禁「声称数据新鲜」的词：
+    # 首次启用时把光租「今天」也拦了，而「今天就能用上」说的是观众何时行动，与数据时效无关，属误拦。
+    for _w in ['今天刚','昨天','刚刚','最新发布','今日发布','本周发布','日前']:
+        if _w in _screen:
+            errors.append(f'insight 档禁用时效词「{_w}」：来源已放开 30 天上限，不得暗示新鲜度')
+    # 2) 必须有跨期量变：同一指标至少落在 2 个不同时间点上，否则叫不上趋势
+    _yrs=set(re.findall(r'20\d{2}\s*年', _screen))
+    if len(_yrs)<2:
+        errors.append(f'insight 档缺跨期量变：上屏只出现 {len(_yrs)} 个年份，趋势无从成立')
+    # 3) 必须说清守住的那部分靠什么：责任归属还是技术壁垒，两者同时出现才算对照清楚
+    if not ('责任' in _screen and '技术' in _screen):
+        errors.append('insight 档缺壁垒类型：须同时出现「责任」与「技术」，说清守的是哪一种')
 
 # ---- 上屏数字必须能追到原文引文，引文必须逐字存在于线上页面 ----
 # 背景：原有关卡只验来源「存在且可达」，不验「我写的数字是否与原文一致」。

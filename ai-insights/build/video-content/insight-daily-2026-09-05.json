@@ -1,0 +1,144 @@
+{
+  "page_title": "那个十七小时是掷硬币 | 2026.9.5",
+  "date": "2026年09月05日",
+  "topic": "能力边界与交付边界不是一条线",
+  "thesis": "公开数据里被广泛引用的「能干十七小时」是五成把握下的任务长度；把把握提到八成，长度掉一个数量级，能交付的边界只能看八成那条线。",
+  "derivation": "由来源1「超过 16 小时的测量在现有任务集下不可靠」与「五成时间跨度是模型有一半概率做完的任务长度」确立两条线的定义差别；由来源2 一手数据集的 doubling_time_in_days 字段确立翻倍在加速，且该字段自注剔除了五成跨度超过 16 小时的点，故对头条数字保留余量；由来源3 方法论确立这条曲线的长期斜率。上屏只保留可取整核对的量级，倍数与均值属本期自算，不上屏当结论。",
+  "taken_away": "看到「能做多少小时」先问几成把握——按长度估产能这件事的算法部分已经能自动做；没被拿走的是判断这个长度算不算能交付",
+  "decision": "判断能不能交给 AI，看八成那条线，不看头条那个数",
+  "slides": [
+    {
+      "kind": "cover",
+      "eyebrow": "2026.9.5",
+      "title": "那个十七小时是掷硬币",
+      "accent": "五成把握",
+      "note": "同一份公开数据，把把握从五成提到八成，长度掉一个数量级",
+      "tts": "有个数字传得很广。说 AI 能独立干完十七个小时的活。这个数字是真的，完整说法是五成把握。"
+    },
+    {
+      "kind": "fact",
+      "eyebrow": "事件",
+      "title": "同一份数据里其实有两条线",
+      "metric": "五成 17 小时 · 八成 3 小时",
+      "body": "一家独立评测机构用上百个软件任务长期测量：一件活熟练的人要做多久，模型才有把握做完。同一个当期最强档，两条线差着一个量级。",
+      "tts": "一家独立评测机构长期测这件事。五成把握是十七个小时。八成把握只有三个小时。"
+    },
+    {
+      "kind": "metrics",
+      "eyebrow": "趋势",
+      "title": "翻倍本身在加速",
+      "items": [
+        {
+          "icon": "📈",
+          "name": "全期翻倍 188 天"
+        },
+        {
+          "icon": "⚡",
+          "name": "近三年 129 天"
+        },
+        {
+          "icon": "📐",
+          "name": "下限 104 天 上限 158 天"
+        }
+      ],
+      "tts": "这条线还在加速。按全期算，长度翻一倍要一百八十八天。只看近三年，压到一百二十九天。"
+    },
+    {
+      "kind": "formula",
+      "eyebrow": "趋势",
+      "title": "把握提高，能交的活就变短",
+      "items": [
+        "2025 年 2 月　五成 1 小时　八成 12 分",
+        "2025 年 12 月　五成 6 小时　八成 66 分",
+        "2026 年 2 月　五成 12 小时　八成 72 分"
+      ],
+      "result": "两条线不是平行往前走，差距长期在拉大",
+      "tts": "更值得你看的是差距。把握从五成提到八成，能交的活就短一个量级。而且这个差距在拉大。"
+    },
+    {
+      "kind": "compare",
+      "eyebrow": "影响",
+      "title": "哪部分被挪走了，哪部分守得住",
+      "left": {
+        "tone": "cool",
+        "label": "已经被接手",
+        "value": "把活做一遍"
+      },
+      "right": {
+        "tone": "warm",
+        "label": "还在人手上",
+        "value": "保证做对了"
+      },
+      "tts": "被拿走的是做一遍。守住的是保证做对。这道线靠的是责任归属，不是技术壁垒。"
+    },
+    {
+      "kind": "conclusion",
+      "eyebrow": "结论",
+      "title": "两条边界要分开看",
+      "accent": "看八成那条线",
+      "note": "守住的那段靠责任归属，不靠技术难度，所以下一次翻倍冲不掉它那部分；连出数据的机构自己都注明，超过 16 小时的测量不可靠",
+      "tts": "判断能不能交给 AI，看八成那条线。"
+    },
+    {
+      "kind": "action",
+      "eyebrow": "机会",
+      "title": "今天就能用上的三个动作",
+      "action": [
+        "看到「能做多少小时的活」，先问一句：几成把握下的那个数",
+        "真要交出去，按八成那条线切活的长度，不按五成",
+        "守自己的活，守责任归属那一段，别只守技术难度"
+      ],
+      "action_script": "照着问一句：「这个长度是几成把握下测出来的？八成把握对应多长？」",
+      "tts": "所以你看到能做多少小时，先问一句几成把握。真要交出去，按八成那条线切活。"
+    },
+    {
+      "kind": "ending",
+      "eyebrow": "AI 每日洞察",
+      "title": "AI 每日洞察",
+      "sources": [
+        {
+          "name": "任务时间跨度评测说明与方法",
+          "url": "https://metr.org/time-horizons/"
+        },
+        {
+          "name": "一手测量数据集原始文件",
+          "url": "https://metr.org/assets/benchmark_results_1_1.yaml"
+        },
+        {
+          "name": "长任务能力测量方法论论文",
+          "url": "https://arxiv.org/abs/2503.14499"
+        }
+      ],
+      "disclaimer": "本文内容基于公开信息整理，仅供参考，不构成任何投资建议或商业决策依据。数据引自公开评测数据集，编辑力求准确但无法保证所有信息的完整性和时效性。如有事实性错误，欢迎留言指正。未经授权，请勿转载。",
+      "signature": "开心的舵手",
+      "tts": "头条那个数字，不是你能交付的长度。"
+    }
+  ],
+  "sources": [
+    {
+      "title": "Task-Completion Time Horizons of Frontier AI Models",
+      "url": "https://metr.org/time-horizons/",
+      "date": "2026-04-07",
+      "quotes": [
+        "Measurements above 16 hrs are unreliable with our current task suite",
+        "the 50%-time horizon is the duration at which an agent is predicted to succeed half the time"
+      ]
+    },
+    {
+      "title": "METR-Horizon-v1.1 raw benchmark results",
+      "url": "https://metr.org/assets/benchmark_results_1_1.yaml",
+      "date": "2026-04-07",
+      "quotes": [
+        "doubling_time_in_days: # excludes points with central estimate p50 > 16 hrs"
+      ]
+    },
+    {
+      "title": "Measuring AI Ability to Complete Long Tasks",
+      "url": "https://arxiv.org/abs/2503.14499",
+      "date": "2025-03-19",
+      "quotes": [
+        "This is the time humans typically take to complete tasks that AI models can complete with 50% success rate"
+      ]
+    }
+  ]
+}
