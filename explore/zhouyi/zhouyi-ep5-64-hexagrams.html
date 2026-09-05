@@ -596,6 +596,7 @@ html, body {
 
 <script>
 let cur = 0;
+const HAS_TTS = typeof window.speechSynthesis !== 'undefined' && window.speechSynthesis !== null;
 const pages = document.querySelectorAll('.page');
 const total = pages.length;
 let animating = false, speaking = false;
@@ -611,7 +612,7 @@ for (let i = 0; i < total; i++) {
 function go(idx) {
   if (idx < 0 || idx >= total || idx === cur || animating) return;
   animating = true;
-  window.speechSynthesis.cancel();
+  stopAudio();
   const old = pages[cur], nw = pages[idx], dir = idx > cur ? 1 : -1;
   old.classList.remove('active'); old.classList.add('prev');
   if (dir < 0) { old.style.transform = 'translateX(100%)'; old.style.opacity = '0'; }
@@ -668,6 +669,7 @@ const narrations = [
 
 let voices = [];
 function loadVoices() {
+  if (!HAS_TTS) return;
   voices = window.speechSynthesis.getVoices();
   const sel = document.getElementById('voiceSelect');
   sel.innerHTML = '';
@@ -685,29 +687,68 @@ function loadVoices() {
     sel.appendChild(o);
   });
 }
-window.speechSynthesis.onvoiceschanged = loadVoices;
-setTimeout(loadVoices, 300);
+if (HAS_TTS) {
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+  [0, 300, 900, 2000].forEach(t => setTimeout(loadVoices, t));
+} else {
+  const vp = document.getElementById('voiceSelect');
+  if (vp && vp.parentElement) vp.parentElement.style.display = 'none';
+}
 document.getElementById('rateRange').addEventListener('input', function() {
   document.getElementById('rateVal').textContent = this.value;
 });
 
-function speakPage(idx) {
-  window.speechSynthesis.cancel();
-  if (!narrations[idx]) return;
-  const u = new SpeechSynthesisUtterance(narrations[idx]);
-  u.lang = 'zh-CN'; u.rate = parseFloat(document.getElementById('rateRange').value);
-  const sv = document.getElementById('voiceSelect');
-  if (sv.value && voices[sv.value]) u.voice = voices[sv.value];
-  u.onend = () => {
-    if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
-    else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
-  };
-  window.speechSynthesis.speak(u);
+// 朗读：统一走 Web Speech API（Edge 高保真 Microsoft Xiaoxiao Online Natural 优先）
+function onSegmentEnd() {
+  if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
+  else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
 }
 
+function stopAudio() {
+  if (HAS_TTS) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+}
+
+function speakPage(idx) {
+  if (!HAS_TTS) { showNoAudio(); return; }
+  if (!narrations[idx]) return;
+  try { window.speechSynthesis.cancel(); } catch (e) {}
+  // iOS/部分内核已知坑：cancel() 之后必须让出一帧再 speak()，否则静默不发声
+  setTimeout(() => doSpeak(idx), 120);
+}
+
+function doSpeak(idx) {
+  try {
+    const u = new SpeechSynthesisUtterance(narrations[idx]);
+    const rr = document.getElementById('rateRange');
+    u.lang = 'zh-CN';
+    u.rate = rr ? parseFloat(rr.value) : 1;
+    // 语音列表可能异步到达；没拿到就不指定 voice，交给系统按 lang 自选，仍能发声
+    const sv = document.getElementById('voiceSelect');
+    if (sv && sv.value !== '' && voices[sv.value]) u.voice = voices[sv.value];
+    u.onend = onSegmentEnd;
+    u.onerror = (e) => { if (e && e.error === 'interrupted') return; showNoAudio(); };
+    window.speechSynthesis.speak(u);
+  } catch (e) { showNoAudio(); }
+}
+
+function showNoAudio() {
+  const h = document.getElementById('navHint');
+  if (h) { h.textContent = '这个浏览器不支持朗读，请用系统浏览器打开'; h.style.opacity = '1'; }
+  speaking = false; updateAudioBtn();
+}
+
+let ttsUnlocked = false;
 function toggleAudio() {
-  if (speaking) { speaking = false; window.speechSynthesis.cancel(); }
-  else { speaking = true; speakPage(cur); }
+  if (speaking) { speaking = false; stopAudio(); }
+  else {
+    // iOS 要求首次 speak() 处在用户手势的同步调用栈内，这里用一次空白朗读解锁
+    if (HAS_TTS && !ttsUnlocked) {
+      ttsUnlocked = true;
+      try { window.speechSynthesis.speak(new SpeechSynthesisUtterance(' ')); } catch (e) {}
+    }
+    speaking = true;
+    speakPage(cur);
+  }
   updateAudioBtn();
 }
 function updateAudioBtn() {
