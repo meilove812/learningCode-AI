@@ -799,8 +799,11 @@ function loadVoices() {
   });
 }
 if (HAS_TTS) {
-  window.speechSynthesis.onvoiceschanged = loadVoices;
-  [0, 300, 900, 2000].forEach(t => setTimeout(loadVoices, t));
+  // 旧仓库验证过的写法：先直接取一次，为空才挂一次性监听，不用裸赋值 onvoiceschanged
+  loadVoices();
+  if (!window.speechSynthesis.getVoices().length) {
+    window.speechSynthesis.addEventListener('voiceschanged', loadVoices, { once: true });
+  }
 } else {
   const vp = document.getElementById('voiceSelect');
   if (vp && vp.parentElement) vp.parentElement.style.display = 'none';
@@ -819,16 +822,17 @@ function stopAudio() {
   if (HAS_TTS) { try { window.speechSynthesis.cancel(); } catch (e) {} }
 }
 
+// 照旧仓库验证过的写法：cancel() 之后立刻同步 speak()，中间不插 setTimeout
 function speakPage(idx) {
   if (!HAS_TTS) { showNoAudio(); return; }
   if (!narrations[idx]) return;
-  try { window.speechSynthesis.cancel(); } catch (e) {}
-  // iOS/部分内核已知坑：cancel() 之后必须让出一帧再 speak()，否则静默不发声
-  setTimeout(() => doSpeak(idx), 120);
+  doSpeak(idx);
 }
 
 function doSpeak(idx) {
   try {
+    window.speechSynthesis.cancel();
+    if (!voices.length) voices = window.speechSynthesis.getVoices();
     const u = new SpeechSynthesisUtterance(narrations[idx]);
     const rr = document.getElementById('rateRange');
     u.lang = 'zh-CN';
