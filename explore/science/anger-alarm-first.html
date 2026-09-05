@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco科普讲解：为什么会生气、怎么把火降下来、小孩为什么更容易失控">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>生气是警报先响 | AI讲科普</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'PingFang SC', 'Noto Serif SC', serif;
+  background: #0a0a0f;
+  color: #e8e0d0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.pages-wrapper { width: 100%; height: 100%; position: relative; }
+.page {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 40px 24px;
+  opacity: 0; transform: translateX(100%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none; overflow: hidden;
+}
+.page.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.page.prev { opacity: 0; transform: translateX(-100%); }
+
+/* Backgrounds */
+.bg-void { background: radial-gradient(ellipse at center, #080808 0%, #000 70%); }
+.bg-cosmos { background: radial-gradient(ellipse at center, #0f0a1e 0%, #060410 70%); }
+.bg-dawn { background: linear-gradient(180deg, #0a0820 0%, #1a1545 50%, #0f0d25 100%); }
+.bg-light { background: linear-gradient(135deg, #1a1508 0%, #0f0d05 50%, #080604 100%); }
+.bg-dual { background: linear-gradient(135deg, #0a0a18 0%, #080812 100%); }
+.bg-nature { background: linear-gradient(180deg, #050a10 0%, #0a1520 50%, #050a0f 100%); }
+.bg-flow { background: radial-gradient(ellipse at 50% 60%, #0a1020 0%, #060810 70%); }
+.bg-balance { background: radial-gradient(ellipse at center, #100a18 0%, #080510 70%); }
+.bg-final { background: radial-gradient(ellipse at center, #0f0818 0%, #060410 70%); }
+.bg-sky { background: linear-gradient(180deg, #0a0515 0%, #101030 40%, #0a0820 100%); }
+
+/* Typography */
+.title-main {
+  font-size: clamp(2.2em, 8vw, 3.5em);
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, #c0c0c0 50%, #ffd700 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-align: center; line-height: 1.3;
+  animation: textGlow 4s ease-in-out infinite;
+}
+@keyframes textGlow {
+  0%,100% { filter: brightness(1) drop-shadow(0 0 8px rgba(255,255,255,0.1)); }
+  50% { filter: brightness(1.15) drop-shadow(0 0 20px rgba(255,215,0,0.3)); }
+}
+.subtitle { font-size: clamp(0.85em, 3.2vw, 1.1em); color: #5a5040; margin-top: 12px; text-align: center; letter-spacing: 4px; }
+.page-title {
+  font-size: clamp(1.4em, 5.5vw, 2em); font-weight: 800;
+  color: #ffd700; text-align: center; margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(255,215,0,0.15);
+}
+.page-text {
+  font-size: clamp(0.95em, 3.8vw, 1.15em); line-height: 2;
+  text-align: center; color: #c8bca0; max-width: 560px;
+}
+.page-text .em { color: #ffd700; font-weight: bold; }
+.page-text .light { color: #f0f0f0; font-weight: bold; }
+.page-text .dark { color: #6a7a8a; }
+.fact-card {
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15);
+  border-radius: 12px; padding: 14px 18px; margin-top: 18px;
+  max-width: 480px; text-align: left; font-size: 0.88em; line-height: 1.8; color: #a89878;
+}
+.fact-card .label { color: #ffd700; font-weight: bold; margin-bottom: 4px; }
+
+/* Animations */
+.ani { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.page.active .ani { opacity: 1; transform: translateY(0); }
+.page.active .ani:nth-child(2) { transition-delay: 0.15s; }
+.page.active .ani:nth-child(3) { transition-delay: 0.3s; }
+.page.active .ani:nth-child(4) { transition-delay: 0.45s; }
+.page.active .ani:nth-child(5) { transition-delay: 0.6s; }
+.page.active .ani:nth-child(6) { transition-delay: 0.75s; }
+
+/* Particles */
+.particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.particle {
+  position: absolute; border-radius: 50%; opacity: 0;
+  animation: floatUp 7s ease-in-out infinite;
+}
+.particle-gold { background: radial-gradient(circle, #ffd700, transparent); }
+.particle-white { background: radial-gradient(circle, rgba(255,255,255,0.8), transparent); }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(100vh) scale(0.3); }
+  15% { opacity: 0.7; } 85% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(0.8); }
+}
+
+/* Stars */
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.star {
+  position: absolute; background: #fff; border-radius: 50%;
+  animation: twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.85; transform: scale(1.2); } }
+
+/* Navigation */
+.nav-hint {
+  position: fixed; bottom: 18px; left: 0; right: 0;
+  text-align: center; color: rgba(255,255,255,0.25); font-size: 0.75em;
+  pointer-events: none; transition: opacity 0.5s; z-index: 100;
+}
+.nav-dots {
+  position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 7px; z-index: 100;
+}
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); transition: all 0.3s; cursor: pointer;
+}
+.nav-dot.active { background: #ffd700; box-shadow: 0 0 6px rgba(255,215,0,0.5); transform: scale(1.4); }
+
+.start-btn {
+  position: fixed; left: 50%; bottom: 12%; transform: translateX(-50%);
+  padding: 15px 30px; border-radius: 40px;
+  background: rgba(255,215,0,0.16); border: 2px solid rgba(255,215,0,0.75);
+  color: #ffd700; font-size: 1.06em; font-weight: 800; letter-spacing: 1px;
+  cursor: pointer; z-index: 260; backdrop-filter: blur(10px);
+  box-shadow: 0 0 26px rgba(255,215,0,0.3);
+  animation: startPulse 2s ease-in-out infinite;
+  white-space: nowrap;
+}
+@keyframes startPulse {
+  0%,100% { box-shadow: 0 0 20px rgba(255,215,0,0.22); background: rgba(255,215,0,0.14); }
+  50%     { box-shadow: 0 0 34px rgba(255,215,0,0.48); background: rgba(255,215,0,0.24); }
+}
+.start-btn.hidden { display: none; }
+.audio-btn {
+  position: fixed; top: 14px; right: 14px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: #ffd700; font-size: 1.1em;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 10001; backdrop-filter: blur(10px); transition: all 0.3s;
+}
+.audio-btn:active { transform: scale(0.9); }
+.audio-btn.playing { background: rgba(255,215,0,0.15); box-shadow: 0 0 12px rgba(255,215,0,0.2); }
+.page-num { position: fixed; top: 16px; left: 16px; font-size: 0.7em; color: rgba(255,255,255,0.2); z-index: 100; }
+
+/* Voice panel */
+.voice-panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(10,10,15,0.96); backdrop-filter: blur(20px);
+  padding: 20px; border-top: 1px solid rgba(255,215,0,0.15);
+  transform: translateY(100%); transition: transform 0.3s; z-index: 300;
+  border-radius: 18px 18px 0 0;
+}
+.voice-panel.show { transform: translateY(0); }
+.voice-panel label { display: block; color: #7a6a5a; font-size: 0.82em; margin-bottom: 6px; }
+.voice-panel select, .voice-panel input[type="range"] {
+  width: 100%; padding: 10px; border-radius: 8px;
+  border: 1px solid rgba(255,215,0,0.15); background: rgba(255,255,255,0.04);
+  color: #d4c8b0; font-size: 0.95em; margin-bottom: 12px;
+}
+.voice-panel .close-panel { text-align: center; color: #ffd700; cursor: pointer; padding: 8px; }
+
+/* Qian hexagram glow */
+@keyframes yaoGlow {
+  0%,100% { filter: drop-shadow(0 0 4px rgba(255,215,0,0.3)); }
+  50% { filter: drop-shadow(0 0 12px rgba(255,215,0,0.7)); }
+}
+.qian-svg { animation: yaoGlow 3s ease-in-out infinite; }
+
+/* ===== 生气这期：动画（CSS 驱动，可自动化验收） ===== */
+.agem { color: #ffd700; font-weight: 700; }
+.agsub { color: #8a95b8; }
+.agsrc { font-size: 0.6em; opacity: 0.62; margin-top: 10px; line-height: 1.6; }
+.agin { opacity: 0; animation: agin 8s ease-in-out infinite both; }
+@keyframes agin { 0% { opacity: 0; transform: translateY(-9px); } 8% { opacity: 1; transform: translateY(0); }
+  86% { opacity: 1; transform: translateY(0); } 96%, 100% { opacity: 0; transform: translateY(-9px); } }
+.agfade { opacity: 0; animation: agfade 8s ease-in-out infinite both; }
+@keyframes agfade { 0% { opacity: 0; } 9% { opacity: 1; } 86% { opacity: 1; } 96%, 100% { opacity: 0; } }
+.agdraw { stroke-dasharray: 420; stroke-dashoffset: 420; animation: agdraw 8s ease-in-out infinite both; }
+@keyframes agdraw { 0% { stroke-dashoffset: 420; } 20% { stroke-dashoffset: 0; } 88% { stroke-dashoffset: 0; }
+  97%, 100% { stroke-dashoffset: 420; } }
+.agslow { stroke-dasharray: 420; stroke-dashoffset: 420; animation: agslow 8s ease-in-out infinite both; }
+@keyframes agslow { 0% { stroke-dashoffset: 420; } 62% { stroke-dashoffset: 210; } 88% { stroke-dashoffset: 210; }
+  97%, 100% { stroke-dashoffset: 420; } }
+.agpulse { animation: agpulse 2.2s ease-in-out infinite; }
+@keyframes agpulse { 0%, 100% { opacity: .42; } 50% { opacity: 1; } }
+.agdim { animation: agdim 8s ease-in-out infinite both; }
+@keyframes agdim { 0%, 42% { opacity: 1; } 60%, 88% { opacity: .16; } 97%, 100% { opacity: 1; } }
+.aglit { opacity: .16; animation: aglit 8s ease-in-out infinite both; }
+@keyframes aglit { 0%, 42% { opacity: .16; } 60%, 88% { opacity: 1; } 97%, 100% { opacity: .16; } }
+.agrunA { animation: agrunA 8s ease-in-out infinite both; }
+@keyframes agrunA { 0% { transform: translateX(0); } 14% { transform: translateX(84px); }
+  88% { transform: translateX(84px); } 97%, 100% { transform: translateX(0); } }
+.agrunB { animation: agrunB 8s ease-in-out infinite both; }
+@keyframes agrunB { 0% { transform: translateX(0); } 40% { transform: translateX(190px); }
+  88% { transform: translateX(190px); } 97%, 100% { transform: translateX(0); } }
+.agbreath { animation: agbreath 6s ease-in-out infinite; }
+@keyframes agbreath { 0% { transform: translateX(0); } 25% { transform: translateX(70px); }
+  100% { transform: translateX(220px); } }
+.agrise { animation: agrise 3s ease-in-out infinite; }
+@keyframes agrise { 0% { transform: translateY(0); opacity: 0; } 30% { opacity: .9; }
+  100% { transform: translateY(-26px); opacity: 0; } }
+.agd1{animation-delay:.15s}.agd2{animation-delay:.6s}.agd3{animation-delay:1.1s}.agd4{animation-delay:1.7s}
+.agd5{animation-delay:2.3s}.agd6{animation-delay:2.9s}.agd7{animation-delay:3.5s}.agd8{animation-delay:4.1s}
+.agp1{animation-delay:0s}.agp2{animation-delay:.5s}.agp3{animation-delay:1s}
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
+<div class="start-btn" id="startBtn" onclick="startShow(event)">▶ 点这里开始讲解</div>
+<div class="page-num" id="pageNum">1 / 9</div>
+<div class="nav-dots" id="navDots"></div>
+<div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
+
+<div class="pages-wrapper">
+
+    <!-- Page 1: 封面 -->
+  <div class="page bg-cosmos active" data-page="0">
+    <div class="stars" id="s0"></div>
+    <div class="title-main ani">为什么会生气</div>
+    <div class="subtitle ani">身体比你先动手</div>
+    <div class="page-text ani" style="text-align:center">
+      生气不是脾气坏，<br>
+      是<span class="agem">警报先响，判断后到</span>。<br><br>
+      <span class="agsub">这一期讲清楚：火从哪来，怎么降下去。</span>
+    </div>
+  </div>
+  <!-- Page 2: 两条路 -->
+  <div class="page bg-sky" data-page="1">
+    <div class="particles" id="p1"></div>
+    <div class="page-title ani">脑子里有两条路</div>
+    <div class="ani">
+      <svg width="296" height="238" viewBox="0 0 296 238">
+        <circle cx="34" cy="106" r="21" fill="none" stroke="#ffd700" stroke-width="2" class="agfade agd1"/>
+        <text x="34" y="112" text-anchor="middle" font-size="16" font-weight="800" fill="#ffd700" class="agfade agd1">事</text>
+        <!-- 短跑道：警报 -->
+        <line x1="60" y1="62" x2="150" y2="62" stroke="#ff6a5c" stroke-width="7" stroke-linecap="round" opacity="0.3"/>
+        <g class="agrunA agd2"><circle cx="60" cy="62" r="7" fill="#ff6a5c"/></g>
+        <text x="105" y="46" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ff8f80">警报这条 · 很短</text>
+        <g class="agfade agd3" transform="translate(162,44)">
+          <rect x="0" y="0" width="128" height="38" rx="9" fill="rgba(255,106,92,0.16)" stroke="#ff6a5c" stroke-width="1"/>
+          <text x="64" y="16" text-anchor="middle" font-size="11" font-weight="700" fill="#ffb0a4">身体已经动了</text>
+          <text x="64" y="30" text-anchor="middle" font-size="9.5" fill="#e0a79f">心跳快 · 发热 · 握拳</text>
+        </g>
+        <!-- 长跑道：想事情 -->
+        <line x1="60" y1="152" x2="256" y2="152" stroke="#6d9ee8" stroke-width="7" stroke-linecap="round" opacity="0.3"/>
+        <g class="agrunB agd2"><circle cx="60" cy="152" r="7" fill="#6d9ee8"/></g>
+        <text x="150" y="136" text-anchor="middle" font-size="11.5" font-weight="700" fill="#8fb8f0">想事情这条 · 绕得远</text>
+        <g class="agfade agd6" transform="translate(84,166)">
+          <rect x="0" y="0" width="150" height="34" rx="9" fill="rgba(109,158,232,0.16)" stroke="#6d9ee8" stroke-width="1"/>
+          <text x="75" y="21" text-anchor="middle" font-size="11" font-weight="700" fill="#a9c9f5">才想明白怎么回事</text>
+        </g>
+        <text x="148" y="228" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffd700" class="agpulse">两个点同时出发 · 短的那条先到</text>
+      </svg>
+    </div>
+    <div class="page-text ani" style="text-align:center">
+      所以顺序永远是<span class="agem">火气先起来，判断后到</span>。
+    </div>
+  </div>
+  <!-- Page 3: 解释是后补的 -->
+  <div class="page bg-void" data-page="2">
+    <div class="stars" id="s2"></div>
+    <div class="page-title ani">解释是后来补上的</div>
+    <div class="ani">
+      <svg width="296" height="188" viewBox="0 0 296 188">
+        <line class="agdraw agd1" x1="24" y1="104" x2="272" y2="104" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+        <g class="agin agd1">
+          <circle cx="46" cy="104" r="9" fill="#ffd700"/>
+          <text x="46" y="80" text-anchor="middle" font-size="11" font-weight="700" fill="#ffd700">事情发生</text>
+          <text x="46" y="128" text-anchor="middle" font-size="9" fill="#8a95b8">第一步</text>
+        </g>
+        <g class="agin agd4">
+          <circle cx="146" cy="104" r="11" fill="#ff6a5c"/>
+          <text x="146" y="78" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ff8f80">身体先动</text>
+          <text x="146" y="130" text-anchor="middle" font-size="9.5" fill="#e0a79f">发热 · 声音变大</text>
+        </g>
+        <g class="agin agd7">
+          <circle cx="250" cy="104" r="9" fill="#6d9ee8"/>
+          <text x="250" y="78" text-anchor="middle" font-size="11" font-weight="700" fill="#8fb8f0">才有解释</text>
+          <text x="250" y="130" text-anchor="middle" font-size="9" fill="#8a95b8">因为他抢了我的</text>
+        </g>
+        <text x="148" y="166" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffd700" class="agpulse">等想明白，人已经在气头上</text>
+      </svg>
+    </div>
+    <div class="page-text ani" style="text-align:center">
+      我们以为是<span class="agsub">先判断、再生气</span>，<br>
+      真实顺序是<span class="agem">先生气、后知道为什么</span>。
+    </div>
+  </div>
+  <!-- Page 4: 叫出名字 -->
+  <div class="page bg-dawn" data-page="3">
+    <div class="particles" id="p3"></div>
+    <div class="page-title ani">第一招：把情绪叫出名字</div>
+    <div class="ani">
+      <svg width="296" height="196" viewBox="0 0 296 196">
+        <path d="M78 128 Q62 96 82 70 Q108 40 156 44 Q214 48 232 84 Q244 110 226 128 Q170 144 78 128 Z"
+              fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.3)" stroke-width="1.6"/>
+        <!-- 警报区：位置钉住不动，只变亮暗 -->
+        <circle cx="186" cy="116" r="17" fill="#ff6a5c" class="agdim agd1"/>
+        <text x="186" y="120" text-anchor="middle" font-size="9.5" font-weight="700" fill="#3a0f0c" class="agdim agd1">警报</text>
+        <text x="186" y="150" text-anchor="middle" font-size="9" fill="#e0a79f">位置没动 · 只是安静了</text>
+        <!-- 说话判断区：后亮 -->
+        <circle cx="98" cy="92" r="16" fill="#6d9ee8" class="aglit agd1"/>
+        <text x="98" y="96" text-anchor="middle" font-size="9.5" font-weight="700" fill="#0c1c33" class="aglit agd1">说话</text>
+        <path d="M114 98 Q150 116 168 112" fill="none" stroke="#6d9ee8" stroke-width="2.4" stroke-linecap="round"
+              marker-end="" class="agslow agd3"/>
+        <g class="agfade agd3">
+          <rect x="60" y="14" width="176" height="30" rx="14" fill="rgba(255,215,0,0.14)" stroke="#ffd700" stroke-width="1"/>
+          <text x="148" y="33" text-anchor="middle" font-size="12" font-weight="700" fill="#ffd700">我现在很生气</text>
+        </g>
+        <text x="148" y="182" text-anchor="middle" font-size="12" font-weight="700" fill="#ffd700" class="agpulse">说出名字 · 警报跟着降下来</text>
+      </svg>
+    </div>
+    <div class="page-text ani" style="text-align:center">
+      这不是忍住，<br>
+      是让<span class="agem">负责说话的那部分接上手</span>。
+      <div class="agsrc">影像研究：把感受说成词，警报区反应随之减弱<br>情绪命名研究 · 心理科学 · 二〇〇七</div>
+    </div>
+  </div>
+  <!-- Page 5: 呼气拉长 -->
+  <div class="page bg-flow" data-page="4">
+    <div class="particles" id="p4"></div>
+    <div class="page-title ani">第二招：呼气比吸气长</div>
+    <div class="ani">
+      <svg width="296" height="196" viewBox="0 0 296 196">
+        <rect x="30" y="34" width="66" height="16" rx="8" fill="#ffd700" opacity="0.85"/>
+        <rect x="100" y="34" width="166" height="16" rx="8" fill="#6d9ee8" opacity="0.85"/>
+        <text x="63" y="26" text-anchor="middle" font-size="11" font-weight="700" fill="#ffd700">吸气 · 短</text>
+        <text x="183" y="26" text-anchor="middle" font-size="11" font-weight="700" fill="#8fb8f0">呼气 · 长而慢</text>
+        <g class="agbreath"><circle cx="34" cy="42" r="9" fill="#fff8e0"/></g>
+        <text x="148" y="76" text-anchor="middle" font-size="11" fill="#8a95b8">关键不在深，在呼气那一段够长</text>
+        <!-- 心跳：由密变疏 -->
+        <polyline class="agdim agd1" points="30,126 48,126 56,104 64,148 72,126 96,126 104,104 112,148 120,126 144,126 152,104 160,148 168,126 192,126 200,104 208,148 216,126 240,126 248,104 256,148 264,126"
+                  fill="none" stroke="#ff6a5c" stroke-width="2.2"/>
+        <polyline class="aglit agd1" points="30,126 70,126 82,108 94,144 106,126 158,126 170,108 182,144 194,126 246,126 258,110 266,140"
+                  fill="none" stroke="#8ef6c8" stroke-width="2.6"/>
+        <text x="148" y="172" text-anchor="middle" font-size="12" font-weight="700" fill="#8ef6c8">心跳跟着慢下来</text>
+      </svg>
+    </div>
+    <div class="page-text ani" style="text-align:center">
+      吸进来以后<span class="agem">不急着放</span>，<br>
+      把呼气拉长、拉慢。
+      <div class="agsrc">随机对照研究：每天五分钟、以拉长呼气为主的练法，<br>心情改善与呼吸变慢最明显 · 二〇二三</div>
+    </div>
+  </div>
+  <!-- Page 6: 九十秒不成立 -->
+  <div class="page bg-light" data-page="5">
+    <div class="stars" id="s5"></div>
+    <div class="page-title ani">流传很广的一句话，不成立</div>
+    <div class="ani">
+      <svg width="296" height="198" viewBox="0 0 296 198">
+        <text x="148" y="52" text-anchor="middle" font-size="34" font-weight="800" fill="#8a95b8" opacity="0.75">九十秒</text>
+        <line class="agdraw agd2" x1="56" y1="60" x2="240" y2="24" stroke="#ff6a5c" stroke-width="4" stroke-linecap="round"/>
+        <text x="148" y="82" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ff8f80">查不到原始研究支撑</text>
+        <text x="148" y="106" text-anchor="middle" font-size="11" fill="#8a95b8">真实情况：因人因事差很多</text>
+        <rect x="46" y="120" width="150" height="11" rx="5.5" fill="#ffd700" opacity="0.8" class="agfade agd3"/>
+        <rect x="46" y="140" width="64" height="11" rx="5.5" fill="#8ef6c8" opacity="0.8" class="agfade agd5"/>
+        <rect x="46" y="160" width="212" height="11" rx="5.5" fill="#6d9ee8" opacity="0.8" class="agfade agd7"/>
+        <text x="272" y="130" text-anchor="middle" font-size="9" fill="#8a95b8">甲</text>
+        <text x="272" y="150" text-anchor="middle" font-size="9" fill="#8a95b8">乙</text>
+        <text x="278" y="170" text-anchor="middle" font-size="9" fill="#8a95b8">丙</text>
+      </svg>
+    </div>
+    <div class="fact-card ani">
+      <div style="font-weight:700;color:#ffd700;margin-bottom:6px">🧠 所以</div>
+      别拿着计时器等人平静。<br>
+      也不要因为超过九十秒还没好，就觉得自己不正常。
+    </div>
+  </div>
+  <!-- Page 7: 先降温再讲道理 -->
+  <div class="page bg-balance" data-page="6">
+    <div class="particles" id="p6"></div>
+    <div class="page-title ani">顺序不能反</div>
+    <div class="ani">
+      <svg width="296" height="206" viewBox="0 0 296 206">
+        <!-- 左：警报响着，道理门关 -->
+        <circle cx="56" cy="34" r="13" fill="#ff6a5c" class="agdim agd1"/>
+        <text x="56" y="60" text-anchor="middle" font-size="9.5" fill="#e0a79f">警报响着</text>
+        <rect x="26" y="70" width="60" height="62" rx="7" fill="rgba(255,255,255,0.06)" stroke="#5c6478" stroke-width="1.6"/>
+        <text x="56" y="98" text-anchor="middle" font-size="11" font-weight="700" fill="#5c6478">道理</text>
+        <text x="56" y="114" text-anchor="middle" font-size="16" fill="#5c6478">🔒</text>
+        <g class="agpulse"><path d="M132 100 L162 100 M153 93 L162 100 L153 107" fill="none" stroke="#ffd700" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></g>
+        <!-- 右：警报降下，门开 -->
+        <circle cx="240" cy="34" r="13" fill="#8ef6c8" class="aglit agd1"/>
+        <text x="240" y="60" text-anchor="middle" font-size="9.5" fill="#8ef6c8">安静下来</text>
+        <g class="aglit agd1">
+          <rect x="210" y="70" width="60" height="62" rx="7" fill="rgba(142,246,200,0.14)" stroke="#8ef6c8" stroke-width="1.8"/>
+          <text x="240" y="98" text-anchor="middle" font-size="11" font-weight="700" fill="#8ef6c8">道理</text>
+          <text x="240" y="116" text-anchor="middle" font-size="15" fill="#8ef6c8">听得进</text>
+        </g>
+        <!-- 压回去不算 -->
+        <rect x="86" y="150" width="124" height="10" rx="5" fill="#8a95b8" opacity="0.8"/>
+        <text x="148" y="146" text-anchor="middle" font-size="10" fill="#8a95b8">盖子盖上了</text>
+        <g class="agrise agp1"><circle cx="118" cy="176" r="4" fill="#ff6a5c"/></g>
+        <g class="agrise agp2"><circle cx="148" cy="180" r="5" fill="#ff6a5c"/></g>
+        <g class="agrise agp3"><circle cx="180" cy="176" r="4" fill="#ff6a5c"/></g>
+        <text x="148" y="200" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ff8f80">压回去不等于降下来</text>
+      </svg>
+    </div>
+    <div class="page-text ani" style="text-align:center">
+      警报还在响的时候，<span class="agem">道理那扇门是关着的</span>。
+    </div>
+  </div>
+  <!-- Page 8: 刹车装得最晚 -->
+  <div class="page bg-dual" data-page="7">
+    <div class="stars" id="s7"></div>
+    <div class="page-title ani">小孩为什么更容易炸</div>
+    <div class="ani">
+      <svg width="296" height="192" viewBox="0 0 296 192">
+        <g class="agfade agd1">
+          <rect x="26" y="40" width="104" height="70" rx="10" fill="rgba(255,215,0,0.14)" stroke="#ffd700" stroke-width="2"/>
+          <text x="78" y="70" text-anchor="middle" font-size="13" font-weight="800" fill="#ffd700">油门</text>
+          <text x="78" y="92" text-anchor="middle" font-size="10.5" fill="#e8d9a8">很早就装好了</text>
+        </g>
+        <rect x="166" y="40" width="104" height="70" rx="10" fill="rgba(109,158,232,0.08)"
+              stroke="#6d9ee8" stroke-width="2" stroke-dasharray="7 6" class="agslow agd2"/>
+        <text x="218" y="70" text-anchor="middle" font-size="13" font-weight="800" fill="#8fb8f0" class="agfade agd4">刹车</text>
+        <text x="218" y="92" text-anchor="middle" font-size="10.5" fill="#a9c9f5" class="agfade agd6">还在装 · 装得最慢</text>
+        <text x="148" y="140" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffd700" class="agpulse">不是不听话，是刹车还没装完</text>
+        <text x="148" y="166" text-anchor="middle" font-size="10.5" fill="#8a95b8">大人也一样，只是刹车装得久一些</text>
+      </svg>
+    </div>
+    <div class="page-text ani" style="text-align:center">
+      同一套机制，<span class="agem">在小孩身上更明显</span>。
+      <div class="agsrc">影像研究追踪四到二十一岁：负责整合与控制的那片皮层，<br>要等基础区域先长好，成熟顺序排在最后 · 二〇〇四</div>
+    </div>
+  </div>
+  <!-- Page 9: 落版 -->
+  <div class="page bg-final" data-page="8">
+    <div class="particles" id="p8"></div>
+    <div class="ani">
+      <svg width="288" height="150" viewBox="0 0 288 150">
+        <line x1="30" y1="72" x2="258" y2="72" stroke="rgba(255,255,255,0.25)" stroke-width="3"/>
+        <line class="agdraw agd1" x1="30" y1="72" x2="150" y2="72" stroke="#8ef6c8" stroke-width="9" stroke-linecap="round"/>
+        <circle cx="150" cy="72" r="13" fill="#ffd700" class="agpulse"/>
+        <text x="144" y="124" fill="#ffd700" font-size="21" text-anchor="middle" font-weight="800">先降温，再讲道理</text>
+      </svg>
+    </div>
+    <div class="title-main ani">生气不是脾气坏</div>
+    <div class="page-text ani" style="text-align:center">
+      是<span class="agem">警报先响，判断后到</span>。<br><br>
+      能做的三件事：<br>
+      <span class="agem">叫出名字 · 拉长呼气 · 先降温再讲道理</span><br><br>
+      <span class="agem">🔭 AI讲科普</span><br>
+      📌 🦎 开心的舵手
+      <div style="margin-top:16px;font-size:0.62em;opacity:0.68;line-height:1.7">
+        本页面只讲原理与方法，不构成医疗建议。<br>生气是人人都有的正常反应，不是毛病。<br>若长期难以平静并影响生活，请找专业人士当面评估。
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 来源核验（2026-09-05，均取自一手研究摘要原文）
+1) 情绪命名 / affect labeling：Psychological Science 2007，PMID 17576282，doi 10.1111/j.1467-9280.2007.01916.x
+   原文："affect labeling, relative to other forms of encoding, diminished the response of the amygdala and other limbic regions to negative emotional images"
+2) 呼气为主的呼吸练习：Cell Reports Medicine 2023，PMID 36630953，doi 10.1016/j.xcrm.2022.100895，NCT05304000，随机对照，每天五分钟一个月
+   原文："breathwork, especially the exhale-focused cyclic sighing, produces greater improvement in mood (p < 0.05) and reduction in respiratory rate (p < 0.05) compared with mindfulness meditation"
+3) 皮层成熟顺序：PNAS 2004，PMID 15148381，doi 10.1073/pnas.0402680101，追踪 4-21 岁
+   原文："higher-order association cortices mature only after lower-order somatosensory and visual cortices, the functions of which they integrate, are developed"
+4) 「情绪只持续 90 秒」：检索到的全部为自助类网站与科普博客，源头是个人著述，未找到原始实验研究支撑 —— 故本页将其作为需纠正的说法处理，不作为结论使用。
+   合规：只讲原理与方法；不提诊断、药物、疗法；不说治好；明写生气是正常反应、不是毛病；末屏建议长期困难者找专业人士当面评估。
+-->
+
+<div class="voice-panel" id="voicePanel">
+  <label>🗣️ 声音 <select id="voiceSelect"></select></label>
+  <label>🔊 语速: <span id="rateVal">0.9</span>x <input type="range" id="rateRange" min="0.5" max="1.5" step="0.1" value="0.9"></label>
+  <div class="close-panel" onclick="toggleVoicePanel()">✕ 关闭</div>
+</div>
+
+<script>
+let cur = 0;
+const HAS_TTS = typeof window.speechSynthesis !== 'undefined' && window.speechSynthesis !== null;
+const pages = document.querySelectorAll('.page');
+const total = pages.length;
+let animating = false, speaking = false;
+
+const navDots = document.getElementById('navDots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => go(i);
+  navDots.appendChild(d);
+}
+
+function go(idx) {
+  if (idx < 0 || idx >= total || idx === cur || animating) return;
+  animating = true;
+  stopAudio();
+  const old = pages[cur], nw = pages[idx], dir = idx > cur ? 1 : -1;
+  old.classList.remove('active'); old.classList.add('prev');
+  if (dir < 0) { old.style.transform = 'translateX(100%)'; old.style.opacity = '0'; }
+  nw.style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+  nw.classList.remove('prev');
+  requestAnimationFrame(() => {
+    nw.classList.add('active'); nw.style.transform = '';
+    cur = idx; updateUI();
+    setTimeout(() => {
+      animating = false;
+      old.classList.remove('prev'); old.style.transform = ''; old.style.opacity = '';
+      if (speaking) speakPage(cur);
+    }, 650);
+  });
+}
+
+function updateUI() {
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.getElementById('pageNum').textContent = `${cur + 1} / ${total}`;
+  document.getElementById('navHint').style.opacity = '0';
+  updateStartBtn();
+}
+// 封面大按钮：一点即自动讲解并自动翻页；讲解中或已翻页后隐藏
+function updateStartBtn() {
+  const sb = document.getElementById('startBtn');
+  if (!sb) return;
+  sb.classList.toggle('hidden', speaking || cur !== 0);
+}
+// 必须同步进入 toggleAudio()，中间不插任何延迟，才能留在用户手势栈内
+function startShow(e) {
+  if (e) { e.stopPropagation(); e.preventDefault(); }
+  if (!speaking) toggleAudio();
+  updateStartBtn();
+}
+
+let tx = 0, ty = 0, tt = 0;
+document.addEventListener('touchstart', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY; tt = Date.now();
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty, dt = Date.now() - tt;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 500) { dx < 0 ? go(cur+1) : go(cur-1); return; }
+  if (dt < 300 && Math.abs(dx) < 15 && Math.abs(dy) < 15) {
+    e.changedTouches[0].clientX > window.innerWidth * 0.4 ? go(cur+1) : go(cur-1);
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur+1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur-1); }
+});
+
+// TTS
+const narrations = [
+  "为什么会生气。生气不是脾气坏，是身体先动了手。这一期讲三件事：警报为什么先响，怎么把火降下来，还有一句流传很广的说法为什么不成立。",
+  "遇到一件不顺心的事，脑子里有两条路。一条是警报，路很短，几乎立刻就响。另一条是想事情那条，绕得远，到得晚。两个信号同时出发，短的那条先到。所以火气先起来，判断后到。",
+  "真实顺序是这样：身体先动，解释后补。心口发热、拳头握紧、声音变大，都发生在想清楚之前。等想明白，人往往已经在气头上。我们以为是先判断再生气，其实是先生气，后知道为什么。",
+  "第一招最简单：把情绪叫出名字。心里说一句，我现在很生气。警报区的反应会跟着降下来。这不是忍住，是让负责说话的那部分接上手。影像研究看到了这个过程：把感受说成词，警报区的反应就减弱。",
+  "第二招在呼吸上。关键不在吸得多深，在呼气那一段够长。一项随机对照研究里，每天五分钟、以拉长呼气为主的练法，心情改善和呼吸变慢最明显。所以吸进来以后不急着放，把呼气拉长、拉慢。",
+  "还有一句流传很广的话：生气只有九十秒。这句话查不到原始研究支撑。真实情况是因人因事差很多。所以不要拿着计时器等人平静，也不要因为超过九十秒还没好，就觉得自己不正常。",
+  "顺序不能反：先把火降下来，再讲道理。警报还在响的时候，道理那扇门是关着的。要注意，压回去也不算降下来。盖子盖上了，下面还在冒。",
+  "同一套机制，在小孩身上更明显。油门很早就装好了，刹车装得最慢。一项追踪四到二十一岁的影像研究发现，负责整合和控制的那片皮层，要等基础区域先长好，成熟顺序排在最后。所以不是不听话，是刹车还没装完。",
+  "记住一句：生气不是脾气坏，是警报先响，判断后到。能做的三件事：叫出名字，拉长呼气，先降温再讲道理。今日科普，开心的舵手。"
+];
+
+let voices = [];
+function loadVoices() {
+  if (!HAS_TTS) return;
+  voices = window.speechSynthesis.getVoices();
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+  const zh = voices.filter(v => (v.lang.startsWith('zh-CN')||v.lang==='zh')&&!v.lang.startsWith('zh-HK')&&!v.lang.startsWith('zh-TW'));
+  // Sort: Edge Online (Natural) first
+  zh.sort((a, b) => {
+    const aOnline = a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Online') && a.name.includes('Natural') ? 2 : a.name.includes('Microsoft') ? 1 : 0;
+    const bOnline = b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Online') && b.name.includes('Natural') ? 2 : b.name.includes('Microsoft') ? 1 : 0;
+    return bOnline - aOnline;
+  });
+  (zh.length ? zh : voices.slice(0, 8)).forEach(v => {
+    const o = document.createElement('option');
+    o.value = voices.indexOf(v);
+    o.textContent = v.name.replace(/Microsoft |Google |Apple /g, '');
+    sel.appendChild(o);
+  });
+}
+if (HAS_TTS) {
+  // 旧仓库验证过的写法：先直接取一次，为空才挂一次性监听，不用裸赋值 onvoiceschanged
+  loadVoices();
+  if (!window.speechSynthesis.getVoices().length) {
+    window.speechSynthesis.addEventListener('voiceschanged', loadVoices, { once: true });
+  }
+}
+else { const vp = document.getElementById('voiceSelect'); if (vp) vp.parentElement.style.display = 'none'; }
+document.getElementById('rateRange').addEventListener('input', function() {
+  document.getElementById('rateVal').textContent = this.value;
+});
+
+// 朗读：统一走 Web Speech API（Edge 高保真 Microsoft Xiaoxiao Online Natural 优先）
+function onSegmentEnd() {
+  if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
+  else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
+}
+
+function stopAudio() {
+  if (HAS_TTS) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+}
+
+// 照旧仓库验证过的写法：cancel() 之后立刻同步 speak()，中间不插 setTimeout
+function speakPage(idx) {
+  if (!HAS_TTS) { showNoAudio(); return; }
+  if (!narrations[idx]) return;
+  doSpeak(idx);
+}
+
+function doSpeak(idx) {
+  try {
+    window.speechSynthesis.cancel();
+    if (!voices.length) voices = window.speechSynthesis.getVoices();
+    const u = new SpeechSynthesisUtterance(narrations[idx]);
+    const rr = document.getElementById('rateRange');
+    u.lang = 'zh-CN';
+    u.rate = rr ? parseFloat(rr.value) : 1;
+    // 语音列表可能异步到达；没拿到就不指定 voice，交给系统按 lang 自选，仍能发声
+    const sv = document.getElementById('voiceSelect');
+    if (sv && sv.value !== '' && voices[sv.value]) u.voice = voices[sv.value];
+    u.onend = onSegmentEnd;
+    u.onerror = (e) => { if (e && e.error === 'interrupted') return; showNoAudio(); };
+    window.speechSynthesis.speak(u);
+  } catch (e) { showNoAudio(); }
+}
+
+function showNoAudio() {
+  const h = document.getElementById('navHint');
+  if (h) { h.textContent = '这个浏览器不支持朗读，请用系统浏览器打开'; h.style.opacity = '1'; }
+  speaking = false; updateAudioBtn();
+}
+
+let ttsUnlocked = false;
+function toggleAudio() {
+  if (speaking) { speaking = false; stopAudio(); }
+  else {
+    speaking = true;
+    if (!ttsUnlocked) {
+      // 首次必须同步调用 speak()，中间不能插 setTimeout，否则 iOS 判定已离开用户手势栈而静默不发声
+      ttsUnlocked = true;
+      doSpeak(cur);
+    } else {
+      speakPage(cur);
+    }
+  }
+  updateAudioBtn();
+}
+function updateAudioBtn() {
+  const b = document.getElementById('audioBtn');
+  b.textContent = speaking ? '🔊' : '🔇';
+  b.classList.toggle('playing', speaking);
+  updateStartBtn();
+}
+
+let lpt;
+document.getElementById('audioBtn').addEventListener('touchstart', e => {
+  lpt = setTimeout(() => { toggleVoicePanel(); e.preventDefault(); }, 600);
+}, { passive: false });
+document.getElementById('audioBtn').addEventListener('touchend', () => clearTimeout(lpt));
+function toggleVoicePanel() { document.getElementById('voicePanel').classList.toggle('show'); }
+
+// Particles & Stars
+function mkParticles(id, n=15) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle ' + (Math.random() > 0.5 ? 'particle-gold' : 'particle-white');
+    p.style.left = Math.random()*100+'%';
+    p.style.animationDelay = Math.random()*7+'s';
+    p.style.animationDuration = (5+Math.random()*4)+'s';
+    const s = 2+Math.random()*4; p.style.width = s+'px'; p.style.height = s+'px';
+    c.appendChild(p);
+  }
+}
+function mkStars(id, n=35) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = Math.random()*4+'s';
+    const sz = 1+Math.random()*2; s.style.width = sz+'px'; s.style.height = sz+'px';
+    c.appendChild(s);
+  }
+}
+
+mkParticles('p0', 18); mkParticles('p3', 14); mkParticles('p6', 16); mkParticles('p8', 12); mkParticles('p9', 12);
+mkStars('s1', 35); mkStars('s4', 30);
+
+setTimeout(() => { document.getElementById('navHint').style.opacity = '0'; }, 4500);
+document.addEventListener('dblclick', e => e.preventDefault());
+</script>
+<script src="../../assets/site.js"></script><script>
+/* 修复：顶部全站导航条 z-index:9999 且按钮就压在导航条那一带，喇叭点不到。
+   抬层级 + 按导航条实际高度把按钮挪到它下面（导航换行也跟着走）。 */
+(function(){
+  function fitTopButtons(){
+    var btn=document.getElementById('audioBtn');
+    var bars=document.querySelectorAll('nav,[role="navigation"]');  /* 用 ASCII 选择器：CSS 不认 JS 的 \uXXXX 转义 */
+    var y=0;
+    for(var i=0;i<bars.length;i++){
+      var r=bars[i].getBoundingClientRect();
+      if(r.height>0 && r.top<240 && r.bottom>y) y=r.bottom;
+    }
+    var top=Math.round(y+10);
+    if(btn) btn.style.top=top+'px';
+    var pn=document.getElementById('pageNum'); if(pn) pn.style.top=(top+6)+'px';
+  }
+  fitTopButtons();
+  window.addEventListener('load',fitTopButtons);
+  window.addEventListener('resize',fitTopButtons);
+  window.addEventListener('orientationchange',fitTopButtons);
+  document.addEventListener('DOMContentLoaded',fitTopButtons);
+})();
+</script>
+</body>
+</html><!--
+来源核查（2026-09-05）
+1) 户外光照的保护机制（高强度光 → 视网膜释放多巴胺 → 抑制眼轴过度增长）
+   Protective effects of increased outdoor time against myopia: a review
+   https://pmc.ncbi.nlm.nih.gov/articles/PMC7607527/
+   原文关键句："dopamine (DA) release has been suggested to be triggered by high-intensity
+   outdoor light and rapid changes in luminance"；"dopamine, which inhibit myopic development"
+2) 每天户外时长的大规模随机对照证据（上海 24 所小学、6295 名 6–9 岁学生、整群随机、2 年）
+   Time Outdoors in Reducing Myopia: A School-Based Cluster Randomized Trial. Ophthalmology.
+   https://pubmed.ncbi.nlm.nih.gov/35779695/
+   摘要："A prospective, cluster-randomized, examiner-masked, 3-arm trial... A total of 6295
+   students aged 6 to 9 years from 24 primary schools in Shanghai, China"
+3) 「眼轴长 1 毫米 = 300 度」不成立
+   Atchison et al.：成人（18–36 岁）平均正视眼轴约 23mm，每 1D 近视约对应 0.35mm 眼轴增长
+   https://www.myopiaprofile.com/articles/mismatch-between-myopia-and-axial-length
+   人民网科普亦将「眼轴增长 1 毫米会增加 300 度近视」列为需纠正的误区
+   https://news.qq.com/rain/a/20240425A08K1W00
+   儿童处于生长期，部分眼轴自然增长不转化为屈光度数，故不可线性套用。
+合规说明：全片只讲光学与生长原理，不提任何药物、镜片产品、手术或疗法，不作诊疗建议，
+末屏明示「请以眼科医生检查结论为准」。
+-->
