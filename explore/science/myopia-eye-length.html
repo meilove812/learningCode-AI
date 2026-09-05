@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco传统文化讲解：乾卦">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>近视是眼球被拉长了 | AI讲科普</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'PingFang SC', 'Noto Serif SC', serif;
+  background: #0a0a0f;
+  color: #e8e0d0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.pages-wrapper { width: 100%; height: 100%; position: relative; }
+.page {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 40px 24px;
+  opacity: 0; transform: translateX(100%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none; overflow: hidden;
+}
+.page.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.page.prev { opacity: 0; transform: translateX(-100%); }
+
+/* Backgrounds */
+.bg-void { background: radial-gradient(ellipse at center, #080808 0%, #000 70%); }
+.bg-cosmos { background: radial-gradient(ellipse at center, #0f0a1e 0%, #060410 70%); }
+.bg-dawn { background: linear-gradient(180deg, #0a0820 0%, #1a1545 50%, #0f0d25 100%); }
+.bg-light { background: linear-gradient(135deg, #1a1508 0%, #0f0d05 50%, #080604 100%); }
+.bg-dual { background: linear-gradient(135deg, #0a0a18 0%, #080812 100%); }
+.bg-nature { background: linear-gradient(180deg, #050a10 0%, #0a1520 50%, #050a0f 100%); }
+.bg-flow { background: radial-gradient(ellipse at 50% 60%, #0a1020 0%, #060810 70%); }
+.bg-balance { background: radial-gradient(ellipse at center, #100a18 0%, #080510 70%); }
+.bg-final { background: radial-gradient(ellipse at center, #0f0818 0%, #060410 70%); }
+.bg-sky { background: linear-gradient(180deg, #0a0515 0%, #101030 40%, #0a0820 100%); }
+
+/* Typography */
+.title-main {
+  font-size: clamp(2.2em, 8vw, 3.5em);
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, #c0c0c0 50%, #ffd700 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-align: center; line-height: 1.3;
+  animation: textGlow 4s ease-in-out infinite;
+}
+@keyframes textGlow {
+  0%,100% { filter: brightness(1) drop-shadow(0 0 8px rgba(255,255,255,0.1)); }
+  50% { filter: brightness(1.15) drop-shadow(0 0 20px rgba(255,215,0,0.3)); }
+}
+.subtitle { font-size: clamp(0.85em, 3.2vw, 1.1em); color: #5a5040; margin-top: 12px; text-align: center; letter-spacing: 4px; }
+.page-title {
+  font-size: clamp(1.4em, 5.5vw, 2em); font-weight: 800;
+  color: #ffd700; text-align: center; margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(255,215,0,0.15);
+}
+.page-text {
+  font-size: clamp(0.95em, 3.8vw, 1.15em); line-height: 2;
+  text-align: center; color: #c8bca0; max-width: 560px;
+}
+.page-text .em { color: #ffd700; font-weight: bold; }
+.page-text .light { color: #f0f0f0; font-weight: bold; }
+.page-text .dark { color: #6a7a8a; }
+.fact-card {
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15);
+  border-radius: 12px; padding: 14px 18px; margin-top: 18px;
+  max-width: 480px; text-align: left; font-size: 0.88em; line-height: 1.8; color: #a89878;
+}
+.fact-card .label { color: #ffd700; font-weight: bold; margin-bottom: 4px; }
+
+/* Animations */
+.ani { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.page.active .ani { opacity: 1; transform: translateY(0); }
+.page.active .ani:nth-child(2) { transition-delay: 0.15s; }
+.page.active .ani:nth-child(3) { transition-delay: 0.3s; }
+.page.active .ani:nth-child(4) { transition-delay: 0.45s; }
+.page.active .ani:nth-child(5) { transition-delay: 0.6s; }
+.page.active .ani:nth-child(6) { transition-delay: 0.75s; }
+
+/* Particles */
+.particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.particle {
+  position: absolute; border-radius: 50%; opacity: 0;
+  animation: floatUp 7s ease-in-out infinite;
+}
+.particle-gold { background: radial-gradient(circle, #ffd700, transparent); }
+.particle-white { background: radial-gradient(circle, rgba(255,255,255,0.8), transparent); }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(100vh) scale(0.3); }
+  15% { opacity: 0.7; } 85% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(0.8); }
+}
+
+/* Stars */
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.star {
+  position: absolute; background: #fff; border-radius: 50%;
+  animation: twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.85; transform: scale(1.2); } }
+
+/* Navigation */
+.nav-hint {
+  position: fixed; bottom: 18px; left: 0; right: 0;
+  text-align: center; color: rgba(255,255,255,0.25); font-size: 0.75em;
+  pointer-events: none; transition: opacity 0.5s; z-index: 100;
+}
+.nav-dots {
+  position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 7px; z-index: 100;
+}
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); transition: all 0.3s; cursor: pointer;
+}
+.nav-dot.active { background: #ffd700; box-shadow: 0 0 6px rgba(255,215,0,0.5); transform: scale(1.4); }
+
+.audio-btn {
+  position: fixed; top: 14px; right: 14px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: #ffd700; font-size: 1.1em;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 200; backdrop-filter: blur(10px); transition: all 0.3s;
+}
+.audio-btn:active { transform: scale(0.9); }
+.audio-btn.playing { background: rgba(255,215,0,0.15); box-shadow: 0 0 12px rgba(255,215,0,0.2); }
+.page-num { position: fixed; top: 16px; left: 16px; font-size: 0.7em; color: rgba(255,255,255,0.2); z-index: 100; }
+
+/* Voice panel */
+.voice-panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(10,10,15,0.96); backdrop-filter: blur(20px);
+  padding: 20px; border-top: 1px solid rgba(255,215,0,0.15);
+  transform: translateY(100%); transition: transform 0.3s; z-index: 300;
+  border-radius: 18px 18px 0 0;
+}
+.voice-panel.show { transform: translateY(0); }
+.voice-panel label { display: block; color: #7a6a5a; font-size: 0.82em; margin-bottom: 6px; }
+.voice-panel select, .voice-panel input[type="range"] {
+  width: 100%; padding: 10px; border-radius: 8px;
+  border: 1px solid rgba(255,215,0,0.15); background: rgba(255,255,255,0.04);
+  color: #d4c8b0; font-size: 0.95em; margin-bottom: 12px;
+}
+.voice-panel .close-panel { text-align: center; color: #ffd700; cursor: pointer; padding: 8px; }
+
+/* Qian hexagram glow */
+@keyframes yaoGlow {
+  0%,100% { filter: drop-shadow(0 0 4px rgba(255,215,0,0.3)); }
+  50% { filter: drop-shadow(0 0 12px rgba(255,215,0,0.7)); }
+}
+.qian-svg { animation: yaoGlow 3s ease-in-out infinite; }
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
+<div class="page-num" id="pageNum">1 / 9</div>
+<div class="nav-dots" id="navDots"></div>
+<div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
+
+<div class="pages-wrapper">
+
+  <!-- Page 1: 封面 -->
+  <div class="page bg-cosmos active" data-page="0">
+    <div class="particles" id="p0"></div>
+    <div class="ani">
+      <svg width="240" height="200" viewBox="0 0 240 200">
+        <defs>
+          <radialGradient id="gEye" cx="50%" cy="50%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="55%" stop-color="#dce7ff"/>
+            <stop offset="100%" stop-color="#7aa2ff"/>
+          </radialGradient>
+          <filter id="glowE"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+        <ellipse cx="112" cy="100" rx="72" ry="66" fill="url(#gEye)" filter="url(#glowE)" opacity="0.95">
+          <animate attributeName="rx" values="72;96;72" dur="4s" repeatCount="indefinite"/>
+        </ellipse>
+        <circle cx="58" cy="100" r="20" fill="#12203b" opacity="0.9"/>
+        <circle cx="52" cy="93" r="6" fill="#ffffff" opacity="0.85"/>
+        <line x1="40" y1="168" x2="196" y2="168" stroke="rgba(255,255,255,0.35)" stroke-width="2"/>
+        <text x="118" y="190" fill="#ffd700" font-size="19" text-anchor="middle" font-weight="700">被拉长的这一段</text>
+      </svg>
+    </div>
+    <div class="title-main ani">为什么会近视</div>
+    <div class="subtitle ani">AI讲科普 · 近视不是眼睛累了，是眼球被拉长了</div>
+  </div>
+
+  <!-- Page 2: 看清楚是怎么发生的 -->
+  <div class="page bg-sky" data-page="1">
+    <div class="particles" id="p1"></div>
+    <div class="ani">
+      <svg width="300" height="180" viewBox="0 0 300 180">
+        <ellipse cx="150" cy="90" rx="86" ry="76" fill="none" stroke="#dce7ff" stroke-width="3"/>
+        <path d="M64 56 Q46 90 64 124" fill="none" stroke="#7aa2ff" stroke-width="5"/>
+        <line x1="236" y1="30" x2="236" y2="150" stroke="#ffd700" stroke-width="5"/>
+        <text x="252" y="96" fill="#ffd700" font-size="16" font-weight="700">屏幕</text>
+        <line x1="10" y1="60" x2="230" y2="88" stroke="#8ef6c8" stroke-width="2.5"/>
+        <line x1="10" y1="120" x2="230" y2="92" stroke="#8ef6c8" stroke-width="2.5"/>
+        <circle cx="233" cy="90" r="8" fill="#8ef6c8">
+          <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <text x="150" y="176" fill="#8ef6c8" font-size="16" text-anchor="middle" font-weight="700">光刚好聚在屏幕上 → 清楚</text>
+      </svg>
+    </div>
+    <div class="page-title ani">眼睛像一个小房间</div>
+    <div class="page-text ani">
+      眼球前面有一片透明的<span class="em">镜片</span>，后面那层<span class="em">薄薄的膜</span>就是接收画面的屏幕。<br><br>
+      外面的光穿过镜片，会聚成<span class="em">一个点</span>。这个点刚好落在屏幕上，看到的画面就是清楚的。<br><br>
+      所以「看得清」这件事，本质上是<span class="em">一个长度问题</span>：从镜片到屏幕的距离，要刚好配得上镜片的聚光能力。
+    </div>
+  </div>
+
+  <!-- Page 3: 近视的真相 -->
+  <div class="page bg-void" data-page="2">
+    <div class="particles" id="p2"></div>
+    <div class="ani">
+      <svg width="320" height="190" viewBox="0 0 320 190">
+        <ellipse cx="150" cy="92" rx="118" ry="72" fill="none" stroke="#ff9aa2" stroke-width="3" stroke-dasharray="6 4"/>
+        <ellipse cx="140" cy="92" rx="82" ry="72" fill="none" stroke="rgba(220,231,255,0.45)" stroke-width="2"/>
+        <path d="M58 58 Q40 92 58 126" fill="none" stroke="#7aa2ff" stroke-width="5"/>
+        <line x1="268" y1="30" x2="268" y2="154" stroke="#ff9aa2" stroke-width="5"/>
+        <line x1="8" y1="60" x2="216" y2="90" stroke="#8ef6c8" stroke-width="2.5"/>
+        <line x1="8" y1="124" x2="216" y2="94" stroke="#8ef6c8" stroke-width="2.5"/>
+        <circle cx="219" cy="92" r="9" fill="#ffd700"/>
+        <line x1="219" y1="92" x2="266" y2="92" stroke="#ffd700" stroke-width="2" stroke-dasharray="4 3"/>
+        <text x="160" y="182" fill="#ff9aa2" font-size="16" text-anchor="middle" font-weight="700">屏幕被推远了，点落在了前面</text>
+      </svg>
+    </div>
+    <div class="page-title ani">眼球被前后拉长了</div>
+    <div class="page-text ani">
+      近视不是镜片坏了，是这个小房间<span class="em">前后变长了</span>。<br><br>
+      房间一变长，后面的屏幕就被推到了聚光点的<span class="em">后面</span>。光还没到屏幕就已经聚完又散开，落到屏幕上时是一小团，不是一个点。<br><br>
+      于是远处的东西糊了。而近处的东西本来就聚得靠后，反倒<span class="em">刚好落在屏幕上</span>——这就是近视的人凑近了反而看得清的原因。
+    </div>
+  </div>
+
+  <!-- Page 4: 关键判断 —— 长度回不去 -->
+  <div class="page bg-dawn" data-page="3">
+    <div class="particles" id="p3"></div>
+    <div class="ani">
+      <svg width="300" height="170" viewBox="0 0 300 170">
+        <line x1="30" y1="60" x2="150" y2="60" stroke="#8ef6c8" stroke-width="8" stroke-linecap="round"/>
+        <text x="160" y="66" fill="#8ef6c8" font-size="17" font-weight="700">原来的长度</text>
+        <line x1="30" y1="110" x2="230" y2="110" stroke="#ff9aa2" stroke-width="8" stroke-linecap="round">
+          <animate attributeName="x2" values="150;230;230" dur="3s" repeatCount="indefinite"/>
+        </line>
+        <text x="30" y="150" fill="#ff9aa2" font-size="17" font-weight="700">拉长之后 · 只往一个方向走</text>
+        <text x="248" y="116" fill="#ff9aa2" font-size="26" font-weight="800">→</text>
+      </svg>
+    </div>
+    <div class="page-title ani">长度变了，就回不去了</div>
+    <div class="page-text ani">
+      这是全片最要紧的一句：眼球长长了，<span class="em">目前没有办法让眼球缩回去</span>。<br><br>
+      所以近视不像感冒，不存在「养一养就好」。也正因为如此，一切说能让度数消失的说法，都<span class="em">不要相信</span>。<br><br>
+      真正能做的事只有一件：<span class="em">让眼球别再继续变长</span>。这也是为什么医生看的是长度的变化，而不只是这次查出来多少度。
+    </div>
+  </div>
+
+  <!-- Page 5: 为什么要戴眼镜 -->
+  <div class="page bg-flow" data-page="4">
+    <div class="particles" id="p4"></div>
+    <div class="ani">
+      <svg width="320" height="180" viewBox="0 0 320 180">
+        <path d="M40 50 Q22 90 40 130" fill="none" stroke="#ffd700" stroke-width="6"/>
+        <text x="20" y="164" fill="#ffd700" font-size="15" font-weight="700">加一片镜</text>
+        <ellipse cx="180" cy="90" rx="106" ry="68" fill="none" stroke="#dce7ff" stroke-width="3"/>
+        <path d="M96 58 Q78 90 96 122" fill="none" stroke="#7aa2ff" stroke-width="5"/>
+        <line x1="284" y1="30" x2="284" y2="150" stroke="#8ef6c8" stroke-width="5"/>
+        <line x1="8" y1="62" x2="282" y2="88" stroke="#8ef6c8" stroke-width="2.5"/>
+        <line x1="8" y1="122" x2="282" y2="92" stroke="#8ef6c8" stroke-width="2.5"/>
+        <circle cx="284" cy="90" r="9" fill="#8ef6c8">
+          <animate attributeName="r" values="7;11;7" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <text x="170" y="176" fill="#8ef6c8" font-size="16" text-anchor="middle" font-weight="700">把聚光点推回屏幕上</text>
+      </svg>
+    </div>
+    <div class="page-title ani">眼镜不是治眼睛，是补长度</div>
+    <div class="page-text ani">
+      既然房间长了、点落在了屏幕前面，那就在眼睛<span class="em">前面再加一片镜片</span>，让光进来时先散开一点，聚光点自然就往后挪，重新落回屏幕上。<br><br>
+      所以眼镜做的是<span class="em">补偿</span>，不是修复。摘下来还是那个长度，这很正常，不代表眼镜把眼睛弄坏了。<br><br>
+      反过来说，该戴而硬撑着不戴，看东西一直是模糊的，眼睛反而更费力。
+    </div>
+  </div>
+
+  <!-- Page 6: 纠正一个流传很广的说法 -->
+  <div class="page bg-balance" data-page="5">
+    <div class="particles" id="p5"></div>
+    <div class="ani">
+      <svg width="300" height="170" viewBox="0 0 300 170">
+        <rect x="24" y="34" width="252" height="46" rx="10" fill="rgba(255,154,162,0.14)" stroke="#ff9aa2" stroke-width="2"/>
+        <text x="150" y="63" fill="#ff9aa2" font-size="19" text-anchor="middle" font-weight="800">长一毫米 = 三百度？</text>
+        <text x="150" y="106" fill="#ffd700" font-size="30" text-anchor="middle" font-weight="800">≈ 不成正比</text>
+        <rect x="24" y="122" width="252" height="34" rx="10" fill="rgba(142,246,200,0.14)" stroke="#8ef6c8" stroke-width="2"/>
+        <text x="150" y="145" fill="#8ef6c8" font-size="17" text-anchor="middle" font-weight="700">孩子在长个子，眼睛也在长</text>
+      </svg>
+    </div>
+    <div class="page-title ani">这个换算不要照着套</div>
+    <div class="page-text ani">
+      流传最广的一句是「长一毫米就等于三百度」。<span class="em">这句话不成立</span>。<br><br>
+      成年人身上这个对应关系大致存在，但也只是大致；孩子完全不同——孩子本来就在长身体，眼球也在自然变长，其中有一部分长度<span class="em">并不会变成度数</span>。<br><br>
+      所以看到「长了零点几毫米」先别慌，也别自己拿这个数去算度数。长得算不算快，要交给医生对着年龄看。
+    </div>
+  </div>
+
+  <!-- Page 7: 真正有证据的保护方式 -->
+  <div class="page bg-light" data-page="6">
+    <div class="particles" id="p6"></div>
+    <div class="ani">
+      <svg width="300" height="190" viewBox="0 0 300 190">
+        <circle cx="150" cy="86" r="42" fill="#ffd700" opacity="0.92">
+          <animate attributeName="r" values="40;46;40" dur="3s" repeatCount="indefinite"/>
+        </circle>
+        <g stroke="#ffd700" stroke-width="4" stroke-linecap="round">
+          <line x1="150" y1="14" x2="150" y2="32"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/></line>
+          <line x1="222" y1="86" x2="240" y2="86"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" begin="0.3s" repeatCount="indefinite"/></line>
+          <line x1="60" y1="86" x2="78" y2="86"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" begin="0.6s" repeatCount="indefinite"/></line>
+          <line x1="201" y1="35" x2="214" y2="22"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" begin="0.9s" repeatCount="indefinite"/></line>
+          <line x1="86" y1="35" x2="73" y2="22"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" begin="1.2s" repeatCount="indefinite"/></line>
+        </g>
+        <text x="150" y="158" fill="#ffd700" font-size="21" text-anchor="middle" font-weight="800">每天户外 2 小时</text>
+        <text x="150" y="182" fill="#8ef6c8" font-size="16" text-anchor="middle" font-weight="700">分几次凑够也算 · 阴天也算</text>
+      </svg>
+    </div>
+    <div class="page-title ani">管用的是户外的光</div>
+    <div class="page-text ani">
+      在所有护眼说法里，被大规模研究反复验证的其实只有一件：<span class="em">白天到户外去</span>。<br><br>
+      户外的亮度是室内的<span class="em">几十倍甚至上百倍</span>。这种强度的光进到眼睛里，会让那层薄膜释放一种物质，而这种物质正好能<span class="em">压住眼球过快变长</span>。<br><br>
+      注意关键在<span class="em">光</span>，不在运动。坐在树荫下也算，阴天也算；隔着玻璃在屋里晒，不算。
+    </div>
+  </div>
+
+  <!-- Page 8: 可带走的三条 -->
+  <div class="page bg-dual" data-page="7">
+    <div class="particles" id="p7"></div>
+    <div class="ani">
+      <svg width="300" height="180" viewBox="0 0 300 180">
+        <g font-size="17" font-weight="700">
+          <rect x="18" y="14" width="264" height="42" rx="10" fill="rgba(255,215,0,0.12)" stroke="#ffd700" stroke-width="2"/>
+          <text x="150" y="41" fill="#ffd700" text-anchor="middle">① 白天出门，凑够两小时</text>
+          <rect x="18" y="68" width="264" height="42" rx="10" fill="rgba(142,246,200,0.12)" stroke="#8ef6c8" stroke-width="2"/>
+          <text x="150" y="95" fill="#8ef6c8" text-anchor="middle">② 看近处 20 分钟，抬头看远</text>
+          <rect x="18" y="122" width="264" height="42" rx="10" fill="rgba(122,162,255,0.14)" stroke="#7aa2ff" stroke-width="2"/>
+          <text x="150" y="149" fill="#7aa2ff" text-anchor="middle">③ 记长度的变化，不只记度数</text>
+        </g>
+      </svg>
+    </div>
+    <div class="page-title ani">今天就能用的三条</div>
+    <div class="page-text ani">
+      <span class="em">第一条</span>，白天到外面去，一次凑不够就分几次，重点是累计够。<br><br>
+      <span class="em">第二条</span>，看近处的东西每二十分钟左右，抬头往远处望一会儿，让眼睛里绷着的那块肌肉松开。<br><br>
+      <span class="em">第三条</span>，每次检查把长度记下来，攒成一条曲线。度数会被眼睛当时的紧张程度干扰，<span class="em">长度不会</span>——长度才是那把准的尺子。
+    </div>
+  </div>
+
+  <!-- Page 9: 落版 -->
+  <div class="page bg-final" data-page="8">
+    <div class="particles" id="p8"></div>
+    <div class="ani">
+      <svg width="280" height="150" viewBox="0 0 280 150">
+        <line x1="30" y1="70" x2="250" y2="70" stroke="rgba(255,255,255,0.25)" stroke-width="3"/>
+        <line x1="30" y1="70" x2="150" y2="70" stroke="#8ef6c8" stroke-width="9" stroke-linecap="round"/>
+        <circle cx="150" cy="70" r="13" fill="#ffd700">
+          <animate attributeName="r" values="11;16;11" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <text x="150" y="122" fill="#ffd700" font-size="22" text-anchor="middle" font-weight="800">让眼球别再变长</text>
+      </svg>
+    </div>
+    <div class="title-main ani">近视管的不是清不清</div>
+    <div class="page-text ani" style="text-align:center">
+      而是<span class="em">别再变长</span>。<br><br>
+      看得清可以靠一片镜片补回来，长度回不去才是真正要守的东西。<br><br>
+      <span class="em">🔭 AI讲科普</span><br>
+      📌 🦎 开心的舵手
+      <div style="margin-top:18px;font-size:0.62em;opacity:0.68;line-height:1.7">
+        本页面只讲原理，不构成医疗建议。<br>是否配镜、如何复查，请以眼科医生的检查结论为准。
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="voice-panel" id="voicePanel">
+  <label>🗣️ 声音 <select id="voiceSelect"></select></label>
+  <label>🔊 语速: <span id="rateVal">0.9</span>x <input type="range" id="rateRange" min="0.5" max="1.5" step="0.1" value="0.9"></label>
+  <div class="close-panel" onclick="toggleVoicePanel()">✕ 关闭</div>
+</div>
+
+<script>
+let cur = 0;
+const HAS_TTS = typeof window.speechSynthesis !== 'undefined' && window.speechSynthesis !== null;
+const pages = document.querySelectorAll('.page');
+const total = pages.length;
+let animating = false, speaking = false;
+
+const navDots = document.getElementById('navDots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => go(i);
+  navDots.appendChild(d);
+}
+
+function go(idx) {
+  if (idx < 0 || idx >= total || idx === cur || animating) return;
+  animating = true;
+  stopAudio();
+  const old = pages[cur], nw = pages[idx], dir = idx > cur ? 1 : -1;
+  old.classList.remove('active'); old.classList.add('prev');
+  if (dir < 0) { old.style.transform = 'translateX(100%)'; old.style.opacity = '0'; }
+  nw.style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+  nw.classList.remove('prev');
+  requestAnimationFrame(() => {
+    nw.classList.add('active'); nw.style.transform = '';
+    cur = idx; updateUI();
+    setTimeout(() => {
+      animating = false;
+      old.classList.remove('prev'); old.style.transform = ''; old.style.opacity = '';
+      if (speaking) speakPage(cur);
+    }, 650);
+  });
+}
+
+function updateUI() {
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.getElementById('pageNum').textContent = `${cur + 1} / ${total}`;
+  document.getElementById('navHint').style.opacity = '0';
+}
+
+let tx = 0, ty = 0, tt = 0;
+document.addEventListener('touchstart', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY; tt = Date.now();
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty, dt = Date.now() - tt;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 500) { dx < 0 ? go(cur+1) : go(cur-1); return; }
+  if (dt < 300 && Math.abs(dx) < 15 && Math.abs(dy) < 15) {
+    e.changedTouches[0].clientX > window.innerWidth * 0.4 ? go(cur+1) : go(cur-1);
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur+1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur-1); }
+});
+
+// TTS
+const narrations = [
+  "为什么会近视。近视不是眼睛累了，是眼球被拉长了。这一期讲三件事：怎么变成近视的，为什么要戴眼镜，什么办法真的管用。",
+  "眼睛像一个小房间。前面一片透明镜片，后面那层薄膜是接收画面的屏幕。光穿过镜片会聚成一个点，这个点刚好落在屏幕上，画面就清楚。所以看得清，是一个长度问题。",
+  "近视不是镜片坏了，是这个小房间前后变长了。屏幕被推到了聚光点的后面，光落上去是一小团不是一个点，远处就糊了。而近处的东西本来聚得靠后，反倒刚好落在屏幕上，所以凑近了反而看得清。",
+  "最要紧的一句：眼球长长了，目前没办法缩回去。近视不像感冒，不存在养一养就好。凡是说能让度数消失的，都不要相信。能做的只有一件，让眼球别再继续变长。",
+  "房间长了，点落在屏幕前面，那就在眼前再加一片镜片，让光先散开一点，聚光点往后挪，重新落回屏幕上。所以眼镜是补偿，不是修复。摘下来还是那个长度，很正常。该戴不戴，看东西一直模糊，眼睛反而更费力。",
+  "流传最广的一句是长一毫米等于三百度。这句话不成立。成年人身上大致有这个对应，孩子完全不同：孩子在长身体，眼球也在自然变长，有一部分长度并不会变成度数。看到长了零点几毫米先别慌，长得算不算快，要交给医生对着年龄看。",
+  "所有护眼说法里，被大规模研究反复验证的只有一件：白天到户外去。户外亮度是室内的几十倍甚至上百倍，这种强度的光进到眼睛里，会让那层薄膜释放一种物质，正好压住眼球过快变长。关键在光，不在运动。树荫下也算，阴天也算，隔着玻璃在屋里晒不算。",
+  "今天就能用的三条。第一，白天出门，分几次凑够两小时。第二，看近处每二十分钟，抬头往远处望一会儿，让眼睛里绷着的肌肉松开。第三，每次检查把长度记下来攒成曲线。度数会被眼睛当时的紧张干扰，长度不会，长度才是那把准的尺子。",
+  "近视管的不是清不清，而是别再变长。看得清可以靠镜片补回来，长度回不去才是真正要守的东西。今日科普，开心的舵手。"
+];
+
+let voices = [];
+function loadVoices() {
+  if (!HAS_TTS) return;
+  voices = window.speechSynthesis.getVoices();
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+  const zh = voices.filter(v => (v.lang.startsWith('zh-CN')||v.lang==='zh')&&!v.lang.startsWith('zh-HK')&&!v.lang.startsWith('zh-TW'));
+  // Sort: Edge Online (Natural) first
+  zh.sort((a, b) => {
+    const aOnline = a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Online') && a.name.includes('Natural') ? 2 : a.name.includes('Microsoft') ? 1 : 0;
+    const bOnline = b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Online') && b.name.includes('Natural') ? 2 : b.name.includes('Microsoft') ? 1 : 0;
+    return bOnline - aOnline;
+  });
+  (zh.length ? zh : voices.slice(0, 8)).forEach(v => {
+    const o = document.createElement('option');
+    o.value = voices.indexOf(v);
+    o.textContent = v.name.replace(/Microsoft |Google |Apple /g, '');
+    sel.appendChild(o);
+  });
+}
+if (HAS_TTS) {
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+  [0, 300, 900, 2000].forEach(t => setTimeout(loadVoices, t));
+}
+else { const vp = document.getElementById('voiceSelect'); if (vp) vp.parentElement.style.display = 'none'; }
+document.getElementById('rateRange').addEventListener('input', function() {
+  document.getElementById('rateVal').textContent = this.value;
+});
+
+// 朗读：统一走 Web Speech API（Edge 高保真 Microsoft Xiaoxiao Online Natural 优先）
+function onSegmentEnd() {
+  if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
+  else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
+}
+
+function stopAudio() {
+  if (HAS_TTS) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+}
+
+function speakPage(idx) {
+  if (!HAS_TTS) { showNoAudio(); return; }
+  if (!narrations[idx]) return;
+  try { window.speechSynthesis.cancel(); } catch (e) {}
+  // iOS/部分内核已知坑：cancel() 之后必须让出一帧再 speak()，否则静默不发声
+  setTimeout(() => doSpeak(idx), 120);
+}
+
+function doSpeak(idx) {
+  try {
+    const u = new SpeechSynthesisUtterance(narrations[idx]);
+    const rr = document.getElementById('rateRange');
+    u.lang = 'zh-CN';
+    u.rate = rr ? parseFloat(rr.value) : 1;
+    // 语音列表可能异步到达；没拿到就不指定 voice，交给系统按 lang 自选，仍能发声
+    const sv = document.getElementById('voiceSelect');
+    if (sv && sv.value !== '' && voices[sv.value]) u.voice = voices[sv.value];
+    u.onend = onSegmentEnd;
+    u.onerror = (e) => { if (e && e.error === 'interrupted') return; showNoAudio(); };
+    window.speechSynthesis.speak(u);
+  } catch (e) { showNoAudio(); }
+}
+
+function showNoAudio() {
+  const h = document.getElementById('navHint');
+  if (h) { h.textContent = '这个浏览器不支持朗读，请用系统浏览器打开'; h.style.opacity = '1'; }
+  speaking = false; updateAudioBtn();
+}
+
+let ttsUnlocked = false;
+function toggleAudio() {
+  if (speaking) { speaking = false; stopAudio(); }
+  else {
+    // iOS 要求首次 speak() 处在用户手势的同步调用栈内，这里用一次空白朗读解锁
+    if (HAS_TTS && !ttsUnlocked) {
+      ttsUnlocked = true;
+      try { window.speechSynthesis.speak(new SpeechSynthesisUtterance(' ')); } catch (e) {}
+    }
+    speaking = true;
+    speakPage(cur);
+  }
+  updateAudioBtn();
+}
+function updateAudioBtn() {
+  const b = document.getElementById('audioBtn');
+  b.textContent = speaking ? '🔊' : '🔇';
+  b.classList.toggle('playing', speaking);
+}
+
+let lpt;
+document.getElementById('audioBtn').addEventListener('touchstart', e => {
+  lpt = setTimeout(() => { toggleVoicePanel(); e.preventDefault(); }, 600);
+}, { passive: false });
+document.getElementById('audioBtn').addEventListener('touchend', () => clearTimeout(lpt));
+function toggleVoicePanel() { document.getElementById('voicePanel').classList.toggle('show'); }
+
+// Particles & Stars
+function mkParticles(id, n=15) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle ' + (Math.random() > 0.5 ? 'particle-gold' : 'particle-white');
+    p.style.left = Math.random()*100+'%';
+    p.style.animationDelay = Math.random()*7+'s';
+    p.style.animationDuration = (5+Math.random()*4)+'s';
+    const s = 2+Math.random()*4; p.style.width = s+'px'; p.style.height = s+'px';
+    c.appendChild(p);
+  }
+}
+function mkStars(id, n=35) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = Math.random()*4+'s';
+    const sz = 1+Math.random()*2; s.style.width = sz+'px'; s.style.height = sz+'px';
+    c.appendChild(s);
+  }
+}
+
+mkParticles('p0', 18); mkParticles('p3', 14); mkParticles('p6', 16); mkParticles('p8', 12); mkParticles('p9', 12);
+mkStars('s1', 35); mkStars('s4', 30);
+
+setTimeout(() => { document.getElementById('navHint').style.opacity = '0'; }, 4500);
+document.addEventListener('dblclick', e => e.preventDefault());
+</script>
+<script src="../../assets/site.js"></script></body>
+</html><!--
+来源核查（2026-09-05）
+1) 户外光照的保护机制（高强度光 → 视网膜释放多巴胺 → 抑制眼轴过度增长）
+   Protective effects of increased outdoor time against myopia: a review
+   https://pmc.ncbi.nlm.nih.gov/articles/PMC7607527/
+   原文关键句："dopamine (DA) release has been suggested to be triggered by high-intensity
+   outdoor light and rapid changes in luminance"；"dopamine, which inhibit myopic development"
+2) 每天户外时长的大规模随机对照证据（上海 24 所小学、6295 名 6–9 岁学生、整群随机、2 年）
+   Time Outdoors in Reducing Myopia: A School-Based Cluster Randomized Trial. Ophthalmology.
+   https://pubmed.ncbi.nlm.nih.gov/35779695/
+   摘要："A prospective, cluster-randomized, examiner-masked, 3-arm trial... A total of 6295
+   students aged 6 to 9 years from 24 primary schools in Shanghai, China"
+3) 「眼轴长 1 毫米 = 300 度」不成立
+   Atchison et al.：成人（18–36 岁）平均正视眼轴约 23mm，每 1D 近视约对应 0.35mm 眼轴增长
+   https://www.myopiaprofile.com/articles/mismatch-between-myopia-and-axial-length
+   人民网科普亦将「眼轴增长 1 毫米会增加 300 度近视」列为需纠正的误区
+   https://news.qq.com/rain/a/20240425A08K1W00
+   儿童处于生长期，部分眼轴自然增长不转化为屈光度数，故不可线性套用。
+合规说明：全片只讲光学与生长原理，不提任何药物、镜片产品、手术或疗法，不作诊疗建议，
+末屏明示「请以眼科医生检查结论为准」。
+-->
