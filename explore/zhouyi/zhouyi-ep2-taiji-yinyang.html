@@ -247,6 +247,86 @@ html, body {
   color: #d4c8b0; font-size: 0.95em; margin-bottom: 12px;
 }
 .voice-panel .close-panel { text-align: center; color: #ffd700; cursor: pointer; padding: 8px; }
+
+/* ===== 太极动画增强（一律 CSS 动画，便于自动化验收；SMIL 在无头浏览器里不走时钟） ===== */
+/* 页3：横线扫下来看交界 */
+.scanY { animation: scanDown 5s linear infinite; }
+@keyframes scanDown { from { transform: translateY(0); } to { transform: translateY(144px); } }
+.scanY2 { animation: scanDown2 5s linear infinite; }
+@keyframes scanDown2 { from { transform: translateY(0); } to { transform: translateY(68px); } }
+.dotX { animation: boundarySwing 5s linear infinite; }
+@keyframes boundarySwing {
+  0% { transform: translateX(0); }        10% { transform: translateX(28.8px); }
+  20% { transform: translateX(35.3px); }  25% { transform: translateX(36px); }
+  30% { transform: translateX(35.3px); }  40% { transform: translateX(28.8px); }
+  50% { transform: translateX(0); }       60% { transform: translateX(-28.8px); }
+  70% { transform: translateX(-35.3px); } 75% { transform: translateX(-36px); }
+  80% { transform: translateX(-35.3px); } 90% { transform: translateX(-28.8px); }
+  100% { transform: translateX(0); }
+}
+/* 页2：太极当场生出来 */
+.arrowFlow { animation: arrowFlow 1.2s linear infinite; }
+@keyframes arrowFlow { from { stroke-dashoffset: 8; } to { stroke-dashoffset: 0; } }
+.born-seed { animation: bornSeed 7s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes bornSeed { 0%,12% { opacity:0; transform:scale(.2); } 22% { opacity:1; transform:scale(1); } 34% { opacity:.9; transform:scale(1); } 46%,100% { opacity:0; transform:scale(1.6); } }
+.born-s { stroke-dasharray: 105; animation: bornS 7s ease-in-out infinite; }
+@keyframes bornS { 0%,26% { stroke-dashoffset:105; opacity:0; } 30% { opacity:1; } 52%,92% { stroke-dashoffset:0; opacity:1; } 100% { stroke-dashoffset:0; opacity:0; } }
+.born-fill { animation: bornFill 7s ease-in-out infinite; }
+@keyframes bornFill { 0%,52% { opacity:0; } 68%,92% { opacity:1; } 100% { opacity:0; } }
+.born-eye { animation: bornEye 7s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes bornEye { 0%,70% { opacity:0; transform:scale(.3); } 80% { opacity:1; transform:scale(1.15); } 86%,92% { opacity:1; transform:scale(1); } 100% { opacity:0; transform:scale(1); } }
+/* 页5：山南山北 */
+.sunArc { animation: sunArc 9s linear infinite; }
+@keyframes sunArc {
+  0% { transform: translate(-95px,48px); opacity:0; }
+  8% { opacity:1; }
+  25% { transform: translate(-50px,10px); }
+  50% { transform: translate(0,-6px); }
+  75% { transform: translate(50px,10px); }
+  92% { opacity:1; }
+  100% { transform: translate(95px,48px); opacity:0; }
+}
+.litL { animation: litLeft 9s linear infinite; }
+@keyframes litLeft { 0%,42% { opacity:1; } 52%,100% { opacity:0; } }
+.litR { animation: litRight 9s linear infinite; }
+@keyframes litRight { 0%,42% { opacity:0; } 52%,100% { opacity:1; } }
+.labA { animation: litLeft 9s linear infinite; }
+.labB { animation: litRight 9s linear infinite; }
+/* 页6：三大法则各演一遍 */
+.pushMid { animation: pushMid 2.6s ease-in-out infinite; }
+@keyframes pushMid { 0%,100% { transform: translateX(-6px); } 50% { transform: translateX(6px); } }
+.arrowL { animation: arrL 2.6s ease-in-out infinite; }
+@keyframes arrL { 0%,100% { transform: translateX(-4px); } 50% { transform: translateX(3px); } }
+.arrowR { animation: arrR 2.6s ease-in-out infinite; }
+@keyframes arrR { 0%,100% { transform: translateX(4px); } 50% { transform: translateX(-3px); } }
+.rootA { animation: rootShrink 4.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center bottom; }
+@keyframes rootShrink { 0%,15% { transform: scaleY(1); } 50%,62% { transform: scaleY(0.04); } 92%,100% { transform: scaleY(1); } }
+.rootB { animation: rootFade 4.4s ease-in-out infinite; }
+@keyframes rootFade { 0%,15% { opacity:1; } 50%,62% { opacity:0.12; } 92%,100% { opacity:1; } }
+.rootQ { animation: rootQ 4.4s ease-in-out infinite; }
+@keyframes rootQ { 0%,32% { opacity:0; } 52%,60% { opacity:1; } 76%,100% { opacity:0; } }
+.cellFlip { animation: cellFlip 4.2s linear infinite; }
+@keyframes cellFlip { 0%,6% { fill:#ffd700; } 44%,56% { fill:#6080c0; } 94%,100% { fill:#ffd700; } }
+/* 页8：物极必反 —— 标出转折那一刻 */
+.orbit { animation: orbit 10s linear infinite; }
+@keyframes orbit {
+  0% { transform: translate(-100px,0); }        12.5% { transform: translate(-70.7px,-31.8px); }
+  25% { transform: translate(0,-45px); }        37.5% { transform: translate(70.7px,-31.8px); }
+  50% { transform: translate(100px,0); }        62.5% { transform: translate(70.7px,31.8px); }
+  75% { transform: translate(0,45px); }         87.5% { transform: translate(-70.7px,31.8px); }
+  100% { transform: translate(-100px,0); }
+}
+.orbitSun { animation: sunHeat 10s linear infinite; }
+@keyframes sunHeat { 0% { fill:#c08a4a; } 25% { fill:#ffd700; } 50% { fill:#8a7fd0; } 75% { fill:#3a3a6a; } 100% { fill:#c08a4a; } }
+.flipTop, .flipBot { transform-box: fill-box; transform-origin: center; }
+.flipTop { animation: flipTop 10s linear infinite; }
+@keyframes flipTop { 0%,19% { opacity:0; transform:scale(.6); } 25% { opacity:1; transform:scale(1); } 34%,100% { opacity:0; transform:scale(1.6); } }
+.flipBot { animation: flipBot 10s linear infinite; }
+@keyframes flipBot { 0%,69% { opacity:0; transform:scale(.6); } 75% { opacity:1; transform:scale(1); } 84%,100% { opacity:0; transform:scale(1.6); } }
+.tagTop { animation: tagTop 10s linear infinite; }
+@keyframes tagTop { 0%,18% { opacity:0; } 25%,36% { opacity:1; } 44%,100% { opacity:0; } }
+.tagBot { animation: tagBot 10s linear infinite; }
+@keyframes tagBot { 0%,68% { opacity:0; } 75%,86% { opacity:1; } 94%,100% { opacity:0; } }
 </style>
 </head>
 <body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
@@ -366,24 +446,29 @@ html, body {
   <div class="page bg-cosmos" data-page="2">
     <div class="particles" id="p2"></div>
     <div class="ani">
-      <svg width="200" height="120" viewBox="0 0 200 120">
-        <!-- Wuji (empty circle) -->
-        <circle cx="45" cy="60" r="35" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5">
-          <animate attributeName="stroke-opacity" values="0.1;0.3;0.1" dur="3s" repeatCount="indefinite"/>
+      <svg width="238" height="141" viewBox="0 0 240 142">
+        <!-- 无极：一个空圆，什么都还没分 -->
+        <circle cx="46" cy="60" r="32" fill="none" stroke="rgba(255,255,255,0.16)" stroke-width="1.5" stroke-dasharray="2 4">
+          <animate attributeName="stroke-opacity" values="0.35;0.8;0.35" dur="3s" repeatCount="indefinite"/>
         </circle>
-        <text x="45" y="105" text-anchor="middle" font-size="10" fill="#5a5a5a">无极</text>
-        <!-- Arrow -->
-        <path d="M88,60 L112,60" fill="none" stroke="#ffd700" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6">
-          <animate attributeName="stroke-dashoffset" values="6;0" dur="1s" repeatCount="indefinite"/>
-        </path>
-        <polygon points="115,55 125,60 115,65" fill="#ffd700" opacity="0.6"/>
-        <!-- Taiji (filled) -->
-        <circle cx="155" cy="60" r="35" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="1.5"/>
-        <path d="M155,25 A35,35 0 0,1 155,95 A17.5,17.5 0 0,1 155,60 A17.5,17.5 0 0,0 155,25 Z" fill="rgba(255,215,0,0.5)"/>
-        <path d="M155,25 A35,35 0 0,0 155,95 A17.5,17.5 0 0,0 155,60 A17.5,17.5 0 0,1 155,25 Z" fill="rgba(10,10,20,0.8)"/>
-        <circle cx="155" cy="42.5" r="5" fill="rgba(10,10,20,0.8)"/>
-        <circle cx="155" cy="77.5" r="5" fill="rgba(255,215,0,0.5)"/>
-        <text x="155" y="105" text-anchor="middle" font-size="10" fill="#ffd700">太极</text>
+        <text x="46" y="112" text-anchor="middle" font-size="11" fill="#6a6a6a">无极</text>
+        <text x="46" y="128" text-anchor="middle" font-size="9.5" fill="#4a4a4a">未分</text>
+        <!-- 一动 -->
+        <path class="arrowFlow" d="M92,60 L112,60" fill="none" stroke="#ffd700" stroke-width="1.6" stroke-dasharray="4 4" opacity="0.75"/>
+        <polygon points="114,55 124,60 114,65" fill="#ffd700" opacity="0.8"/>
+        <text x="108" y="46" text-anchor="middle" font-size="9.5" fill="#c9a227">一动</text>
+        <!-- 太极：外圈先在，动点先出，S 曲线自己划开，两半才填上，鱼眼最后落下 -->
+        <circle cx="165" cy="60" r="32" fill="#080808" stroke="rgba(255,215,0,0.28)" stroke-width="1.5"/>
+        <g class="born-fill">
+          <path d="M165,28 A32,32 0 0,1 165,92 A16,16 0 0,1 165,60 A16,16 0 0,0 165,28 Z" fill="rgba(240,235,220,0.9)"/>
+          <path d="M165,28 A32,32 0 0,0 165,92 A16,16 0 0,0 165,60 A16,16 0 0,1 165,28 Z" fill="rgba(12,12,20,0.95)"/>
+        </g>
+        <path class="born-s" d="M165,28 A16,16 0 0,0 165,60 A16,16 0 0,1 165,92" fill="none" stroke="#ffd700" stroke-width="2.2" stroke-linecap="round"/>
+        <circle class="born-seed" cx="165" cy="60" r="6" fill="#ffd700"/>
+        <circle class="born-eye" cx="165" cy="44" r="6" fill="rgba(12,12,20,0.95)"/>
+        <circle class="born-eye" cx="165" cy="76" r="6" fill="rgba(240,235,220,0.9)"/>
+        <text x="165" y="112" text-anchor="middle" font-size="11" fill="#ffd700">太极</text>
+        <text x="165" y="128" text-anchor="middle" font-size="9.5" fill="#c9a227">已分动静</text>
       </svg>
     </div>
     <div class="page-title ani">无极生太极</div>
@@ -406,7 +491,7 @@ html, body {
   <div class="page bg-dawn" data-page="3">
     <div class="stars" id="s3"></div>
     <div class="ani">
-      <svg width="180" height="180" viewBox="0 0 360 360">
+      <svg width="300" height="199" viewBox="0 0 320 212">
         <defs>
           <radialGradient id="gY4" cx="38%" cy="32%" r="65%">
             <stop offset="0%" stop-color="#ffffff"/><stop offset="25%" stop-color="#f0f0f0"/>
@@ -417,34 +502,38 @@ html, body {
             <stop offset="0%" stop-color="#3a3a3a"/><stop offset="35%" stop-color="#151515"/>
             <stop offset="100%" stop-color="#000000"/>
           </radialGradient>
-          <radialGradient id="gHL4" cx="35%" cy="25%" r="40%">
-            <stop offset="0%" stop-color="rgba(255,255,255,0.5)"/>
-            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
-          </radialGradient>
           <radialGradient id="gSH4" cx="65%" cy="75%" r="60%">
             <stop offset="0%" stop-color="rgba(0,0,0,0)"/>
             <stop offset="80%" stop-color="rgba(0,0,0,0.2)"/>
             <stop offset="100%" stop-color="rgba(0,0,0,0.35)"/>
           </radialGradient>
         </defs>
-        <circle cx="180" cy="180" r="158" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="3 5"/>
-        <g>
-          <animateTransform attributeName="transform" type="rotate" values="0 180 180;360 180 180" dur="30s" repeatCount="indefinite"/>
-          <circle cx="180" cy="180" r="135" fill="#080808" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
-          <path d="M180,45 A135,135 0 0,1 180,315 A67.5,67.5 0 0,1 180,180 A67.5,67.5 0 0,0 180,45 Z" fill="url(#gY4)"/>
-          <path d="M180,45 A135,135 0 0,0 180,315 A67.5,67.5 0 0,0 180,180 A67.5,67.5 0 0,1 180,45 Z" fill="url(#gN4)"/>
-          <path d="M180,45 A135,135 0 0,1 180,315 A67.5,67.5 0 0,1 180,180 A67.5,67.5 0 0,0 180,45 Z" fill="url(#gHL4)" opacity="0.2"/>
-          <circle cx="180" cy="180" r="134" fill="url(#gSH4)" opacity="0.3"/>
-          <circle cx="180" cy="112.5" r="20" fill="url(#gN4)"/>
-          <circle cx="178" cy="110" r="6" fill="rgba(30,30,30,0.6)"/>
-          <circle cx="176" cy="108" r="2.5" fill="rgba(255,255,255,0.2)"/>
-          <circle cx="180" cy="247.5" r="20" fill="url(#gY4)"/>
-          <circle cx="182" cy="245" r="6" fill="rgba(220,220,220,0.7)"/>
+        <!-- 对照：用直线切开 -->
+        <circle cx="58" cy="86" r="34" fill="#080808" stroke="rgba(255,255,255,0.12)" stroke-width="1.2"/>
+        <path d="M58,52 A34,34 0 0,1 58,120 Z" fill="url(#gY4)" opacity="0.9"/>
+        <path d="M58,52 A34,34 0 0,0 58,120 Z" fill="url(#gN4)"/>
+        <line x1="58" y1="52" x2="58" y2="120" stroke="#e74c3c" stroke-width="1.4" opacity="0.8"/>
+        <g class="scanY2">
+          <line x1="16" y1="52" x2="100" y2="52" stroke="#ffffff" stroke-width="1" opacity="0.5" stroke-dasharray="3 3"/>
+          <circle cx="58" cy="52" r="4" fill="#e74c3c"/>
         </g>
-        <text x="180" y="22" text-anchor="middle" font-size="14" fill="#ffffff" opacity="0.4">天</text>
-        <text x="180" y="352" text-anchor="middle" font-size="14" fill="#6a6a6a" opacity="0.4">地</text>
-        <text x="14" y="184" text-anchor="middle" font-size="14" fill="#6a6a6a" opacity="0.4">阴</text>
-        <text x="346" y="184" text-anchor="middle" font-size="14" fill="#ffffff" opacity="0.4">阳</text>
+        <text x="58" y="142" text-anchor="middle" font-size="11" fill="#8a8a8a">直线切开</text>
+        <text x="58" y="159" text-anchor="middle" font-size="11" fill="#e74c3c">交界永远在正中</text>
+        <!-- 太极：S 曲线切开 -->
+        <circle cx="205" cy="100" r="72" fill="#080808" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+        <path d="M205,28 A72,72 0 0,1 205,172 A36,36 0 0,1 205,100 A36,36 0 0,0 205,28 Z" fill="url(#gY4)"/>
+        <path d="M205,28 A72,72 0 0,0 205,172 A36,36 0 0,0 205,100 A36,36 0 0,1 205,28 Z" fill="url(#gN4)"/>
+        <circle cx="205" cy="100" r="71" fill="url(#gSH4)" opacity="0.3"/>
+        <path d="M205,28 A36,36 0 0,0 205,100 A36,36 0 0,1 205,172" fill="none" stroke="#ffd700" stroke-width="2" opacity="0.5"/>
+        <circle cx="205" cy="64" r="12" fill="url(#gN4)"/>
+        <circle cx="203" cy="62" r="3.4" fill="rgba(255,255,255,0.22)"/>
+        <circle cx="205" cy="136" r="12" fill="url(#gY4)"/>
+        <circle cx="207" cy="134" r="3.4" fill="rgba(60,60,60,0.6)"/>
+        <g class="scanY">
+          <line x1="124" y1="28" x2="286" y2="28" stroke="#ffffff" stroke-width="1" opacity="0.5" stroke-dasharray="3 3"/>
+          <g class="dotX"><circle cx="205" cy="28" r="4.5" fill="#ffd700"/></g>
+        </g>
+        <text x="205" y="196" text-anchor="middle" font-size="13" fill="#ffd700">S 曲线切开 · 交界一路在挪</text>
       </svg>
     </div>
     <div class="page-title ani">太极图的秘密</div>
@@ -460,10 +549,36 @@ html, body {
 
   <!-- Page 5: Yin and Yang -->
   <div class="page bg-dual" data-page="4">
-    <div class="split-visual ani">
-      <div class="split-side split-yang">☀️</div>
-      <div class="split-vs">⟷</div>
-      <div class="split-side split-yin">🌙</div>
+    <div class="ani">
+      <svg width="276" height="167" viewBox="0 0 300 182">
+        <defs>
+          <linearGradient id="gLit4" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ffe490"/><stop offset="100%" stop-color="#c08f28"/>
+          </linearGradient>
+          <linearGradient id="gShade4" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#3b4664"/><stop offset="100%" stop-color="#12172a"/>
+          </linearGradient>
+        </defs>
+        <line x1="24" y1="150" x2="276" y2="150" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        <polygon points="58,150 150,44 150,150" fill="url(#gShade4)"/>
+        <polygon points="150,44 242,150 150,150" fill="url(#gShade4)"/>
+        <polygon class="litL" points="58,150 150,44 150,150" fill="url(#gLit4)"/>
+        <polygon class="litR" points="150,44 242,150 150,150" fill="url(#gLit4)"/>
+        <polyline points="58,150 150,44 242,150" fill="none" stroke="rgba(255,255,255,0.28)" stroke-width="1.2"/>
+        <g class="sunArc">
+          <circle cx="150" cy="40" r="11" fill="#ffd700" opacity="0.95"/>
+          <circle cx="150" cy="40" r="18" fill="none" stroke="rgba(255,215,0,0.3)" stroke-width="2"/>
+        </g>
+        <g class="labA">
+          <text x="106" y="128" text-anchor="middle" font-size="16" font-weight="700" fill="#3a2b06">阳</text>
+          <text x="194" y="128" text-anchor="middle" font-size="16" font-weight="700" fill="#a3b3d8">阴</text>
+        </g>
+        <g class="labB">
+          <text x="106" y="128" text-anchor="middle" font-size="16" font-weight="700" fill="#a3b3d8">阴</text>
+          <text x="194" y="128" text-anchor="middle" font-size="16" font-weight="700" fill="#3a2b06">阳</text>
+        </g>
+        <text x="150" y="172" text-anchor="middle" font-size="12.5" fill="#c9a227">朝着太阳那面叫阳 · 太阳换边，阴阳跟着换边</text>
+      </svg>
     </div>
     <div class="page-title ani">阴与阳</div>
     <div class="page-text ani">
@@ -485,24 +600,25 @@ html, body {
   <!-- Page 6: Three Laws of Yin-Yang -->
   <div class="page bg-flow" data-page="5">
     <div class="ani">
-      <svg width="200" height="80" viewBox="0 0 200 80">
-        <!-- Opposing arrows -->
-        <defs>
-          <linearGradient id="gArrowY" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="transparent"/></linearGradient>
-          <linearGradient id="gArrowN" x1="100%" y1="0%" x2="0%" y2="0%"><stop offset="0%" stop-color="#6080c0"/><stop offset="100%" stop-color="transparent"/></linearGradient>
-        </defs>
-        <!-- Top: opposing -->
-        <rect x="50" y="15" width="60" height="4" rx="2" fill="url(#gArrowY)"/>
-        <polygon points="112,12 120,17 112,22" fill="#ffd700" opacity="0.8"/>
-        <rect x="90" y="22" width="60" height="4" rx="2" fill="url(#gArrowN)"/>
-        <polygon points="88,19 80,24 88,29" fill="#6080c0" opacity="0.8"/>
-        <!-- Bottom: cycle -->
-        <path d="M60,55 Q100,35 140,55 Q100,75 60,55" fill="none" stroke="rgba(255,215,0,0.4)" stroke-width="1.5">
-          <animate attributeName="stroke-dashoffset" values="0;20" dur="2s" repeatCount="indefinite"/>
-        </path>
-        <circle cx="60" cy="55" r="4" fill="#ffd700" opacity="0.6">
-          <animate attributeName="cx" values="60;140;60" dur="4s" repeatCount="indefinite"/>
-        </circle>
+      <svg width="300" height="100" viewBox="0 0 300 100">
+        <!-- ① 对立：两边互相顶住 -->
+        <g class="arrowL"><rect x="8" y="30" width="26" height="5" rx="2.5" fill="#ffd700" opacity="0.85"/><polygon points="34,27 44,32.5 34,38" fill="#ffd700" opacity="0.9"/></g>
+        <g class="arrowR"><rect x="66" y="30" width="26" height="5" rx="2.5" fill="#6080c0" opacity="0.85"/><polygon points="66,27 56,32.5 66,38" fill="#6080c0" opacity="0.9"/></g>
+        <g class="pushMid"><line x1="50" y1="12" x2="50" y2="52" stroke="#ffffff" stroke-width="1.6" opacity="0.45" stroke-dasharray="3 3"/></g>
+        <text x="50" y="74" text-anchor="middle" font-size="12" fill="#ffd700">① 对立</text>
+        <text x="50" y="90" text-anchor="middle" font-size="9.5" fill="#7a7a7a">互相顶住</text>
+        <!-- ② 互根：一边缩到没有，另一边也无从谈起 -->
+        <rect class="rootA" x="132" y="12" width="15" height="40" rx="2" fill="#ffd700" opacity="0.85"/>
+        <rect class="rootB" x="153" y="12" width="15" height="40" rx="2" fill="#6080c0"/>
+        <text class="rootQ" x="150" y="9" text-anchor="middle" font-size="12" fill="#e74c3c">？</text>
+        <line x1="126" y1="53" x2="174" y2="53" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+        <text x="150" y="74" text-anchor="middle" font-size="12" fill="#ffd700">② 互根</text>
+        <text x="150" y="90" text-anchor="middle" font-size="9.5" fill="#7a7a7a">谁也离不开谁</text>
+        <!-- ③ 转化：一格一格换过去 -->
+        <rect class="cellFlip" x="206" y="24" width="9" height="16" rx="1.5" fill="#ffd700" style="animation-delay:0.00s"/><rect class="cellFlip" x="217" y="24" width="9" height="16" rx="1.5" fill="#ffd700" style="animation-delay:0.42s"/><rect class="cellFlip" x="228" y="24" width="9" height="16" rx="1.5" fill="#ffd700" style="animation-delay:0.84s"/><rect class="cellFlip" x="239" y="24" width="9" height="16" rx="1.5" fill="#ffd700" style="animation-delay:1.26s"/><rect class="cellFlip" x="250" y="24" width="9" height="16" rx="1.5" fill="#ffd700" style="animation-delay:1.68s"/><rect class="cellFlip" x="261" y="24" width="9" height="16" rx="1.5" fill="#ffd700" style="animation-delay:2.10s"/><rect class="cellFlip" x="272" y="24" width="9" height="16" rx="1.5" fill="#ffd700" style="animation-delay:2.52s"/>
+        <line x1="203" y1="47" x2="281" y2="47" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+        <text x="242" y="74" text-anchor="middle" font-size="12" fill="#ffd700">③ 转化</text>
+        <text x="242" y="90" text-anchor="middle" font-size="9.5" fill="#7a7a7a">一格一格换过去</text>
       </svg>
     </div>
     <div class="page-title ani">阴阳三大法则</div>
@@ -551,30 +667,17 @@ html, body {
   <!-- Page 8: Transformation - Day to Night -->
   <div class="page bg-balance" data-page="7">
     <div class="ani">
-      <svg width="240" height="120" viewBox="0 0 240 120">
-        <!-- Day-night cycle -->
-        <defs>
-          <linearGradient id="gCycle" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#ffd700"/>
-            <stop offset="50%" stop-color="#ff6b35"/>
-            <stop offset="100%" stop-color="#1a1a3e"/>
-          </linearGradient>
-        </defs>
-        <!-- Circular path -->
-        <ellipse cx="120" cy="60" rx="100" ry="45" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-        <!-- Yang to Yin gradient arc -->
-        <path d="M20,60 Q120,10 220,60" fill="none" stroke="url(#gCycle)" stroke-width="3" stroke-linecap="round" opacity="0.7"/>
-        <path d="M220,60 Q120,110 20,60" fill="none" stroke="url(#gCycle)" stroke-width="3" stroke-linecap="round" opacity="0.4" transform="rotate(180 120 60)"/>
-        <!-- Sun -->
-        <circle cx="20" cy="60" r="12" fill="#ffd700" opacity="0.9">
-          <animate attributeName="cx" values="20;220;20" dur="8s" repeatCount="indefinite"/>
-          <animate attributeName="fill" values="#ffd700;#ffd700;#3a3a6a;#3a3a6a;#ffd700" dur="8s" repeatCount="indefinite"/>
-          <animate attributeName="r" values="12;12;8;8;12" dur="8s" repeatCount="indefinite"/>
-        </circle>
-        <!-- Labels -->
-        <text x="40" y="100" font-size="9" fill="#ffd700" opacity="0.6">阳极</text>
-        <text x="105" y="100" font-size="9" fill="#ff6b35" opacity="0.6">转化</text>
-        <text x="180" y="100" font-size="9" fill="#6a7aaa" opacity="0.6">阴极</text>
+      <svg width="290" height="169" viewBox="0 0 240 140">
+        <ellipse cx="120" cy="66" rx="100" ry="45" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="4 4"/>
+        <path d="M20,66 A100,45 0 0,1 220,66" fill="none" stroke="#ffd700" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+        <path d="M220,66 A100,45 0 0,1 20,66" fill="none" stroke="#5a6aa0" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
+        <circle class="flipTop" cx="120" cy="21" r="17" fill="none" stroke="#ff6b35" stroke-width="2"/>
+        <circle class="flipBot" cx="120" cy="111" r="17" fill="none" stroke="#7aa2ff" stroke-width="2"/>
+        <g class="orbit"><circle cx="120" cy="66" r="11" class="orbitSun" fill="#ffd700"/></g>
+        <text x="120" y="47" text-anchor="middle" font-size="10.5" fill="#c9a227" opacity="0.8">阳极</text>
+        <text x="120" y="90" text-anchor="middle" font-size="10.5" fill="#8090c0" opacity="0.8">阴极</text>
+        <text class="tagTop" x="120" y="9" text-anchor="middle" font-size="10.5" fill="#ff6b35">就在这里开始转阴</text>
+        <text class="tagBot" x="120" y="135" text-anchor="middle" font-size="10.5" fill="#7aa2ff">就在这里开始转阳</text>
       </svg>
     </div>
     <div class="page-title ani">物极必反</div>
