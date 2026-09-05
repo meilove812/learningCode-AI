@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>朗读自检</title><style>
+body{margin:0;padding:20px;background:#0f1225;color:#e8eaf6;font:16px/1.7 -apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+h1{font-size:20px;margin:0 0 16px}button{width:100%;padding:16px;margin:8px 0;font-size:17px;border:0;border-radius:12px;background:#3f51b5;color:#fff}
+pre{white-space:pre-wrap;word-break:break-all;background:#1a1f3a;padding:14px;border-radius:10px;font-size:13px;line-height:1.6}
+.ok{color:#7ee787}.no{color:#ff7b72}
+</style></head><body>
+<h1>🔊 朗读能力自检</h1>
+<button onclick="run()">① 点这里开始检测并朗读</button>
+<button onclick="location.reload()">② 重新检测</button>
+<pre id="out">点上面第一个按钮。</pre>
+<script>
+var log=[];
+function p(s){log.push(s);document.getElementById('out').innerHTML=log.join('\n');}
+function run(){
+  log=[];
+  var has = typeof window.speechSynthesis;
+  p('speechSynthesis 类型：<b class="'+(has==='object'?'ok':'no')+'">'+has+'</b>');
+  p('SpeechSynthesisUtterance：<b class="'+(typeof window.SpeechSynthesisUtterance!=='undefined'?'ok':'no')+'">'+(typeof window.SpeechSynthesisUtterance)+'</b>');
+  p('UA：'+navigator.userAgent);
+  if(has!=='object'){p('<b class="no">→ 这个浏览器没有 Web Speech API，朗读不可能工作。</b>');return;}
+  var vs=[];
+  try{vs=window.speechSynthesis.getVoices()||[];}catch(e){p('getVoices 报错：'+e.message);}
+  p('语音总数：<b class="'+(vs.length?'ok':'no')+'">'+vs.length+'</b>');
+  var zh=vs.filter(function(v){return v.lang&&v.lang.indexOf('zh')===0;});
+  p('中文语音数：<b class="'+(zh.length?'ok':'no')+'">'+zh.length+'</b>');
+  zh.slice(0,6).forEach(function(v){p('　· '+v.name+' ['+v.lang+']');});
+  try{
+    var u=new SpeechSynthesisUtterance('测试，一二三四五。');
+    u.lang='zh-CN';
+    u.onstart=function(){p('<b class="ok">✓ onstart 触发了，正在发声</b>');};
+    u.onend=function(){p('<b class="ok">✓ onend 触发了，念完了</b>');};
+    u.onerror=function(e){p('<b class="no">✗ onerror：'+(e&&e.error||'未知')+'</b>');};
+    window.speechSynthesis.speak(u);
+    p('已调用 speak()，等回调…');
+    setTimeout(function(){p('speaking='+window.speechSynthesis.speaking+' pending='+window.speechSynthesis.pending);},1500);
+  }catch(e){p('<b class="no">speak 抛错：'+e.message+'</b>');}
+}
+</script></body></html>

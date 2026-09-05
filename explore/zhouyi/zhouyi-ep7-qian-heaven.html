@@ -655,9 +655,7 @@ html, body {
 
 <script>
 let cur = 0;
-const AUDIO_PREFIX = 'audio/ep7-p';
 const HAS_TTS = typeof window.speechSynthesis !== 'undefined' && window.speechSynthesis !== null;
-let audioEl = null;
 const pages = document.querySelectorAll('.page');
 const total = pages.length;
 let animating = false, speaking = false;
@@ -748,62 +746,46 @@ function loadVoices() {
     sel.appendChild(o);
   });
 }
-if (HAS_TTS) { window.speechSynthesis.onvoiceschanged = loadVoices; setTimeout(loadVoices, 300); }
+if (HAS_TTS) {
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+  [0, 300, 900, 2000].forEach(t => setTimeout(loadVoices, t));
+}
 else { const vp = document.getElementById('voiceSelect'); if (vp) vp.parentElement.style.display = 'none'; }
 document.getElementById('rateRange').addEventListener('input', function() {
   document.getElementById('rateVal').textContent = this.value;
 });
 
-// 朗读优先级：① Web Speech API（Edge 高保真 Microsoft Xiaoxiao Online Natural，可调语速/换声音）
-//            ② 无 Web Speech 时（如微信内置浏览器）回退到预生成的 Edge TTS 晓晓语音文件
-//            ③ 两者都不可用时提示改用系统浏览器
+// 朗读：统一走 Web Speech API（Edge 高保真 Microsoft Xiaoxiao Online Natural 优先）
 function onSegmentEnd() {
   if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
   else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
 }
 
 function stopAudio() {
-  if (audioEl) { try { audioEl.pause(); } catch (e) {} audioEl.onended = null; audioEl.onerror = null; audioEl = null; }
   if (HAS_TTS) { try { window.speechSynthesis.cancel(); } catch (e) {} }
 }
 
 function speakPage(idx) {
-  stopAudio();
+  if (!HAS_TTS) { showNoAudio(); return; }
   if (!narrations[idx]) return;
-  if (speakBrowser(idx)) return;   // 首选 Web Speech API
-  speakFile(idx);                  // 回退预生成语音文件
+  try { window.speechSynthesis.cancel(); } catch (e) {}
+  // iOS/部分内核已知坑：cancel() 之后必须让出一帧再 speak()，否则静默不发声
+  setTimeout(() => doSpeak(idx), 120);
 }
 
-// 首选：Web Speech API。成功返回 true，不可用返回 false 交给回退。
-function speakBrowser(idx) {
-  if (!HAS_TTS) return false;
-  const sv = document.getElementById('voiceSelect');
-  const picked = (sv && sv.value !== '' && voices[sv.value]) ? voices[sv.value] : null;
-  if (!picked) return false;       // 语音列表为空（部分内核有对象无声音）也走回退
+function doSpeak(idx) {
   try {
     const u = new SpeechSynthesisUtterance(narrations[idx]);
     const rr = document.getElementById('rateRange');
     u.lang = 'zh-CN';
     u.rate = rr ? parseFloat(rr.value) : 1;
-    u.voice = picked;
+    // 语音列表可能异步到达；没拿到就不指定 voice，交给系统按 lang 自选，仍能发声
+    const sv = document.getElementById('voiceSelect');
+    if (sv && sv.value !== '' && voices[sv.value]) u.voice = voices[sv.value];
     u.onend = onSegmentEnd;
-    u.onerror = () => speakFile(idx);
+    u.onerror = (e) => { if (e && e.error === 'interrupted') return; showNoAudio(); };
     window.speechSynthesis.speak(u);
-    return true;
-  } catch (e) { return false; }
-}
-
-// 回退：预生成的 Edge TTS 晓晓语音文件（微信内置浏览器不提供 Web Speech）
-function speakFile(idx) {
-  const rr = document.getElementById('rateRange');
-  const rate = rr ? parseFloat(rr.value) : 1;
-  const a = new Audio(AUDIO_PREFIX + idx + '.mp3');
-  a.playbackRate = Math.max(0.5, Math.min(2, rate || 1));
-  a.onended = onSegmentEnd;
-  a.onerror = () => { audioEl = null; showNoAudio(); };
-  audioEl = a;
-  const pr = a.play();
-  if (pr && pr.catch) pr.catch(() => { audioEl = null; showNoAudio(); });
+  } catch (e) { showNoAudio(); }
 }
 
 function showNoAudio() {
@@ -812,9 +794,18 @@ function showNoAudio() {
   speaking = false; updateAudioBtn();
 }
 
+let ttsUnlocked = false;
 function toggleAudio() {
   if (speaking) { speaking = false; stopAudio(); }
-  else { speaking = true; speakPage(cur); }
+  else {
+    // iOS 要求首次 speak() 处在用户手势的同步调用栈内，这里用一次空白朗读解锁
+    if (HAS_TTS && !ttsUnlocked) {
+      ttsUnlocked = true;
+      try { window.speechSynthesis.speak(new SpeechSynthesisUtterance(' ')); } catch (e) {}
+    }
+    speaking = true;
+    speakPage(cur);
+  }
   updateAudioBtn();
 }
 function updateAudioBtn() {
