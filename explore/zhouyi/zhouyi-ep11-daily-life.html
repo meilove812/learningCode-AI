@@ -180,7 +180,7 @@ html, body {
   background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
   color: #ffd700; font-size: 1.1em;
   display: flex; align-items: center; justify-content: center;
-  cursor: pointer; z-index: 200; backdrop-filter: blur(10px); transition: all 0.3s;
+  cursor: pointer; z-index: 10001; backdrop-filter: blur(10px); transition: all 0.3s;
 }
 .audio-btn:active { transform: scale(0.9); }
 .audio-btn.playing { background: rgba(255,215,0,0.15); box-shadow: 0 0 12px rgba(255,215,0,0.2); }
@@ -891,5 +891,28 @@ mkStars('s1', 30); mkStars('s4', 28); mkStars('s7', 32);
 setTimeout(() => { document.getElementById('navHint').style.opacity = '0'; }, 4500);
 document.addEventListener('dblclick', e => e.preventDefault());
 </script>
-<script src="../../assets/site.js"></script></body>
+<script src="../../assets/site.js"></script><script>
+/* 修复：顶部全站导航条 z-index:9999 且按钮就压在导航条那一带，喇叭点不到。
+   抬层级 + 按导航条实际高度把按钮挪到它下面（导航换行也跟着走）。 */
+(function(){
+  function fitTopButtons(){
+    var btn=document.getElementById('audioBtn');
+    var bars=document.querySelectorAll('nav,[role="navigation"]');  /* 用 ASCII 选择器：CSS 不认 JS 的 \uXXXX 转义 */
+    var y=0;
+    for(var i=0;i<bars.length;i++){
+      var r=bars[i].getBoundingClientRect();
+      if(r.height>0 && r.top<240 && r.bottom>y) y=r.bottom;
+    }
+    var top=Math.round(y+10);
+    if(btn) btn.style.top=top+'px';
+    var pn=document.getElementById('pageNum'); if(pn) pn.style.top=(top+6)+'px';
+  }
+  fitTopButtons();
+  window.addEventListener('load',fitTopButtons);
+  window.addEventListener('resize',fitTopButtons);
+  window.addEventListener('orientationchange',fitTopButtons);
+  document.addEventListener('DOMContentLoaded',fitTopButtons);
+})();
+</script>
+</body>
 </html>
