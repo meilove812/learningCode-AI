@@ -104,6 +104,25 @@ html, body {
   position: absolute; background: #fff; border-radius: 50%;
   animation: twinkle 4s ease-in-out infinite;
 }
+/* 八卦按先天顺序逐个点亮：CSS 动画，各内核都跑得动 */
+.gua-slot { opacity: 0.72; animation: guaLight 8s linear infinite; }
+.gua-ring { opacity: 0; animation: guaRing 8s linear infinite; }
+@keyframes guaLight {
+  0%, 26%, 100% { opacity: 0.72; filter: none; }
+  4%, 17%       { opacity: 1; filter: drop-shadow(0 0 10px rgba(255,215,0,0.85)); }
+}
+@keyframes guaRing {
+  0%, 26%, 100% { opacity: 0; stroke-width: 1; }
+  4%, 17%       { opacity: 0.9; stroke-width: 2.4; }
+}
+.gua-slot-1, .gua-ring-1 { animation-delay: 0s; }
+.gua-slot-2, .gua-ring-2 { animation-delay: 1s; }
+.gua-slot-3, .gua-ring-3 { animation-delay: 2s; }
+.gua-slot-4, .gua-ring-4 { animation-delay: 3s; }
+.gua-slot-5, .gua-ring-5 { animation-delay: 4s; }
+.gua-slot-6, .gua-ring-6 { animation-delay: 5s; }
+.gua-slot-7, .gua-ring-7 { animation-delay: 6s; }
+.gua-slot-8, .gua-ring-8 { animation-delay: 7s; }
 @keyframes twinkle { 0%,100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.85; transform: scale(1.2); } }
 
 /* Trigram grid */
@@ -241,20 +260,20 @@ html, body {
         <!-- Eight trigrams arranged in circle -->
         <g filter="url(#glow)">
           <!-- Qian ☰ top -->
-          <g transform="translate(220,50)">
+          <g transform="translate(220,50)" class="gua-slot gua-slot-1">
             <rect x="-18" y="-2" width="36" height="5" rx="2" fill="#ffd700"/>
             <rect x="-18" y="-11" width="36" height="5" rx="2" fill="#ffd700"/>
             <rect x="-18" y="-20" width="36" height="5" rx="2" fill="#ffd700"/>
           </g>
           <!-- Xun ☴ top-right -->
-          <g transform="translate(340,100)">
+          <g transform="translate(340,100)" class="gua-slot gua-slot-5">
             <rect x="-18" y="-2" width="36" height="5" rx="2" fill="#a0c0ff"/>
             <rect x="-18" y="-11" width="36" height="5" rx="2" fill="#a0c0ff"/>
             <rect x="-18" y="-20" width="15" height="5" rx="2" fill="#a0c0ff"/>
             <rect x="3" y="-20" width="15" height="5" rx="2" fill="#a0c0ff"/>
           </g>
           <!-- Kan ☵ right -->
-          <g transform="translate(380,220)">
+          <g transform="translate(380,220)" class="gua-slot gua-slot-6">
             <rect x="-18" y="-2" width="15" height="5" rx="2" fill="#4080ff"/>
             <rect x="3" y="-2" width="15" height="5" rx="2" fill="#4080ff"/>
             <rect x="-18" y="-11" width="36" height="5" rx="2" fill="#4080ff"/>
@@ -262,7 +281,7 @@ html, body {
             <rect x="3" y="-20" width="15" height="5" rx="2" fill="#4080ff"/>
           </g>
           <!-- Gen ☶ bottom-right -->
-          <g transform="translate(340,340)">
+          <g transform="translate(340,340)" class="gua-slot gua-slot-7">
             <rect x="-18" y="-2" width="15" height="5" rx="2" fill="#8b6914"/>
             <rect x="3" y="-2" width="15" height="5" rx="2" fill="#8b6914"/>
             <rect x="-18" y="-11" width="15" height="5" rx="2" fill="#8b6914"/>
@@ -270,7 +289,7 @@ html, body {
             <rect x="-18" y="-20" width="36" height="5" rx="2" fill="#8b6914"/>
           </g>
           <!-- Kun ☷ bottom -->
-          <g transform="translate(220,390)">
+          <g transform="translate(220,390)" class="gua-slot gua-slot-8">
             <rect x="-18" y="-2" width="15" height="5" rx="2" fill="#6a5a8a"/>
             <rect x="3" y="-2" width="15" height="5" rx="2" fill="#6a5a8a"/>
             <rect x="-18" y="-11" width="15" height="5" rx="2" fill="#6a5a8a"/>
@@ -279,7 +298,7 @@ html, body {
             <rect x="3" y="-20" width="15" height="5" rx="2" fill="#6a5a8a"/>
           </g>
           <!-- Zhen ☳ bottom-left -->
-          <g transform="translate(100,340)">
+          <g transform="translate(100,340)" class="gua-slot gua-slot-4">
             <rect x="-18" y="-2" width="15" height="5" rx="2" fill="#40c040"/>
             <rect x="3" y="-2" width="15" height="5" rx="2" fill="#40c040"/>
             <rect x="-18" y="-11" width="15" height="5" rx="2" fill="#40c040"/>
@@ -287,19 +306,30 @@ html, body {
             <rect x="-18" y="-20" width="36" height="5" rx="2" fill="#40c040"/>
           </g>
           <!-- Li ☲ left -->
-          <g transform="translate(60,220)">
+          <g transform="translate(60,220)" class="gua-slot gua-slot-3">
             <rect x="-18" y="-2" width="36" height="5" rx="2" fill="#ff6040"/>
             <rect x="-18" y="-11" width="15" height="5" rx="2" fill="#ff6040"/>
             <rect x="3" y="-11" width="15" height="5" rx="2" fill="#ff6040"/>
             <rect x="-18" y="-20" width="36" height="5" rx="2" fill="#ff6040"/>
           </g>
           <!-- Dui ☱ top-left -->
-          <g transform="translate(100,100)">
+          <g transform="translate(100,100)" class="gua-slot gua-slot-2">
             <rect x="-18" y="-2" width="15" height="5" rx="2" fill="#c0c0ff"/>
             <rect x="3" y="-2" width="15" height="5" rx="2" fill="#c0c0ff"/>
             <rect x="-18" y="-11" width="36" height="5" rx="2" fill="#c0c0ff"/>
             <rect x="-18" y="-20" width="36" height="5" rx="2" fill="#c0c0ff"/>
           </g>
+        </g>
+        <!-- 指示光环：按先天八卦顺序逐个套住正在讲的那一卦 -->
+        <g>
+          <circle cx="220" cy="40" r="33" fill="none" stroke="#ffd700" stroke-width="2.2" class="gua-ring gua-ring-1"/>
+          <circle cx="100" cy="90" r="33" fill="none" stroke="#ffd700" stroke-width="2.2" class="gua-ring gua-ring-2"/>
+          <circle cx="60" cy="210" r="33" fill="none" stroke="#ffd700" stroke-width="2.2" class="gua-ring gua-ring-3"/>
+          <circle cx="100" cy="330" r="33" fill="none" stroke="#ffd700" stroke-width="2.2" class="gua-ring gua-ring-4"/>
+          <circle cx="340" cy="90" r="33" fill="none" stroke="#ffd700" stroke-width="2.2" class="gua-ring gua-ring-5"/>
+          <circle cx="380" cy="210" r="33" fill="none" stroke="#ffd700" stroke-width="2.2" class="gua-ring gua-ring-6"/>
+          <circle cx="340" cy="330" r="33" fill="none" stroke="#ffd700" stroke-width="2.2" class="gua-ring gua-ring-7"/>
+          <circle cx="220" cy="380" r="33" fill="none" stroke="#ffd700" stroke-width="2.2" class="gua-ring gua-ring-8"/>
         </g>
         <!-- Taiji center -->
         <circle cx="220" cy="220" r="45" fill="#080808" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>

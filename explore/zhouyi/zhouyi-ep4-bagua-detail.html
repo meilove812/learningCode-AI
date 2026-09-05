@@ -128,6 +128,27 @@ html, body {
 .trigram-big {
   margin: 10px 0; display: flex; flex-direction: column; align-items: center; gap: 6px;
 }
+/* 爻自下而上逐条生长：易经读卦本来就从最下面那条开始 */
+.trigram-big .yao, .trigram-big .yao-yin span {
+  transform-origin: center center;
+}
+.page.active .trigram-big > .yao { animation: yaoGrow 0.55s cubic-bezier(0.2,0.8,0.2,1) backwards; }
+.page.active .trigram-big > .yao:nth-child(3) { animation-delay: 0.55s; }   /* 初爻，最下 */
+.page.active .trigram-big > .yao:nth-child(2) { animation-delay: 0.95s; }   /* 二爻 */
+.page.active .trigram-big > .yao:nth-child(1) { animation-delay: 1.35s; }   /* 三爻，最上 */
+@keyframes yaoGrow {
+  0%   { opacity: 0; transform: scaleX(0.06); filter: brightness(2.2); }
+  60%  { opacity: 1; transform: scaleX(1.06); filter: brightness(1.6); }
+  100% { opacity: 1; transform: scaleX(1); filter: brightness(1); }
+}
+/* 卦象图：用画出来的自然象取代字体符号，避免不同手机字形不一 */
+.gua-xiang { margin: 4px 0 2px; line-height: 0; }
+.gua-xiang svg { width: clamp(140px, 44vw, 200px); height: auto; }
+.yao-order-hint {
+  font-size: clamp(0.62em, 2.4vw, 0.72em); color: rgba(255,215,0,0.72);
+  letter-spacing: 0.5px; margin: 0 0 2px; line-height: 1.3;
+}
+.gua-xiang { margin-bottom: 0; }
 .trigram-big .yao {
   width: clamp(60px, 18vw, 90px); height: 10px; border-radius: 4px; position: relative;
 }
@@ -322,12 +343,28 @@ html, body {
   <!-- Page 2: Qian - Heaven -->
   <div class="page bg-sky" data-page="1">
     <div class="stars" id="s1"></div>
-    <div class="gua-symbol-large ani">☰</div>
+    <div class="gua-xiang ani"><svg viewBox="0 0 200 120">
+  <defs><radialGradient id="xTian" cx="50%" cy="86%" r="72%">
+    <stop offset="0%" stop-color="#fff6c8" stop-opacity="0.95"/>
+    <stop offset="45%" stop-color="#ffd700" stop-opacity="0.45"/>
+    <stop offset="100%" stop-color="#ffd700" stop-opacity="0"/></radialGradient></defs>
+  <ellipse cx="100" cy="104" rx="96" ry="52" fill="url(#xTian)"/>
+  <g stroke="#ffd700" stroke-width="2.6" stroke-linecap="round" opacity="0.9">
+    <path d="M100 96 L100 30"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.6s" repeatCount="indefinite"/></path>
+    <path d="M100 96 L58 44"><animate attributeName="opacity" values="1;0.35;1" dur="2.6s" repeatCount="indefinite"/></path>
+    <path d="M100 96 L142 44"><animate attributeName="opacity" values="0.35;1;0.35" dur="2.6s" begin="0.5s" repeatCount="indefinite"/></path>
+    <path d="M100 96 L26 74"><animate attributeName="opacity" values="1;0.4;1" dur="2.6s" begin="0.8s" repeatCount="indefinite"/></path>
+    <path d="M100 96 L174 74"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.6s" begin="1.1s" repeatCount="indefinite"/></path>
+  </g>
+  <circle cx="100" cy="98" r="13" fill="#fff6c8" opacity="0.95">
+    <animate attributeName="r" values="11;16;11" dur="2.6s" repeatCount="indefinite"/></circle>
+</svg></div>
     <div class="trigram-big ani">
       <div class="yao yao-yang"></div>
       <div class="yao yao-yang"></div>
       <div class="yao yao-yang"></div>
     </div>
+    <div class="yao-order-hint ani">爻自下而上生长 · 读卦也从最下面那条开始</div>
     <div class="page-title ani">乾 · 天</div>
     <div class="page-text ani">
       三条<span class="em">完整的阳线</span>，<br>
@@ -354,7 +391,20 @@ html, body {
   <!-- Page 3: Kun - Earth -->
   <div class="page bg-earth" data-page="2">
     <div class="particles" id="p2"></div>
-    <div class="gua-symbol-large ani">☷</div>
+    <div class="gua-xiang ani"><svg viewBox="0 0 200 120">
+  <g fill="none" stroke-linecap="round">
+    <path d="M8 96 Q60 84 100 92 Q146 100 192 88" stroke="#8a7bb8" stroke-width="7" opacity="0.9">
+      <animate attributeName="d" values="M8 96 Q60 84 100 92 Q146 100 192 88;M8 94 Q60 88 100 90 Q146 96 192 92;M8 96 Q60 84 100 92 Q146 100 192 88" dur="6s" repeatCount="indefinite"/></path>
+    <path d="M8 76 Q56 66 100 74 Q148 82 192 70" stroke="#6a5a8a" stroke-width="6" opacity="0.75"/>
+    <path d="M8 58 Q54 50 100 57 Q150 64 192 54" stroke="#54486e" stroke-width="5" opacity="0.6"/>
+    <path d="M8 42 Q52 36 100 42 Q152 48 192 40" stroke="#443a5a" stroke-width="4" opacity="0.45"/>
+  </g>
+  <g fill="#a89bd0" opacity="0.8">
+    <circle cx="46" cy="106" r="2.4"/><circle cx="98" cy="110" r="2.4"/><circle cx="152" cy="105" r="2.4"/>
+  </g>
+  <path d="M100 92 L100 68 M100 78 L92 70 M100 78 L108 70" stroke="#8ef6c8" stroke-width="2.4" fill="none" stroke-linecap="round" opacity="0">
+    <animate attributeName="opacity" values="0;0.95;0.95;0" keyTimes="0;0.3;0.8;1" dur="5s" repeatCount="indefinite"/></path>
+</svg></div>
     <div class="trigram-big ani">
       <div class="yao yao-yin"><span></span><span></span></div>
       <div class="yao yao-yin"><span></span><span></span></div>
@@ -386,7 +436,20 @@ html, body {
   <!-- Page 4: Zhen - Thunder -->
   <div class="page bg-thunder" data-page="3">
     <div class="stars" id="s3"></div>
-    <div class="gua-symbol-large ani">☳</div>
+    <div class="gua-xiang ani"><svg viewBox="0 0 200 120">
+  <g fill="none" stroke="#5a6a8a" stroke-width="8" stroke-linecap="round" opacity="0.65">
+    <path d="M20 34 Q52 22 84 32 Q120 42 156 30"/>
+    <path d="M34 54 Q70 44 108 52 Q142 60 174 50"/>
+  </g>
+  <path d="M104 46 L78 82 L98 82 L84 116 L128 72 L106 72 L122 46 Z" fill="#ffe066" stroke="#fff9d0" stroke-width="1.6">
+    <animate attributeName="opacity" values="0;1;0.15;1;0.9;0" keyTimes="0;0.06;0.12;0.2;0.34;0.52" dur="3.4s" repeatCount="indefinite"/>
+  </path>
+  <path d="M104 46 L78 82 L98 82 L84 116 L128 72 L106 72 L122 46 Z" fill="#fff" opacity="0">
+    <animate attributeName="opacity" values="0;0.85;0;0.6;0" keyTimes="0;0.06;0.1;0.2;0.3" dur="3.4s" repeatCount="indefinite"/>
+  </path>
+  <ellipse cx="104" cy="70" rx="70" ry="46" fill="#ffe066" opacity="0">
+    <animate attributeName="opacity" values="0;0.22;0;0.14;0" keyTimes="0;0.06;0.12;0.2;0.3" dur="3.4s" repeatCount="indefinite"/></ellipse>
+</svg></div>
     <div class="trigram-big ani">
       <div class="yao yao-yin"><span></span><span></span></div>
       <div class="yao yao-yin"><span></span><span></span></div>
@@ -418,7 +481,23 @@ html, body {
   <!-- Page 5: Xun - Wind -->
   <div class="page bg-wind" data-page="4">
     <div class="particles" id="p4"></div>
-    <div class="gua-symbol-large ani">☴</div>
+    <div class="gua-xiang ani"><svg viewBox="0 0 200 120">
+  <g fill="none" stroke="#a0c0ff" stroke-linecap="round">
+    <path d="M4 34 Q56 16 104 36 Q148 54 196 32" stroke-width="3.4" stroke-dasharray="26 150" stroke-dashoffset="176">
+      <animate attributeName="stroke-dashoffset" values="176;0" dur="2.4s" repeatCount="indefinite"/></path>
+    <path d="M4 60 Q60 42 108 62 Q152 80 196 58" stroke-width="3.4" stroke-dasharray="26 150" stroke-dashoffset="176">
+      <animate attributeName="stroke-dashoffset" values="176;0" dur="2.4s" begin="0.4s" repeatCount="indefinite"/></path>
+    <path d="M4 86 Q56 68 104 88 Q148 106 196 84" stroke-width="3.4" stroke-dasharray="26 150" stroke-dashoffset="176">
+      <animate attributeName="stroke-dashoffset" values="176;0" dur="2.4s" begin="0.8s" repeatCount="indefinite"/></path>
+  </g>
+  <g opacity="0.3" stroke="#a0c0ff" stroke-width="1.4" fill="none">
+    <path d="M4 34 Q56 16 104 36 Q148 54 196 32"/><path d="M4 60 Q60 42 108 62 Q152 80 196 58"/><path d="M4 86 Q56 68 104 88 Q148 106 196 84"/>
+  </g>
+  <g fill="#8ef6c8" opacity="0.85">
+    <path d="M150 22 L162 26 L150 30 Z"><animateTransform attributeName="transform" type="translate" values="-24 8;24 -6;-24 8" dur="4s" repeatCount="indefinite"/></path>
+    <path d="M40 100 L52 104 L40 108 Z"><animateTransform attributeName="transform" type="translate" values="20 -6;-20 8;20 -6" dur="5s" repeatCount="indefinite"/></path>
+  </g>
+</svg></div>
     <div class="trigram-big ani">
       <div class="yao yao-yang"></div>
       <div class="yao yao-yang"></div>
@@ -450,7 +529,32 @@ html, body {
   <!-- Page 6: Kan - Water -->
   <div class="page bg-water" data-page="5">
     <div class="stars" id="s5"></div>
-    <div class="gua-symbol-large ani">☵</div>
+    <div class="gua-xiang ani"><svg viewBox="0 0 200 120">
+  <defs>
+    <clipPath id="xKanClip"><path d="M30 44 Q34 100 100 106 Q166 100 170 44 Z"/></clipPath>
+    <linearGradient id="xKanWall" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5a4a34"/><stop offset="100%" stop-color="#2a2118"/></linearGradient>
+  </defs>
+  <path d="M8 42 Q18 40 30 44 Q34 102 100 108 Q166 102 170 44 Q182 40 192 42 Q188 116 100 118 Q12 116 8 42 Z" fill="url(#xKanWall)" stroke="#7a6244" stroke-width="2"/>
+  <g clip-path="url(#xKanClip)">
+    <path d="M-100 66 Q-75 52 -50 66 T0 66 T50 66 T100 66 T150 66 T200 66 T250 66 T300 66 V120 H-100 Z" fill="#2f6bd8" opacity="0.85">
+      <animateTransform attributeName="transform" type="translate" values="0 0;100 0" dur="3.2s" repeatCount="indefinite"/></path>
+    <path d="M-100 78 Q-70 92 -40 78 T20 78 T80 78 T140 78 T200 78 T260 78 T320 78 V120 H-100 Z" fill="#4080ff" opacity="0.6">
+      <animateTransform attributeName="transform" type="translate" values="0 0;-120 0" dur="4.4s" repeatCount="indefinite"/></path>
+    <path d="M-100 92 Q-64 104 -28 92 T44 92 T116 92 T188 92 T260 92 V120 H-100 Z" fill="#6aa8ff" opacity="0.4">
+      <animateTransform attributeName="transform" type="translate" values="0 0;144 0" dur="5.6s" repeatCount="indefinite"/></path>
+  </g>
+  <g fill="#cfe4ff" opacity="0.9" clip-path="url(#xKanClip)">
+    <circle cx="78" cy="98" r="3"><animate attributeName="cy" values="98;68;98" dur="2.6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.9;0.2;0.9" dur="2.6s" repeatCount="indefinite"/></circle>
+    <circle cx="122" cy="102" r="2.6"><animate attributeName="cy" values="102;70;102" dur="3.2s" begin="0.6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.9;0.2;0.9" dur="3.2s" begin="0.6s" repeatCount="indefinite"/></circle>
+  </g>
+  <g stroke="#7a6244" stroke-width="2" fill="none" opacity="0.85">
+    <path d="M8 42 Q18 40 30 44"/><path d="M170 44 Q182 40 192 42"/>
+  </g>
+  <text x="100" y="34" fill="rgba(207,228,255,0.75)" font-size="11" text-anchor="middle" font-weight="700">水积在坑里 · 所以叫陷</text>
+</svg></div>
     <div class="trigram-big ani">
       <div class="yao yao-yin"><span></span><span></span></div>
       <div class="yao yao-yang"></div>
@@ -482,7 +586,24 @@ html, body {
   <!-- Page 7: Li - Fire -->
   <div class="page bg-fire" data-page="6">
     <div class="particles" id="p6"></div>
-    <div class="gua-symbol-large ani">☲</div>
+    <div class="gua-xiang ani"><svg viewBox="0 0 200 120">
+  <defs><radialGradient id="xLiG" cx="50%" cy="76%" r="66%">
+    <stop offset="0%" stop-color="#fff3b0"/><stop offset="55%" stop-color="#ff8c30" stop-opacity="0.85"/>
+    <stop offset="100%" stop-color="#ff4020" stop-opacity="0"/></radialGradient></defs>
+  <ellipse cx="100" cy="104" rx="58" ry="14" fill="#ff6040" opacity="0.35"/>
+  <path d="M100 108 Q66 88 74 58 Q80 34 100 14 Q120 34 126 58 Q134 88 100 108 Z" fill="url(#xLiG)">
+    <animate attributeName="d" values="M100 108 Q66 88 74 58 Q80 34 100 14 Q120 34 126 58 Q134 88 100 108 Z;M100 108 Q62 86 72 54 Q84 30 100 20 Q118 30 130 56 Q138 88 100 108 Z;M100 108 Q68 90 76 60 Q78 32 100 12 Q122 36 124 60 Q132 90 100 108 Z;M100 108 Q66 88 74 58 Q80 34 100 14 Q120 34 126 58 Q134 88 100 108 Z" dur="1.6s" repeatCount="indefinite"/>
+  </path>
+  <path d="M100 104 Q86 92 90 74 Q94 58 100 46 Q106 58 110 74 Q114 92 100 104 Z" fill="#fff6d0" opacity="0.92">
+    <animate attributeName="opacity" values="0.92;0.6;0.92" dur="1.1s" repeatCount="indefinite"/>
+  </path>
+  <g fill="#ffd700" opacity="0.8">
+    <circle cx="76" cy="30" r="2.2"><animate attributeName="cy" values="30;8" dur="2.2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0" dur="2.2s" repeatCount="indefinite"/></circle>
+    <circle cx="124" cy="26" r="1.9"><animate attributeName="cy" values="26;6" dur="2.6s" begin="0.7s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0" dur="2.6s" begin="0.7s" repeatCount="indefinite"/></circle>
+  </g>
+</svg></div>
     <div class="trigram-big ani">
       <div class="yao yao-yang"></div>
       <div class="yao yao-yin"><span></span><span></span></div>
@@ -514,7 +635,22 @@ html, body {
   <!-- Page 8: Gen - Mountain -->
   <div class="page bg-mountain" data-page="7">
     <div class="stars" id="s7"></div>
-    <div class="gua-symbol-large ani">☶</div>
+    <div class="gua-xiang ani"><svg viewBox="0 0 200 120">
+  <path d="M6 110 L58 46 L92 84 L126 30 L194 110 Z" fill="#6b5a3a" stroke="#8b6914" stroke-width="2.4"/>
+  <path d="M126 30 L106 54 L146 54 Z" fill="#e8eaf2" opacity="0.9"/>
+  <path d="M58 46 L44 64 L74 64 Z" fill="#e8eaf2" opacity="0.7"/>
+  <g stroke="rgba(0,0,0,0.28)" stroke-width="1.6" fill="none">
+    <path d="M58 46 L52 110"/><path d="M126 30 L134 110"/>
+  </g>
+  <ellipse cx="100" cy="112" rx="94" ry="8" fill="#3a3226" opacity="0.55"/>
+  <g stroke="rgba(220,231,255,0.5)" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M20 30 Q42 22 64 30" opacity="0.6">
+      <animateTransform attributeName="transform" type="translate" values="0 0;16 0;0 0" dur="7s" repeatCount="indefinite"/></path>
+    <path d="M140 18 Q162 10 184 18" opacity="0.45">
+      <animateTransform attributeName="transform" type="translate" values="0 0;-14 0;0 0" dur="9s" repeatCount="indefinite"/></path>
+  </g>
+  <text x="100" y="106" fill="rgba(255,255,255,0.5)" font-size="11" text-anchor="middle" font-weight="700">止</text>
+</svg></div>
     <div class="trigram-big ani">
       <div class="yao yao-yang"></div>
       <div class="yao yao-yin"><span></span><span></span></div>
@@ -546,7 +682,24 @@ html, body {
   <!-- Page 9: Dui - Lake -->
   <div class="page bg-lake" data-page="8">
     <div class="particles" id="p8"></div>
-    <div class="gua-symbol-large ani">☱</div>
+    <div class="gua-xiang ani"><svg viewBox="0 0 200 120">
+  <defs><linearGradient id="xDuiG" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" stop-color="#cfe4ff" stop-opacity="0.9"/><stop offset="100%" stop-color="#7fa8e0" stop-opacity="0.55"/></linearGradient></defs>
+  <path d="M14 74 Q40 60 76 64 Q126 68 160 60 Q186 54 194 66 Q188 100 150 110 Q96 118 52 108 Q16 98 14 74 Z" fill="url(#xDuiG)" stroke="#cfe4ff" stroke-width="2"/>
+  <g stroke="#ffffff" stroke-width="1.8" fill="none" opacity="0.75">
+    <path d="M46 84 Q62 78 78 84"><animate attributeName="opacity" values="0.75;0.25;0.75" dur="3s" repeatCount="indefinite"/></path>
+    <path d="M104 92 Q122 86 140 92"><animate attributeName="opacity" values="0.25;0.75;0.25" dur="3s" repeatCount="indefinite"/></path>
+  </g>
+  <g fill="none" stroke="#ffffff" stroke-width="1.6" opacity="0">
+    <circle cx="120" cy="80" r="6"><animate attributeName="r" values="4;30" dur="3.4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0" dur="3.4s" repeatCount="indefinite"/></circle>
+    <circle cx="120" cy="80" r="6"><animate attributeName="r" values="4;30" dur="3.4s" begin="1.7s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0" dur="3.4s" begin="1.7s" repeatCount="indefinite"/></circle>
+  </g>
+  <g fill="#dce7ff" opacity="0.8">
+    <path d="M28 40 Q44 30 60 40 Q44 36 28 40 Z"/><path d="M136 34 Q152 24 168 34 Q152 30 136 34 Z"/>
+  </g>
+</svg></div>
     <div class="trigram-big ani">
       <div class="yao yao-yin"><span></span><span></span></div>
       <div class="yao yao-yang"></div>
