@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco传统文化讲解：山海经第一期，这不是一本神话集">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>山海经 · 第一期：这不是一本神话集</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'PingFang SC', 'Noto Serif SC', serif;
+  background: #0a0a0f;
+  color: #e8e0d0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.pages-wrapper { width: 100%; height: 100%; position: relative; }
+.page {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 40px 24px;
+  opacity: 0; transform: translateX(100%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none; overflow: hidden;
+}
+.page.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.page.prev { opacity: 0; transform: translateX(-100%); }
+
+/* Backgrounds */
+.bg-void { background: radial-gradient(ellipse at center, #080808 0%, #000 70%); }
+.bg-cosmos { background: radial-gradient(ellipse at center, #0f0a1e 0%, #060410 70%); }
+.bg-dawn { background: linear-gradient(180deg, #0a0820 0%, #1a1545 50%, #0f0d25 100%); }
+.bg-light { background: linear-gradient(135deg, #1a1508 0%, #0f0d05 50%, #080604 100%); }
+.bg-dual { background: linear-gradient(135deg, #0a0a18 0%, #080812 100%); }
+.bg-nature { background: linear-gradient(180deg, #050a10 0%, #0a1520 50%, #050a0f 100%); }
+.bg-flow { background: radial-gradient(ellipse at 50% 60%, #0a1020 0%, #060810 70%); }
+.bg-balance { background: radial-gradient(ellipse at center, #100a18 0%, #080510 70%); }
+.bg-final { background: radial-gradient(ellipse at center, #0f0818 0%, #060410 70%); }
+.bg-sky { background: linear-gradient(180deg, #0a0515 0%, #101030 40%, #0a0820 100%); }
+
+/* Typography */
+.title-main {
+  font-size: clamp(2.2em, 8vw, 3.5em);
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, #c0c0c0 50%, #ffd700 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-align: center; line-height: 1.3;
+  animation: textGlow 4s ease-in-out infinite;
+}
+@keyframes textGlow {
+  0%,100% { filter: brightness(1) drop-shadow(0 0 8px rgba(255,255,255,0.1)); }
+  50% { filter: brightness(1.15) drop-shadow(0 0 20px rgba(255,215,0,0.3)); }
+}
+.subtitle { font-size: clamp(0.85em, 3.2vw, 1.1em); color: #5a5040; margin-top: 12px; text-align: center; letter-spacing: 4px; }
+.page-title {
+  font-size: clamp(1.4em, 5.5vw, 2em); font-weight: 800;
+  color: #ffd700; text-align: center; margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(255,215,0,0.15);
+}
+.page-text {
+  font-size: clamp(0.95em, 3.8vw, 1.15em); line-height: 2;
+  text-align: center; color: #c8bca0; max-width: 560px;
+}
+.page-text .em { color: #ffd700; font-weight: bold; }
+.page-text .light { color: #f0f0f0; font-weight: bold; }
+.page-text .dark { color: #6a7a8a; }
+.fact-card {
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15);
+  border-radius: 12px; padding: 14px 18px; margin-top: 18px;
+  max-width: 480px; text-align: left; font-size: 0.88em; line-height: 1.8; color: #a89878;
+}
+.fact-card .label { color: #ffd700; font-weight: bold; margin-bottom: 4px; }
+
+/* Animations */
+.ani { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.page.active .ani { opacity: 1; transform: translateY(0); }
+.page.active .ani:nth-child(2) { transition-delay: 0.15s; }
+.page.active .ani:nth-child(3) { transition-delay: 0.3s; }
+.page.active .ani:nth-child(4) { transition-delay: 0.45s; }
+.page.active .ani:nth-child(5) { transition-delay: 0.6s; }
+.page.active .ani:nth-child(6) { transition-delay: 0.75s; }
+
+/* Particles */
+.particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.particle {
+  position: absolute; border-radius: 50%; opacity: 0;
+  animation: floatUp 7s ease-in-out infinite;
+}
+.particle-gold { background: radial-gradient(circle, #ffd700, transparent); }
+.particle-white { background: radial-gradient(circle, rgba(255,255,255,0.8), transparent); }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(100vh) scale(0.3); }
+  15% { opacity: 0.7; } 85% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(0.8); }
+}
+
+/* Stars */
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.star {
+  position: absolute; background: #fff; border-radius: 50%;
+  animation: twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.85; transform: scale(1.2); } }
+
+/* Navigation */
+.nav-hint {
+  position: fixed; bottom: 18px; left: 0; right: 0;
+  text-align: center; color: rgba(255,255,255,0.25); font-size: 0.75em;
+  pointer-events: none; transition: opacity 0.5s; z-index: 100;
+}
+.nav-dots {
+  position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 7px; z-index: 100;
+}
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); transition: all 0.3s; cursor: pointer;
+}
+.nav-dot.active { background: #ffd700; box-shadow: 0 0 6px rgba(255,215,0,0.5); transform: scale(1.4); }
+
+.audio-btn {
+  position: fixed; top: 14px; right: 14px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: #ffd700; font-size: 1.1em;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 200; backdrop-filter: blur(10px); transition: all 0.3s;
+}
+.audio-btn:active { transform: scale(0.9); }
+.audio-btn.playing { background: rgba(255,215,0,0.15); box-shadow: 0 0 12px rgba(255,215,0,0.2); }
+.page-num { position: fixed; top: 16px; left: 16px; font-size: 0.7em; color: rgba(255,255,255,0.2); z-index: 100; }
+
+/* Voice panel */
+.voice-panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(10,10,15,0.96); backdrop-filter: blur(20px);
+  padding: 20px; border-top: 1px solid rgba(255,215,0,0.15);
+  transform: translateY(100%); transition: transform 0.3s; z-index: 300;
+  border-radius: 18px 18px 0 0;
+}
+.voice-panel.show { transform: translateY(0); }
+.voice-panel label { display: block; color: #7a6a5a; font-size: 0.82em; margin-bottom: 6px; }
+.voice-panel select, .voice-panel input[type="range"] {
+  width: 100%; padding: 10px; border-radius: 8px;
+  border: 1px solid rgba(255,215,0,0.15); background: rgba(255,255,255,0.04);
+  color: #d4c8b0; font-size: 0.95em; margin-bottom: 12px;
+}
+.voice-panel .close-panel { text-align: center; color: #ffd700; cursor: pointer; padding: 8px; }
+
+/* Qian hexagram glow */
+@keyframes yaoGlow {
+  0%,100% { filter: drop-shadow(0 0 4px rgba(255,215,0,0.3)); }
+  50% { filter: drop-shadow(0 0 12px rgba(255,215,0,0.7)); }
+}
+.qian-svg { animation: yaoGlow 3s ease-in-out infinite; }
+
+/* ==== 山海经专用 ==== */
+.bg-scroll { background: linear-gradient(180deg, #0d0a06 0%, #16100a 50%, #0a0806 100%); }
+.bg-field  { background: linear-gradient(135deg, #06100f 0%, #040a0c 100%); }
+.bg-guai   { background: radial-gradient(ellipse at 50% 45%, #180a0a 0%, #0a0505 70%); }
+.bg-insight{ background: linear-gradient(180deg, #0a0d14 0%, #121a24 50%, #080a10 100%); }
+
+.src {
+  font-family: 'Noto Serif SC', 'Songti SC', serif;
+  font-size: clamp(1.0em, 4.2vw, 1.35em);
+  line-height: 2.1; color: #f0e4c8; text-align: center;
+  max-width: 560px; letter-spacing: 1px;
+  border-left: 2px solid rgba(255,215,0,0.35);
+  border-right: 2px solid rgba(255,215,0,0.35);
+  padding: 14px 16px;
+}
+.src .hot { color: #ffd700; font-weight: bold; }
+.src .cool { color: #7a8a9a; }
+.src-note { font-size: 0.78em; color: #6a6050; margin-top: 12px; letter-spacing: 1px; }
+
+.rows { display: flex; flex-direction: column; gap: 8px; max-width: 460px; width: 100%; margin-top: 6px; }
+.row {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(255,215,0,0.05); border: 1px solid rgba(255,215,0,0.13);
+  border-radius: 10px; padding: 9px 13px;
+  opacity: 0; transform: translateX(-16px);
+  transition: all 0.55s cubic-bezier(0.4,0,0.2,1);
+}
+.page.active .row { opacity: 1; transform: translateX(0); }
+.page.active .row:nth-child(1) { transition-delay: 0.15s; }
+.page.active .row:nth-child(2) { transition-delay: 0.30s; }
+.page.active .row:nth-child(3) { transition-delay: 0.45s; }
+.page.active .row:nth-child(4) { transition-delay: 0.60s; }
+.page.active .row:nth-child(5) { transition-delay: 0.75s; }
+.page.active .row:nth-child(6) { transition-delay: 0.90s; }
+.row .k {
+  flex: 0 0 62px; font-size: 0.76em; color: #8a7a5a;
+  letter-spacing: 1px; text-align: right;
+}
+.row .v {
+  font-family: 'Noto Serif SC', serif; font-size: clamp(0.95em, 3.8vw, 1.1em);
+  color: #ffd700; font-weight: bold;
+}
+.row .v.plain { color: #d8ccb0; font-weight: normal; }
+
+.big-word {
+  font-size: clamp(4em, 22vw, 7em); font-weight: 900;
+  font-family: 'Noto Serif SC', serif;
+  background: linear-gradient(135deg, #ffd700 0%, #ff8a3d 60%, #c04020 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  line-height: 1; text-align: center;
+  animation: textGlow 3.5s ease-in-out infinite;
+}
+.tag-wrap { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 480px; margin-top: 18px; }
+.tag {
+  font-family: 'Noto Serif SC', serif; font-size: 0.92em;
+  background: rgba(255,138,61,0.10); border: 1px solid rgba(255,138,61,0.28);
+  color: #ffb070; border-radius: 20px; padding: 6px 14px;
+}
+.tag.mark { background: rgba(120,140,160,0.10); border-color: rgba(120,140,160,0.3); color: #93a5b5; }
+
+.punch {
+  font-size: clamp(1.25em, 5.4vw, 1.75em); font-weight: 800;
+  color: #ffd700; text-align: center; line-height: 1.7;
+  max-width: 520px; text-shadow: 0 0 18px rgba(255,215,0,0.18);
+}
+.punch .sub { display: block; font-size: 0.62em; color: #9a8a6a; font-weight: normal; margin-top: 14px; letter-spacing: 1px; }
+
+.gap-list { display: flex; flex-direction: column; gap: 10px; max-width: 420px; width: 100%; margin-top: 16px; }
+.gap-item {
+  display: flex; align-items: baseline; gap: 10px;
+  font-size: 0.95em; color: #c8bca0; line-height: 1.7;
+}
+.gap-item .x { color: #c05545; font-weight: bold; flex: 0 0 auto; }
+
+.start-btn {
+  margin-top: 34px; padding: 13px 34px; border-radius: 30px;
+  background: rgba(255,215,0,0.10); border: 1px solid rgba(255,215,0,0.35);
+  color: #ffd700; font-size: 1.0em; letter-spacing: 3px; cursor: pointer;
+  animation: breathe 2.6s ease-in-out infinite;
+}
+@keyframes breathe { 0%,100% { box-shadow: 0 0 0 rgba(255,215,0,0); } 50% { box-shadow: 0 0 22px rgba(255,215,0,0.22); } }
+
+.ending-brand { font-size: clamp(1.5em, 6.5vw, 2.2em); font-weight: 900; color: #ffd700; letter-spacing: 4px; text-align: center; }
+.ending-sign { margin-top: 22px; font-size: 0.9em; color: #8a7a5a; letter-spacing: 2px; text-align: center; }
+.next-ep { margin-top: 26px; font-size: 0.85em; color: #6a6050; letter-spacing: 1px; text-align: center; }
+
+.mountain-svg { display: block; margin: 0 auto; }
+@keyframes drift { 0%,100% { transform: translateX(0); } 50% { transform: translateX(8px); } }
+.drift { animation: drift 6s ease-in-out infinite; }
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
+<div class="page-num" id="pageNum">1 / 10</div>
+<div class="nav-dots" id="navDots"></div>
+<div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
+
+<div class="pages-wrapper">
+
+  <!-- Page 1: 封面 -->
+  <div class="page bg-scroll active" data-page="0">
+    <div class="particles" id="p0"></div>
+    <div class="ani">
+      <svg class="mountain-svg drift" width="200" height="140" viewBox="0 0 200 140">
+        <defs>
+          <linearGradient id="gMtn" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ffd700"/>
+            <stop offset="100%" stop-color="#8a6510"/>
+          </linearGradient>
+        </defs>
+        <path d="M10 120 L60 40 L95 85 L128 30 L190 120 Z" fill="none" stroke="url(#gMtn)" stroke-width="2.5" stroke-linejoin="round"/>
+        <path d="M0 128 Q50 118 100 128 T200 128" fill="none" stroke="rgba(120,180,200,0.45)" stroke-width="1.6"/>
+        <path d="M0 136 Q50 126 100 136 T200 136" fill="none" stroke="rgba(120,180,200,0.28)" stroke-width="1.4"/>
+        <circle cx="128" cy="30" r="3.5" fill="#ffd700" opacity="0.9">
+          <animate attributeName="opacity" values="0.4;1;0.4" dur="2.4s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+    </div>
+    <div class="title-main ani" style="margin-top:18px">山海经</div>
+    <div class="subtitle ani">第一期 · 这不是一本神话集</div>
+    <div class="start-btn ani" onclick="toggleAudio()">📢 开始</div>
+  </div>
+
+  <!-- Page 2: 翻开看到的不是故事 -->
+  <div class="page bg-field" data-page="1">
+    <div class="stars" id="s1"></div>
+    <div class="page-title ani">翻开第二条</div>
+    <div class="page-text ani" style="margin-bottom:18px">看到的不是故事，是这么一句话。</div>
+    <div class="src ani">又东三百里，曰堂庭之山，多棪木，多白猿，多水玉，多黄金。</div>
+    <div class="src-note ani">《山海经 · 南山经》</div>
+  </div>
+
+  <!-- Page 3: 拆字段 -->
+  <div class="page bg-field" data-page="2">
+    <div class="page-title ani">这句话能拆成格子</div>
+    <div class="rows">
+      <div class="row"><div class="k">方位</div><div class="v">又东</div></div>
+      <div class="row"><div class="k">里程</div><div class="v">三百里</div></div>
+      <div class="row"><div class="k">山名</div><div class="v">堂庭之山</div></div>
+      <div class="row"><div class="k">草木</div><div class="v plain">多棪木</div></div>
+      <div class="row"><div class="k">野兽</div><div class="v plain">多白猿</div></div>
+      <div class="row"><div class="k">矿产</div><div class="v plain">多水玉，多黄金</div></div>
+    </div>
+    <div class="page-text ani" style="margin-top:18px;font-size:0.9em">填满六格，就换下一座山。</div>
+  </div>
+
+  <!-- Page 4: 格式不变 -->
+  <div class="page bg-scroll" data-page="3">
+    <div class="particles" id="p3"></div>
+    <div class="page-title ani">下一条，一模一样</div>
+    <div class="src ani">又东三百八十里，曰猨翼之山……</div>
+    <div class="page-text ani" style="margin-top:22px">
+      换的是<span class="em">格子里的值</span>，<br>不是格子本身。
+    </div>
+    <div class="fact-card ani">
+      <div class="label">整本书的写法</div>
+      同一个模板反复填写，一座山接一座山。这是记录体，不是叙事体。
+    </div>
+  </div>
+
+  <!-- Page 5: 怪是一个值 -->
+  <div class="page bg-guai" data-page="4">
+    <div class="page-title ani">而「怪」，也是填进去的</div>
+    <div class="big-word ani">怪</div>
+    <div class="tag-wrap ani">
+      <div class="tag">多怪兽</div>
+      <div class="tag">水多怪鱼</div>
+      <div class="tag">多怪蛇</div>
+      <div class="tag">多怪木</div>
+    </div>
+    <div class="src-note ani">猨翼之山这一条，四处用到「怪」字</div>
+  </div>
+
+  <!-- Page 6: 不可以上 -->
+  <div class="page bg-guai" data-page="5">
+    <div class="page-title ani">最后还有四个字</div>
+    <div class="src ani"><span class="hot">不可以上</span></div>
+    <div class="page-text ani" style="margin-top:24px">
+      写这句的人走到了山下，<br>没能上去，<br>于是照实记了一句。
+    </div>
+    <div class="tag-wrap ani">
+      <div class="tag mark">这是一列备注</div>
+    </div>
+  </div>
+
+  <!-- Page 7: 启发 -->
+  <div class="page bg-insight" data-page="6">
+    <div class="particles" id="p6"></div>
+    <div class="page-title ani">两千年后再看</div>
+    <div class="gap-list">
+      <div class="gap-item ani"><span class="x">·</span><span>山名，多数已经对不上今天的地图</span></div>
+      <div class="gap-item ani"><span class="x">·</span><span>草木鸟兽，很多已无从辨认</span></div>
+      <div class="gap-item ani"><span class="x">·</span><span>那套格子，一格都没少</span></div>
+    </div>
+    <div class="punch ani" style="margin-top:28px">
+      记录比解释活得久
+      <span class="sub">解释会过时，格式留下来</span>
+    </div>
+  </div>
+
+  <!-- Page 8: 为什么画不完 -->
+  <div class="page bg-scroll" data-page="7">
+    <div class="page-title ani">但记录留下一个难题</div>
+    <div class="src ani">有兽焉，其状<span class="hot">如禺而白耳</span>，伏行人走，其名曰狌狌。</div>
+    <div class="gap-list">
+      <div class="gap-item ani"><span class="x">缺</span><span>尺度：多大</span></div>
+      <div class="gap-item ani"><span class="x">缺</span><span>材质：毛还是鳞</span></div>
+      <div class="gap-item ani"><span class="x">缺</span><span>比例：身与头几比几</span></div>
+    </div>
+    <div class="page-text ani" style="margin-top:20px;font-size:0.9em">只给了参照物，没给量。</div>
+  </div>
+
+  <!-- Page 9: 现在能补上 -->
+  <div class="page bg-insight" data-page="8">
+    <div class="particles" id="p8"></div>
+    <div class="page-title ani">所以两千年没人画完</div>
+    <div class="page-text ani">
+      历代画师各画一版，<br>谁也说不服谁 ——<br>因为原文<span class="em">没给量</span>。
+    </div>
+    <div class="fact-card ani">
+      <div class="label">现在变了什么</div>
+      把每一格当字段读，缺的量逐条补齐，再一条一条还原。第一次有工具能把整本书批量做完。
+    </div>
+  </div>
+
+  <!-- Page 10: 落版 -->
+  <div class="page bg-final" data-page="9">
+    <div class="particles" id="p9"></div>
+    <div class="ending-brand ani">AI讲山海经</div>
+    <div class="next-ep ani">下一期 · 把格子里的怪，一只一只请出来</div>
+    <div class="ending-sign ani">📌 🦎 开心的舵手</div>
+  </div>
+
+</div>
+
+<div class="voice-panel" id="voicePanel">
+  <label>🗣️ 声音 <select id="voiceSelect"></select></label>
+  <label>🔊 语速: <span id="rateVal">0.9</span>x <input type="range" id="rateRange" min="0.5" max="1.5" step="0.1" value="0.9"></label>
+  <div class="close-panel" onclick="toggleVoicePanel()">✕ 关闭</div>
+</div>
+
+<script>
+let cur = 0;
+const pages = document.querySelectorAll('.page');
+const total = pages.length;
+let animating = false, speaking = false;
+
+const navDots = document.getElementById('navDots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => go(i);
+  navDots.appendChild(d);
+}
+
+function go(idx) {
+  if (idx < 0 || idx >= total || idx === cur || animating) return;
+  animating = true;
+  window.speechSynthesis.cancel();
+  const old = pages[cur], nw = pages[idx], dir = idx > cur ? 1 : -1;
+  old.classList.remove('active'); old.classList.add('prev');
+  if (dir < 0) { old.style.transform = 'translateX(100%)'; old.style.opacity = '0'; }
+  nw.style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+  nw.classList.remove('prev');
+  requestAnimationFrame(() => {
+    nw.classList.add('active'); nw.style.transform = '';
+    cur = idx; updateUI();
+    setTimeout(() => {
+      animating = false;
+      old.classList.remove('prev'); old.style.transform = ''; old.style.opacity = '';
+      if (speaking) speakPage(cur);
+    }, 650);
+  });
+}
+
+function updateUI() {
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.getElementById('pageNum').textContent = `${cur + 1} / ${total}`;
+  document.getElementById('navHint').style.opacity = '0';
+}
+
+let tx = 0, ty = 0, tt = 0;
+document.addEventListener('touchstart', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY; tt = Date.now();
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty, dt = Date.now() - tt;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 500) { dx < 0 ? go(cur+1) : go(cur-1); return; }
+  if (dt < 300 && Math.abs(dx) < 15 && Math.abs(dy) < 15) {
+    e.changedTouches[0].clientX > window.innerWidth * 0.4 ? go(cur+1) : go(cur-1);
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur+1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur-1); }
+});
+
+// TTS
+const narrations = [
+  "山海经，第一期。这不是一本神话集。",
+  "翻开山海经的第二条，看到的不是故事，是这么一句话。又东三百里，曰堂庭之山，多棪木，多白猿，多水玉，多黄金。",
+  "这句话能拆成六个格子。方位，又东。里程，三百里。山名，堂庭之山。剩下三格填草木、野兽和矿产。六格填满，就换下一座山。",
+  "再看下一条，格式一模一样。又东三百八十里，曰猨翼之山。换掉的只是格子里的值。整本书就是这样一座山接一座山填下来的。",
+  "有意思的地方在这里。猨翼之山那一条里写着，多怪兽，水多怪鱼，多怪蛇，多怪木。怪，是被填进格子里的一个值，不是一段想象。",
+  "那一条最后还有四个字，不可以上。写下这句的人走到了山下，没能上去，于是照实记了一句。这一句的位置，相当于一列备注。",
+  "两千年过去，山名多数对不上今天的地图。草木鸟兽也大半无从辨认。可那套格子一格都没少。记录比解释活得久，这是山海经留下的第一件东西。",
+  "但记录也留下一个难题。写狌狌的时候只写了，其状如禺而白耳。给了参照物，没给尺度，没给材质，也没给比例。",
+  "这就是两千年没人能把山海经画完的原因。历代画师各画一版，谁也说不服谁，因为原文没给量。今天第一次有工具，能把缺的量补齐再还原。",
+  "山海经第一期讲完了。下一期，我们把格子里的怪，一只一只请出来。"
+];
+
+let voices = [];
+function loadVoices() {
+  voices = window.speechSynthesis.getVoices();
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+  const zh = voices.filter(v => (v.lang.startsWith('zh-CN')||v.lang==='zh')&&!v.lang.startsWith('zh-HK')&&!v.lang.startsWith('zh-TW'));
+  zh.sort((a, b) => {
+    const aOnline = a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Online') && a.name.includes('Natural') ? 2 : a.name.includes('Microsoft') ? 1 : 0;
+    const bOnline = b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Online') && b.name.includes('Natural') ? 2 : b.name.includes('Microsoft') ? 1 : 0;
+    return bOnline - aOnline;
+  });
+  (zh.length ? zh : voices.slice(0, 8)).forEach(v => {
+    const o = document.createElement('option');
+    o.value = voices.indexOf(v);
+    o.textContent = v.name.replace(/Microsoft |Google |Apple /g, '');
+    sel.appendChild(o);
+  });
+}
+window.speechSynthesis.onvoiceschanged = loadVoices;
+setTimeout(loadVoices, 300);
+document.getElementById('rateRange').addEventListener('input', function() {
+  document.getElementById('rateVal').textContent = this.value;
+});
+
+function speakPage(idx) {
+  window.speechSynthesis.cancel();
+  if (!narrations[idx]) return;
+  const u = new SpeechSynthesisUtterance(narrations[idx]);
+  u.lang = 'zh-CN'; u.rate = parseFloat(document.getElementById('rateRange').value);
+  const sv = document.getElementById('voiceSelect');
+  if (sv.value && voices[sv.value]) u.voice = voices[sv.value];
+  u.onend = () => {
+    if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
+    else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
+  };
+  window.speechSynthesis.speak(u);
+}
+
+function toggleAudio() {
+  if (speaking) { speaking = false; window.speechSynthesis.cancel(); }
+  else { speaking = true; speakPage(cur); }
+  updateAudioBtn();
+}
+function updateAudioBtn() {
+  const b = document.getElementById('audioBtn');
+  b.textContent = speaking ? '🔊' : '🔇';
+  b.classList.toggle('playing', speaking);
+}
+
+let lpt;
+document.getElementById('audioBtn').addEventListener('touchstart', e => {
+  lpt = setTimeout(() => { toggleVoicePanel(); e.preventDefault(); }, 600);
+}, { passive: false });
+document.getElementById('audioBtn').addEventListener('touchend', () => clearTimeout(lpt));
+function toggleVoicePanel() { document.getElementById('voicePanel').classList.toggle('show'); }
+
+function mkParticles(id, n=15) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle ' + (Math.random() > 0.5 ? 'particle-gold' : 'particle-white');
+    p.style.left = Math.random()*100+'%';
+    p.style.animationDelay = Math.random()*7+'s';
+    p.style.animationDuration = (5+Math.random()*4)+'s';
+    const s = 2+Math.random()*4; p.style.width = s+'px'; p.style.height = s+'px';
+    c.appendChild(p);
+  }
+}
+function mkStars(id, n=35) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = Math.random()*4+'s';
+    const sz = 1+Math.random()*2; s.style.width = sz+'px'; s.style.height = sz+'px';
+    c.appendChild(s);
+  }
+}
+
+mkParticles('p0', 18); mkParticles('p3', 14); mkParticles('p6', 16); mkParticles('p8', 12); mkParticles('p9', 12);
+mkStars('s1', 35);
+
+setTimeout(() => { document.getElementById('navHint').style.opacity = '0'; }, 4500);
+document.addEventListener('dblclick', e => e.preventDefault());
+</script>
+<!--
+原文核对来源（2026-09-05 核）：
+https://ctext.org/shan-hai-jing/nan-shan-jing/zhs  HTTP 200
+条目1：南山经之首曰䧿山。其首曰招摇之山，临于西海之上，多桂，多金玉。有草焉，其状如韭而青花，其名曰祝馀，食之不饥。有木焉，其状如谷而黑理，其花四照，其名曰迷谷，佩之不迷。有兽焉，其状如禺而白耳，伏行人走，其名曰狌狌，食之善走。丽𪊨之水出焉，而西流注于海，其中多育沛，佩之无瘕疾。
+条目2：又东三百里，曰堂庭之山，多棪木，多白猿，多水玉，多黄金。
+条目3：又东三百八十里，曰猨翼之山，其中多怪兽，水多怪鱼，多白玉，多腹虫，多怪蛇，多怪木，不可以上。
+本页所有引文均逐字取自上述条目，未作改写。
+-->
+<script src="../../assets/site.js"></script></body></html>
