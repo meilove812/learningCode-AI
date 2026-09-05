@@ -204,6 +204,30 @@ html, body {
 .audio-btn.playing { background: rgba(255,215,0,0.15); box-shadow: 0 0 12px rgba(255,215,0,0.2); }
 .page-num { position: fixed; top: 16px; left: 16px; font-size: 0.7em; color: rgba(255,255,255,0.2); z-index: 100; }
 
+/* ===== ep3 四象八卦动画（CSS 驱动，逐爻可见） ===== */
+.e3seq { opacity: 0; animation: e3seq 9s ease-in-out infinite both; }
+@keyframes e3seq { 0% { opacity: 0; transform: translateY(-13px); } 7% { opacity: 1; transform: translateY(0); }
+  84% { opacity: 1; transform: translateY(0); } 95%, 100% { opacity: 0; transform: translateY(-13px); } }
+.e3fade { opacity: 0; animation: e3fade 9s ease-in-out infinite both; }
+@keyframes e3fade { 0% { opacity: 0; } 8% { opacity: 1; } 86% { opacity: 1; } 96%, 100% { opacity: 0; } }
+.e3draw { stroke-dasharray: 70; stroke-dashoffset: 70; animation: e3draw 9s ease-in-out infinite both; }
+@keyframes e3draw { 0% { stroke-dashoffset: 70; } 16% { stroke-dashoffset: 0; } 88% { stroke-dashoffset: 0; }
+  97%, 100% { stroke-dashoffset: 70; } }
+.e3bar { transform-box: fill-box; transform-origin: center; opacity: 0;
+  animation: e3bar 6.5s ease-in-out infinite both; }
+@keyframes e3bar { 0% { transform: scaleX(0); opacity: 0; } 11% { transform: scaleX(1); opacity: 1; }
+  86% { transform: scaleX(1); opacity: 1; } 96%, 100% { transform: scaleX(0); opacity: 0; } }
+.e3q { animation: e3q 12s linear infinite both; }
+@keyframes e3q { 0% { opacity: .16; } 3%, 20% { opacity: 1; } 30%, 100% { opacity: .16; } }
+.e3spin { transform-origin: 150px 100px; animation: e3spin 12s linear infinite; }
+@keyframes e3spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.e3glow { animation: e3glow 2.6s ease-in-out infinite; }
+@keyframes e3glow { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+.e3d1{animation-delay:.2s}.e3d2{animation-delay:.65s}.e3d3{animation-delay:1.1s}.e3d4{animation-delay:1.55s}
+.e3d5{animation-delay:2s}.e3d6{animation-delay:2.45s}.e3d7{animation-delay:2.9s}.e3d8{animation-delay:3.35s}
+.e3d9{animation-delay:3.8s}.e3d10{animation-delay:4.25s}
+.e3t0{animation-delay:0s}.e3t3{animation-delay:3s}.e3t6{animation-delay:6s}.e3t9{animation-delay:9s}
+
 /* Voice panel */
 .voice-panel {
   position: fixed; bottom: 0; left: 0; right: 0;
@@ -391,60 +415,51 @@ html, body {
   <div class="page bg-dawn" data-page="2">
     <div class="particles" id="p2"></div>
     <div class="ani">
-      <svg width="280" height="160" viewBox="0 0 280 160">
+      <svg width="300" height="206" viewBox="0 0 300 206">
         <defs>
-          <linearGradient id="gYang" x1="0%" y1="0%" x2="100%" y2="0%">
+          <linearGradient id="gY3" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#ffaa00"/>
           </linearGradient>
         </defs>
-        <!-- Level 1: Yin Yang -->
-        <rect x="115" y="10" width="50" height="7" rx="3" fill="#ffd700" opacity="0.5"/>
-        <text x="140" y="30" text-anchor="middle" font-size="8" fill="#5a5a5a">阳</text>
-        <!-- Arrows down -->
-        <line x1="125" y1="35" x2="70" y2="55" stroke="#ffd700" stroke-width="1" opacity="0.4" stroke-dasharray="2 2"/>
-        <line x1="155" y1="35" x2="210" y2="55" stroke="#ffd700" stroke-width="1" opacity="0.4" stroke-dasharray="2 2"/>
-        <!-- Level 2: Four images -->
-        <!-- Taiyang (yang+yang) -->
-        <g transform="translate(45,60)">
-          <rect x="0" y="0" width="36" height="6" rx="2" fill="#ffd700"/>
-          <rect x="0" y="10" width="36" height="6" rx="2" fill="#ffd700"/>
-          <text x="18" y="30" text-anchor="middle" font-size="9" fill="#ffd700">太阳</text>
+        <!-- 两仪：一条完整=阳，一条断开=阴 -->
+        <g class="e3fade e3d1"><g transform="translate(52,10)"><rect x="0" y="0" width="44" height="6" rx="3" fill="url(#gY3)"/><text x="22" y="30" text-anchor="middle" font-size="11" font-weight="700" fill="#ffd700">阳</text></g></g>
+        <g class="e3fade e3d1"><g transform="translate(196,10)"><rect x="0" y="0" width="19" height="6" rx="3" fill="#6d86c8"/><rect x="25" y="0" width="19" height="6" rx="3" fill="#6d86c8"/><text x="22" y="30" text-anchor="middle" font-size="11" font-weight="700" fill="#8ea0d8">阴</text></g></g>
+        <!-- 各自再分出阴阳：虚线自己画出去 -->
+        <line class="e3draw e3d2" x1="70" y1="44" x2="38" y2="80" stroke="#ffd700" stroke-width="1.4" opacity="0.55" stroke-linecap="round"/>
+        <line class="e3draw e3d2" x1="78" y1="44" x2="110" y2="80" stroke="#ffd700" stroke-width="1.4" opacity="0.55" stroke-linecap="round"/>
+        <line class="e3draw e3d4" x1="212" y1="44" x2="182" y2="80" stroke="#8ea0d8" stroke-width="1.4" opacity="0.55" stroke-linecap="round"/>
+        <line class="e3draw e3d4" x1="220" y1="44" x2="254" y2="80" stroke="#8ea0d8" stroke-width="1.4" opacity="0.55" stroke-linecap="round"/>
+        <g transform="translate(16,86)">
+          <g class="e3fade e3d2"><rect x="0" y="14" width="44" height="6" rx="3" fill="url(#gY3)"/></g>
+          <g class="e3seq e3d4"><rect x="0" y="0" width="44" height="6" rx="3" fill="url(#gY3)"/></g>
+          <text x="22" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="#ffd700" class="e3fade e3d6">太阳</text>
         </g>
-        <!-- Shaoyin (yang+yin) -->
-        <g transform="translate(110,60)">
-          <rect x="0" y="0" width="15" height="6" rx="2" fill="#6080c0"/>
-          <rect x="21" y="0" width="15" height="6" rx="2" fill="#6080c0"/>
-          <rect x="0" y="10" width="36" height="6" rx="2" fill="#ffd700"/>
-          <text x="18" y="30" text-anchor="middle" font-size="9" fill="#8090c0">少阴</text>
+        <g transform="translate(88,86)">
+          <g class="e3fade e3d3"><rect x="0" y="14" width="44" height="6" rx="3" fill="url(#gY3)"/></g>
+          <g class="e3seq e3d5"><rect x="0" y="0" width="19" height="6" rx="3" fill="#6d86c8"/><rect x="25" y="0" width="19" height="6" rx="3" fill="#6d86c8"/></g>
+          <text x="22" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="#98a8dd" class="e3fade e3d7">少阴</text>
         </g>
-        <!-- Shaoyang (yin+yang) -->
-        <g transform="translate(175,60)">
-          <rect x="0" y="0" width="36" height="6" rx="2" fill="#ffd700"/>
-          <rect x="0" y="10" width="15" height="6" rx="2" fill="#6080c0"/>
-          <rect x="21" y="10" width="15" height="6" rx="2" fill="#6080c0"/>
-          <text x="18" y="30" text-anchor="middle" font-size="9" fill="#a0b860">少阳</text>
+        <g transform="translate(160,86)">
+          <g class="e3fade e3d4"><rect x="0" y="14" width="19" height="6" rx="3" fill="#6d86c8"/><rect x="25" y="14" width="19" height="6" rx="3" fill="#6d86c8"/></g>
+          <g class="e3seq e3d6"><rect x="0" y="0" width="44" height="6" rx="3" fill="url(#gY3)"/></g>
+          <text x="22" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="#b8d466" class="e3fade e3d8">少阳</text>
         </g>
-        <!-- Taiyin (yin+yin) -->
-        <g transform="translate(240,60)">
-          <rect x="0" y="0" width="15" height="6" rx="2" fill="#6080c0"/>
-          <rect x="21" y="0" width="15" height="6" rx="2" fill="#6080c0"/>
-          <rect x="0" y="10" width="15" height="6" rx="2" fill="#6080c0"/>
-          <rect x="21" y="10" width="15" height="6" rx="2" fill="#6080c0"/>
-          <text x="18" y="30" text-anchor="middle" font-size="9" fill="#6a6aaa">太阴</text>
+        <g transform="translate(232,86)">
+          <g class="e3fade e3d5"><rect x="0" y="14" width="19" height="6" rx="3" fill="#6d86c8"/><rect x="25" y="14" width="19" height="6" rx="3" fill="#6d86c8"/></g>
+          <g class="e3seq e3d7"><rect x="0" y="0" width="19" height="6" rx="3" fill="#6d86c8"/><rect x="25" y="0" width="19" height="6" rx="3" fill="#6d86c8"/></g>
+          <text x="22" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="#7f8ec9" class="e3fade e3d9">太阴</text>
         </g>
-        <!-- Bottom label -->
-        <text x="140" y="120" text-anchor="middle" font-size="10" fill="rgba(255,215,0,0.6)">阴阳各自再分阴阳 → 四象</text>
-        <!-- Bracket -->
-        <path d="M45,105 Q140,130 275,105" fill="none" stroke="rgba(255,215,0,0.2)" stroke-width="1"/>
+        <text x="150" y="176" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffd700" class="e3glow">下面那条是原来的 · 上面那条是新加的</text>
+        <text x="150" y="197" text-anchor="middle" font-size="12" fill="#8a95b8">2 × 2 = 4</text>
       </svg>
     </div>
     <div class="page-title ani">四象诞生</div>
     <div class="page-text ani">
       阴和阳，<span class="em">各自再分出阴和阳</span>：<br><br>
-      阳 + 阳 = <span class="em">太阳</span>（老阳）⚊⚊<br>
-      阳 + 阴 = <span class="dark">少阴</span> ⚊⚋<br>
-      阴 + 阳 = <span class="em">少阳</span> ⚋⚊<br>
-      阴 + 阴 = <span class="dark">太阴</span>（老阴）⚋⚋<br><br>
+      阳 + 阳 = <span class="em">太阳</span>（老阳）<br>
+      阳 + 阴 = <span class="dark">少阴</span><br>
+      阴 + 阳 = <span class="em">少阳</span><br>
+      阴 + 阴 = <span class="dark">太阴</span>（老阴）<br><br>
       <span class="dark">2 × 2 = 4，四象就这样诞生了！</span>
     </div>
   </div>
@@ -452,27 +467,36 @@ html, body {
   <!-- Page 4: Four Images Correspondence -->
   <div class="page bg-dual" data-page="3">
     <div class="page-title ani">四象对应万物</div>
-    <div class="four-grid ani">
-      <div class="four-card">
-        <div class="label">太阳 ⚊⚊</div>
-        <div class="main">☀️ 夏</div>
-        <div class="desc">南方 · 壮年 · 最旺</div>
-      </div>
-      <div class="four-card">
-        <div class="label">少阳 ⚋⚊</div>
-        <div class="main">🌱 春</div>
-        <div class="desc">东方 · 少年 · 生长</div>
-      </div>
-      <div class="four-card">
-        <div class="label">少阴 ⚊⚋</div>
-        <div class="main">🍂 秋</div>
-        <div class="desc">西方 · 中年 · 收敛</div>
-      </div>
-      <div class="four-card">
-        <div class="label">太阴 ⚋⚋</div>
-        <div class="main">❄️ 冬</div>
-        <div class="desc">北方 · 老年 · 收藏</div>
-      </div>
+    <div class="ani" style="width:100%;display:flex;justify-content:center;">
+      <svg width="300" height="214" viewBox="0 0 300 214">
+        <defs>
+          <radialGradient id="gCore" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(255,215,0,0.34)"/><stop offset="100%" stop-color="rgba(255,215,0,0)"/>
+          </radialGradient>
+        </defs>
+        <path class="e3q e3t0" d="M150 100 L94.9 155.2 A78 78 0 0 1 94.9 44.8 Z" fill="#3f9e72"/>
+        <path class="e3q e3t3" d="M150 100 L94.9 44.8 A78 78 0 0 1 205.1 44.8 Z" fill="#e0a02c"/>
+        <path class="e3q e3t6" d="M150 100 L205.1 44.8 A78 78 0 0 1 205.1 155.2 Z" fill="#d0743a"/>
+        <path class="e3q e3t9" d="M150 100 L205.1 155.2 A78 78 0 0 1 94.9 155.2 Z" fill="#48679f"/>
+        <circle cx="150" cy="100" r="78" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+        <g class="e3spin">
+          <line x1="150" y1="100" x2="70" y2="100" stroke="#fff8e0" stroke-width="2.4" stroke-linecap="round" opacity="0.9"/>
+          <circle cx="70" cy="100" r="4.6" fill="#fff8e0"/>
+        </g>
+        <circle cx="150" cy="100" r="21" fill="#0d1220"/>
+        <circle cx="150" cy="100" r="21" fill="url(#gCore)"/>
+        <text x="150" y="98" text-anchor="middle" font-size="10.5" font-weight="700" fill="#ffd700">一年</text>
+        <text x="150" y="110" text-anchor="middle" font-size="8.5" fill="#8a95b8">转一圈</text>
+        <text x="96" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#eaf6ee">春 · 东</text>
+        <text x="96" y="107" text-anchor="middle" font-size="9.5" fill="#cfe6d8">少阳 · 生长</text>
+        <text x="150" y="50" text-anchor="middle" font-size="13" font-weight="700" fill="#fff4d8">夏 · 南</text>
+        <text x="150" y="66" text-anchor="middle" font-size="9.5" fill="#f0e0c0">太阳 · 最旺</text>
+        <text x="204" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#ffeadd">秋 · 西</text>
+        <text x="204" y="107" text-anchor="middle" font-size="9.5" fill="#f0d6c6">少阴 · 收敛</text>
+        <text x="150" y="143" text-anchor="middle" font-size="13" font-weight="700" fill="#e4ecff">冬 · 北</text>
+        <text x="150" y="159" text-anchor="middle" font-size="9.5" fill="#ccd8f0">太阴 · 收藏</text>
+        <text x="150" y="197" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffd700" class="e3glow">四象不是四个符号，是一年走过的四个阶段</text>
+      </svg>
     </div>
     <div class="page-text ani">
       四象不只是符号，<br>
@@ -488,24 +512,24 @@ html, body {
     <div class="ani">
       <svg width="280" height="150" viewBox="0 0 280 150">
         <!-- Four images at top -->
-        <g transform="translate(30,10)">
+        <g class="e3fade e3d1" transform="translate(30,10)">
           <rect x="0" y="0" width="24" height="5" rx="2" fill="#ffd700" opacity="0.7"/>
           <rect x="0" y="8" width="24" height="5" rx="2" fill="#ffd700" opacity="0.7"/>
           <text x="12" y="24" text-anchor="middle" font-size="7" fill="#5a5a5a">太阳</text>
         </g>
-        <g transform="translate(90,10)">
+        <g class="e3fade e3d1" transform="translate(90,10)">
           <rect x="0" y="0" width="10" height="5" rx="2" fill="#6080c0" opacity="0.7"/>
           <rect x="14" y="0" width="10" height="5" rx="2" fill="#6080c0" opacity="0.7"/>
           <rect x="0" y="8" width="24" height="5" rx="2" fill="#ffd700" opacity="0.7"/>
           <text x="12" y="24" text-anchor="middle" font-size="7" fill="#5a5a5a">少阴</text>
         </g>
-        <g transform="translate(160,10)">
+        <g class="e3fade e3d1" transform="translate(160,10)">
           <rect x="0" y="0" width="24" height="5" rx="2" fill="#ffd700" opacity="0.7"/>
           <rect x="0" y="8" width="10" height="5" rx="2" fill="#6080c0" opacity="0.7"/>
           <rect x="14" y="8" width="10" height="5" rx="2" fill="#6080c0" opacity="0.7"/>
           <text x="12" y="24" text-anchor="middle" font-size="7" fill="#5a5a5a">少阳</text>
         </g>
-        <g transform="translate(230,10)">
+        <g class="e3fade e3d1" transform="translate(230,10)">
           <rect x="0" y="0" width="10" height="5" rx="2" fill="#6080c0" opacity="0.7"/>
           <rect x="14" y="0" width="10" height="5" rx="2" fill="#6080c0" opacity="0.7"/>
           <rect x="0" y="8" width="10" height="5" rx="2" fill="#6080c0" opacity="0.7"/>
@@ -513,50 +537,50 @@ html, body {
           <text x="12" y="24" text-anchor="middle" font-size="7" fill="#5a5a5a">太阴</text>
         </g>
         <!-- Arrows -->
-        <line x1="42" y1="38" x2="30" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
-        <line x1="42" y1="38" x2="65" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
-        <line x1="102" y1="38" x2="95" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
-        <line x1="102" y1="38" x2="130" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
-        <line x1="172" y1="38" x2="160" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
-        <line x1="172" y1="38" x2="195" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
-        <line x1="242" y1="38" x2="225" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
-        <line x1="242" y1="38" x2="258" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+        <line class="e3draw e3d2" x1="42" y1="38" x2="30" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+        <line class="e3draw e3d2" x1="42" y1="38" x2="65" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+        <line class="e3draw e3d2" x1="102" y1="38" x2="95" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+        <line class="e3draw e3d2" x1="102" y1="38" x2="130" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+        <line class="e3draw e3d2" x1="172" y1="38" x2="160" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+        <line class="e3draw e3d2" x1="172" y1="38" x2="195" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+        <line class="e3draw e3d2" x1="242" y1="38" x2="225" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
+        <line class="e3draw e3d2" x1="242" y1="38" x2="258" y2="55" stroke="rgba(255,215,0,0.3)" stroke-width="0.8"/>
         <!-- Eight trigrams -->
-        <g transform="translate(18,58)">
-          <rect x="0" y="0" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="7" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="14" width="24" height="4" rx="2" fill="#ffd700"/>
+        <g class="e3fade e3d3" transform="translate(18,58)">
+          <rect class="e3seq e3d3" x="0" y="0" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="7" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="14" width="24" height="4" rx="2" fill="#ffd700"/>
           <text x="12" y="30" text-anchor="middle" font-size="7" fill="#ffd700">乾☰</text>
         </g>
-        <g transform="translate(53,58)">
-          <rect x="0" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="7" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="14" width="24" height="4" rx="2" fill="#ffd700"/>
+        <g class="e3fade e3d4" transform="translate(53,58)">
+          <rect class="e3seq e3d4" x="0" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect class="e3seq e3d4" x="14" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="7" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="14" width="24" height="4" rx="2" fill="#ffd700"/>
           <text x="12" y="30" text-anchor="middle" font-size="7" fill="#c0c0ff">兑☱</text>
         </g>
-        <g transform="translate(88,58)">
-          <rect x="0" y="0" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="14" width="24" height="4" rx="2" fill="#ffd700"/>
+        <g class="e3fade e3d5" transform="translate(88,58)">
+          <rect class="e3seq e3d5" x="0" y="0" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="14" width="24" height="4" rx="2" fill="#ffd700"/>
           <text x="12" y="30" text-anchor="middle" font-size="7" fill="#ff6040">离☲</text>
         </g>
-        <g transform="translate(123,58)">
-          <rect x="0" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="14" width="24" height="4" rx="2" fill="#ffd700"/>
+        <g class="e3fade e3d6" transform="translate(123,58)">
+          <rect class="e3seq e3d6" x="0" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect class="e3seq e3d6" x="14" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="14" width="24" height="4" rx="2" fill="#ffd700"/>
           <text x="12" y="30" text-anchor="middle" font-size="7" fill="#40c040">震☳</text>
         </g>
-        <g transform="translate(158,58)">
-          <rect x="0" y="0" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="7" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="14" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="14" width="10" height="4" rx="2" fill="#6080c0"/>
+        <g class="e3fade e3d7" transform="translate(158,58)">
+          <rect class="e3seq e3d7" x="0" y="0" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="7" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="14" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="14" width="10" height="4" rx="2" fill="#6080c0"/>
           <text x="12" y="30" text-anchor="middle" font-size="7" fill="#a0c0ff">巽☴</text>
         </g>
-        <g transform="translate(193,58)">
-          <rect x="0" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="7" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="14" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="14" width="10" height="4" rx="2" fill="#6080c0"/>
+        <g class="e3fade e3d8" transform="translate(193,58)">
+          <rect class="e3seq e3d8" x="0" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect class="e3seq e3d8" x="14" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="7" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="14" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="14" width="10" height="4" rx="2" fill="#6080c0"/>
           <text x="12" y="30" text-anchor="middle" font-size="7" fill="#4080ff">坎☵</text>
         </g>
-        <g transform="translate(228,58)">
-          <rect x="0" y="0" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="14" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="14" width="10" height="4" rx="2" fill="#6080c0"/>
+        <g class="e3fade e3d9" transform="translate(228,58)">
+          <rect class="e3seq e3d9" x="0" y="0" width="24" height="4" rx="2" fill="#ffd700"/><rect x="0" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="14" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="14" width="10" height="4" rx="2" fill="#6080c0"/>
           <text x="12" y="30" text-anchor="middle" font-size="7" fill="#8b6914">艮☶</text>
         </g>
-        <g transform="translate(256,58)">
-          <rect x="0" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="14" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="14" width="10" height="4" rx="2" fill="#6080c0"/>
+        <g class="e3fade e3d10" transform="translate(256,58)">
+          <rect class="e3seq e3d10" x="0" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect class="e3seq e3d10" x="14" y="0" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="7" width="10" height="4" rx="2" fill="#6080c0"/><rect x="0" y="14" width="10" height="4" rx="2" fill="#6080c0"/><rect x="14" y="14" width="10" height="4" rx="2" fill="#6080c0"/>
           <text x="12" y="30" text-anchor="middle" font-size="7" fill="#6a5a8a">坤☷</text>
         </g>
         <!-- Bottom text -->
-        <text x="140" y="125" text-anchor="middle" font-size="9" fill="rgba(255,215,0,0.5)">四象 × 阴阳 = 八卦</text>
-        <text x="140" y="140" text-anchor="middle" font-size="8" fill="rgba(255,255,255,0.3)">4 × 2 = 8</text>
+        <text x="140" y="126" text-anchor="middle" font-size="9.2" font-weight="700" fill="#ffd700" class="e3glow">在两条爻上面，再加第三条</text>
+        <text x="140" y="142" text-anchor="middle" font-size="8.2" fill="#8a95b8">4 × 2 = 8 · 三次选择，八种可能</text>
       </svg>
     </div>
     <div class="page-title ani">四象生八卦</div>
@@ -577,42 +601,42 @@ html, body {
     <div class="page-title ani">八卦的名字</div>
     <div class="trigram-grid ani">
       <div class="trigram-card">
-        <div class="symbol">☰</div>
+        <div class="symbol"><svg viewBox="0 0 46 24" width="100%" height="30" style="display:block"><rect class="e3bar" style="animation-delay:0.36s" x="1" y="1" width="44" height="5" rx="2.5" fill="#ffd700"/><rect class="e3bar" style="animation-delay:0.18s" x="1" y="9.5" width="44" height="5" rx="2.5" fill="#ffd700"/><rect class="e3bar" style="animation-delay:0.0s" x="1" y="18" width="44" height="5" rx="2.5" fill="#ffd700"/></svg></div>
         <div class="name">乾 qián</div>
         <div class="meaning">三条阳</div>
       </div>
       <div class="trigram-card">
-        <div class="symbol">☷</div>
+        <div class="symbol"><svg viewBox="0 0 46 24" width="100%" height="30" style="display:block"><rect class="e3bar" style="animation-delay:0.71s" x="1" y="1" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.71s" x="26" y="1" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.53s" x="1" y="9.5" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.53s" x="26" y="9.5" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.35s" x="1" y="18" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.35s" x="26" y="18" width="19" height="5" rx="2.5" fill="#6d86c8"/></svg></div>
         <div class="name">坤 kūn</div>
         <div class="meaning">三条阴</div>
       </div>
       <div class="trigram-card">
-        <div class="symbol">☳</div>
+        <div class="symbol"><svg viewBox="0 0 46 24" width="100%" height="30" style="display:block"><rect class="e3bar" style="animation-delay:1.06s" x="1" y="1" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:1.06s" x="26" y="1" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.88s" x="1" y="9.5" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.88s" x="26" y="9.5" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.7s" x="1" y="18" width="44" height="5" rx="2.5" fill="#ffd700"/></svg></div>
         <div class="name">震 zhèn</div>
         <div class="meaning">下阳上阴</div>
       </div>
       <div class="trigram-card">
-        <div class="symbol">☴</div>
+        <div class="symbol"><svg viewBox="0 0 46 24" width="100%" height="30" style="display:block"><rect class="e3bar" style="animation-delay:1.41s" x="1" y="1" width="44" height="5" rx="2.5" fill="#ffd700"/><rect class="e3bar" style="animation-delay:1.23s" x="1" y="9.5" width="44" height="5" rx="2.5" fill="#ffd700"/><rect class="e3bar" style="animation-delay:1.05s" x="1" y="18" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:1.05s" x="26" y="18" width="19" height="5" rx="2.5" fill="#6d86c8"/></svg></div>
         <div class="name">巽 xùn</div>
         <div class="meaning">下阴上阳</div>
       </div>
       <div class="trigram-card">
-        <div class="symbol">☵</div>
+        <div class="symbol"><svg viewBox="0 0 46 24" width="100%" height="30" style="display:block"><rect class="e3bar" style="animation-delay:1.76s" x="1" y="1" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:1.76s" x="26" y="1" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:1.58s" x="1" y="9.5" width="44" height="5" rx="2.5" fill="#ffd700"/><rect class="e3bar" style="animation-delay:1.4s" x="1" y="18" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:1.4s" x="26" y="18" width="19" height="5" rx="2.5" fill="#6d86c8"/></svg></div>
         <div class="name">坎 kǎn</div>
         <div class="meaning">中间阳</div>
       </div>
       <div class="trigram-card">
-        <div class="symbol">☲</div>
+        <div class="symbol"><svg viewBox="0 0 46 24" width="100%" height="30" style="display:block"><rect class="e3bar" style="animation-delay:2.11s" x="1" y="1" width="44" height="5" rx="2.5" fill="#ffd700"/><rect class="e3bar" style="animation-delay:1.93s" x="1" y="9.5" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:1.93s" x="26" y="9.5" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:1.75s" x="1" y="18" width="44" height="5" rx="2.5" fill="#ffd700"/></svg></div>
         <div class="name">离 lí</div>
         <div class="meaning">中间阴</div>
       </div>
       <div class="trigram-card">
-        <div class="symbol">☶</div>
+        <div class="symbol"><svg viewBox="0 0 46 24" width="100%" height="30" style="display:block"><rect class="e3bar" style="animation-delay:2.46s" x="1" y="1" width="44" height="5" rx="2.5" fill="#ffd700"/><rect class="e3bar" style="animation-delay:2.28s" x="1" y="9.5" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:2.28s" x="26" y="9.5" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:2.1s" x="1" y="18" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:2.1s" x="26" y="18" width="19" height="5" rx="2.5" fill="#6d86c8"/></svg></div>
         <div class="name">艮 gèn</div>
         <div class="meaning">上阳下阴</div>
       </div>
       <div class="trigram-card">
-        <div class="symbol">☱</div>
+        <div class="symbol"><svg viewBox="0 0 46 24" width="100%" height="30" style="display:block"><rect class="e3bar" style="animation-delay:2.81s" x="1" y="1" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:2.81s" x="26" y="1" width="19" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:2.63s" x="1" y="9.5" width="44" height="5" rx="2.5" fill="#ffd700"/><rect class="e3bar" style="animation-delay:2.45s" x="1" y="18" width="44" height="5" rx="2.5" fill="#ffd700"/></svg></div>
         <div class="name">兑 duì</div>
         <div class="meaning">上阴下阳</div>
       </div>
@@ -700,15 +724,47 @@ html, body {
       离中虚 ☲ 坎中满 ☵<br>
       兑上缺 ☱ 巽下断 ☴
     </div>
-    <div class="page-text ani" style="text-align:left;max-width:420px;">
-      <span class="em">乾三连</span> — 三条完整的线<br>
-      <span class="em">坤六断</span> — 六段断开的线<br>
-      <span class="em">震仰盂</span> — 像朝上的碗（仰着）<br>
-      <span class="em">艮覆碗</span> — 像翻过来的碗<br>
-      <span class="em">离中虚</span> — 中间是空的（断线）<br>
-      <span class="em">坎中满</span> — 中间是满的（实线）<br>
-      <span class="em">兑上缺</span> — 最上面缺了口<br>
-      <span class="em">巽下断</span> — 最下面断开了
+    <div class="trigram-grid ani">
+      <div class="trigram-card">
+        <div class="symbol"><svg viewBox="0 0 56 26" width="100%" height="34" style="display:block"><rect class="e3bar" style="animation-delay:0.34s" x="6" y="2" width="34" height="5" rx="2.5" fill="#ffd700"/><rect class="e3bar" style="animation-delay:0.17s" x="6" y="10.5" width="34" height="5" rx="2.5" fill="#ffd700"/><rect class="e3bar" style="animation-delay:0.0s" x="6" y="19" width="34" height="5" rx="2.5" fill="#ffd700"/><path class="e3draw" style="animation-delay:.3s" d="M44 3 L49 3 L49 22 L44 22" fill="none" stroke="#ffd700" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <div class="name">乾三连</div>
+        <div class="meaning">三条都完整</div>
+      </div>
+      <div class="trigram-card">
+        <div class="symbol"><svg viewBox="0 0 56 26" width="100%" height="34" style="display:block"><rect class="e3bar" style="animation-delay:0.64s" x="6" y="2" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.64s" x="26" y="2" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.47s" x="6" y="10.5" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.47s" x="26" y="10.5" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.3s" x="6" y="19" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.3s" x="26" y="19" width="14" height="5" rx="2.5" fill="#6d86c8"/><g class="e3glow"><circle cx="23" cy="4.5" r="3.2" fill="none" stroke="#8ea0d8" stroke-width="1.3"/><circle cx="23" cy="13" r="3.2" fill="none" stroke="#8ea0d8" stroke-width="1.3"/><circle cx="23" cy="21.5" r="3.2" fill="none" stroke="#8ea0d8" stroke-width="1.3"/></g></svg></div>
+        <div class="name">坤六断</div>
+        <div class="meaning">数一数六段</div>
+      </div>
+      <div class="trigram-card">
+        <div class="symbol"><svg viewBox="0 0 56 26" width="100%" height="34" style="display:block"><rect class="e3bar" style="animation-delay:0.94s" x="6" y="2" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.94s" x="26" y="2" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.77s" x="6" y="10.5" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.77s" x="26" y="10.5" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.6s" x="6" y="19" width="34" height="5" rx="2.5" fill="#ffd700"/><path class="e3draw" style="animation-delay:.3s" d="M9 3 L9 17 Q23 26 37 17 L37 3" fill="none" stroke="#ffd700" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <div class="name">震仰盂</div>
+        <div class="meaning">像朝上的碗</div>
+      </div>
+      <div class="trigram-card">
+        <div class="symbol"><svg viewBox="0 0 56 26" width="100%" height="34" style="display:block"><rect class="e3bar" style="animation-delay:1.24s" x="6" y="2" width="34" height="5" rx="2.5" fill="#ffd700"/><rect class="e3bar" style="animation-delay:1.07s" x="6" y="10.5" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:1.07s" x="26" y="10.5" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.9s" x="6" y="19" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:0.9s" x="26" y="19" width="14" height="5" rx="2.5" fill="#6d86c8"/><path class="e3draw" style="animation-delay:.3s" d="M9 23 L9 9 Q23 0 37 9 L37 23" fill="none" stroke="#ffd700" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <div class="name">艮覆碗</div>
+        <div class="meaning">像翻过的碗</div>
+      </div>
+      <div class="trigram-card">
+        <div class="symbol"><svg viewBox="0 0 56 26" width="100%" height="34" style="display:block"><rect class="e3bar" style="animation-delay:1.54s" x="6" y="2" width="34" height="5" rx="2.5" fill="#ffd700"/><rect class="e3bar" style="animation-delay:1.37s" x="6" y="10.5" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:1.37s" x="26" y="10.5" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:1.2s" x="6" y="19" width="34" height="5" rx="2.5" fill="#ffd700"/><ellipse class="e3glow" cx="23" cy="13" rx="11" ry="5.2" fill="none" stroke="#ff8a5c" stroke-width="1.4" stroke-dasharray="3 2.5"/></svg></div>
+        <div class="name">离中虚</div>
+        <div class="meaning">中间是空的</div>
+      </div>
+      <div class="trigram-card">
+        <div class="symbol"><svg viewBox="0 0 56 26" width="100%" height="34" style="display:block"><rect class="e3bar" style="animation-delay:1.84s" x="6" y="2" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:1.84s" x="26" y="2" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:1.67s" x="6" y="10.5" width="34" height="5" rx="2.5" fill="#ffd700"/><rect class="e3bar" style="animation-delay:1.5s" x="6" y="19" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:1.5s" x="26" y="19" width="14" height="5" rx="2.5" fill="#6d86c8"/><ellipse class="e3glow" cx="23" cy="13" rx="11" ry="5.2" fill="none" stroke="#6ec8ff" stroke-width="1.6"/></svg></div>
+        <div class="name">坎中满</div>
+        <div class="meaning">中间是满的</div>
+      </div>
+      <div class="trigram-card">
+        <div class="symbol"><svg viewBox="0 0 56 26" width="100%" height="34" style="display:block"><rect class="e3bar" style="animation-delay:2.14s" x="6" y="2" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:2.14s" x="26" y="2" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:1.97s" x="6" y="10.5" width="34" height="5" rx="2.5" fill="#ffd700"/><rect class="e3bar" style="animation-delay:1.8s" x="6" y="19" width="34" height="5" rx="2.5" fill="#ffd700"/><circle class="e3glow" cx="23" cy="4.5" r="4.6" fill="none" stroke="#c0c8ff" stroke-width="1.6"/></svg></div>
+        <div class="name">兑上缺</div>
+        <div class="meaning">上面缺了口</div>
+      </div>
+      <div class="trigram-card">
+        <div class="symbol"><svg viewBox="0 0 56 26" width="100%" height="34" style="display:block"><rect class="e3bar" style="animation-delay:2.44s" x="6" y="2" width="34" height="5" rx="2.5" fill="#ffd700"/><rect class="e3bar" style="animation-delay:2.27s" x="6" y="10.5" width="34" height="5" rx="2.5" fill="#ffd700"/><rect class="e3bar" style="animation-delay:2.1s" x="6" y="19" width="14" height="5" rx="2.5" fill="#6d86c8"/><rect class="e3bar" style="animation-delay:2.1s" x="26" y="19" width="14" height="5" rx="2.5" fill="#6d86c8"/><circle class="e3glow" cx="23" cy="21.5" r="4.6" fill="none" stroke="#9fd8b0" stroke-width="1.6"/></svg></div>
+        <div class="name">巽下断</div>
+        <div class="meaning">下面断开了</div>
+      </div>
     </div>
   </div>
 
