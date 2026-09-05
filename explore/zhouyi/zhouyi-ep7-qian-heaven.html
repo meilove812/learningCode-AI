@@ -655,6 +655,9 @@ html, body {
 
 <script>
 let cur = 0;
+const AUDIO_PREFIX = 'audio/ep7-p';
+const HAS_TTS = typeof window.speechSynthesis !== 'undefined' && window.speechSynthesis !== null;
+let audioEl = null;
 const pages = document.querySelectorAll('.page');
 const total = pages.length;
 let animating = false, speaking = false;
@@ -670,7 +673,7 @@ for (let i = 0; i < total; i++) {
 function go(idx) {
   if (idx < 0 || idx >= total || idx === cur || animating) return;
   animating = true;
-  window.speechSynthesis.cancel();
+  stopAudio();
   const old = pages[cur], nw = pages[idx], dir = idx > cur ? 1 : -1;
   old.classList.remove('active'); old.classList.add('prev');
   if (dir < 0) { old.style.transform = 'translateX(100%)'; old.style.opacity = '0'; }
@@ -727,6 +730,7 @@ const narrations = [
 
 let voices = [];
 function loadVoices() {
+  if (!HAS_TTS) return;
   voices = window.speechSynthesis.getVoices();
   const sel = document.getElementById('voiceSelect');
   sel.innerHTML = '';
@@ -744,28 +748,58 @@ function loadVoices() {
     sel.appendChild(o);
   });
 }
-window.speechSynthesis.onvoiceschanged = loadVoices;
-setTimeout(loadVoices, 300);
+if (HAS_TTS) { window.speechSynthesis.onvoiceschanged = loadVoices; setTimeout(loadVoices, 300); }
+else { const vp = document.getElementById('voiceSelect'); if (vp) vp.parentElement.style.display = 'none'; }
 document.getElementById('rateRange').addEventListener('input', function() {
   document.getElementById('rateVal').textContent = this.value;
 });
 
+// 朗读：优先播放预生成的语音文件（微信内置浏览器不提供 Web Speech），失败再回退浏览器朗读。
+function onSegmentEnd() {
+  if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
+  else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
+}
+
+function stopAudio() {
+  if (audioEl) { try { audioEl.pause(); } catch (e) {} audioEl.onended = null; audioEl.onerror = null; audioEl = null; }
+  if (HAS_TTS) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+}
+
 function speakPage(idx) {
-  window.speechSynthesis.cancel();
+  stopAudio();
   if (!narrations[idx]) return;
-  const u = new SpeechSynthesisUtterance(narrations[idx]);
-  u.lang = 'zh-CN'; u.rate = parseFloat(document.getElementById('rateRange').value);
-  const sv = document.getElementById('voiceSelect');
-  if (sv.value && voices[sv.value]) u.voice = voices[sv.value];
-  u.onend = () => {
-    if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
-    else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
-  };
-  window.speechSynthesis.speak(u);
+  const rr = document.getElementById('rateRange');
+  const rate = rr ? parseFloat(rr.value) : 1;
+  const a = new Audio(AUDIO_PREFIX + idx + '.mp3');
+  a.playbackRate = Math.max(0.5, Math.min(2, rate || 1));
+  a.onended = onSegmentEnd;
+  a.onerror = () => { audioEl = null; speakBrowser(idx); };
+  audioEl = a;
+  const pr = a.play();
+  if (pr && pr.catch) pr.catch(() => { audioEl = null; speakBrowser(idx); });
+}
+
+function speakBrowser(idx) {
+  if (!HAS_TTS) { showNoAudio(); return; }
+  try {
+    const u = new SpeechSynthesisUtterance(narrations[idx]);
+    const rr = document.getElementById('rateRange');
+    u.lang = 'zh-CN'; u.rate = rr ? parseFloat(rr.value) : 1;
+    const sv = document.getElementById('voiceSelect');
+    if (sv && sv.value && voices[sv.value]) u.voice = voices[sv.value];
+    u.onend = onSegmentEnd;
+    window.speechSynthesis.speak(u);
+  } catch (e) { showNoAudio(); }
+}
+
+function showNoAudio() {
+  const h = document.getElementById('navHint');
+  if (h) { h.textContent = '这个浏览器不支持朗读，请用系统浏览器打开'; h.style.opacity = '1'; }
+  speaking = false; updateAudioBtn();
 }
 
 function toggleAudio() {
-  if (speaking) { speaking = false; window.speechSynthesis.cancel(); }
+  if (speaking) { speaking = false; stopAudio(); }
   else { speaking = true; speakPage(cur); }
   updateAudioBtn();
 }
