@@ -214,17 +214,36 @@ html, body {
   <div class="page bg-sky" data-page="1">
     <div class="particles" id="p1"></div>
     <div class="ani">
-      <svg width="300" height="180" viewBox="0 0 300 180">
-        <ellipse cx="150" cy="90" rx="86" ry="76" fill="none" stroke="#dce7ff" stroke-width="3"/>
-        <path d="M64 56 Q46 90 64 124" fill="none" stroke="#7aa2ff" stroke-width="5"/>
-        <line x1="236" y1="30" x2="236" y2="150" stroke="#ffd700" stroke-width="5"/>
-        <text x="252" y="96" fill="#ffd700" font-size="16" font-weight="700">屏幕</text>
-        <line x1="10" y1="60" x2="230" y2="88" stroke="#8ef6c8" stroke-width="2.5"/>
-        <line x1="10" y1="120" x2="230" y2="92" stroke="#8ef6c8" stroke-width="2.5"/>
-        <circle cx="233" cy="90" r="8" fill="#8ef6c8">
-          <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite"/>
+      <svg width="300" height="188" viewBox="0 0 300 188">
+        <defs>
+          <filter id="fGlow2" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="3.4" result="bl"/>
+            <feMerge><feMergeNode in="bl"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <ellipse cx="150" cy="90" rx="86" ry="76" fill="rgba(122,162,255,0.07)" stroke="#dce7ff" stroke-width="3"/>
+        <path d="M64 54 Q44 90 64 126" fill="none" stroke="#7aa2ff" stroke-width="6"/>
+        <text x="52" y="150" fill="#7aa2ff" font-size="14" font-weight="700" text-anchor="middle">镜头</text>
+        <line x1="236" y1="28" x2="236" y2="152" stroke="#ffd700" stroke-width="5"/>
+        <text x="250" y="96" fill="#ffd700" font-size="15" font-weight="700">屏幕</text>
+        <g stroke="#8ef6c8" stroke-width="2.6" fill="none" stroke-linecap="round">
+          <path d="M6 46 L64 66 L233 90" stroke-dasharray="16 210" stroke-dashoffset="226">
+            <animate attributeName="stroke-dashoffset" values="226;0" dur="2.2s" repeatCount="indefinite"/>
+          </path>
+          <path d="M6 90 L64 90 L233 90" stroke-dasharray="16 210" stroke-dashoffset="226">
+            <animate attributeName="stroke-dashoffset" values="226;0" dur="2.2s" begin="0.25s" repeatCount="indefinite"/>
+          </path>
+          <path d="M6 134 L64 114 L233 90" stroke-dasharray="16 210" stroke-dashoffset="226">
+            <animate attributeName="stroke-dashoffset" values="226;0" dur="2.2s" begin="0.5s" repeatCount="indefinite"/>
+          </path>
+        </g>
+        <g opacity="0.3" stroke="#8ef6c8" stroke-width="1.4" fill="none">
+          <path d="M6 46 L64 66 L233 90"/><path d="M6 90 L64 90 L233 90"/><path d="M6 134 L64 114 L233 90"/>
+        </g>
+        <circle cx="233" cy="90" r="7" fill="#8ef6c8" filter="url(#fGlow2)">
+          <animate attributeName="r" values="5.5;9;5.5" dur="2.2s" repeatCount="indefinite"/>
         </circle>
-        <text x="150" y="176" fill="#8ef6c8" font-size="16" text-anchor="middle" font-weight="700">光刚好聚在屏幕上 → 清楚</text>
+        <text x="150" y="184" fill="#8ef6c8" font-size="16" text-anchor="middle" font-weight="700">光正好聚成一个点 → 清楚</text>
       </svg>
     </div>
     <div class="page-title ani">眼睛像一个小房间</div>
@@ -239,16 +258,37 @@ html, body {
   <div class="page bg-void" data-page="2">
     <div class="particles" id="p2"></div>
     <div class="ani">
-      <svg width="320" height="190" viewBox="0 0 320 190">
-        <ellipse cx="150" cy="92" rx="118" ry="72" fill="none" stroke="#ff9aa2" stroke-width="3" stroke-dasharray="6 4"/>
-        <ellipse cx="140" cy="92" rx="82" ry="72" fill="none" stroke="rgba(220,231,255,0.45)" stroke-width="2"/>
-        <path d="M58 58 Q40 92 58 126" fill="none" stroke="#7aa2ff" stroke-width="5"/>
-        <line x1="268" y1="30" x2="268" y2="154" stroke="#ff9aa2" stroke-width="5"/>
-        <line x1="8" y1="60" x2="216" y2="90" stroke="#8ef6c8" stroke-width="2.5"/>
-        <line x1="8" y1="124" x2="216" y2="94" stroke="#8ef6c8" stroke-width="2.5"/>
-        <circle cx="219" cy="92" r="9" fill="#ffd700"/>
-        <line x1="219" y1="92" x2="266" y2="92" stroke="#ffd700" stroke-width="2" stroke-dasharray="4 3"/>
-        <text x="160" y="182" fill="#ff9aa2" font-size="16" text-anchor="middle" font-weight="700">屏幕被推远了，点落在了前面</text>
+      <svg width="330" height="204" viewBox="0 0 330 204">
+        <defs>
+          <filter id="fBlur3" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="7"/>
+          </filter>
+        </defs>
+        <ellipse cx="140" cy="92" rx="82" ry="72" fill="none" stroke="rgba(220,231,255,0.4)" stroke-width="2" stroke-dasharray="5 5"/>
+        <text x="140" y="24" fill="rgba(220,231,255,0.6)" font-size="13" text-anchor="middle">原来的长度</text>
+        <ellipse cx="150" cy="92" rx="82" ry="70" fill="rgba(255,154,162,0.1)" stroke="#ff9aa2" stroke-width="3">
+          <animate attributeName="rx" values="82;82;122;122;82" keyTimes="0;0.14;0.44;0.9;1" dur="5s" repeatCount="indefinite"/>
+          <animate attributeName="cx" values="150;150;172;172;150" keyTimes="0;0.14;0.44;0.9;1" dur="5s" repeatCount="indefinite"/>
+        </ellipse>
+        <g stroke="#ff9aa2" stroke-width="2.4" fill="none" opacity="0">
+          <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.16;0.46;0.9;1" dur="5s" repeatCount="indefinite"/>
+          <path d="M236 150 L292 150"/><path d="M284 144 L292 150 L284 156"/>
+        </g>
+        <path d="M62 58 Q44 92 62 126" fill="none" stroke="#7aa2ff" stroke-width="6"/>
+        <line x1="230" y1="36" x2="230" y2="148" stroke="#ff9aa2" stroke-width="5">
+          <animate attributeName="x1" values="230;230;292;292;230" keyTimes="0;0.14;0.44;0.9;1" dur="5s" repeatCount="indefinite"/>
+          <animate attributeName="x2" values="230;230;292;292;230" keyTimes="0;0.14;0.44;0.9;1" dur="5s" repeatCount="indefinite"/>
+        </line>
+        <g stroke="#8ef6c8" stroke-width="2.6" fill="none" stroke-linecap="round" opacity="0.92">
+          <path d="M4 50 L62 68 L228 92 L290 114"/>
+          <path d="M4 134 L62 116 L228 92 L290 70"/>
+        </g>
+        <circle cx="228" cy="92" r="9" fill="#ffd700"/>
+        <text x="222" y="66" fill="#ffd700" font-size="13" text-anchor="middle" font-weight="700">聚光点</text>
+        <circle cx="291" cy="92" r="22" fill="#ff9aa2" filter="url(#fBlur3)" opacity="0">
+          <animate attributeName="opacity" values="0;0;0.95;0.95;0" keyTimes="0;0.3;0.5;0.9;1" dur="5s" repeatCount="indefinite"/>
+        </circle>
+        <text x="165" y="200" fill="#ff9aa2" font-size="16" text-anchor="middle" font-weight="700">屏幕被拉远，点还在原地 → 糊了</text>
       </svg>
     </div>
     <div class="page-title ani">眼球被前后拉长了</div>
@@ -285,18 +325,40 @@ html, body {
   <div class="page bg-flow" data-page="4">
     <div class="particles" id="p4"></div>
     <div class="ani">
-      <svg width="320" height="180" viewBox="0 0 320 180">
-        <path d="M40 50 Q22 90 40 130" fill="none" stroke="#ffd700" stroke-width="6"/>
-        <text x="20" y="164" fill="#ffd700" font-size="15" font-weight="700">加一片镜</text>
-        <ellipse cx="180" cy="90" rx="106" ry="68" fill="none" stroke="#dce7ff" stroke-width="3"/>
-        <path d="M96 58 Q78 90 96 122" fill="none" stroke="#7aa2ff" stroke-width="5"/>
-        <line x1="284" y1="30" x2="284" y2="150" stroke="#8ef6c8" stroke-width="5"/>
-        <line x1="8" y1="62" x2="282" y2="88" stroke="#8ef6c8" stroke-width="2.5"/>
-        <line x1="8" y1="122" x2="282" y2="92" stroke="#8ef6c8" stroke-width="2.5"/>
-        <circle cx="284" cy="90" r="9" fill="#8ef6c8">
-          <animate attributeName="r" values="7;11;7" dur="2s" repeatCount="indefinite"/>
+      <svg width="320" height="196" viewBox="0 0 320 196">
+        <defs>
+          <filter id="fGlow5" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="3.4" result="b5"/>
+            <feMerge><feMergeNode in="b5"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <path d="M34 46 Q52 92 34 138 L52 138 Q40 92 52 46 Z" fill="rgba(255,215,0,0.2)" stroke="#ffd700" stroke-width="3"/>
+        <text x="43" y="172" fill="#ffd700" font-size="14" font-weight="700" text-anchor="middle">镜片</text>
+        <text x="43" y="30" fill="#ffd700" font-size="13" font-weight="700" text-anchor="middle">中间薄</text>
+        <ellipse cx="182" cy="92" rx="106" ry="68" fill="rgba(122,162,255,0.07)" stroke="#dce7ff" stroke-width="3"/>
+        <path d="M96 60 Q78 92 96 124" fill="none" stroke="#7aa2ff" stroke-width="6"/>
+        <line x1="284" y1="42" x2="284" y2="152" stroke="#8ef6c8" stroke-width="5"/>
+        <text x="288" y="30" fill="#8ef6c8" font-size="14" font-weight="700" text-anchor="middle">屏幕</text>
+        <g stroke="rgba(255,154,162,0.55)" stroke-width="2" fill="none" stroke-dasharray="5 4">
+          <path d="M96 66 L236 92"/><path d="M96 118 L236 92"/>
+        </g>
+        <circle cx="236" cy="92" r="6" fill="rgba(255,154,162,0.7)"/>
+        <text x="232" y="74" fill="rgba(255,154,162,0.85)" font-size="12" text-anchor="middle">不戴：落这</text>
+        <g stroke="#8ef6c8" stroke-width="2.6" fill="none" stroke-linecap="round">
+          <path d="M2 56 L34 60 L52 52 L96 62 L282 90" stroke-dasharray="18 300" stroke-dashoffset="318">
+            <animate attributeName="stroke-dashoffset" values="318;0" dur="2.4s" repeatCount="indefinite"/>
+          </path>
+          <path d="M2 128 L34 124 L52 132 L96 122 L282 94" stroke-dasharray="18 300" stroke-dashoffset="318">
+            <animate attributeName="stroke-dashoffset" values="318;0" dur="2.4s" begin="0.3s" repeatCount="indefinite"/>
+          </path>
+        </g>
+        <g opacity="0.28" stroke="#8ef6c8" stroke-width="1.4" fill="none">
+          <path d="M2 56 L34 60 L52 52 L96 62 L282 90"/><path d="M2 128 L34 124 L52 132 L96 122 L282 94"/>
+        </g>
+        <circle cx="284" cy="92" r="8" fill="#8ef6c8" filter="url(#fGlow5)">
+          <animate attributeName="r" values="6.5;10.5;6.5" dur="2.4s" repeatCount="indefinite"/>
         </circle>
-        <text x="170" y="176" fill="#8ef6c8" font-size="16" text-anchor="middle" font-weight="700">把聚光点推回屏幕上</text>
+        <text x="170" y="192" fill="#8ef6c8" font-size="16" text-anchor="middle" font-weight="700">把聚光点往后推回屏幕上</text>
       </svg>
     </div>
     <div class="page-title ani">眼镜不是治眼睛，是补长度</div>
@@ -311,12 +373,25 @@ html, body {
   <div class="page bg-balance" data-page="5">
     <div class="particles" id="p5"></div>
     <div class="ani">
-      <svg width="300" height="170" viewBox="0 0 300 170">
-        <rect x="24" y="34" width="252" height="46" rx="10" fill="rgba(255,154,162,0.14)" stroke="#ff9aa2" stroke-width="2"/>
-        <text x="150" y="63" fill="#ff9aa2" font-size="19" text-anchor="middle" font-weight="800">长一毫米 = 三百度？</text>
-        <text x="150" y="106" fill="#ffd700" font-size="30" text-anchor="middle" font-weight="800">≈ 不成正比</text>
-        <rect x="24" y="122" width="252" height="34" rx="10" fill="rgba(142,246,200,0.14)" stroke="#8ef6c8" stroke-width="2"/>
-        <text x="150" y="145" fill="#8ef6c8" font-size="17" text-anchor="middle" font-weight="700">孩子在长个子，眼睛也在长</text>
+      <svg width="300" height="200" viewBox="0 0 300 200">
+        <rect x="22" y="8" width="256" height="40" rx="10" fill="rgba(255,154,162,0.14)" stroke="#ff9aa2" stroke-width="2"/>
+        <text x="150" y="35" fill="#ff9aa2" font-size="18" text-anchor="middle" font-weight="800">长一毫米 = 三百度？</text>
+        <line x1="34" y1="86" x2="266" y2="86" stroke="#dce7ff" stroke-width="3"/>
+        <g stroke="#dce7ff" stroke-width="2">
+          <line x1="34" y1="78" x2="34" y2="94"/><line x1="92" y1="80" x2="92" y2="92"/>
+          <line x1="150" y1="78" x2="150" y2="94"/><line x1="208" y1="80" x2="208" y2="92"/>
+          <line x1="266" y1="78" x2="266" y2="94"/>
+        </g>
+        <text x="34" y="110" fill="rgba(220,231,255,0.75)" font-size="12" text-anchor="middle">0</text>
+        <text x="150" y="110" fill="rgba(220,231,255,0.75)" font-size="12" text-anchor="middle">半毫米</text>
+        <text x="266" y="110" fill="rgba(220,231,255,0.75)" font-size="12" text-anchor="middle">一毫米</text>
+        <rect x="34" y="74" width="0" height="24" fill="rgba(255,215,0,0.34)" rx="3">
+          <animate attributeName="width" values="0;58;58;116;116;232;232;0" keyTimes="0;0.12;0.22;0.36;0.48;0.66;0.94;1" dur="6s" repeatCount="indefinite"/>
+        </rect>
+        <text x="150" y="136" fill="#ffd700" font-size="19" text-anchor="middle" font-weight="800">半毫米就大约一百度</text>
+        <text x="150" y="152" fill="rgba(255,215,0,0.8)" font-size="13" text-anchor="middle" font-weight="700">而且这只是成年人的大致数</text>
+        <rect x="18" y="162" width="264" height="32" rx="10" fill="rgba(142,246,200,0.14)" stroke="#8ef6c8" stroke-width="2"/>
+        <text x="150" y="184" fill="#8ef6c8" font-size="16" text-anchor="middle" font-weight="700">孩子还在长个子，眼睛也在长</text>
       </svg>
     </div>
     <div class="page-title ani">这个换算不要照着套</div>
