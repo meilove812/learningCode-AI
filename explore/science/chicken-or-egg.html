@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta name="description" content="Coco科普讲解：先有鸡还是先有蛋——三层答案，为什么找不到第一只鸡">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>先有鸡还是先有蛋 | AI讲科普</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  font-family: 'PingFang SC', 'Noto Serif SC', serif;
+  background: #0a0a0f;
+  color: #e8e0d0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.pages-wrapper { width: 100%; height: 100%; position: relative; }
+.page {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 40px 24px;
+  opacity: 0; transform: translateX(100%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none; overflow: hidden;
+}
+.page.active { opacity: 1; transform: translateX(0); pointer-events: auto; }
+.page.prev { opacity: 0; transform: translateX(-100%); }
+
+/* Backgrounds */
+.bg-void { background: radial-gradient(ellipse at center, #080808 0%, #000 70%); }
+.bg-cosmos { background: radial-gradient(ellipse at center, #0f0a1e 0%, #060410 70%); }
+.bg-dawn { background: linear-gradient(180deg, #0a0820 0%, #1a1545 50%, #0f0d25 100%); }
+.bg-light { background: linear-gradient(135deg, #1a1508 0%, #0f0d05 50%, #080604 100%); }
+.bg-dual { background: linear-gradient(135deg, #0a0a18 0%, #080812 100%); }
+.bg-nature { background: linear-gradient(180deg, #050a10 0%, #0a1520 50%, #050a0f 100%); }
+.bg-flow { background: radial-gradient(ellipse at 50% 60%, #0a1020 0%, #060810 70%); }
+.bg-balance { background: radial-gradient(ellipse at center, #100a18 0%, #080510 70%); }
+.bg-final { background: radial-gradient(ellipse at center, #0f0818 0%, #060410 70%); }
+.bg-sky { background: linear-gradient(180deg, #0a0515 0%, #101030 40%, #0a0820 100%); }
+
+/* Typography */
+.title-main {
+  font-size: clamp(2.2em, 8vw, 3.5em);
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff 0%, #c0c0c0 50%, #ffd700 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  text-align: center; line-height: 1.3;
+  animation: textGlow 4s ease-in-out infinite;
+}
+@keyframes textGlow {
+  0%,100% { filter: brightness(1) drop-shadow(0 0 8px rgba(255,255,255,0.1)); }
+  50% { filter: brightness(1.15) drop-shadow(0 0 20px rgba(255,215,0,0.3)); }
+}
+.subtitle { font-size: clamp(0.85em, 3.2vw, 1.1em); color: #5a5040; margin-top: 12px; text-align: center; letter-spacing: 4px; }
+.page-title {
+  font-size: clamp(1.4em, 5.5vw, 2em); font-weight: 800;
+  color: #ffd700; text-align: center; margin-bottom: 20px;
+  text-shadow: 0 0 15px rgba(255,215,0,0.15);
+}
+.page-text {
+  font-size: clamp(0.95em, 3.8vw, 1.15em); line-height: 2;
+  text-align: center; color: #c8bca0; max-width: 560px;
+}
+.page-text .em { color: #ffd700; font-weight: bold; }
+.page-text .light { color: #f0f0f0; font-weight: bold; }
+.page-text .dark { color: #6a7a8a; }
+.fact-card {
+  background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.15);
+  border-radius: 12px; padding: 14px 18px; margin-top: 18px;
+  max-width: 480px; text-align: left; font-size: 0.88em; line-height: 1.8; color: #a89878;
+}
+.fact-card .label { color: #ffd700; font-weight: bold; margin-bottom: 4px; }
+
+/* Animations */
+.ani { opacity: 0; transform: translateY(20px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+.page.active .ani { opacity: 1; transform: translateY(0); }
+.page.active .ani:nth-child(2) { transition-delay: 0.15s; }
+.page.active .ani:nth-child(3) { transition-delay: 0.3s; }
+.page.active .ani:nth-child(4) { transition-delay: 0.45s; }
+.page.active .ani:nth-child(5) { transition-delay: 0.6s; }
+.page.active .ani:nth-child(6) { transition-delay: 0.75s; }
+
+/* Particles */
+.particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.particle {
+  position: absolute; border-radius: 50%; opacity: 0;
+  animation: floatUp 7s ease-in-out infinite;
+}
+.particle-gold { background: radial-gradient(circle, #ffd700, transparent); }
+.particle-white { background: radial-gradient(circle, rgba(255,255,255,0.8), transparent); }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(100vh) scale(0.3); }
+  15% { opacity: 0.7; } 85% { opacity: 0.4; }
+  100% { opacity: 0; transform: translateY(-10vh) scale(0.8); }
+}
+
+/* Stars */
+.stars { position: absolute; inset: 0; pointer-events: none; }
+.star {
+  position: absolute; background: #fff; border-radius: 50%;
+  animation: twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity: 0.15; transform: scale(0.8); } 50% { opacity: 0.85; transform: scale(1.2); } }
+
+/* Navigation */
+.nav-hint {
+  position: fixed; bottom: 18px; left: 0; right: 0;
+  text-align: center; color: rgba(255,255,255,0.25); font-size: 0.75em;
+  pointer-events: none; transition: opacity 0.5s; z-index: 100;
+}
+.nav-dots {
+  position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 7px; z-index: 100;
+}
+.nav-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.15); transition: all 0.3s; cursor: pointer;
+}
+.nav-dot.active { background: #ffd700; box-shadow: 0 0 6px rgba(255,215,0,0.5); transform: scale(1.4); }
+
+.start-btn {
+  position: fixed; left: 50%; bottom: 12%; transform: translateX(-50%);
+  padding: 15px 30px; border-radius: 40px;
+  background: rgba(255,215,0,0.16); border: 2px solid rgba(255,215,0,0.75);
+  color: #ffd700; font-size: 1.06em; font-weight: 800; letter-spacing: 1px;
+  cursor: pointer; z-index: 260; backdrop-filter: blur(10px);
+  box-shadow: 0 0 26px rgba(255,215,0,0.3);
+  animation: startPulse 2s ease-in-out infinite;
+  white-space: nowrap;
+}
+@keyframes startPulse {
+  0%,100% { box-shadow: 0 0 20px rgba(255,215,0,0.22); background: rgba(255,215,0,0.14); }
+  50%     { box-shadow: 0 0 34px rgba(255,215,0,0.48); background: rgba(255,215,0,0.24); }
+}
+.start-btn.hidden { display: none; }
+.audio-btn {
+  position: fixed; top: 14px; right: 14px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+  color: #ffd700; font-size: 1.1em;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 10001; backdrop-filter: blur(10px); transition: all 0.3s;
+}
+.audio-btn:active { transform: scale(0.9); }
+.audio-btn.playing { background: rgba(255,215,0,0.15); box-shadow: 0 0 12px rgba(255,215,0,0.2); }
+.page-num { position: fixed; top: 16px; left: 16px; font-size: 0.7em; color: rgba(255,255,255,0.2); z-index: 100; }
+
+/* Voice panel */
+.voice-panel {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(10,10,15,0.96); backdrop-filter: blur(20px);
+  padding: 20px; border-top: 1px solid rgba(255,215,0,0.15);
+  transform: translateY(100%); transition: transform 0.3s; z-index: 300;
+  border-radius: 18px 18px 0 0;
+}
+.voice-panel.show { transform: translateY(0); }
+.voice-panel label { display: block; color: #7a6a5a; font-size: 0.82em; margin-bottom: 6px; }
+.voice-panel select, .voice-panel input[type="range"] {
+  width: 100%; padding: 10px; border-radius: 8px;
+  border: 1px solid rgba(255,215,0,0.15); background: rgba(255,255,255,0.04);
+  color: #d4c8b0; font-size: 0.95em; margin-bottom: 12px;
+}
+.voice-panel .close-panel { text-align: center; color: #ffd700; cursor: pointer; padding: 8px; }
+
+/* Qian hexagram glow */
+@keyframes yaoGlow {
+  0%,100% { filter: drop-shadow(0 0 4px rgba(255,215,0,0.3)); }
+  50% { filter: drop-shadow(0 0 12px rgba(255,215,0,0.7)); }
+}
+.qian-svg { animation: yaoGlow 3s ease-in-out infinite; }
+
+/* ===== 生气这期：动画（CSS 驱动，可自动化验收） ===== */
+.agem { color: #ffd700; font-weight: 700; }
+.agsub { color: #8a95b8; }
+.agsrc { font-size: 0.6em; opacity: 0.62; margin-top: 10px; line-height: 1.6; }
+.agin { opacity: 0; animation: agin 8s ease-in-out infinite both; }
+@keyframes agin { 0% { opacity: 0; transform: translateY(-9px); } 8% { opacity: 1; transform: translateY(0); }
+  86% { opacity: 1; transform: translateY(0); } 96%, 100% { opacity: 0; transform: translateY(-9px); } }
+.agfade { opacity: 0; animation: agfade 8s ease-in-out infinite both; }
+@keyframes agfade { 0% { opacity: 0; } 9% { opacity: 1; } 86% { opacity: 1; } 96%, 100% { opacity: 0; } }
+.agdraw { stroke-dasharray: 420; stroke-dashoffset: 420; animation: agdraw 8s ease-in-out infinite both; }
+@keyframes agdraw { 0% { stroke-dashoffset: 420; } 20% { stroke-dashoffset: 0; } 88% { stroke-dashoffset: 0; }
+  97%, 100% { stroke-dashoffset: 420; } }
+.agslow { stroke-dasharray: 420; stroke-dashoffset: 420; animation: agslow 8s ease-in-out infinite both; }
+@keyframes agslow { 0% { stroke-dashoffset: 420; } 62% { stroke-dashoffset: 210; } 88% { stroke-dashoffset: 210; }
+  97%, 100% { stroke-dashoffset: 420; } }
+.agpulse { animation: agpulse 2.2s ease-in-out infinite; }
+@keyframes agpulse { 0%, 100% { opacity: .42; } 50% { opacity: 1; } }
+.agdim { animation: agdim 8s ease-in-out infinite both; }
+@keyframes agdim { 0%, 42% { opacity: 1; } 60%, 88% { opacity: .16; } 97%, 100% { opacity: 1; } }
+.aglit { opacity: .16; animation: aglit 8s ease-in-out infinite both; }
+@keyframes aglit { 0%, 42% { opacity: .16; } 60%, 88% { opacity: 1; } 97%, 100% { opacity: .16; } }
+.agrunA { animation: agrunA 8s ease-in-out infinite both; }
+@keyframes agrunA { 0% { transform: translateX(0); } 14% { transform: translateX(84px); }
+  88% { transform: translateX(84px); } 97%, 100% { transform: translateX(0); } }
+.agrunB { animation: agrunB 8s ease-in-out infinite both; }
+@keyframes agrunB { 0% { transform: translateX(0); } 40% { transform: translateX(190px); }
+  88% { transform: translateX(190px); } 97%, 100% { transform: translateX(0); } }
+.agbreath { animation: agbreath 6s ease-in-out infinite; }
+@keyframes agbreath { 0% { transform: translateX(0); } 25% { transform: translateX(70px); }
+  100% { transform: translateX(220px); } }
+.agrise { animation: agrise 3s ease-in-out infinite; }
+@keyframes agrise { 0% { transform: translateY(0); opacity: 0; } 30% { opacity: .9; }
+  100% { transform: translateY(-26px); opacity: 0; } }
+.agd1{animation-delay:.15s}.agd2{animation-delay:.6s}.agd3{animation-delay:1.1s}.agd4{animation-delay:1.7s}
+.agd5{animation-delay:2.3s}.agd6{animation-delay:2.9s}.agd7{animation-delay:3.5s}.agd8{animation-delay:4.1s}
+.agp1{animation-delay:0s}.agp2{animation-delay:.5s}.agp3{animation-delay:1s}
+
+/* ===== 鸡与蛋：本期新增动画 ===== */
+.egcycle { transform-origin: 148px 96px; animation: egcycle 7s linear infinite; }
+@keyframes egcycle { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.egsquash { transform-box: fill-box; transform-origin: center bottom; animation: egsquash 3s ease-in-out infinite; }
+@keyframes egsquash { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(.72); } }
+.egline { animation: egline 6s ease-in-out infinite; }
+@keyframes egline { 0% { transform: translateX(-58px); } 50% { transform: translateX(58px); } 100% { transform: translateX(-58px); } }
+.egmag { animation: egmag 5s ease-in-out infinite; }
+@keyframes egmag { 0% { transform: translateX(-56px); opacity: .35; } 45%, 62% { transform: translateX(34px); opacity: 1; }
+  100% { transform: translateX(-56px); opacity: .35; } }
+.egcrack { animation: egcrack 6s ease-in-out infinite both; }
+@keyframes egcrack { 0%, 34% { opacity: 0; transform: translateY(6px); } 48%, 88% { opacity: 1; transform: translateY(0); }
+  97%, 100% { opacity: 0; transform: translateY(6px); } }
+</style>
+</head>
+<body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
+
+<div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
+<div class="start-btn" id="startBtn" onclick="startShow(event)">▶ 点这里开始讲解</div>
+<div class="page-num" id="pageNum">1 / 11</div>
+<div class="nav-dots" id="navDots"></div>
+<div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
+
+<div class="pages-wrapper">
+
+        <!-- Page 1: 封面 -->
+  <div class="page bg-cosmos active" data-page="0">
+    <div class="stars" id="s0"></div>
+    <div class="title-main ani">先有鸡还是先有蛋</div>
+    <div class="subtitle ani">答案分三层</div>
+    <div class="page-text ani" style="text-align:center">
+      这道题真的有答案，<br>
+      而且<span class="agem">一层比一层有意思</span>。<br><br>
+      <span class="agsub">只回答「蛋先」，其实只答对了第一层。</span>
+    </div>
+  </div>
+  <!-- Page 2: 为什么绕晕 -->
+  <div class="page bg-sky" data-page="1">
+    <div class="particles" id="p1"></div>
+    <div class="page-title ani">为什么想着就晕</div>
+    <div class="ani">
+      <svg width="296" height="192" viewBox="0 0 296 192">
+        <circle cx="148" cy="96" r="62" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2" stroke-dasharray="6 6"/>
+        <g class="egcycle"><circle cx="148" cy="34" r="9" fill="#ffd700"/><circle cx="148" cy="158" r="9" fill="#8ef6c8"/></g>
+        <g transform="translate(112,90) scale(0.9)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#ffd700"/><circle cx="12" cy="-9" r="7" fill="#ffd700"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#ffd700" stroke-width="2" stroke-linecap="round"/></g><ellipse class="" cx="196" cy="100" rx="15" ry="19" fill="#f2ead8" stroke="rgba(255,255,255,0.35)" stroke-width="1.4" />
+        <text x="112" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#ffd700">鸡</text>
+        <text x="196" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#f2ead8">蛋</text>
+        <text x="148" y="184" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffd700" class="agpulse">转一圈，又回到原地</text>
+      </svg>
+    </div>
+    <div class="page-text ani" style="text-align:center">
+      鸡从蛋里孵出来，蛋又是鸡生的。<br>
+      <span class="agem">光在这两个之间转，转不出来。</span>
+    </div>
+  </div>
+  <!-- Page 3: 第一层 比年纪 -->
+  <div class="page bg-void" data-page="2">
+    <div class="stars" id="s2"></div>
+    <div class="page-title ani">第一层：比年纪</div>
+    <div class="ani">
+      <svg width="296" height="186" viewBox="0 0 296 186">
+        <line class="agdraw agd1" x1="22" y1="80" x2="274" y2="80" stroke="#6d9ee8" stroke-width="8" stroke-linecap="round"/>
+        <text x="22" y="60" font-size="11.5" font-weight="700" fill="#8fb8f0">三亿多年前</text>
+        <text x="22" y="106" font-size="10" fill="#8a95b8">已经有动物在陆地上下蛋</text>
+        <g class="agin agd6">
+          <rect x="248" y="68" width="24" height="24" rx="6" fill="#ffd700"/>
+          <text x="260" y="85" text-anchor="middle" font-size="13" font-weight="800" fill="#2a2205">鸡</text>
+          <text x="250" y="120" text-anchor="middle" font-size="11" font-weight="700" fill="#ffd700">三千多年前</text>
+          <text x="240" y="136" text-anchor="middle" font-size="9.5" fill="#8a95b8">才被人养起来</text>
+        </g>
+        <text x="148" y="166" text-anchor="middle" font-size="13" font-weight="800" fill="#8ef6c8">三亿多年 ÷ 三千多年 ≈ 十万倍</text>
+      </svg>
+    </div>
+    <div class="page-text ani" style="text-align:center">
+      <span class="agem">这一层答案很清楚：蛋先。</span>
+      <div class="agsrc">会在陆地下蛋的动物约有三亿一千五百万年历史（二〇一九年研究）<br>最早确定无疑的家鸡骨头约三千三百到三千七百年前（二〇二二年研究）</div>
+    </div>
+  </div>
+  <!-- Page 4: 蛋是干什么用的 -->
+  <div class="page bg-flow" data-page="3">
+    <div class="particles" id="p3"></div>
+    <div class="page-title ani">蛋这个东西，是干什么用的</div>
+    <div class="ani">
+      <svg width="296" height="190" viewBox="0 0 296 190">
+        <path d="M14 96 Q40 84 66 96 Q92 108 118 96" fill="none" stroke="#6d9ee8" stroke-width="2.6" class="agdraw agd1"/>
+        <path d="M14 112 Q40 100 66 112 Q92 124 118 112" fill="none" stroke="#6d9ee8" stroke-width="2" opacity="0.6" class="agdraw agd2"/>
+        <circle cx="46" cy="76" r="5" fill="#cfe6ff"/><circle cx="66" cy="70" r="5" fill="#cfe6ff"/><circle cx="86" cy="76" r="5" fill="#cfe6ff"/>
+        <text x="66" y="146" text-anchor="middle" font-size="11" font-weight="700" fill="#8fb8f0">在水里产卵</text>
+        <text x="66" y="162" text-anchor="middle" font-size="9.5" fill="#8a95b8">不会干掉</text>
+        <path class="agdraw agd3" d="M130 100 L164 100" stroke="#ffd700" stroke-width="2.4"/>
+        <path class="agfade agd4" d="M164 95 L172 100 L164 105 Z" fill="#ffd700"/>
+        <ellipse class="" cx="230" cy="92" rx="32" ry="40" fill="#f7f2e4" stroke="rgba(255,255,255,0.35)" stroke-width="1.4" />
+        <ellipse cx="230" cy="96" rx="22" ry="28" fill="rgba(109,158,232,0.35)"/>
+        <g transform="translate(226,98) scale(0.5)" class="agfade agd5"><ellipse cx="0" cy="0" rx="15" ry="11" fill="#ffd700"/><circle cx="12" cy="-9" r="7" fill="#ffd700"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#ffd700" stroke-width="2" stroke-linecap="round"/></g>
+        <text x="230" y="150" text-anchor="middle" font-size="11" font-weight="700" fill="#f7f2e4">一枚蛋</text>
+        <text x="230" y="166" text-anchor="middle" font-size="10" fill="#8ef6c8">自己带着水的小池塘</text>
+      </svg>
+    </div>
+    <div class="page-text ani" style="text-align:center">
+      有了壳，小宝宝才能<span class="agem">在陆地上泡着水长大</span>。
+      <div class="agsrc">研究综述：这种蛋是让脊椎动物得以在陆地上繁殖的关键一步（二〇二一年）</div>
+    </div>
+  </div>
+  <!-- Page 5: 第二层 两种定义 -->
+  <div class="page bg-dawn" data-page="4">
+    <div class="stars" id="s4"></div>
+    <div class="page-title ani">第二层：你说的「鸡蛋」是哪种</div>
+    <div class="ani">
+      <svg width="296" height="204" viewBox="0 0 296 204">
+        <g class="agdim agd1">
+          <rect x="10" y="12" width="128" height="86" rx="10" fill="rgba(142,246,200,0.14)" stroke="#8ef6c8" stroke-width="1.6"/>
+          <text x="74" y="36" text-anchor="middle" font-size="11.5" font-weight="700" fill="#8ef6c8">装着小鸡的蛋</text>
+          <text x="74" y="54" text-anchor="middle" font-size="10" fill="#b8f0d8">就算鸡蛋</text>
+          <text x="74" y="82" text-anchor="middle" font-size="17" font-weight="800" fill="#8ef6c8">蛋 先</text>
+        </g>
+        <g class="aglit agd1">
+          <rect x="158" y="12" width="128" height="86" rx="10" fill="rgba(255,215,0,0.14)" stroke="#ffd700" stroke-width="1.6"/>
+          <text x="222" y="36" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffd700">鸡下的蛋</text>
+          <text x="222" y="54" text-anchor="middle" font-size="10" fill="#e8d9a8">才算鸡蛋</text>
+          <text x="222" y="82" text-anchor="middle" font-size="17" font-weight="800" fill="#ffd700">鸡 先</text>
+        </g>
+        <text x="148" y="130" text-anchor="middle" font-size="26" font-weight="800" fill="#ff8f80" class="agpulse">？</text>
+        <text x="148" y="160" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e8e0d0">同一个问题 · 两个答案</text>
+        <text x="148" y="186" text-anchor="middle" font-size="12" font-weight="700" fill="#ff8f80">不是知识不够，是问题没说清楚</text>
+      </svg>
+    </div>
+  </div>
+  <!-- Page 6: 第三层 找不到第一只 -->
+  <div class="page bg-balance" data-page="5">
+    <div class="particles" id="p5"></div>
+    <div class="page-title ani">第三层：找不到第一只鸡</div>
+    <div class="ani">
+      <svg width="296" height="180" viewBox="0 0 296 180">
+        <g transform="translate(28,60) scale(0.62)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#6d86c8"/><circle cx="12" cy="-9" r="7" fill="#6d86c8"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#6d86c8" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(66,60) scale(0.65)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#8290c6"/><circle cx="12" cy="-9" r="7" fill="#8290c6"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#8290c6" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(104,60) scale(0.6799999999999999)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#9a9bc0"/><circle cx="12" cy="-9" r="7" fill="#9a9bc0"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#9a9bc0" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(142,60) scale(0.71)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#b2a6b4"/><circle cx="12" cy="-9" r="7" fill="#b2a6b4"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#b2a6b4" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(180,60) scale(0.74)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#c9b39c"/><circle cx="12" cy="-9" r="7" fill="#c9b39c"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#c9b39c" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(218,60) scale(0.77)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#e0c07f"/><circle cx="12" cy="-9" r="7" fill="#e0c07f"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#e0c07f" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(256,60) scale(0.8)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#ffd700"/><circle cx="12" cy="-9" r="7" fill="#ffd700"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#ffd700" stroke-width="2" stroke-linecap="round"/></g>
+        <g class="egline">
+          <line x1="148" y1="14" x2="148" y2="110" stroke="#ff6a5c" stroke-width="2.4" stroke-dasharray="5 4"/>
+          <text x="148" y="126" text-anchor="middle" font-size="10" fill="#ff8f80">这边不算鸡？那边才算？</text>
+        </g>
+        <text x="28" y="146" text-anchor="middle" font-size="10" fill="#8fb8f0">很久以前</text>
+        <text x="266" y="146" text-anchor="middle" font-size="10" fill="#ffd700">现在的鸡</text>
+        <text x="148" y="170" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffd700" class="agpulse">线两边几乎一样 · 画在哪儿都不对</text>
+      </svg>
+    </div>
+    <div class="page-text ani" style="text-align:center">
+      一代和上一代<span class="agem">几乎一模一样</span>，<br>一点一点地变。
+    </div>
+  </div>
+  <!-- Page 7: 蛋也没有第一个 -->
+  <div class="page bg-light" data-page="6">
+    <div class="stars" id="s6"></div>
+    <div class="page-title ani">连蛋也没有第一个</div>
+    <div class="ani">
+      <svg width="296" height="182" viewBox="0 0 296 182">
+        <ellipse class="egsquash" cx="62" cy="68" rx="20" ry="25" fill="#cfd8e8" stroke="rgba(255,255,255,0.35)" stroke-width="1.4" />
+        <text x="62" y="108" text-anchor="middle" font-size="11" font-weight="700" fill="#cfd8e8">软的</text>
+        <text x="62" y="124" text-anchor="middle" font-size="9.5" fill="#8a95b8">按下去会凹</text>
+        <ellipse class="" cx="148" cy="68" rx="20" ry="25" fill="#e6e0d2" stroke="rgba(255,255,255,0.35)" stroke-width="1.4" />
+        <text x="148" y="108" text-anchor="middle" font-size="11" font-weight="700" fill="#e6e0d2">半硬</text>
+        <ellipse class="" cx="234" cy="68" rx="20" ry="25" fill="#f7f2e4" stroke="rgba(255,255,255,0.35)" stroke-width="1.4" />
+        <text x="234" y="108" text-anchor="middle" font-size="11" font-weight="700" fill="#f7f2e4">硬的</text>
+        <text x="234" y="124" text-anchor="middle" font-size="9.5" fill="#8a95b8">现在的鸡蛋</text>
+        <path class="agdraw agd2" d="M92 146 L206 146" fill="none" stroke="#ffd700" stroke-width="2"/>
+        <path class="agfade agd4" d="M206 141 L214 146 L206 151 Z" fill="#ffd700"/>
+        <text x="148" y="172" text-anchor="middle" font-size="12" font-weight="700" fill="#ffd700">壳也是一点一点变硬的</text>
+      </svg>
+    </div>
+    <div class="page-text ani" style="text-align:center">
+      最早的恐龙蛋，<span class="agem">壳是软的</span>。<br>
+      <span class="agsub">所以那「第一枚硬壳蛋」，一样找不到。</span>
+      <div class="agsrc">《自然》二〇二〇年论文题目就是「第一枚恐龙蛋是软的」</div>
+    </div>
+  </div>
+  <!-- Page 8: 界线是人划的 -->
+  <div class="page bg-dual" data-page="7">
+    <div class="particles" id="p7"></div>
+    <div class="page-title ani">那科学家怎么办</div>
+    <div class="ani">
+      <svg width="296" height="186" viewBox="0 0 296 186">
+        <g class="agdim agd1">
+          <rect x="104" y="18" width="88" height="62" rx="4" fill="rgba(140,140,150,0.25)" stroke="#8a95b8" stroke-width="1.4"/>
+          <line x1="104" y1="39" x2="192" y2="39" stroke="#8a95b8" stroke-width="1"/>
+          <line x1="104" y1="60" x2="192" y2="60" stroke="#8a95b8" stroke-width="1"/>
+          <line x1="148" y1="18" x2="148" y2="39" stroke="#8a95b8" stroke-width="1"/>
+          <line x1="126" y1="39" x2="126" y2="60" stroke="#8a95b8" stroke-width="1"/>
+          <line x1="170" y1="39" x2="170" y2="60" stroke="#8a95b8" stroke-width="1"/>
+          <text x="148" y="96" text-anchor="middle" font-size="11" fill="#8a95b8">自然里没有这道墙</text>
+        </g>
+        <g class="aglit agd1">
+          <line x1="60" y1="130" x2="236" y2="130" stroke="#ffd700" stroke-width="3" stroke-dasharray="7 5"/>
+          <circle cx="236" cy="130" r="5" fill="#ffd700"/>
+          <text x="148" y="152" text-anchor="middle" font-size="12" font-weight="700" fill="#ffd700">这条线是我们自己画的</text>
+        </g>
+        <text x="148" y="178" text-anchor="middle" font-size="12" font-weight="700" fill="#8ef6c8">名字是工具，不是自然里的东西</text>
+      </svg>
+    </div>
+    <div class="page-text ani" style="text-align:center">
+      「鸡」这个名字，<br>是<span class="agem">人为了方便才划出来的</span>。
+    </div>
+  </div>
+  <!-- Page 9: 三层收拢 -->
+  <div class="page bg-cosmos" data-page="8">
+    <div class="stars" id="s8"></div>
+    <div class="page-title ani">三层答案，收在一起</div>
+    <div class="page-text ani" style="text-align:left;max-width:430px">
+      <span class="agfade agd1" style="display:inline-block">
+        <span class="agem">第一层　比年纪</span><br>
+        　蛋先。差十万倍。
+      </span><br><br>
+      <span class="agfade agd4" style="display:inline-block">
+        <span class="agem">第二层　说「鸡蛋」</span><br>
+        　看你怎么定义，两种说法两个答案。
+      </span><br><br>
+      <span class="agfade agd7" style="display:inline-block">
+        <span class="agem">第三层　往根上找</span><br>
+        　没有第一只鸡，也没有第一枚蛋。
+      </span>
+    </div>
+  </div>
+  <!-- Page 10: 送你一个本事 -->
+  <div class="page bg-nature" data-page="9">
+    <div class="particles" id="p9"></div>
+    <div class="page-title ani">送你一个本事</div>
+    <div class="ani">
+      <svg width="296" height="176" viewBox="0 0 296 176">
+        <rect x="42" y="20" width="212" height="54" rx="12" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.25)" stroke-width="1.4"/>
+        <text x="148" y="44" text-anchor="middle" font-size="13" font-weight="700" fill="#e8e0d0">先有这个还是先有那个？</text>
+        <text x="148" y="63" text-anchor="middle" font-size="10.5" fill="#8a95b8">别急着答</text>
+        <g class="egmag">
+          <circle cx="148" cy="112" r="20" fill="none" stroke="#ffd700" stroke-width="3"/>
+          <line x1="162" y1="126" x2="176" y2="140" stroke="#ffd700" stroke-width="4" stroke-linecap="round"/>
+        </g>
+        <text x="148" y="166" text-anchor="middle" font-size="13" font-weight="800" fill="#ffd700">先问：从哪儿开始才算？</text>
+      </svg>
+    </div>
+    <div class="page-text ani" style="text-align:center">
+      很多题不是难，<span class="agem">是问法里藏了错</span>。<br>
+      <span class="agsub">先有种子还是先有树？同一个套路。</span>
+    </div>
+  </div>
+  <!-- Page 11: 回家试试 + 落版 -->
+  <div class="page bg-final" data-page="10">
+    <div class="particles" id="p10"></div>
+    <div class="ani">
+      <svg width="288" height="158" viewBox="0 0 288 158">
+        <path d="M56 114 Q144 104 232 114 L232 136 Q144 148 56 136 Z" fill="rgba(109,158,232,0.22)"/>
+        <line x1="56" y1="114" x2="232" y2="114" stroke="#6d9ee8" stroke-width="2"/>
+        <ellipse class="" cx="144" cy="82" rx="26" ry="33" fill="#f7f2e4" stroke="rgba(255,255,255,0.35)" stroke-width="1.4" />
+        <g class="agrise agp1"><circle cx="126" cy="100" r="3.4" fill="#cfe6ff"/></g>
+        <g class="agrise agp2"><circle cx="144" cy="104" r="4" fill="#cfe6ff"/></g>
+        <g class="agrise agp3"><circle cx="162" cy="100" r="3.4" fill="#cfe6ff"/></g>
+        <text x="144" y="154" text-anchor="middle" font-size="12" font-weight="700" fill="#8ef6c8">放进温水 · 看壳上冒小气泡</text>
+      </svg>
+    </div>
+    <div class="title-main ani">回家可以试试</div>
+    <div class="page-text ani" style="text-align:center">
+      摸摸壳，很硬；敲开以后，<br>
+      壳里面<span class="agem">还有一层软软的膜</span>。<br>
+      壳看着密不透风，<span class="agem">其实有许多小孔</span>，<br>
+      小鸡在里面就靠这些孔换气。<br><br>
+      <span class="agem">🔭 AI讲科普</span><br>
+      📌 🦎 开心的舵手
+      <div class="agsrc">蛋壳研究：壳的结构在「保护」与「透气」之间取平衡（二〇二六年综述）</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- 来源核验（2026-09-06，全部取一手研究摘要原文，逐字留存）
+1) 陆地下蛋的动物有多久：Scientific Reports 2019，PMID 30872623，doi 10.1038/s41598-019-40604-8
+   "the absence of preserved eggs or eggshell for the first third of the known 315 million year history of amniote evolution"
+   → 页面写「三亿多年」，未把「硬壳蛋」等同三亿年（该文明确说前三分之一没有蛋壳化石）。
+2) 家鸡多久：PNAS 2022，PMID 35666876，doi 10.1073/pnas.2121978119
+   "the first unambiguous domestic chicken bones are found at Neolithic Ban Non Wat in central Thailand dated to ∼1650 to 1250 BCE"
+   → 距今约 3300–3700 年，页面写「三千多年前」。
+3) 最早恐龙蛋壳是软的：Nature 2020，PMID 32555457，题目 "The first dinosaur egg was soft."
+4) 蛋是上陆地繁殖的关键：Journal of Morphology 2021，PMID 33991358，doi 10.1002/jmor.21380
+   "the amniote egg presents an exaptation that paved the evolutionary pathway for reproduction on land"
+5) 蛋壳透气：Poultry Science 2026，PMID 41453322
+   "Its design represents a fine balance between protection and permeability, ensuring successful incubation and hatching"
+「十万倍」＝315000000÷3000 的量级换算，两个原始数字同屏给出供核算。
+准确性把关：第二层明确区分「装着小鸡的蛋」与「鸡下的蛋」两种定义，各自给不同答案 —— 只答「蛋先」在第二层是不完整的。
+儿童向：全篇零术语（不用羊膜卵/物种/演化等词），结尾给可动手观察。
+-->
+
+<div class="voice-panel" id="voicePanel">
+  <label>🗣️ 声音 <select id="voiceSelect"></select></label>
+  <label>🔊 语速: <span id="rateVal">0.9</span>x <input type="range" id="rateRange" min="0.5" max="1.5" step="0.1" value="0.9"></label>
+  <div class="close-panel" onclick="toggleVoicePanel()">✕ 关闭</div>
+</div>
+
+<script>
+let cur = 0;
+const HAS_TTS = typeof window.speechSynthesis !== 'undefined' && window.speechSynthesis !== null;
+const pages = document.querySelectorAll('.page');
+const total = pages.length;
+let animating = false, speaking = false;
+
+const navDots = document.getElementById('navDots');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => go(i);
+  navDots.appendChild(d);
+}
+
+function go(idx) {
+  if (idx < 0 || idx >= total || idx === cur || animating) return;
+  animating = true;
+  stopAudio();
+  const old = pages[cur], nw = pages[idx], dir = idx > cur ? 1 : -1;
+  old.classList.remove('active'); old.classList.add('prev');
+  if (dir < 0) { old.style.transform = 'translateX(100%)'; old.style.opacity = '0'; }
+  nw.style.transform = dir > 0 ? 'translateX(100%)' : 'translateX(-100%)';
+  nw.classList.remove('prev');
+  requestAnimationFrame(() => {
+    nw.classList.add('active'); nw.style.transform = '';
+    cur = idx; updateUI();
+    setTimeout(() => {
+      animating = false;
+      old.classList.remove('prev'); old.style.transform = ''; old.style.opacity = '';
+      if (speaking) speakPage(cur);
+    }, 650);
+  });
+}
+
+function updateUI() {
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.getElementById('pageNum').textContent = `${cur + 1} / ${total}`;
+  document.getElementById('navHint').style.opacity = '0';
+  updateStartBtn();
+}
+// 封面大按钮：一点即自动讲解并自动翻页；讲解中或已翻页后隐藏
+function updateStartBtn() {
+  const sb = document.getElementById('startBtn');
+  if (!sb) return;
+  sb.classList.toggle('hidden', speaking || cur !== 0);
+}
+// 必须同步进入 toggleAudio()，中间不插任何延迟，才能留在用户手势栈内
+function startShow(e) {
+  if (e) { e.stopPropagation(); e.preventDefault(); }
+  if (!speaking) toggleAudio();
+  updateStartBtn();
+}
+
+let tx = 0, ty = 0, tt = 0;
+document.addEventListener('touchstart', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  tx = e.touches[0].clientX; ty = e.touches[0].clientY; tt = Date.now();
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  if (e.target.closest('.voice-panel,.audio-btn,.nav-dots')) return;
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty, dt = Date.now() - tt;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && dt < 500) { dx < 0 ? go(cur+1) : go(cur-1); return; }
+  if (dt < 300 && Math.abs(dx) < 15 && Math.abs(dy) < 15) {
+    e.changedTouches[0].clientX > window.innerWidth * 0.4 ? go(cur+1) : go(cur-1);
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(cur+1); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur-1); }
+});
+
+// TTS
+const narrations = [
+  "先有鸡还是先有蛋。这道题真的有答案，而且答案分三层，一层比一层有意思。只回答蛋先，其实只答对了第一层。",
+  "先说为什么想着就晕。鸡是从蛋里孵出来的，蛋又是鸡生下来的。转一圈，又回到原地。光在这两个之间转，永远转不出来。",
+  "第一层，最简单的一层：比年纪。会在陆地上下蛋的动物，已经有三亿多年。家鸡呢，只有三千多年。两个数一比，差了十万倍。所以蛋这个东西，比鸡老得太多。这一层的答案很清楚：蛋先。",
+  "顺便说说蛋是干什么用的。鱼在水里产卵，卵不会干掉。想上陆地生小宝宝就难了，会被晒干。壳解决了这件事：一枚蛋，就是一个自己带着水的小池塘，小宝宝在里面泡着长大。先有了这样的蛋，动物才能真正搬到陆地上住。",
+  "第二层要小心，因为鸡蛋有两种说法。第一种：装着小鸡的蛋就算鸡蛋。那么蛋先，因为第一只鸡是从一枚蛋里出来的，而下那枚蛋的妈妈还不算鸡。第二种：鸡下的蛋才算鸡蛋。那就变成鸡先。同一个问题，两个答案。不是知识不够，是问题没说清楚。",
+  "第三层最有意思：其实找不到第一只鸡。一代和上一代长得几乎一模一样，一点一点地变。你想画一条线，说这边不算鸡、那边才算鸡，可是线两边的鸟几乎没有差别。线画在哪儿都不对。",
+  "连蛋也没有第一个。科学家发现，最早的恐龙蛋，壳是软的。硬壳是后来一点一点变硬的。所以要找那第一枚硬壳蛋，一样找不到。",
+  "那科学家怎么办呢。他们承认一件事：鸡这个名字，是人为了方便才划出来的。自然里没有一道墙，说墙这边不算鸡、墙那边才算鸡。名字是我们的工具，不是自然里本来就有的东西。",
+  "三层答案收在一起。比年纪，蛋先，差十万倍。说鸡蛋，看你怎么定义，两种说法两个答案。往根上找，没有第一只鸡，也没有第一枚蛋。",
+  "送你一个本事。下次听到先有这个还是先有那个，别急着答，先问一句：从哪儿开始才算。很多题不是难，是问法里藏了错。比如先有种子还是先有树，也是同一个套路。",
+  "回家可以试试。找一颗鸡蛋，摸摸壳，很硬。敲开以后，壳里面还有一层软软的膜。蛋壳看着密不透风，其实上面有许多小孔，小鸡在里面就靠这些小孔换气。把蛋放进温水里，仔细看，壳上可能会冒出很小的气泡。今日科普，开心的舵手。"
+];
+
+let voices = [];
+function loadVoices() {
+  if (!HAS_TTS) return;
+  voices = window.speechSynthesis.getVoices();
+  const sel = document.getElementById('voiceSelect');
+  sel.innerHTML = '';
+  const zh = voices.filter(v => (v.lang.startsWith('zh-CN')||v.lang==='zh')&&!v.lang.startsWith('zh-HK')&&!v.lang.startsWith('zh-TW'));
+  // Sort: Edge Online (Natural) first
+  zh.sort((a, b) => {
+    const aOnline = a.name.includes('Xiaoxiao') ? 3 : a.name.includes('Online') && a.name.includes('Natural') ? 2 : a.name.includes('Microsoft') ? 1 : 0;
+    const bOnline = b.name.includes('Xiaoxiao') ? 3 : b.name.includes('Online') && b.name.includes('Natural') ? 2 : b.name.includes('Microsoft') ? 1 : 0;
+    return bOnline - aOnline;
+  });
+  (zh.length ? zh : voices.slice(0, 8)).forEach(v => {
+    const o = document.createElement('option');
+    o.value = voices.indexOf(v);
+    o.textContent = v.name.replace(/Microsoft |Google |Apple /g, '');
+    sel.appendChild(o);
+  });
+}
+if (HAS_TTS) {
+  // 旧仓库验证过的写法：先直接取一次，为空才挂一次性监听，不用裸赋值 onvoiceschanged
+  loadVoices();
+  if (!window.speechSynthesis.getVoices().length) {
+    window.speechSynthesis.addEventListener('voiceschanged', loadVoices, { once: true });
+  }
+}
+else { const vp = document.getElementById('voiceSelect'); if (vp) vp.parentElement.style.display = 'none'; }
+document.getElementById('rateRange').addEventListener('input', function() {
+  document.getElementById('rateVal').textContent = this.value;
+});
+
+// 朗读：统一走 Web Speech API（Edge 高保真 Microsoft Xiaoxiao Online Natural 优先）
+function onSegmentEnd() {
+  if (speaking && cur < total - 1) setTimeout(() => go(cur+1), 1200);
+  else if (cur === total - 1) { speaking = false; updateAudioBtn(); }
+}
+
+function stopAudio() {
+  if (HAS_TTS) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+}
+
+// 照旧仓库验证过的写法：cancel() 之后立刻同步 speak()，中间不插 setTimeout
+function speakPage(idx) {
+  if (!HAS_TTS) { showNoAudio(); return; }
+  if (!narrations[idx]) return;
+  doSpeak(idx);
+}
+
+function doSpeak(idx) {
+  try {
+    window.speechSynthesis.cancel();
+    if (!voices.length) voices = window.speechSynthesis.getVoices();
+    const u = new SpeechSynthesisUtterance(narrations[idx]);
+    const rr = document.getElementById('rateRange');
+    u.lang = 'zh-CN';
+    u.rate = rr ? parseFloat(rr.value) : 1;
+    // 语音列表可能异步到达；没拿到就不指定 voice，交给系统按 lang 自选，仍能发声
+    const sv = document.getElementById('voiceSelect');
+    if (sv && sv.value !== '' && voices[sv.value]) u.voice = voices[sv.value];
+    u.onend = onSegmentEnd;
+    u.onerror = (e) => { if (e && e.error === 'interrupted') return; showNoAudio(); };
+    window.speechSynthesis.speak(u);
+  } catch (e) { showNoAudio(); }
+}
+
+function showNoAudio() {
+  const h = document.getElementById('navHint');
+  if (h) { h.textContent = '这个浏览器不支持朗读，请用系统浏览器打开'; h.style.opacity = '1'; }
+  speaking = false; updateAudioBtn();
+}
+
+let ttsUnlocked = false;
+function toggleAudio() {
+  if (speaking) { speaking = false; stopAudio(); }
+  else {
+    speaking = true;
+    if (!ttsUnlocked) {
+      // 首次必须同步调用 speak()，中间不能插 setTimeout，否则 iOS 判定已离开用户手势栈而静默不发声
+      ttsUnlocked = true;
+      doSpeak(cur);
+    } else {
+      speakPage(cur);
+    }
+  }
+  updateAudioBtn();
+}
+function updateAudioBtn() {
+  const b = document.getElementById('audioBtn');
+  b.textContent = speaking ? '🔊' : '🔇';
+  b.classList.toggle('playing', speaking);
+  updateStartBtn();
+}
+
+let lpt;
+document.getElementById('audioBtn').addEventListener('touchstart', e => {
+  lpt = setTimeout(() => { toggleVoicePanel(); e.preventDefault(); }, 600);
+}, { passive: false });
+document.getElementById('audioBtn').addEventListener('touchend', () => clearTimeout(lpt));
+function toggleVoicePanel() { document.getElementById('voicePanel').classList.toggle('show'); }
+
+// Particles & Stars
+function mkParticles(id, n=15) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle ' + (Math.random() > 0.5 ? 'particle-gold' : 'particle-white');
+    p.style.left = Math.random()*100+'%';
+    p.style.animationDelay = Math.random()*7+'s';
+    p.style.animationDuration = (5+Math.random()*4)+'s';
+    const s = 2+Math.random()*4; p.style.width = s+'px'; p.style.height = s+'px';
+    c.appendChild(p);
+  }
+}
+function mkStars(id, n=35) {
+  const c = document.getElementById(id); if (!c) return;
+  for (let i = 0; i < n; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = Math.random()*4+'s';
+    const sz = 1+Math.random()*2; s.style.width = sz+'px'; s.style.height = sz+'px';
+    c.appendChild(s);
+  }
+}
+
+mkParticles('p0', 18); mkParticles('p3', 14); mkParticles('p6', 16); mkParticles('p8', 12); mkParticles('p9', 12);
+mkStars('s1', 35); mkStars('s4', 30);
+
+setTimeout(() => { document.getElementById('navHint').style.opacity = '0'; }, 4500);
+document.addEventListener('dblclick', e => e.preventDefault());
+</script>
+<script src="../../assets/site.js"></script><script>
+/* 修复：顶部全站导航条 z-index:9999 且按钮就压在导航条那一带，喇叭点不到。
+   抬层级 + 按导航条实际高度把按钮挪到它下面（导航换行也跟着走）。 */
+(function(){
+  function fitTopButtons(){
+    var btn=document.getElementById('audioBtn');
+    var bars=document.querySelectorAll('nav,[role="navigation"]');  /* 用 ASCII 选择器：CSS 不认 JS 的 \uXXXX 转义 */
+    var y=0;
+    for(var i=0;i<bars.length;i++){
+      var r=bars[i].getBoundingClientRect();
+      if(r.height>0 && r.top<240 && r.bottom>y) y=r.bottom;
+    }
+    var top=Math.round(y+10);
+    if(btn) btn.style.top=top+'px';
+    var pn=document.getElementById('pageNum'); if(pn) pn.style.top=(top+6)+'px';
+  }
+  fitTopButtons();
+  window.addEventListener('load',fitTopButtons);
+  window.addEventListener('resize',fitTopButtons);
+  window.addEventListener('orientationchange',fitTopButtons);
+  document.addEventListener('DOMContentLoaded',fitTopButtons);
+})();
+</script>
+</body>
+</html>
