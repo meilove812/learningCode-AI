@@ -214,7 +214,7 @@ html, body {
 .voice-panel {
   position: fixed; bottom: 0; left: 0; right: 0;
   background: rgba(10,10,15,0.96); backdrop-filter: blur(20px);
-  padding: 20px; border-top: 1px solid rgba(255,215,0,0.15);
+  padding: 20px; border-top: 1px solid rgba(255,215,106,0.15);
   transform: translateY(100%); transition: transform 0.3s; z-index: 300;
   border-radius: 18px 18px 0 0;
 }
@@ -222,15 +222,15 @@ html, body {
 .voice-panel label { display: block; color: #7a6a5a; font-size: 0.82em; margin-bottom: 6px; }
 .voice-panel select, .voice-panel input[type="range"] {
   width: 100%; padding: 10px; border-radius: 8px;
-  border: 1px solid rgba(255,215,0,0.15); background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,215,106,0.15); background: rgba(255,255,255,0.04);
   color: #d4c8b0; font-size: 0.95em; margin-bottom: 12px;
 }
 .voice-panel .close-panel { text-align: center; color: var(--gold); cursor: pointer; padding: 8px; }
 
 /* Qian hexagram glow */
 @keyframes yaoGlow {
-  0%,100% { filter: drop-shadow(0 0 4px rgba(255,215,0,0.3)); }
-  50% { filter: drop-shadow(0 0 12px rgba(255,215,0,0.7)); }
+  0%,100% { filter: drop-shadow(0 0 4px rgba(255,215,106,0.3)); }
+  50% { filter: drop-shadow(0 0 12px rgba(255,215,106,0.7)); }
 }
 .qian-svg { animation: yaoGlow 3s ease-in-out infinite; }
 
@@ -338,11 +338,11 @@ nav.site-links a:hover, nav.site-links a:active {
     <div class="ani">
       <svg width="296" height="192" viewBox="0 0 296 192">
         <circle cx="148" cy="96" r="62" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2" stroke-dasharray="6 6"/>
-        <g class="egcycle"><circle cx="148" cy="34" r="9" fill="#ffd700"/><circle cx="148" cy="158" r="9" fill="#8ef6c8"/></g>
-        <g transform="translate(112,90) scale(0.9)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#ffd700"/><circle cx="12" cy="-9" r="7" fill="#ffd700"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#ffd700" stroke-width="2" stroke-linecap="round"/></g><ellipse class="" cx="196" cy="100" rx="15" ry="19" fill="#f2ead8" stroke="rgba(255,255,255,0.35)" stroke-width="1.4" />
-        <text x="112" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#ffd700">鸡</text>
+        <g class="egcycle"><circle cx="148" cy="34" r="9" fill="#ffd76a"/><circle cx="148" cy="158" r="9" fill="#8ef6c8"/></g>
+        <g transform="translate(112,90) scale(0.9)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#ffd76a"/><circle cx="12" cy="-9" r="7" fill="#ffd76a"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#ffd76a" stroke-width="2" stroke-linecap="round"/></g><ellipse class="" cx="196" cy="100" rx="15" ry="19" fill="#f2ead8" stroke="rgba(255,255,255,0.35)" stroke-width="1.4" />
+        <text x="112" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#ffd76a">鸡</text>
         <text x="196" y="132" text-anchor="middle" font-size="12" font-weight="700" fill="#f2ead8">蛋</text>
-        <text x="148" y="184" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffd700" class="agpulse">转一圈，又回到原地</text>
+        <text x="148" y="184" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffd76a" class="agpulse">转一圈，又回到原地</text>
       </svg>
     </div>
     <div class="page-text ani" style="text-align:center">
@@ -360,9 +360,9 @@ nav.site-links a:hover, nav.site-links a:active {
         <text x="22" y="60" font-size="11.5" font-weight="700" fill="#8fb8f0">三亿多年前</text>
         <text x="22" y="106" font-size="10" fill="#8a95b8">已经有动物在陆地上下蛋</text>
         <g class="agin agd6">
-          <rect x="248" y="68" width="24" height="24" rx="6" fill="#ffd700"/>
+          <rect x="248" y="68" width="24" height="24" rx="6" fill="#ffd76a"/>
           <text x="260" y="85" text-anchor="middle" font-size="13" font-weight="800" fill="#2a2205">鸡</text>
-          <text x="250" y="120" text-anchor="middle" font-size="11" font-weight="700" fill="#ffd700">三千多年前</text>
+          <text x="250" y="120" text-anchor="middle" font-size="11" font-weight="700" fill="#ffd76a">三千多年前</text>
           <text x="240" y="136" text-anchor="middle" font-size="9.5" fill="#8a95b8">才被人养起来</text>
         </g>
         <text x="148" y="166" text-anchor="middle" font-size="13" font-weight="800" fill="#8ef6c8">三亿多年 ÷ 三千多年 ≈ 十万倍</text>
@@ -384,11 +384,11 @@ nav.site-links a:hover, nav.site-links a:active {
         <circle cx="46" cy="76" r="5" fill="#cfe6ff"/><circle cx="66" cy="70" r="5" fill="#cfe6ff"/><circle cx="86" cy="76" r="5" fill="#cfe6ff"/>
         <text x="66" y="146" text-anchor="middle" font-size="11" font-weight="700" fill="#8fb8f0">在水里产卵</text>
         <text x="66" y="162" text-anchor="middle" font-size="9.5" fill="#8a95b8">不会干掉</text>
-        <path class="agdraw agd3" d="M130 100 L164 100" stroke="#ffd700" stroke-width="2.4"/>
-        <path class="agfade agd4" d="M164 95 L172 100 L164 105 Z" fill="#ffd700"/>
+        <path class="agdraw agd3" d="M130 100 L164 100" stroke="#ffd76a" stroke-width="2.4"/>
+        <path class="agfade agd4" d="M164 95 L172 100 L164 105 Z" fill="#ffd76a"/>
         <ellipse class="" cx="230" cy="92" rx="32" ry="40" fill="#f7f2e4" stroke="rgba(255,255,255,0.35)" stroke-width="1.4" />
         <ellipse cx="230" cy="96" rx="22" ry="28" fill="rgba(109,158,232,0.35)"/>
-        <g transform="translate(226,98) scale(0.5)" class="agfade agd5"><ellipse cx="0" cy="0" rx="15" ry="11" fill="#ffd700"/><circle cx="12" cy="-9" r="7" fill="#ffd700"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#ffd700" stroke-width="2" stroke-linecap="round"/></g>
+        <g transform="translate(226,98) scale(0.5)" class="agfade agd5"><ellipse cx="0" cy="0" rx="15" ry="11" fill="#ffd76a"/><circle cx="12" cy="-9" r="7" fill="#ffd76a"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#ffd76a" stroke-width="2" stroke-linecap="round"/></g>
         <text x="230" y="150" text-anchor="middle" font-size="11" font-weight="700" fill="#f7f2e4">一枚蛋</text>
         <text x="230" y="166" text-anchor="middle" font-size="10" fill="#8ef6c8">自己带着水的小池塘</text>
       </svg>
@@ -411,10 +411,10 @@ nav.site-links a:hover, nav.site-links a:active {
           <text x="74" y="82" text-anchor="middle" font-size="17" font-weight="800" fill="#8ef6c8">蛋 先</text>
         </g>
         <g class="aglit agd1">
-          <rect x="158" y="12" width="128" height="86" rx="10" fill="rgba(255,215,0,0.14)" stroke="#ffd700" stroke-width="1.6"/>
-          <text x="222" y="36" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffd700">鸡下的蛋</text>
+          <rect x="158" y="12" width="128" height="86" rx="10" fill="rgba(255,215,106,0.14)" stroke="#ffd76a" stroke-width="1.6"/>
+          <text x="222" y="36" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffd76a">鸡下的蛋</text>
           <text x="222" y="54" text-anchor="middle" font-size="10" fill="#e8d9a8">才算鸡蛋</text>
-          <text x="222" y="82" text-anchor="middle" font-size="17" font-weight="800" fill="#ffd700">鸡 先</text>
+          <text x="222" y="82" text-anchor="middle" font-size="17" font-weight="800" fill="#ffd76a">鸡 先</text>
         </g>
         <text x="148" y="130" text-anchor="middle" font-size="26" font-weight="800" fill="#ff8f80" class="agpulse">？</text>
         <text x="148" y="160" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e8e0d0">同一个问题 · 两个答案</text>
@@ -428,14 +428,14 @@ nav.site-links a:hover, nav.site-links a:active {
     <div class="page-title ani">第三层：找不到第一只鸡</div>
     <div class="ani">
       <svg width="296" height="180" viewBox="0 0 296 180">
-        <g transform="translate(28,60) scale(0.62)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#6d86c8"/><circle cx="12" cy="-9" r="7" fill="#6d86c8"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#6d86c8" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(66,60) scale(0.65)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#8290c6"/><circle cx="12" cy="-9" r="7" fill="#8290c6"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#8290c6" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(104,60) scale(0.6799999999999999)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#9a9bc0"/><circle cx="12" cy="-9" r="7" fill="#9a9bc0"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#9a9bc0" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(142,60) scale(0.71)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#b2a6b4"/><circle cx="12" cy="-9" r="7" fill="#b2a6b4"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#b2a6b4" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(180,60) scale(0.74)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#c9b39c"/><circle cx="12" cy="-9" r="7" fill="#c9b39c"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#c9b39c" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(218,60) scale(0.77)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#e0c07f"/><circle cx="12" cy="-9" r="7" fill="#e0c07f"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#e0c07f" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(256,60) scale(0.8)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#ffd700"/><circle cx="12" cy="-9" r="7" fill="#ffd700"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#ffd700" stroke-width="2" stroke-linecap="round"/></g>
+        <g transform="translate(28,60) scale(0.62)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#6d86c8"/><circle cx="12" cy="-9" r="7" fill="#6d86c8"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#6d86c8" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(66,60) scale(0.65)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#8290c6"/><circle cx="12" cy="-9" r="7" fill="#8290c6"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#8290c6" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(104,60) scale(0.6799999999999999)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#9a9bc0"/><circle cx="12" cy="-9" r="7" fill="#9a9bc0"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#9a9bc0" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(142,60) scale(0.71)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#b2a6b4"/><circle cx="12" cy="-9" r="7" fill="#b2a6b4"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#b2a6b4" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(180,60) scale(0.74)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#c9b39c"/><circle cx="12" cy="-9" r="7" fill="#c9b39c"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#c9b39c" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(218,60) scale(0.77)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#e0c07f"/><circle cx="12" cy="-9" r="7" fill="#e0c07f"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#e0c07f" stroke-width="2" stroke-linecap="round"/></g><g transform="translate(256,60) scale(0.8)" class=""><ellipse cx="0" cy="0" rx="15" ry="11" fill="#ffd76a"/><circle cx="12" cy="-9" r="7" fill="#ffd76a"/><path d="M18 -10 L26 -8 L18 -6 Z" fill="#ffb347"/><circle cx="14" cy="-11" r="1.6" fill="#121a2b"/><path d="M-6 8 L-8 15 M4 8 L6 15" stroke="#ffd76a" stroke-width="2" stroke-linecap="round"/></g>
         <g class="egline">
           <line x1="148" y1="14" x2="148" y2="110" stroke="#ff6a5c" stroke-width="2.4" stroke-dasharray="5 4"/>
           <text x="148" y="126" text-anchor="middle" font-size="10" fill="#ff8f80">这边不算鸡？那边才算？</text>
         </g>
         <text x="28" y="146" text-anchor="middle" font-size="10" fill="#8fb8f0">很久以前</text>
-        <text x="266" y="146" text-anchor="middle" font-size="10" fill="#ffd700">现在的鸡</text>
-        <text x="148" y="170" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffd700" class="agpulse">线两边几乎一样 · 画在哪儿都不对</text>
+        <text x="266" y="146" text-anchor="middle" font-size="10" fill="#ffd76a">现在的鸡</text>
+        <text x="148" y="170" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffd76a" class="agpulse">线两边几乎一样 · 画在哪儿都不对</text>
       </svg>
     </div>
     <div class="page-text ani" style="text-align:center">
@@ -456,9 +456,9 @@ nav.site-links a:hover, nav.site-links a:active {
         <ellipse class="" cx="234" cy="68" rx="20" ry="25" fill="#f7f2e4" stroke="rgba(255,255,255,0.35)" stroke-width="1.4" />
         <text x="234" y="108" text-anchor="middle" font-size="11" font-weight="700" fill="#f7f2e4">硬的</text>
         <text x="234" y="124" text-anchor="middle" font-size="9.5" fill="#8a95b8">现在的鸡蛋</text>
-        <path class="agdraw agd2" d="M92 146 L206 146" fill="none" stroke="#ffd700" stroke-width="2"/>
-        <path class="agfade agd4" d="M206 141 L214 146 L206 151 Z" fill="#ffd700"/>
-        <text x="148" y="172" text-anchor="middle" font-size="12" font-weight="700" fill="#ffd700">壳也是一点一点变硬的</text>
+        <path class="agdraw agd2" d="M92 146 L206 146" fill="none" stroke="#ffd76a" stroke-width="2"/>
+        <path class="agfade agd4" d="M206 141 L214 146 L206 151 Z" fill="#ffd76a"/>
+        <text x="148" y="172" text-anchor="middle" font-size="12" font-weight="700" fill="#ffd76a">壳也是一点一点变硬的</text>
       </svg>
     </div>
     <div class="page-text ani" style="text-align:center">
@@ -483,9 +483,9 @@ nav.site-links a:hover, nav.site-links a:active {
           <text x="148" y="96" text-anchor="middle" font-size="11" fill="#8a95b8">自然里没有这道墙</text>
         </g>
         <g class="aglit agd1">
-          <line x1="60" y1="130" x2="236" y2="130" stroke="#ffd700" stroke-width="3" stroke-dasharray="7 5"/>
-          <circle cx="236" cy="130" r="5" fill="#ffd700"/>
-          <text x="148" y="152" text-anchor="middle" font-size="12" font-weight="700" fill="#ffd700">这条线是我们自己画的</text>
+          <line x1="60" y1="130" x2="236" y2="130" stroke="#ffd76a" stroke-width="3" stroke-dasharray="7 5"/>
+          <circle cx="236" cy="130" r="5" fill="#ffd76a"/>
+          <text x="148" y="152" text-anchor="middle" font-size="12" font-weight="700" fill="#ffd76a">这条线是我们自己画的</text>
         </g>
         <text x="148" y="178" text-anchor="middle" font-size="12" font-weight="700" fill="#8ef6c8">名字是工具，不是自然里的东西</text>
       </svg>
@@ -523,10 +523,10 @@ nav.site-links a:hover, nav.site-links a:active {
         <text x="148" y="44" text-anchor="middle" font-size="13" font-weight="700" fill="#e8e0d0">先有这个还是先有那个？</text>
         <text x="148" y="63" text-anchor="middle" font-size="10.5" fill="#8a95b8">别急着答</text>
         <g class="egmag">
-          <circle cx="148" cy="112" r="20" fill="none" stroke="#ffd700" stroke-width="3"/>
-          <line x1="162" y1="126" x2="176" y2="140" stroke="#ffd700" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="148" cy="112" r="20" fill="none" stroke="#ffd76a" stroke-width="3"/>
+          <line x1="162" y1="126" x2="176" y2="140" stroke="#ffd76a" stroke-width="4" stroke-linecap="round"/>
         </g>
-        <text x="148" y="166" text-anchor="middle" font-size="13" font-weight="800" fill="#ffd700">先问：从哪儿开始才算？</text>
+        <text x="148" y="166" text-anchor="middle" font-size="13" font-weight="800" fill="#ffd76a">先问：从哪儿开始才算？</text>
       </svg>
     </div>
     <div class="page-text ani" style="text-align:center">
