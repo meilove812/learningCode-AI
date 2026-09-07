@@ -1,3 +1,33 @@
+# ── 工作内容防护墙(2026-09-07 立)──
+# 以下目录/文件属职务相关产出，仅限本机，禁止进入本公开仓库。
+# 即使被误拷进来，也不会被 git 提交。
+judgment-library/
+verifiable-delivery/
+scenario-packs/
+workshop/
+finance-check/
+*judgment*
+*verifiable*
+*scenario-pack*
+*workshop*
+VERIFIABLE-DELIVERY.md
+conservation_check.py
+mutation_test.py
+report.py
+raw_*.json
+spec.pdf
+spec.png
 
+# 隐私：教材与课表照片、含作息的课表产物
+*.jpg
+*.jpeg
+*.png
+!assets/**/*.png
+coco-schedule-*
+media/
+assets/textbooks/
+
+# 常规
+.DS_Store
 __pycache__/
 *.pyc
