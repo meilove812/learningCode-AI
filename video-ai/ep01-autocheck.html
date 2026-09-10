@@ -196,8 +196,11 @@ function pv(){const v=speechSynthesis.getVoices();
   ||v.find(x=>/Online.*Natural/i.test(x.name)&&/zh/i.test(x.lang))||v.find(x=>/zh/i.test(x.lang))||v[0]}
 speechSynthesis.onvoiceschanged=pv;pv();
 function say(t,cb){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);
-  u.voice=voice;u.lang='zh-CN';u.rate=.85;u.pitch=1;
-  u.onend=()=>setTimeout(cb,700);u.onerror=()=>setTimeout(cb,700);speechSynthesis.speak(u)}
+  if(voice)u.voice=voice;u.lang='zh-CN';u.rate=.85;u.pitch=1;
+  let done=false;const finish=()=>{if(!done){done=true;clearTimeout(tmr);setTimeout(cb,700)}};
+  u.onend=finish;u.onerror=finish;
+  const tmr=setTimeout(finish,Math.max(t.length*350,3000));
+  try{speechSynthesis.speak(u)}catch(e){finish()}}
 function show(id){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));document.getElementById(id).classList.add('on')}
 
 const S=[
