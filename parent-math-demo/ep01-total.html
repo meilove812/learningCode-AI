@@ -3,9 +3,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>分类题解题技巧 - 动画版</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700;900&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;font-family:'Noto Sans SC',sans-serif;background:#080820;color:#fff}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#080820;color:#fff}
 .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 16px 116px;opacity:0;pointer-events:none;transition:opacity .6s ease;overflow-y:auto}
 .slide.active{opacity:1;pointer-events:auto}
 .slide::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
@@ -33,7 +32,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Noto Sans SC',sans
 .sum-card h3{color:#ffd700;font-size:clamp(15px,2.8vw,19px);margin-bottom:3px}
 .sum-card p{color:#b8c0e8;font-size:clamp(13px,2.4vw,16px);line-height:1.6}
 .control-bar{position:fixed;bottom:0;left:0;right:0;height:54px;background:linear-gradient(180deg,rgba(8,8,32,.92),rgba(8,8,32,.98));backdrop-filter:blur(16px);border-top:1px solid rgba(255,215,0,.1);display:flex;align-items:center;justify-content:center;gap:8px;padding:0 10px;z-index:100}
-.control-bar button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#c8d0f0;border-radius:50px;padding:7px 16px;font-size:13px;cursor:pointer;transition:all .25s;font-family:'Noto Sans SC',sans-serif;white-space:nowrap}
+.control-bar button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#c8d0f0;border-radius:50px;padding:7px 16px;font-size:13px;cursor:pointer;transition:all .25s;font-family:'PingFang SC','Microsoft YaHei',sans-serif;white-space:nowrap}
 .control-bar button:hover{background:rgba(255,255,255,.18);color:#fff;transform:translateY(-1px)}
 .control-bar button.primary{background:linear-gradient(135deg,#ffd700,#ff8c00);color:#1a1a4e;font-weight:700;border:none;box-shadow:0 4px 20px rgba(255,180,0,.3)}
 .control-bar .page-info{color:#667;font-size:11px;min-width:48px;text-align:center}
@@ -47,7 +46,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Noto Sans SC',sans
 <div id="slides">
 <div class="slide active" id="s0">
   <div class="stitle" style="font-size:clamp(30px,6.5vw,52px);background:linear-gradient(135deg,#ffd700,#ff8c00,#ff6b6b,#00d2ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 3px 16px rgba(255,150,0,.5))">分类题解题技巧</div>
-  <div class="canvas-area" style="max-width:560px"><canvas id="c0" width="560" height="280"></canvas></div>
+  <div class="canvas-area" style="max-width:560px"><canvas id="c0" width="560" height="280">浏览器不支持Canvas</canvas></div>
   <p class="sdesc" style="margin-top:6px;color:#a8b4e0">二年级上 · 分类与整理</p>
   <p class="sdesc" style="margin-top:8px"><span class="hl">🌟 按什么分 → 分一分 → 数一数 → 加一加对总数！</span></p>
 </div>
@@ -144,12 +143,12 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Noto Sans SC',sans
   <button onclick="goFS()">⛶</button>
 </div>
 <script>
-const TOTAL=13;
+var TOTAL=13;
 let cur=0,speaking=false,animId=null;
-const DPR=Math.min(window.devicePixelRatio||1,2);
+var DPR=Math.min(window.devicePixelRatio||1,2);
 
 // 12物品：红圆2+红方2+蓝圆2+蓝方2+绿圆2+绿方2
-const ITEMS=[
+var ITEMS=[
   {shape:'circle',color:'#ff6b6b',glow:'#ff4444',label:'红',x:0,y:0},
   {shape:'circle',color:'#ff6b6b',glow:'#ff4444',label:'红',x:0,y:0},
   {shape:'rect',color:'#ff6b6b',glow:'#ff4444',label:'红',x:0,y:0},
