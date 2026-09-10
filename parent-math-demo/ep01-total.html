@@ -354,6 +354,34 @@ function goFS(){if(!document.fullscreenElement)document.documentElement.requestF
 var tx=0;document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX;});document.addEventListener('touchend',function(e){var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>60){d<0?next():prev();}});
 document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();next();}else if(e.key==='ArrowLeft'){e.preventDefault();prev();}});
 if(window.speechSynthesis){zhVoice=pickVoice();updBadge();speechSynthesis.onvoiceschanged=function(){zhVoice=pickVoice();updBadge();};}
-updateSlide();
+// 自检：页面加载后立即在c0上画测试图形
+try {
+  var testC = document.getElementById('c0');
+  if(testC){
+    var testCtx = testC.getContext('2d');
+    // 直接用原始尺寸画，不走setupCanvas
+    testCtx.fillStyle = '#ff6b6b';
+    testCtx.beginPath();
+    testCtx.arc(100, 80, 30, 0, Math.PI*2);
+    testCtx.fill();
+    testCtx.fillStyle = '#74b9ff';
+    testCtx.beginPath();
+    testCtx.arc(200, 80, 30, 0, Math.PI*2);
+    testCtx.fill();
+    testCtx.fillStyle = '#55efc4';
+    testCtx.beginPath();
+    testCtx.arc(300, 80, 30, 0, Math.PI*2);
+    testCtx.fill();
+    testCtx.fillStyle = '#fff';
+    testCtx.font = 'bold 16px sans-serif';
+    testCtx.textAlign = 'center';
+    testCtx.fillText('12个物品', 200, 160);
+  }
+} catch(e) {
+  document.getElementById('s0').innerHTML += '<p style="color:red;font-size:14px;margin-top:10px">Canvas错误: '+e.message+'</p>';
+}
+
+// 延迟启动动画（确保DOM完全就绪）
+setTimeout(function(){ try{ updateSlide(); }catch(e){ document.getElementById('s0').innerHTML += '<p style="color:red">动画错误: '+e.message+'</p>'; } }, 200);
 </script></body></html>
 <!-- force 1789045681 -->
