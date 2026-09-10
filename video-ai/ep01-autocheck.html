@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>78% 的企业在用 AI，最缺的不是技术</title>
+<title>都说AI替代人，为什么还缺人？</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#06081a;color:#fff;font-family:'PingFang SC','Microsoft YaHei',sans-serif;
@@ -13,10 +13,11 @@ body{background:#06081a;color:#fff;font-family:'PingFang SC','Microsoft YaHei',s
 .gw1{width:280px;height:280px;background:#4a6cf7;top:-60px;right:-80px}
 .gw2{width:220px;height:220px;background:#f7c948;bottom:120px;left:-80px;animation-delay:4s}
 @keyframes gf{from{transform:translate(0) scale(1)}to{transform:translate(20px,-25px) scale(1.15)}}
-.pts{position:absolute;inset:0;overflow:hidden}
-.pt{position:absolute;width:2px;height:2px;background:rgba(255,255,255,.4);border-radius:50%;
-  animation:ptU linear infinite}
+.pts{position:absolute;inset:0;overflow:hidden}.pt{position:absolute;width:2px;height:2px;background:rgba(255,255,255,.4);border-radius:50%;animation:ptU linear infinite}
 @keyframes ptU{0%{transform:translateY(100vh);opacity:0}10%{opacity:.6}90%{opacity:.6}100%{transform:translateY(-10px);opacity:0}}
+.bg-lines{position:absolute;inset:0;overflow:hidden;z-index:0}
+.bg-line{position:absolute;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.03),transparent);animation:lnS 8s linear infinite}
+@keyframes lnS{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
 
 .pg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:50px 24px 150px;opacity:0;pointer-events:none;z-index:2;transition:opacity .8s}
@@ -25,60 +26,72 @@ body{background:#06081a;color:#fff;font-family:'PingFang SC','Microsoft YaHei',s
 .fi{opacity:0;transform:translateY(20px) scale(.97);transition:opacity .6s,transform .6s}
 .fi.d1{transition-delay:.2s}.fi.d2{transition-delay:.4s}.fi.d3{transition-delay:.6s}.fi.d4{transition-delay:.8s}
 
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.06);opacity:1}}
+@keyframes breathe{0%,100%{box-shadow:0 0 20px rgba(255,215,0,.08)}50%{box-shadow:0 0 40px rgba(255,215,0,.2)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes slideR{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+
+.badge{display:inline-block;padding:5px 16px;border-radius:20px;font-size:11px;font-weight:700;
+  color:#ffd700;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.15);margin-bottom:12px}
+.t-sm{font-size:14px;color:rgba(255,255,255,.4);text-align:center;letter-spacing:1px}
+.t-lg{font-size:36px;font-weight:900;text-align:center;line-height:1.4}
+.t-md{font-size:20px;font-weight:600;text-align:center;line-height:1.7;color:rgba(255,255,255,.7)}
+.gold{background:linear-gradient(135deg,#ffd700,#ff9500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 16px rgba(255,215,0,.2))}
+.red{color:#ff4757}.grn{color:#2ed573}
+.src{font-size:9px;color:rgba(255,255,255,.18);text-align:center;margin-top:10px;animation:fadeUp 1s .5s forwards;opacity:0}
+
+/* 矛盾对比卡 */
+.paradox{display:flex;flex-direction:column;gap:12px;width:320px;margin:16px 0}
+.px-card{padding:16px 20px;border-radius:14px;font-size:16px;font-weight:700;line-height:1.5;
+  opacity:0;animation:slideR .6s forwards}
+.px-card:nth-child(1){background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.15);color:#ff6b81;animation-delay:.2s}
+.px-card:nth-child(2){background:rgba(46,213,115,.08);border:1px solid rgba(46,213,115,.15);color:#2ed573;animation-delay:.5s}
+.px-card .vs{font-size:12px;color:rgba(255,255,255,.3);margin-top:4px;font-weight:400}
+
 /* 进度环 */
-.ring-big{position:relative;width:200px;height:200px;margin:16px 0}
+.ring-big{position:relative;width:180px;height:180px;margin:12px 0;animation:breathe 3s ease-in-out infinite}
 .ring-big svg{width:100%;height:100%;transform:rotate(-90deg)}
 .ring-big circle{fill:none;stroke-linecap:round}
 .ring-bg{stroke:rgba(255,255,255,.06);stroke-width:8}
-.ring-fg{stroke:url(#rg1);stroke-width:8;stroke-dasharray:565;stroke-dashoffset:565;transition:stroke-dashoffset 2s cubic-bezier(.4,0,.2,1)}
+.ring-fg{stroke:url(#rg1);stroke-width:8;stroke-dasharray:502;stroke-dashoffset:502;transition:stroke-dashoffset 2s cubic-bezier(.4,0,.2,1)}
 .ring-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.ring-num{font-size:56px;font-weight:900;background:linear-gradient(135deg,#ffd700,#ff9500);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.ring-lab{font-size:13px;color:rgba(255,255,255,.4);margin-top:4px}
+.ring-num{font-size:48px;font-weight:900;background:linear-gradient(135deg,#ffd700,#ff9500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:pulse 2.5s ease-in-out infinite}
+.ring-lab{font-size:12px;color:rgba(255,255,255,.4);margin-top:4px}
 
-/* 柱状对比 */
-.bars{width:320px;margin:16px 0}
-.br{display:flex;align-items:center;gap:10px;margin:10px 0}
-.br-lab{font-size:13px;width:50px;text-align:right;color:rgba(255,255,255,.5);flex-shrink:0}
-.br-track{flex:1;height:32px;border-radius:10px;background:rgba(255,255,255,.04);overflow:hidden;position:relative}
-.br-fill{height:100%;border-radius:10px;display:flex;align-items:center;padding:0 10px;justify-content:flex-end;
-  font-size:12px;font-weight:800;width:0;transition:width 1.5s cubic-bezier(.4,0,.2,1)}
-.br-fill.full{background:linear-gradient(90deg,rgba(46,213,115,.2),rgba(46,213,115,.4));color:#2ed573}
-.br-fill.low{background:linear-gradient(90deg,rgba(255,71,87,.15),rgba(255,71,87,.35));color:#ff4757}
-.br-fill.warn{background:linear-gradient(90deg,rgba(255,165,0,.15),rgba(255,165,0,.35));color:#ffa500}
-.br-alert{font-size:11px;color:#ff4757;font-weight:700;margin-left:6px;opacity:0;transition:opacity .5s;white-space:nowrap}
-.br-alert.show{opacity:1}
+/* 三不是+一而是 */
+.not-list{width:320px;margin:12px 0}
+.not-item{display:flex;align-items:center;gap:12px;padding:12px 16px;margin:8px 0;
+  border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);
+  opacity:0;animation:slideR .5s forwards}
+.not-item:nth-child(1){animation-delay:.1s}.not-item:nth-child(2){animation-delay:.3s}
+.not-item:nth-child(3){animation-delay:.5s}.not-item:nth-child(4){animation-delay:.7s}
+.not-item .icon{font-size:22px;width:36px;text-align:center;flex-shrink:0}
+.not-item .txt{font-size:14px;line-height:1.6;flex:1}
+.not-item .txt b{color:#ffd700}
+.not-item.yes{background:rgba(255,215,0,.06);border-color:rgba(255,215,0,.15)}
 
-/* 桥梁 */
-.bridge{width:320px;margin:20px 0;display:flex;align-items:center;gap:0}
-.bridge-end{padding:14px 16px;border-radius:14px;text-align:center;font-size:15px;font-weight:700;flex-shrink:0}
-.bridge-end.left{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.5)}
-.bridge-end.right{background:rgba(46,213,115,.08);border:1px solid rgba(46,213,115,.2);color:#2ed573}
-.bridge-gap{flex:1;height:3px;background:rgba(255,255,255,.08);position:relative;margin:0 -2px}
-.bridge-word{position:absolute;top:-14px;left:50%;transform:translateX(-50%);
-  padding:4px 14px;border-radius:8px;font-size:13px;font-weight:800;
-  background:linear-gradient(135deg,#ffd700,#ff9500);color:#06081a;white-space:nowrap;
-  opacity:0;transform:translateX(-50%) scale(0);transition:all .5s cubic-bezier(.2,0,.2,1)}
-.bridge-word.show{opacity:1;transform:translateX(-50%) scale(1)}
+/* 行动步骤 */
+.steps{width:320px;margin:12px 0}
+.step{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;margin:8px 0;
+  border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);
+  opacity:0;animation:slideR .5s forwards}
+.step:nth-child(1){animation-delay:.1s}.step:nth-child(2){animation-delay:.3s}
+.step:nth-child(3){animation-delay:.5s}.step:nth-child(4){animation-delay:.7s}
+.step .num{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#ffd700,#ff9500);
+  color:#06081a;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step .stxt{font-size:14px;line-height:1.7;flex:1}
+.step .stxt b{color:#ffd700}
 
-/* 行动卡 */
-.action{width:320px;padding:20px;border-radius:18px;background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,215,0,.15);margin:16px 0}
-.action .q{font-size:15px;color:rgba(255,255,255,.4);margin-bottom:10px}
-.action .a{font-size:18px;font-weight:700;color:#ffd700;line-height:1.7}
+/* 结论卡 */
+.conclusion{width:320px;padding:20px;border-radius:18px;text-align:center;
+  background:rgba(255,215,0,.04);border:1px solid rgba(255,215,0,.12);
+  animation:breathe 3s ease-in-out infinite;margin:12px 0}
+.conclusion .big{font-size:22px;font-weight:900;color:#ffd700;line-height:1.6}
+.conclusion .sub{font-size:13px;color:rgba(255,255,255,.4);margin-top:8px}
 
-/* 通用文字 */
-.t-sm{font-size:14px;color:rgba(255,255,255,.4);text-align:center;letter-spacing:1px}
-.t-lg{font-size:36px;font-weight:900;text-align:center;line-height:1.4}
-.t-md{font-size:20px;font-weight:600;text-align:center;line-height:1.6;color:rgba(255,255,255,.7)}
-.gold{background:linear-gradient(135deg,#ffd700,#ff9500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 16px rgba(255,215,0,.2))}
-.red{color:#ff4757}.grn{color:#2ed573}
-.src{font-size:9px;color:rgba(255,255,255,.2);text-align:center;margin-top:10px}
-
-/* 底部 */
-.nw{position:absolute;bottom:0;left:0;right:0;z-index:10;
-  padding:14px 24px 30px;background:linear-gradient(transparent,rgba(6,8,26,.97) 35%)}
+.nw{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:14px 24px 30px;
+  background:linear-gradient(transparent,rgba(6,8,26,.97) 35%)}
 .nar{text-align:center;font-size:17px;line-height:1.8;font-weight:500;min-height:36px}
 .nar .hl{color:#ffd700;font-weight:700}
 .bt{height:2px;border-radius:1px;background:rgba(255,255,255,.06);margin-top:10px}
@@ -89,110 +102,83 @@ body{background:#06081a;color:#fff;font-family:'PingFang SC','Microsoft YaHei',s
   background:linear-gradient(135deg,#ffd700,#ff9500);color:#06081a;cursor:pointer;
   box-shadow:0 4px 30px rgba(255,215,0,.15)}
 .go.hide{display:none}
-
-/* 增强动画 */
-@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-@keyframes scaleIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
-@keyframes slideR{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
-@keyframes pulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.08);opacity:1}}
-@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-@keyframes breathe{0%,100%{box-shadow:0 0 20px rgba(255,215,0,.1)}50%{box-shadow:0 0 40px rgba(255,215,0,.25)}}
-@keyframes countPulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
-
-/* 进度环脉冲 */
-.ring-big{animation:breathe 3s ease-in-out infinite}
-/* 数字跳动 */
-.ring-num{animation:countPulse 2s ease-in-out infinite}
-/* 柱状图条目滑入 */
-.br{opacity:0;animation:slideR .6s forwards}
-.br:nth-child(1){animation-delay:.2s}.br:nth-child(2){animation-delay:.4s}
-.br:nth-child(3){animation-delay:.6s}.br:nth-child(4){animation-delay:.8s}.br:nth-child(5){animation-delay:1s}
-/* 桥梁呼吸 */
-.bridge-end.right{animation:breathe 2.5s ease-in-out infinite}
-/* 行动卡微光 */
-.action{animation:breathe 3s ease-in-out infinite;
-  background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,215,0,.04),rgba(255,255,255,.04));
-  background-size:200% 100%;animation:shimmer 4s linear infinite,breathe 3s ease-in-out infinite}
-/* 结论文字脉冲 */
-#p5 .t-lg{animation:pulse 2.5s ease-in-out infinite}
-/* 标签浮入 */
-.badge-float{display:inline-block;padding:5px 16px;border-radius:20px;font-size:11px;font-weight:700;
-  color:#ffd700;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.15);
-  margin-bottom:12px;animation:fadeUp .8s forwards}
-/* 背景动态线 */
-.bg-lines{position:absolute;inset:0;overflow:hidden;z-index:0}
-.bg-line{position:absolute;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.03),transparent);
-  animation:lineSweep 8s linear infinite}
-@keyframes lineSweep{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
-/* 数据源标注闪烁 */
-.src{animation:fadeUp 1s .5s forwards;opacity:0}
-/* 柱状警告闪烁 */
-.br-alert.show{animation:pulse 1.5s ease-in-out infinite}
-
 </style></head><body>
 <div class="s">
   <div class="bg"></div><div class="gw gw1"></div><div class="gw gw2"></div>
   <div class="pts" id="pts"></div>
-  <div class="bg-lines">
-<div class="bg-line" style="top:15%;width:60%;left:10%;animation-delay:0s"></div>
-<div class="bg-line" style="top:35%;width:80%;left:5%;animation-delay:2s"></div>
-<div class="bg-line" style="top:55%;width:50%;left:20%;animation-delay:4s"></div>
-<div class="bg-line" style="top:75%;width:70%;left:8%;animation-delay:6s"></div>
-</div>
+  <div class="bg-lines"><div class="bg-line" style="top:20%;width:60%;animation-delay:0s"></div>
+    <div class="bg-line" style="top:50%;width:80%;animation-delay:3s"></div>
+    <div class="bg-line" style="top:75%;width:50%;animation-delay:6s"></div></div>
   <div class="tag">AI 落地观点 · 01</div>
 
-  <!-- P0: 78% -->
+  <!-- P0: 矛盾 -->
   <div class="pg on" id="p0">
-    <div class="badge-float fi">📊 Stanford HAI 2026</div>
-    <div class="t-sm fi" style="animation-delay:.1s">全球企业</div>
-    <div class="ring-big fi d1">
-      <svg viewBox="0 0 200 200"><defs><linearGradient id="rg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#ff9500"/></linearGradient></defs>
-        <circle class="ring-bg" cx="100" cy="100" r="90"/><circle class="ring-fg" id="ring1" cx="100" cy="100" r="90"/></svg>
-      <div class="ring-val"><div class="ring-num" id="rn1">0%</div><div class="ring-lab">已在使用 AI</div></div>
+    <div class="t-sm fi">一个矛盾</div>
+    <div class="paradox fi d1">
+      <div class="px-card">📰 「AI 将替代大量岗位」<div class="vs">—— 每天都能看到这类标题</div></div>
+      <div class="px-card">📊 「最缺的是会用 AI 的人」<div class="vs">—— 3200家企业的真实反馈</div></div>
     </div>
-    <div class="t-md fi d2">十家公司里，<span class="hl" style="color:#ffd700">八家已经在用</span></div>
+    <div class="t-md fi d2">都要替代了，怎么还缺人？</div>
+  </div>
+
+  <!-- P1: 数据 -->
+  <div class="pg" id="p1">
+    <div class="badge fi">📊 Stanford HAI 2026</div>
+    <div class="ring-big fi d1">
+      <svg viewBox="0 0 180 180"><defs><linearGradient id="rg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#ff9500"/></linearGradient></defs>
+        <circle class="ring-bg" cx="90" cy="90" r="80"/><circle class="ring-fg" id="ring1" cx="90" cy="90" r="80"/></svg>
+      <div class="ring-val"><div class="ring-num" id="rn1">0%</div><div class="ring-lab">企业已在使用 AI</div></div>
+    </div>
+    <div class="t-md fi d2">两年前不到六成，现在<span style="color:#ffd700">七成八</span></div>
     <div class="src fi d3">数据来源：Stanford HAI 2026 AI Index Report</div>
   </div>
 
-  <!-- P1: 不是技术 -->
-  <div class="pg" id="p1">
-    <div class="t-sm fi">但最大的瓶颈</div>
-    <div class="t-lg fi d1" style="margin:16px 0">不是技术<br><span class="gold">不是算力<br>不是数据</span></div>
-  </div>
-
-  <!-- P2: 柱状图 -->
+  <!-- P2: 替代的是什么 -->
   <div class="pg" id="p2">
-    <div class="badge-float fi">📋 3200+ 企业调研</div>
-    <div class="t-md fi" style="margin-bottom:12px">企业反馈的挑战排名</div>
-    <div class="bars fi d1" id="bars"></div>
-    <div class="src fi d2">数据来源：NVIDIA State of AI 2026 · 3200+ 企业调研</div>
+    <div class="t-md fi">替代的是<span class="red">重复动作</span></div>
+    <div class="t-lg fi d1" style="margin:16px 0"><span class="gold">不是人</span></div>
+    <div class="t-md fi d2" style="font-size:15px;color:rgba(255,255,255,.45);line-height:2">
+      填表 → 替代了<br>核对 → 替代了<br>搬运数据 → 替代了<br><span style="color:#ffd700">但「决定做什么」→ 没替代</span></div>
   </div>
 
-  <!-- P3: 会用 vs 用得好 -->
+  <!-- P3: 缺的是什么人 -->
   <div class="pg" id="p3">
-    <div class="t-md fi">会用 ≠ 用得好</div>
-    <div class="bridge fi d1">
-      <div class="bridge-end left">会用</div>
-      <div class="bridge-gap"><div class="bridge-word" id="bw">交付</div></div>
-      <div class="bridge-end right">用得好</div>
+    <div class="t-sm fi">缺的到底是什么人？</div>
+    <div class="not-list fi d1" id="notlist">
+      <div class="not-item"><div class="icon">❌</div><div class="txt">不是算法工程师<br><span style="color:rgba(255,255,255,.35);font-size:12px">模型有现成的</span></div></div>
+      <div class="not-item"><div class="icon">❌</div><div class="txt">不是纯技术背景<br><span style="color:rgba(255,255,255,.35);font-size:12px">只懂代码不懂业务，落不了地</span></div></div>
+      <div class="not-item"><div class="icon">❌</div><div class="txt">也不是纯业务背景<br><span style="color:rgba(255,255,255,.35);font-size:12px">只提需求不碰工具，推不动</span></div></div>
+      <div class="not-item yes"><div class="icon">✅</div><div class="txt"><b>懂一个业务流程</b><br><b>又能让 AI 在里面跑通的人</b></div></div>
     </div>
-    <div class="t-sm fi d2" style="margin-top:16px;line-height:1.8">不是演示一下<br>是能落地、能验证、<span style="color:#ffd700">能交接</span></div>
   </div>
 
-  <!-- P4: 行动 -->
+  <!-- P4: 不需要深厚技术 -->
   <div class="pg" id="p4">
-    <div class="t-sm fi">从今天开始</div>
-    <div class="action fi d1">
-      <div class="q">每做一件事，多问自己一句：</div>
-      <div class="a">「这个结果<br>别人能接手吗？」</div>
+    <div class="t-md fi">需要深厚的技术背景吗？</div>
+    <div class="conclusion fi d1">
+      <div class="big">不需要写模型<br>需要的是<br>让模型在业务里<br>跑通、验证、交接</div>
     </div>
-    <div class="t-sm fi d2" style="margin-top:12px;line-height:1.8">能接手 = 有文档、有验证、有交接<br>不能 = 只是你会做，换个人就崩</div>
+    <div class="t-sm fi d2" style="line-height:2;margin-top:8px">
+      跑通 = 不只是演示成功<br>验证 = 结果能证明是对的<br>交接 = 别人能接手继续用</div>
   </div>
 
-  <!-- P5: 结论 -->
+  <!-- P5: 怎么开始 -->
   <div class="pg" id="p5">
-    <div class="t-lg fi"><span class="gold">AI 不缺<br>缺的是<br>能把 AI<br>用到位的人</span></div>
-    <div class="t-sm fi d1" style="margin-top:20px">你，准备好了吗？</div>
+    <div class="badge fi">🚀 今天就能开始</div>
+    <div class="steps fi d1">
+      <div class="step"><div class="num">1</div><div class="stxt">选你<b>最熟的一个业务流程</b></div></div>
+      <div class="step"><div class="num">2</div><div class="stxt">找里面<b>最重复的一个步骤</b></div></div>
+      <div class="step"><div class="num">3</div><div class="stxt">用 AI 试一次，<b>记下哪里行哪里不行</b></div></div>
+      <div class="step"><div class="num">4</div><div class="stxt">这个经验，<b>就是企业最缺的</b></div></div>
+    </div>
+  </div>
+
+  <!-- P6: 结论 -->
+  <div class="pg" id="p6">
+    <div class="t-lg fi"><span class="gold">AI 替代重复<br>但需要人<br>让它跑对</span></div>
+    <div class="t-md fi d1" style="margin-top:20px;font-size:15px;color:rgba(255,255,255,.4)">
+      你不用成为 AI 专家<br>你需要成为<span style="color:#ffd700">你那个领域里最会用 AI 的人</span></div>
+    <div class="t-sm fi d2" style="margin-top:16px">你现在的工作里，哪个步骤最重复？</div>
   </div>
 
   <div class="nw"><div class="nar" id="nar">点击按钮，开始自动讲解</div>
@@ -203,17 +189,8 @@ body{background:#06081a;color:#fff;font-family:'PingFang SC','Microsoft YaHei',s
 (()=>{const c=document.getElementById('pts');for(let i=0;i<25;i++){const p=document.createElement('div');p.className='pt';
   p.style.cssText=`left:${Math.random()*100}%;animation-duration:${7+Math.random()*8}s;animation-delay:${Math.random()*5}s`;c.appendChild(p)}})();
 
-function animRing(){const c=565.5*(1-.78);document.getElementById('ring1').style.strokeDashoffset=c;
+function animRing(){const c=502*(1-.78);document.getElementById('ring1').style.strokeDashoffset=c;
   let v=0;const iv=setInterval(()=>{v+=2;if(v>78){v=78;clearInterval(iv)}document.getElementById('rn1').textContent=v+'%'},30)}
-function drawBars(){
-  const d=[['人才',85,'low','⚠️ 第一名'],['成本',62,'warn',''],['数据',48,'full',''],['算力',35,'full',''],['安全',30,'full','']];
-  const el=document.getElementById('bars');el.innerHTML='';
-  d.forEach(([l,w,cl,alert],i)=>{const r=document.createElement('div');r.className='br';r.style.animationDelay=(0.2+i*0.2)+'s';
-    r.innerHTML=`<div class="br-lab">${l}</div><div class="br-track"><div class="br-fill ${cl}" id="bf${i}">${w}%</div></div><div class="br-alert" id="ba${i}">${alert}</div>`;
-    el.appendChild(r);
-    setTimeout(()=>{document.getElementById('bf'+i).style.width=w+'%';if(alert)document.getElementById('ba'+i).classList.add('show')},300+i*200)})
-}
-function showBridge(){setTimeout(()=>document.getElementById('bw').classList.add('show'),500)}
 
 let voice=null,playing=false,si=0;
 function pv(){const v=speechSynthesis.getVoices();
@@ -226,18 +203,23 @@ function say(t,cb){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance
 function show(id){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));document.getElementById(id).classList.add('on')}
 
 const S=[
-  {p:'p0',t:'十家公司里，八家已经在用了。',fn:animRing},
-  {p:'p0',t:'两年前还不到六成，现在是七成八。'},
-  {p:'p1',t:'但他们最头疼的，不是技术不行。'},
-  {p:'p1',t:'不是算力不够，也不是数据不好。'},
-  {p:'p2',t:'三千两百家企业说：缺人，才是第一名。',fn:drawBars},
-  {p:'p2',t:'找不到真正会用的人。'},
-  {p:'p3',t:'会用和用得好之间，差一个词。',fn:showBridge},
-  {p:'p3',t:'交付。不是演示一下，是能落地能交接。'},
-  {p:'p4',t:'从今天开始，每做完一件事。'},
-  {p:'p4',t:'多问一句：这个结果，别人能接手吗？'},
-  {p:'p5',t:'缺的不是工具，是能把工具用到位的人。'},
-  {p:'p5',t:'你，准备好了吗？'},
+  {p:'p0',t:'一边说替代，一边说缺人。'},
+  {p:'p0',t:'这个矛盾，其实不矛盾。'},
+  {p:'p1',t:'七成八的企业已经在用了。',fn:animRing},
+  {p:'p1',t:'但他们最头疼的，是找不到会用的人。'},
+  {p:'p2',t:'因为替代的不是人，是重复动作。'},
+  {p:'p2',t:'填表、核对、搬数据，这些被替代了。'},
+  {p:'p2',t:'但「决定做什么」，没有被替代。'},
+  {p:'p3',t:'缺的不是算法工程师。'},
+  {p:'p3',t:'是懂业务、又能让工具跑通的人。'},
+  {p:'p4',t:'不需要你写模型。'},
+  {p:'p4',t:'需要你能跑通、能验证、能交接。'},
+  {p:'p5',t:'今天就能开始。'},
+  {p:'p5',t:'选你最熟的一个流程，找最重复的一步。'},
+  {p:'p5',t:'用一次，记下哪里行哪里不行。'},
+  {p:'p5',t:'这个经验，就是企业花钱买不到的。'},
+  {p:'p6',t:'你不用成为专家。'},
+  {p:'p6',t:'成为你那个领域里，最会用的那个人。'},
 ];
 function run(){if(si>=S.length){si=0;playing=false;document.getElementById('go').classList.remove('hide');
   document.getElementById('go').textContent='▶ 重新播放';return}
