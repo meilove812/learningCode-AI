@@ -1,0 +1,56 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canvas测试</title>
+<style>body{background:#080820;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;color:#fff;font-family:sans-serif}
+canvas{border:2px solid #ffd700;border-radius:12px;max-width:90vw}
+p{margin-top:10px;font-size:14px}</style>
+</head><body>
+<canvas id="c" width="400" height="300"></canvas>
+<p id="msg">加载中...</p>
+<script>
+try {
+  var c = document.getElementById('c');
+  var ctx = c.getContext('2d');
+  
+  // 红圆
+  ctx.fillStyle = '#ff6b6b';
+  ctx.beginPath();
+  ctx.arc(80, 100, 35, 0, Math.PI*2);
+  ctx.fill();
+  
+  // 蓝圆
+  ctx.fillStyle = '#74b9ff';
+  ctx.beginPath();
+  ctx.arc(200, 100, 35, 0, Math.PI*2);
+  ctx.fill();
+  
+  // 绿圆
+  ctx.fillStyle = '#55efc4';
+  ctx.beginPath();
+  ctx.arc(320, 100, 35, 0, Math.PI*2);
+  ctx.fill();
+  
+  // 红方
+  ctx.fillStyle = '#ff6b6b';
+  ctx.fillRect(50, 180, 60, 60);
+  
+  // 蓝方
+  ctx.fillStyle = '#74b9ff';
+  ctx.fillRect(170, 180, 60, 60);
+  
+  // 绿方
+  ctx.fillStyle = '#55efc4';
+  ctx.fillRect(290, 180, 60, 60);
+  
+  // 文字
+  ctx.fillStyle = '#ffd700';
+  ctx.font = 'bold 20px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('6个物品 - Canvas正常', 200, 280);
+  
+  document.getElementById('msg').textContent = '✅ Canvas正常工作';
+} catch(e) {
+  document.getElementById('msg').textContent = '❌ 错误: ' + e.message;
+}
+</script>
+</body></html>
