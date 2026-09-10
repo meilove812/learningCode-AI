@@ -152,6 +152,14 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Noto Sans SC',sans
   <button onclick="goFS()">⛶</button>
 </div>
 <script>
+
+window.onerror=function(msg,url,line,col,err){
+  var d=document.createElement('div');
+  d.style.cssText='position:fixed;top:50%;left:10%;right:10%;z-index:9999;background:red;color:white;padding:20px;border-radius:10px;font-size:16px;text-align:center';
+  d.textContent='JS错误: '+msg+' (行'+line+')';
+  document.body.appendChild(d);
+  return false;
+};
 const TOTAL=13;
 let cur=0,speaking=false,animId=null;
 const DPR=Math.min(window.devicePixelRatio||1,2);
