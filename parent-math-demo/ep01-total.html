@@ -1,15 +1,15 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>分类题技巧 · 二年级数学</title>
+<title>分类题总数对不上？孩子可能数重了</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#faf6f1;color:#2d2d2d;font-family:'PingFang SC','Microsoft YaHei',sans-serif;
   display:flex;justify-content:center;height:100vh;overflow:hidden}
 .s{width:100vw;max-width:430px;height:100vh;position:relative;overflow:hidden;
   background:linear-gradient(180deg,#faf6f1,#f5efe8)}
-.deco{position:absolute;border-radius:50%;opacity:.06}
-.d1{width:260px;height:260px;background:#ff9a76;top:-80px;right:-60px}
-.d2{width:200px;height:200px;background:#a8d8ea;bottom:100px;left:-80px}
+.deco{position:absolute;border-radius:50%;opacity:.05}
+.dc1{width:280px;height:280px;background:#ff9a76;top:-80px;right:-80px}
+.dc2{width:200px;height:200px;background:#a8d8ea;bottom:80px;left:-60px}
 
 .pg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:50px 24px 150px;opacity:0;pointer-events:none;z-index:2;transition:opacity .7s}
@@ -18,44 +18,69 @@ body{background:#faf6f1;color:#2d2d2d;font-family:'PingFang SC','Microsoft YaHei
 .fi{opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s}
 .fi.d1{transition-delay:.15s}.fi.d2{transition-delay:.3s}.fi.d3{transition-delay:.45s}
 
-.badge{display:inline-block;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600;
-  background:#fff3e0;color:#e67e22;border:1px solid #f5d0a0;margin-bottom:10px}
-.t-lg{font-size:32px;font-weight:900;text-align:center;line-height:1.4}
-.t-lg .warm{color:#e67e22}.t-lg .calm{color:#3498db}
+@keyframes shake{0%,100%{transform:translate(0)}25%{transform:translate(-3px,2px)}75%{transform:translate(3px,-2px)}}
+@keyframes popIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.badge{display:inline-block;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:10px}
+.badge.err{background:#fff0f0;color:#e74c3c;border:1px solid #f5c6c6}
+.badge.tip{background:#fff8ee;color:#e67e22;border:1px solid #f5d0a0}
+.badge.ok{background:#f0fff4;color:#27ae60;border:1px solid #a3d9b1}
+.t-lg{font-size:30px;font-weight:900;text-align:center;line-height:1.4}
+.t-lg .warm{color:#e67e22}.t-lg .red{color:#e74c3c}.t-lg .grn{color:#27ae60}
 .t-md{font-size:18px;font-weight:600;text-align:center;line-height:1.7;color:#444}
-.t-sm{font-size:13px;color:#aaa;text-align:center;margin-top:8px}
+.t-sm{font-size:13px;color:#aaa;text-align:center;margin-top:6px}
 
-.balloon-area{width:320px;height:220px;position:relative;margin:14px 0;
-  border-radius:20px;background:rgba(255,255,255,.6);border:1px solid rgba(0,0,0,.04);
-  box-shadow:0 4px 16px rgba(0,0,0,.03)}
-.balloon{position:absolute;width:42px;height:52px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
-  display:flex;align-items:center;justify-content:center;font-size:20px;
-  box-shadow:0 3px 10px rgba(0,0,0,.06);transition:all 1s cubic-bezier(.4,0,.2,1)}
-.b-red{background:linear-gradient(135deg,#ffcdd2,#ef9a9a)}
-.b-blue{background:linear-gradient(135deg,#bbdefb,#90caf9)}
-.b-yellow{background:linear-gradient(135deg,#fff9c4,#fff176)}
+/* 物品区域 */
+.items-area{width:330px;min-height:200px;position:relative;margin:14px 0;padding:16px;
+  border-radius:20px;background:#fff;border:1px solid rgba(0,0,0,.04);
+  box-shadow:0 4px 20px rgba(0,0,0,.04);display:flex;flex-wrap:wrap;gap:8px;
+  justify-content:center;align-items:center}
+.item{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:800;color:#fff;position:relative;
+  box-shadow:0 3px 10px rgba(0,0,0,.1);transition:all .6s cubic-bezier(.4,0,.2,1)}
+.item.circle{border-radius:50%}
+.item.c-red{background:linear-gradient(135deg,#ff6b6b,#ee5a5a)}
+.item.c-blue{background:linear-gradient(135deg,#74b9ff,#5a9bdb)}
+.item.c-yellow{background:linear-gradient(135deg,#ffeaa7,#fdcb6e)}
+.item.c-green{background:linear-gradient(135deg,#55efc4,#3dc9a0)}
+/* 重复标记 */
+.item.dup{animation:shake .3s ease-in-out infinite;box-shadow:0 0 0 3px #e74c3c,0 4px 16px rgba(231,76,60,.3)}
+.item.dup::after{content:'重复';position:absolute;top:-10px;right:-10px;
+  padding:2px 6px;border-radius:8px;font-size:9px;font-weight:700;
+  background:#e74c3c;color:#fff;animation:popIn .3s}
+/* 正确标记 */
+.item.ok-mark::after{content:'✓';position:absolute;top:-8px;right:-8px;
+  width:20px;height:20px;border-radius:50%;font-size:11px;
+  background:#27ae60;color:#fff;display:flex;align-items:center;justify-content:center;
+  animation:popIn .3s}
 
-.gl{display:flex;gap:8px;margin:10px 0;justify-content:center}
-.gl-item{padding:8px 14px;border-radius:12px;font-size:14px;font-weight:700;text-align:center;
-  background:#fff;border:2px solid rgba(0,0,0,.05);box-shadow:0 2px 8px rgba(0,0,0,.03);
-  opacity:0;transform:scale(.9);transition:all .4s}
-.gl-item.show{opacity:1;transform:scale(1)}
-.gl-item .n{font-size:22px;font-weight:900;display:block}
-.gl-item .n.w{color:#e67e22}.gl-item .n.c{color:#3498db}.gl-item .n.p{color:#e74c8c}
+/* 分组区 */
+.groups{width:330px;display:flex;gap:8px;margin:10px 0}
+.group{flex:1;padding:10px 6px;border-radius:14px;background:#fff;
+  border:1px solid rgba(0,0,0,.04);box-shadow:0 2px 8px rgba(0,0,0,.03);text-align:center}
+.group .g-title{font-size:12px;color:#888;margin-bottom:6px;font-weight:600}
+.group .g-items{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;min-height:40px}
+.group .g-item{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.group .g-item.circle{border-radius:50%}
+.group .g-count{font-size:20px;font-weight:900;margin-top:6px}
+.group .g-count.red{color:#e74c3c}.group .g-count.grn{color:#27ae60}
 
-.step-card{width:320px;padding:16px 20px;border-radius:16px;background:#fff;
-  border:1px solid rgba(0,0,0,.04);box-shadow:0 3px 12px rgba(0,0,0,.04);margin:10px 0}
-.step-card .step-num{display:inline-block;width:28px;height:28px;border-radius:50%;
-  background:#e67e22;color:#fff;font-size:13px;font-weight:800;text-align:center;line-height:28px;margin-right:8px}
-.step-card .step-text{font-size:15px;color:#333;line-height:1.7}
-.step-card .step-text b{color:#e67e22}
+/* 计算卡 */
+.calc{width:330px;padding:16px 20px;border-radius:16px;background:#fff;
+  border:1px solid rgba(0,0,0,.04);box-shadow:0 3px 12px rgba(0,0,0,.04);
+  margin:10px 0;text-align:center}
+.calc .eq{font-size:22px;font-weight:900;line-height:2}
+.calc .eq .red{color:#e74c3c}.calc .eq .grn{color:#27ae60}
 
-.key-box{width:320px;padding:18px;border-radius:16px;text-align:center;
-  background:linear-gradient(135deg,#fff8ee,#fff3e0);border:2px solid #f5d0a0;margin:12px 0}
-.key-box .key{font-size:20px;font-weight:900;color:#e67e22;line-height:1.6}
+/* 技巧卡 */
+.tip-box{width:330px;padding:18px;border-radius:16px;text-align:center;
+  background:linear-gradient(135deg,#fff8ee,#fff3e0);border:2px solid #f5d0a0;margin:10px 0}
+.tip-box .tip{font-size:18px;font-weight:900;color:#e67e22;line-height:1.7}
 
-.nw{position:absolute;bottom:0;left:0;right:0;z-index:10;
-  padding:14px 24px 30px;background:linear-gradient(transparent,rgba(250,246,241,.97) 30%)}
+.nw{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:14px 24px 30px;
+  background:linear-gradient(transparent,rgba(250,246,241,.97) 30%)}
 .nar{text-align:center;font-size:16px;line-height:1.8;color:#444;font-weight:500;min-height:36px}
 .nar .hl{color:#e67e22;font-weight:700}
 .bt{height:3px;border-radius:2px;background:rgba(0,0,0,.05);margin-top:8px}
@@ -68,53 +93,54 @@ body{background:#faf6f1;color:#2d2d2d;font-family:'PingFang SC','Microsoft YaHei
 .go.hide{display:none}
 </style></head><body>
 <div class="s">
-  <div class="deco d1"></div><div class="deco d2"></div>
+  <div class="deco dc1"></div><div class="deco dc2"></div>
   <div class="tag">二年级数学 · 分类与整理</div>
 
+  <!-- P0: 问题 -->
   <div class="pg on" id="p0">
-    <div class="badge fi">学习技巧</div>
-    <div class="t-lg fi d1">分类题<br><span class="warm">一个技巧解决一类题</span></div>
-    <div class="t-sm fi d2">二年级数学上 · 第一单元</div>
+    <div class="badge err fi">❌ 常见错误</div>
+    <div class="t-lg fi d1">分类题<br>孩子数出来 <span class="red">14</span> 个<br>答案是 <span class="grn">12</span> 个</div>
+    <div class="t-md fi d2" style="margin-top:12px">多出来的 2 个<br>哪来的？</div>
   </div>
 
+  <!-- P1: 12个物品 -->
   <div class="pg" id="p1">
-    <div class="t-md fi">一堆气球混在一起<br>怎么一眼看出哪种最多？</div>
-    <div class="balloon-area fi d1" id="a1"></div>
+    <div class="t-md fi">先看这 12 个物品</div>
+    <div class="items-area fi d1" id="items1"></div>
+    <div class="t-sm fi d2">按颜色分成三组，每组数一数</div>
   </div>
 
+  <!-- P2: 分组 + 错误计数 -->
   <div class="pg" id="p2">
-    <div class="badge fi">技巧一</div>
-    <div class="t-md fi d1"><span style="color:#e67e22;font-weight:700">选一个标准，按这个标准分</span></div>
-    <div class="balloon-area fi d2" id="a2"></div>
-    <div class="gl fi d3" id="gl1"></div>
+    <div class="badge err fi">❌ 孩子数的结果</div>
+    <div class="groups fi d1" id="groups1"></div>
+    <div class="calc fi d2" id="calc1"></div>
   </div>
 
+  <!-- P3: 找到重复 -->
   <div class="pg" id="p3">
-    <div class="badge fi">技巧二</div>
-    <div class="t-md fi d1"><span style="color:#3498db;font-weight:700">换一个标准再分一次</span></div>
-    <div class="balloon-area fi d2" id="a3"></div>
-    <div class="gl fi d3" id="gl2"></div>
+    <div class="badge err fi">🔍 找到问题</div>
+    <div class="t-md fi d1">这两个被数了<span style="color:#e74c3c;font-weight:700">两遍</span></div>
+    <div class="items-area fi d2" id="items2"></div>
+    <div class="t-sm fi d3">蓝绿交界处的两个，两边都数了一遍</div>
   </div>
 
+  <!-- P4: 正确方法 -->
   <div class="pg" id="p4">
-    <div class="badge fi">发现</div>
-    <div class="t-lg fi d1"><span class="warm">同样的东西</span><br><span class="calm">换标准分</span><br>结果不同</div>
-    <div class="t-md fi d2" style="margin-top:12px;font-size:15px;color:#888">按形状：3、4、5<br>按颜色：4、4、4</div>
+    <div class="badge ok fi">✅ 正确方法</div>
+    <div class="t-md fi d1">分完<span style="color:#27ae60;font-weight:700">加一加</span>，总数必须等于 12</div>
+    <div class="groups fi d2" id="groups2"></div>
+    <div class="calc fi d3" id="calc2"></div>
   </div>
 
+  <!-- P5: 技巧 -->
   <div class="pg" id="p5">
-    <div class="badge fi">举一反三</div>
-    <div class="step-card fi d1"><span class="step-num">1</span><span class="step-text">整理书包 → 按<b>科目</b>分</span></div>
-    <div class="step-card fi d2"><span class="step-num">2</span><span class="step-text">收拾玩具 → 按<b>大小</b>分</span></div>
-    <div class="step-card fi d3"><span class="step-num">3</span><span class="step-text">超市货架 → 按<b>种类</b>分</span></div>
-    <div class="t-sm fi d3" style="margin-top:8px">课本上的方法，生活里到处能用</div>
-  </div>
-
-  <div class="pg" id="p6">
-    <div class="key-box fi">
-      <div class="key">掌握这个技巧<br>所有分类题都是同一个方法：<br>选标准 → 分一分 → 数一数</div>
+    <div class="badge tip fi">💡 记住一招</div>
+    <div class="tip-box fi d1">
+      <div class="tip">分完加一加<br>加不回原数<br>就是数重了或者漏了</div>
     </div>
-    <div class="t-sm fi d1" style="margin-top:12px">学会方法，比记住答案有用</div>
+    <div class="t-md fi d2" style="margin-top:12px;font-size:15px;color:#888">
+      所有分类题<br>都用这一招检查</div>
   </div>
 
   <div class="nw"><div class="nar" id="nar">点击按钮，开始自动讲解</div>
@@ -122,34 +148,50 @@ body{background:#faf6f1;color:#2d2d2d;font-family:'PingFang SC','Microsoft YaHei
   <button class="go" id="go" onclick="start()">▶ 开始讲解</button>
 </div>
 <script>
-const BB=[
-  {e:'🌸',s:'flower',c:'red',cl:'b-red'},{e:'💗',s:'heart',c:'red',cl:'b-red'},
-  {e:'🎈',s:'circle',c:'red',cl:'b-red'},{e:'❤️',s:'heart',c:'red',cl:'b-red'},
-  {e:'💙',s:'heart',c:'blue',cl:'b-blue'},{e:'🔵',s:'circle',c:'blue',cl:'b-blue'},
-  {e:'💠',s:'flower',c:'blue',cl:'b-blue'},{e:'🟡',s:'circle',c:'yellow',cl:'b-yellow'},
-  {e:'🌼',s:'flower',c:'yellow',cl:'b-yellow'},{e:'🟡',s:'circle',c:'yellow',cl:'b-yellow'},
-  {e:'🔵',s:'circle',c:'blue',cl:'b-blue'},{e:'💛',s:'heart',c:'yellow',cl:'b-yellow'},
+const ITEMS=[
+  {shape:'circle',color:'c-red',label:'红'},{shape:'',color:'c-red',label:'红'},
+  {shape:'circle',color:'c-red',label:'红'},{shape:'',color:'c-red',label:'红'},
+  {shape:'circle',color:'c-blue',label:'蓝'},{shape:'',color:'c-blue',label:'蓝'},
+  {shape:'circle',color:'c-blue',label:'蓝'},{shape:'',color:'c-blue',label:'蓝'},
+  {shape:'circle',color:'c-green',label:'绿'},{shape:'',color:'c-green',label:'绿'},
+  {shape:'circle',color:'c-green',label:'绿'},{shape:'',color:'c-green',label:'绿'},
 ];
-function fill(id,pos){const a=document.getElementById(id);a.innerHTML='';
-  BB.forEach((b,i)=>{const d=document.createElement('div');d.className='balloon '+b.cl;d.textContent=b.e;
-    d.style.left=pos[i][0]+'px';d.style.top=pos[i][1]+'px';a.appendChild(d)})}
-function scatter(id){fill(id,BB.map((_,i)=>[12+(i%4)*72,10+Math.floor(i/4)*68]))}
-function sortShape(id){
-  const g={flower:[],heart:[],circle:[]};BB.forEach((b,i)=>g[b.s].push(i));
-  const p=Array(12),cx={flower:16,heart:112,circle:208};
-  Object.entries(cx).forEach(([s,x])=>g[s].forEach((idx,j)=>{p[idx]=[x,10+j*52]}));fill(id,p);
-  setTimeout(()=>{const el=document.getElementById('gl1');el.innerHTML='';
-    [['3','🌸 花形','w'],['4','💗 心形','p'],['5','🎈 圆形','c']].forEach(([n,l,c])=>{
-      const d=document.createElement('div');d.className='gl-item';d.innerHTML=`<span class="n ${c}">${n}</span>${l}`;
-      el.appendChild(d);setTimeout(()=>d.classList.add('show'),200)})},500);}
-function sortColor(id){
-  const g={red:[],blue:[],yellow:[]};BB.forEach((b,i)=>g[b.c].push(i));
-  const p=Array(12),cx={red:16,blue:112,yellow:208};
-  Object.entries(cx).forEach(([c,x])=>g[c].forEach((idx,j)=>{p[idx]=[x,10+j*52]}));fill(id,p);
-  setTimeout(()=>{const el=document.getElementById('gl2');el.innerHTML='';
-    [['4','🔴 红色','w'],['4','🔵 蓝色','c'],['4','🟡 黄色','w']].forEach(([n,l,c])=>{
-      const d=document.createElement('div');d.className='gl-item';d.innerHTML=`<span class="n ${c}">${n}</span>${l}`;
-      el.appendChild(d);setTimeout(()=>d.classList.add('show'),200)})},500);}
+
+function showItems(id,dupIdx){
+  const el=document.getElementById(id);el.innerHTML='';
+  ITEMS.forEach((it,i)=>{
+    const d=document.createElement('div');
+    d.className=`item ${it.shape} ${it.color}`;
+    d.textContent=it.label;
+    if(dupIdx&&dupIdx.includes(i))setTimeout(()=>d.classList.add('dup'),400);
+    el.appendChild(d);
+  });
+}
+
+function showGroups(id,calcId,wrong){
+  const el=document.getElementById(id);el.innerHTML='';
+  const colors=[
+    {name:'红色',cls:'c-red',count:wrong?5:4,real:4},
+    {name:'蓝色',cls:'c-blue',count:wrong?5:4,real:4},
+    {name:'绿色',cls:'c-green',count:wrong?4:4,real:4}
+  ];
+  colors.forEach(c=>{
+    const g=document.createElement('div');g.className='group';
+    g.innerHTML=`<div class="g-title">${c.name}</div><div class="g-items"></div><div class="g-count ${wrong&&c.count!==c.real?'red':'grn'}">${c.count}</div>`;
+    const gi=g.querySelector('.g-items');
+    for(let i=0;i<c.count;i++){
+      const d=document.createElement('div');d.className=`g-item ${c.cls}`;d.textContent=c.name[0];
+      gi.appendChild(d);
+    }
+    el.appendChild(g);
+  });
+  const ce=document.getElementById(calcId);
+  if(wrong){
+    ce.innerHTML='<div class="eq"><span class="red">5</span> + <span class="red">5</span> + 4 = <span class="red">14</span> ≠ 12 ❌</div>';
+  } else {
+    ce.innerHTML='<div class="eq"><span class="grn">4</span> + <span class="grn">4</span> + <span class="grn">4</span> = <span class="grn">12</span> = 12 ✅</div>';
+  }
+}
 
 let voice=null,playing=false,si=0;
 function pv(){const v=speechSynthesis.getVoices();
@@ -162,17 +204,17 @@ function say(t,cb){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance
 function show(id){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));document.getElementById(id).classList.add('on')}
 
 const S=[
-  {p:'p0',t:'分类题，掌握一个技巧，解决一类题。'},
-  {p:'p1',t:'一堆气球混在一起，怎么看出哪种最多？',fn:()=>scatter('a1')},
-  {p:'p2',t:'技巧一：选一个标准来分。',fn:()=>sortShape('a2')},
-  {p:'p2',t:'按形状分：花三个，心四个，圆五个。'},
-  {p:'p3',t:'技巧二：换一个标准再分一次。',fn:()=>sortColor('a3')},
-  {p:'p3',t:'按颜色分：红四，蓝四，黄四，一样多。'},
-  {p:'p4',t:'同样的东西，换个标准，结果完全不同。'},
-  {p:'p5',t:'这个方法不止用在课本上。'},
-  {p:'p5',t:'整理书包、收拾玩具、逛超市都能用。'},
-  {p:'p6',t:'记住三步：选标准，分一分，数一数。'},
-  {p:'p6',t:'学会方法，比记住答案有用。'},
+  {p:'p0',t:'分类题，孩子数出来十四个，答案十二个。'},
+  {p:'p0',t:'多出来的两个，哪来的？'},
+  {p:'p1',t:'十二个物品，按颜色分成三组。',fn:()=>showItems('items1')},
+  {p:'p2',t:'孩子数完：红五个，蓝五个，绿四个。',fn:()=>showGroups('groups1','calc1',true)},
+  {p:'p2',t:'五加五加四等于十四，多了两个。'},
+  {p:'p3',t:'问题在这里：这两个被数了两遍。',fn:()=>showItems('items2',[4,8])},
+  {p:'p3',t:'蓝绿交界处，两边各数了一遍。'},
+  {p:'p4',t:'正确做法：分完加一加，必须等于十二。',fn:()=>showGroups('groups2','calc2',false)},
+  {p:'p4',t:'四加四加四等于十二，对上了。'},
+  {p:'p5',t:'记住这一招：分完加一加。'},
+  {p:'p5',t:'加不回原数，就是数重了或者漏了。'},
 ];
 function run(){if(si>=S.length){si=0;playing=false;document.getElementById('go').classList.remove('hide');
   document.getElementById('go').textContent='▶ 重新播放';return}
