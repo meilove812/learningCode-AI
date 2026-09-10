@@ -200,23 +200,23 @@ function prevS(){if(curPage>0){curPage--;updatePage();if(speaking)speakPage();}}
 
 function speakPage(){
   speechSynthesis.cancel();
-  // 收集当前页的所有旁白
   var texts=[];for(var i=0;i<STEPS.length;i++){if(STEPS[i].p===PAGES[curPage])texts.push(STEPS[i].t);}
   var fullText=texts.join('');
-  if(!fullText)return;
+  if(!fullText){if(speaking&&curPage<TOTAL_PAGES-1)setTimeout(nextS,500);return;}
   var utt=new SpeechSynthesisUtterance(fullText);
   utt.lang='zh-CN';utt.rate=0.85;utt.pitch=1;
+  if(!voice)voice=pickVoice();
   if(voice)utt.voice=voice;
-  // 字幕
   var sub=document.getElementById('subBar');
   var sents=fullText.match(/[^。？！；]+[。？！；]?/g)||[fullText];
   var si2=0;sub.style.display='block';sub.textContent=sents[0]||'';
+  // timer fallback防止onend不触发
+  var done=false;
+  var timer=setTimeout(function(){if(!done){done=true;if(speaking&&curPage<TOTAL_PAGES-1)setTimeout(nextS,500);else{speaking=false;document.getElementById('ttsBtn').textContent='🔊 开始讲解';sub.style.display='none';}}},Math.max(fullText.length*350,5000));
   utt.onboundary=function(e){if(e.charIndex!==undefined&&sents.length>1){var cc=0;for(var i=0;i<sents.length;i++){cc+=sents[i].length;if(e.charIndex<cc){if(i!==si2){si2=i;sub.textContent=sents[i].trim();}break;}}}};
-  utt.onend=function(){if(speaking&&curPage<TOTAL_PAGES-1){setTimeout(nextS,800);}else{speaking=false;document.getElementById('ttsBtn').textContent='🔊 开始讲解';sub.style.display='none';}};
-  utt.onerror=function(){if(speaking&&curPage<TOTAL_PAGES-1)setTimeout(nextS,500);};
-  // 显示旁白文字在nar区
-  document.getElementById('nar').innerHTML=texts[0];
-  speechSynthesis.speak(utt);
+  utt.onend=function(){if(!done){done=true;clearTimeout(timer);if(speaking&&curPage<TOTAL_PAGES-1){setTimeout(nextS,800);}else{speaking=false;document.getElementById('ttsBtn').textContent='🔊 开始讲解';sub.style.display='none';}}};
+  utt.onerror=function(){if(!done){done=true;clearTimeout(timer);if(speaking&&curPage<TOTAL_PAGES-1)setTimeout(nextS,500);}};
+  try{speechSynthesis.speak(utt)}catch(e){if(!done){done=true;clearTimeout(timer);if(speaking&&curPage<TOTAL_PAGES-1)setTimeout(nextS,500);}}
 }
 function toggleTTS(){
   if(speaking){speaking=false;speechSynthesis.cancel();document.getElementById('ttsBtn').textContent='🔊 开始讲解';document.getElementById('subBar').style.display='none';}
