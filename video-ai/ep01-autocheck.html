@@ -1,222 +1,172 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>AI自动化最大的风险</title>
+<title>AI 给你的参考文献，有多少是编的？</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#080818;color:#fff;font-family:'PingFang SC','Microsoft YaHei',sans-serif;
+body{background:#06081a;color:#fff;font-family:'PingFang SC','Microsoft YaHei',sans-serif;
   display:flex;justify-content:center;height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased}
 .s{width:100vw;max-width:430px;height:100vh;position:relative;overflow:hidden}
+.bg{position:absolute;inset:0;transition:background 1.2s}
+.bg.s0{background:linear-gradient(160deg,#06081a,#0d1440,#06081a)}
+.bg.s1{background:linear-gradient(160deg,#06081a,#0d1440,#0a0630)}
+.bg.s2{background:linear-gradient(160deg,#0a0020,#1a0a2e,#0d0020)}
+.bg.s3{background:linear-gradient(160deg,#1a0a0a,#2a0a1a,#1a0510)}
+.bg.s4{background:linear-gradient(160deg,#06081a,#0a1a30,#061828)}
+/* 光晕 */
+.glow{position:absolute;border-radius:50%;filter:blur(80px);opacity:.1;animation:gf 8s ease-in-out infinite alternate}
+.g1{width:300px;height:300px;background:#4a6cf7;top:-80px;right:-60px}
+.g2{width:250px;height:250px;background:#f74a4a;bottom:80px;left:-80px;animation-delay:3s}
+@keyframes gf{from{transform:scale(1) translate(0)}to{transform:scale(1.2) translate(20px,-20px)}}
 
-/* === 背景层 === */
-.bg{position:absolute;inset:0;z-index:0}
-.bg-grad{position:absolute;inset:0;background:linear-gradient(160deg,#0d0b2e,#1a0a2e,#0a1628);
-  background-size:300% 300%;animation:bgShift 10s ease infinite}
-@keyframes bgShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-.bg-glow{position:absolute;width:300px;height:300px;border-radius:50%;filter:blur(80px);opacity:.12}
-.bg-glow.a{background:#7c4dff;top:-80px;left:-60px;animation:gFloat 7s ease-in-out infinite}
-.bg-glow.b{background:#ff4757;bottom:60px;right:-80px;animation:gFloat 9s ease-in-out infinite reverse}
-.bg-glow.c{background:#ffd700;top:50%;left:50%;transform:translate(-50%,-50%);animation:gFloat 11s ease-in-out infinite}
-@keyframes gFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(20px,-30px) scale(1.1)}66%{transform:translate(-20px,20px) scale(.9)}}
-/* 粒子 */
-.particles{position:absolute;inset:0;overflow:hidden}
-.pt{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;opacity:0;
-  animation:ptFloat linear infinite}
-@keyframes ptFloat{0%{transform:translateY(100vh);opacity:0}10%{opacity:.5}90%{opacity:.5}100%{transform:translateY(-20px);opacity:0}}
-
-/* === 页面 === */
+/* 页 */
 .pg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:60px 24px 150px;opacity:0;pointer-events:none;z-index:2;
-  transition:opacity .8s cubic-bezier(.4,0,.2,1)}
+  padding:50px 24px 150px;opacity:0;pointer-events:none;z-index:2;transition:opacity .8s}
 .pg.on{opacity:1;pointer-events:auto}
+.pg.on .fi{opacity:1;transform:translateY(0)}
+.fi{opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}
+.fi.d1{transition-delay:.2s}.fi.d2{transition-delay:.4s}.fi.d3{transition-delay:.6s}
 
-/* 文字动画基础 */
-.txt-in{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s cubic-bezier(.2,0,.2,1)}
-.pg.on .txt-in{opacity:1;transform:translateY(0)}
-.txt-in.d1{transition-delay:.15s}.txt-in.d2{transition-delay:.3s}.txt-in.d3{transition-delay:.45s}.txt-in.d4{transition-delay:.6s}
+/* 排版 */
+.t-sm{font-size:14px;color:rgba(255,255,255,.4);letter-spacing:2px;text-align:center}
+.t-lg{font-size:38px;font-weight:900;text-align:center;line-height:1.4;letter-spacing:1px}
+.t-md{font-size:22px;font-weight:700;text-align:center;line-height:1.6}
+.grad-gold{background:linear-gradient(135deg,#ffd700,#ff9500);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.grad-red{background:linear-gradient(135deg,#ff4757,#ff6b81);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.grad-blue{background:linear-gradient(135deg,#70a1ff,#4a6cf7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.grad-grn{background:linear-gradient(135deg,#2ed573,#7bed9f);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
-/* === 文字样式 === */
-.t1{font-size:18px;color:rgba(255,255,255,.5);font-weight:500;text-align:center;letter-spacing:2px}
-.t2{font-size:40px;font-weight:900;text-align:center;line-height:1.4;letter-spacing:1px}
-.t2 .gold{background:linear-gradient(135deg,#ffd700,#ffaa00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 20px rgba(255,215,0,.25))}
-.t2 .red{background:linear-gradient(135deg,#ff4757,#ff6b81);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 20px rgba(255,71,87,.3))}
-.t2 .grn{background:linear-gradient(135deg,#2ed573,#7bed9f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 20px rgba(46,213,115,.3))}
-.t3{font-size:15px;color:rgba(255,255,255,.45);text-align:center;margin-top:16px;line-height:1.8}
-
-/* === 感染扩散网格 === */
-.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;width:280px;margin:24px 0}
-.node{aspect-ratio:1;border-radius:50%;background:rgba(46,213,115,.2);border:2px solid rgba(46,213,115,.25);
-  position:relative;transition:all .4s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:center}
-.node::after{content:'';position:absolute;inset:-4px;border-radius:50%;opacity:0;transition:opacity .4s}
-.node.infected{background:rgba(255,71,87,.25);border-color:rgba(255,71,87,.5);
-  animation:infPulse 1s ease-out;box-shadow:0 0 16px rgba(255,71,87,.3)}
-.node.infected::after{background:radial-gradient(circle,rgba(255,71,87,.3),transparent);opacity:1}
-@keyframes infPulse{0%{transform:scale(1.3);opacity:.5}100%{transform:scale(1);opacity:1}}
-
-/* === 传送带（改进版）=== */
-.conv-wrap{width:100%;max-width:340px;height:180px;position:relative;margin:20px 0;
-  border-radius:20px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);overflow:hidden}
-.conv-belt{position:absolute;bottom:0;left:0;right:0;height:16px;
-  background:repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0,rgba(255,255,255,.03) 24px,rgba(255,255,255,.06) 24px,rgba(255,255,255,.06) 48px);
-  animation:belt 1.5s linear infinite}
-@keyframes belt{to{background-position:48px 0}}
-.doc{position:absolute;width:48px;height:60px;border-radius:8px;bottom:20px;
+/* 文献卡片 */
+.refs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;width:300px;margin:24px 0}
+.ref{aspect-ratio:.7;border-radius:10px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(74,108,247,.15),rgba(74,108,247,.05));
+  border:1.5px solid rgba(74,108,247,.2);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
-  font-size:8px;font-weight:700;letter-spacing:1px}
-.doc .icon{font-size:20px}
-.doc.ok{background:linear-gradient(135deg,rgba(46,213,115,.15),rgba(46,213,115,.08));
-  border:1.5px solid rgba(46,213,115,.25);color:rgba(46,213,115,.8)}
-.doc.err{background:linear-gradient(135deg,rgba(255,71,87,.2),rgba(255,71,87,.08));
-  border:1.5px solid rgba(255,71,87,.4);color:rgba(255,71,87,.9);
-  animation:docShake .15s ease-in-out infinite alternate}
-@keyframes docShake{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}
-.doc-anim{animation:docSlide 4s linear infinite}
-@keyframes docSlide{0%{left:-60px;opacity:0}5%{opacity:1}95%{opacity:1}100%{left:calc(100% + 10px);opacity:0}}
+  transition:all .6s cubic-bezier(.4,0,.2,1)}
+.ref .ln{width:60%;height:3px;border-radius:2px;background:rgba(255,255,255,.15)}
+.ref .ln:nth-child(2){width:80%}.ref .ln:nth-child(4){width:40%}
+.ref.dead{background:rgba(255,71,87,.08);border-color:rgba(255,71,87,.3);transform:scale(.9);opacity:.5}
+.ref.dead::after{content:'✗';position:absolute;font-size:24px;color:#ff4757;font-weight:900;
+  opacity:0;animation:xIn .4s forwards}
+.ref.dead .ln{background:rgba(255,71,87,.2)}
+@keyframes xIn{to{opacity:1;transform:scale(1)}}
+.ref.ok::after{content:'✓';position:absolute;font-size:18px;color:#2ed573;font-weight:900}
 
-/* === 过滤可视化 === */
-.filter-vis{width:100%;max-width:320px;height:280px;position:relative;margin:16px 0;overflow:hidden}
-.filter-line{position:absolute;top:45%;left:10%;right:10%;height:3px;
-  background:linear-gradient(90deg,transparent,var(--gold),transparent);
-  box-shadow:0 0 20px rgba(255,215,0,.3);z-index:1}
-.filter-label{position:absolute;top:calc(45% - 16px);left:50%;transform:translateX(-50%);
-  font-size:11px;font-weight:700;color:var(--gold);background:#080818;padding:2px 10px;z-index:2;
-  border:1px solid rgba(255,215,0,.3);border-radius:10px}
-.fdot{position:absolute;width:8px;height:8px;border-radius:50%;opacity:0}
-.fdot.pass{background:#2ed573;box-shadow:0 0 6px rgba(46,213,115,.5)}
-.fdot.catch{background:#ff4757;box-shadow:0 0 6px rgba(255,71,87,.5)}
+/* 柱状图 */
+.chart{width:300px;margin:20px 0}
+.bar-row{display:flex;align-items:center;gap:10px;margin:8px 0}
+.bar-label{font-size:11px;width:60px;text-align:right;color:rgba(255,255,255,.5);flex-shrink:0}
+.bar-track{flex:1;height:28px;border-radius:8px;background:rgba(255,255,255,.04);overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:8px;width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1);
+  display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:12px;font-weight:800}
+.bar-fill.red{background:linear-gradient(90deg,rgba(255,71,87,.3),rgba(255,71,87,.6));color:#ff4757}
+.bar-fill.amber{background:linear-gradient(90deg,rgba(255,165,0,.3),rgba(255,165,0,.5));color:#ffa500}
+.bar-fill.grn{background:linear-gradient(90deg,rgba(46,213,115,.2),rgba(46,213,115,.4));color:#2ed573}
 
-/* === 计数器 === */
-.ring-wrap{display:flex;gap:24px;align-items:center;margin:20px 0}
-.ring{position:relative;width:120px;height:120px}
-.ring svg{transform:rotate(-90deg)}
-.ring circle{fill:none;stroke-width:6;stroke-linecap:round}
-.ring .bg-ring{stroke:rgba(255,255,255,.06)}
-.ring .fg-ring{stroke:url(#ringGrad);stroke-dasharray:339.292;stroke-dashoffset:339.292;
-  transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1)}
-.ring .val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.ring .val .num{font-size:32px;font-weight:900}
-.ring .val .lab{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
+/* 罚款 */
+.fine{font-size:56px;font-weight:900;text-align:center;
+  background:linear-gradient(135deg,#ff4757,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 30px rgba(255,71,87,.2))}
+.gavel{font-size:60px;margin-bottom:16px;animation:gavelHit 1s ease-out}
+@keyframes gavelHit{0%{transform:rotate(-30deg) scale(1.3)}40%{transform:rotate(5deg) scale(1)}60%{transform:rotate(-2deg)}100%{transform:rotate(0)}}
 
-/* === 底部 === */
-.nar-area{position:absolute;bottom:0;left:0;right:0;z-index:10;
-  padding:16px 24px 32px;background:linear-gradient(transparent,rgba(8,8,24,.97) 35%)}
-.nar-text{text-align:center;font-size:17px;line-height:1.8;font-weight:500;min-height:40px}
-.nar-text .hl{color:#ffd700;font-weight:700}
+/* 来源 */
+.src{font-size:10px;color:rgba(255,255,255,.25);text-align:center;margin-top:12px;line-height:1.6}
+
+/* 底部 */
+.nar-w{position:absolute;bottom:0;left:0;right:0;z-index:10;
+  padding:14px 24px 30px;background:linear-gradient(transparent,rgba(6,8,26,.97) 35%)}
+.nar{text-align:center;font-size:17px;line-height:1.8;font-weight:500;min-height:36px}
+.nar .hl{color:#ffd700;font-weight:700}
 .bar-t{height:2px;border-radius:1px;background:rgba(255,255,255,.06);margin-top:10px}
-.bar-f{height:100%;border-radius:1px;background:linear-gradient(90deg,#ffd700,#ff9500);transition:width .5s}
-.tag{position:absolute;top:18px;left:20px;font-size:10px;color:rgba(255,255,255,.2);
-  letter-spacing:3px;font-weight:600;z-index:10;text-transform:uppercase}
-.go{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:20;
+.bar-p{height:100%;border-radius:1px;background:linear-gradient(90deg,#ffd700,#ff9500);transition:width .5s}
+.tag{position:absolute;top:18px;left:20px;font-size:10px;color:rgba(255,255,255,.15);letter-spacing:3px;font-weight:600;z-index:10}
+.go{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);z-index:20;
   padding:14px 52px;border:none;border-radius:30px;font-size:17px;font-weight:700;
   background:linear-gradient(135deg,#ffd700,#ff9500);color:#080818;cursor:pointer;
-  box-shadow:0 4px 30px rgba(255,215,0,.2),0 0 60px rgba(255,215,0,.1)}
+  box-shadow:0 4px 30px rgba(255,215,0,.15)}
 .go.hide{display:none}
 </style></head><body>
 <div class="s">
-  <div class="bg">
-    <div class="bg-grad"></div>
-    <div class="bg-glow a"></div><div class="bg-glow b"></div><div class="bg-glow c"></div>
-    <div class="particles" id="pts"></div>
-  </div>
+  <div class="bg s0" id="bg"></div>
+  <div class="glow g1"></div><div class="glow g2"></div>
   <div class="tag">AI 落地观点 · 01</div>
 
+  <!-- P0: Hook -->
   <div class="pg on" id="p0">
-    <div class="t1 txt-in">AI 自动化</div>
-    <div class="t2 txt-in d1"><span class="gold">最大的风险</span><br>是什么？</div>
-  </div>
-  <div class="pg" id="p1">
-    <div class="t2 txt-in">不是做错</div>
-    <div class="t2 txt-in d1"><span class="red">是做错了<br>没人发现</span></div>
-  </div>
-  <div class="pg" id="p2">
-    <div class="t1 txt-in">手工处理</div>
-    <div class="conv-wrap txt-in d1" id="conv"></div>
-    <div class="t3 txt-in d2">偶尔错一个 → 就错这一个</div>
-  </div>
-  <div class="pg" id="p3">
-    <div class="t1 txt-in">自动处理</div>
-    <div class="grid txt-in d1" id="grid"></div>
-    <div class="t3 txt-in d2" style="color:rgba(255,71,87,.8)">一个接一个，全部沦陷</div>
-  </div>
-  <div class="pg" id="p4">
-    <div class="t2 txt-in"><span class="red">人已经<br>不看了</span></div>
-    <div class="t3 txt-in d1">"有人看一眼"这件事<br><span style="color:#ffd700;font-weight:700">不能省</span></div>
-  </div>
-  <div class="pg" id="p5">
-    <div class="t1 txt-in">解决方案</div>
-    <div class="t2 txt-in d1" style="font-size:30px"><span class="gold">设好检查点</span></div>
-    <div class="filter-vis txt-in d2" id="fvis">
-      <div class="filter-line"></div><div class="filter-label">🔍 检查点</div>
-    </div>
-  </div>
-  <div class="pg" id="p6">
-    <div class="t1 txt-in">人工量</div>
-    <div class="ring-wrap txt-in d1">
-      <div class="ring"><svg viewBox="0 0 120 120"><defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff4757"/><stop offset="100%" stop-color="#ffd700"/></linearGradient></defs><circle class="bg-ring" cx="60" cy="60" r="54"/><circle class="fg-ring" id="ring" cx="60" cy="60" r="54"/></svg><div class="val"><div class="num grn" id="pct">0%</div><div class="lab">减少</div></div></div>
-      <div style="text-align:center"><div class="t2" style="font-size:28px"><span class="red">500</span><br><span style="font-size:18px;color:rgba(255,255,255,.3)">↓</span><br><span class="grn">30</span></div><div class="t3" style="margin-top:8px">只看异常</div></div>
-    </div>
-  </div>
-  <div class="pg" id="p7">
-    <div class="t2 txt-in"><span class="gold">这才叫<br>真的提效</span></div>
-    <div class="t3 txt-in d1">你们的自动化流程<br>有检查点吗？</div>
+    <div class="t-sm fi">如果 AI 给你十篇参考文献</div>
+    <div class="t-lg fi d1" style="margin-top:16px"><span class="grad-gold">有几篇<br>是真的？</span></div>
   </div>
 
-  <div class="nar-area"><div class="nar-text" id="nar">点击按钮，开始自动讲解</div>
-    <div class="bar-t"><div class="bar-f" id="bar" style="width:0"></div></div></div>
+  <!-- P1: 10 refs -->
+  <div class="pg" id="p1">
+    <div class="t-sm fi">研究者让 AI 生成参考文献</div>
+    <div class="t-md fi d1" style="margin:12px 0">然后<span class="grad-blue">逐篇核查</span></div>
+    <div class="refs fi d2" id="refs"></div>
+    <div class="src fi d3">Walters & Wilder, 2023 · Nature Scientific Reports · 636 条文献</div>
+  </div>
+
+  <!-- P2: 55% dead -->
+  <div class="pg" id="p2">
+    <div class="t-lg fi"><span class="grad-red">超过一半</span></div>
+    <div class="t-md fi d1" style="margin:8px 0;color:rgba(255,255,255,.5)">根本不存在</div>
+    <div class="refs fi d2" id="refs2"></div>
+    <div class="t-sm fi d3" style="color:rgba(255,71,87,.7)">636 条文献中，55% 是编造的</div>
+  </div>
+
+  <!-- P3: 改善了？ -->
+  <div class="pg" id="p3">
+    <div class="t-sm fi">模型换代后有改善</div>
+    <div class="t-md fi d1" style="margin:12px 0">但 2026 年最新测试</div>
+    <div class="chart fi d2" id="chart"></div>
+    <div class="src fi d3">综合六项同行评审研究 · 2023–2026</div>
+  </div>
+
+  <!-- P4: 真实后果 -->
+  <div class="pg" id="p4">
+    <div class="gavel fi">⚖️</div>
+    <div class="t-sm fi d1">美国律师提交 AI 生成的虚假判例</div>
+    <div class="fine fi d2">$110,204</div>
+    <div class="t-md fi d3" style="margin-top:8px"><span class="grad-red">法院罚款</span></div>
+  </div>
+
+  <!-- P5: 结论 -->
+  <div class="pg" id="p5">
+    <div class="t-lg fi"><span class="grad-gold">用之前<br>点开原文<br>看一眼</span></div>
+    <div class="t-sm fi d1" style="margin-top:20px;color:rgba(255,255,255,.35)">你上次用 AI 查的资料<br>验过吗？</div>
+  </div>
+
+  <div class="nar-w"><div class="nar" id="nar">点击按钮，开始自动讲解</div>
+    <div class="bar-t"><div class="bar-p" id="bar" style="width:0"></div></div></div>
   <button class="go" id="go" onclick="start()">▶ 开始讲解</button>
 </div>
 <script>
-// 粒子
-(()=>{const c=document.getElementById('pts');for(let i=0;i<30;i++){const p=document.createElement('div');p.className='pt';
-  p.style.cssText=`left:${Math.random()*100}%;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;animation-duration:${6+Math.random()*8}s;animation-delay:${Math.random()*6}s`;
-  c.appendChild(p)}})();
-// 网格
-(()=>{const g=document.getElementById('grid');for(let i=0;i<24;i++){const n=document.createElement('div');n.className='node';n.dataset.idx=i;g.appendChild(n)}})();
-// 传送带
-(()=>{const c=document.getElementById('conv');c.innerHTML='<div class="conv-belt"></div>';
-  const items=[0,0,0,1,0,0,0];
-  items.forEach((err,i)=>{const d=document.createElement('div');
-    d.className=`doc ${err?'err':'ok'} doc-anim`;d.style.animationDelay=(i*.7)+'s';
-    d.innerHTML=`<div class="icon">${err?'✗':'✓'}</div><div>${err?'错误':'通过'}</div>`;
-    c.appendChild(d)})})();
-
-// 感染扩散
-function infect(){
-  const nodes=document.querySelectorAll('.node');
-  const order=[9,10,8,15,16,3,4,14,2,21,22,20,11,17,5,23,1,7,13,19,0,6,12,18];
-  nodes.forEach(n=>n.classList.remove('infected'));
-  order.forEach((idx,i)=>setTimeout(()=>nodes[idx].classList.add('infected'),i*100));
-}
-// 过滤粒子
-function filterAnim(){
-  const vis=document.getElementById('fvis');
-  vis.querySelectorAll('.fdot').forEach(d=>d.remove());
-  for(let i=0;i<20;i++){
-    const d=document.createElement('div');const isCatch=i%5===3;
-    d.className=`fdot ${isCatch?'catch':'pass'}`;
-    const x=20+Math.random()*60;
-    d.style.left=x+'%';
-    d.style.animation=isCatch
-      ?`fdotCatch 2.5s ${i*.2}s linear infinite`
-      :`fdotPass 2.5s ${i*.2}s linear infinite`;
-    vis.appendChild(d);
+// 生成文献卡
+function makeRefs(id,deadIdx){
+  const c=document.getElementById(id);c.innerHTML='';
+  for(let i=0;i<10;i++){
+    const d=document.createElement('div');d.className='ref';d.dataset.i=i;
+    d.innerHTML='<div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div>';
+    c.appendChild(d);
   }
+  if(deadIdx){setTimeout(()=>{
+    deadIdx.forEach((idx,j)=>setTimeout(()=>{
+      c.children[idx].classList.add('dead')},j*200))},400)}
+  else{setTimeout(()=>{for(let i=0;i<10;i++)c.children[i].classList.add('ok')},400)}
 }
-// 环形进度
-function ringAnim(){
-  const circ=339.292;document.getElementById('ring').style.strokeDashoffset=circ*(1-.94);
-  let v=0;const iv=setInterval(()=>{v+=2;if(v>94){v=94;clearInterval(iv)}document.getElementById('pct').textContent=v+'%'},25);
+// 柱状图
+function drawChart(){
+  const data=[
+    ['旧模型','55%',55,'red'],['新模型','18%',18,'amber'],
+    ['2026最新','39.8%',39.8,'red'],['最好的','0%',1,'grn']
+  ];
+  const ch=document.getElementById('chart');ch.innerHTML='';
+  data.forEach(([l,v,w,cl],i)=>{
+    const r=document.createElement('div');r.className='bar-row';
+    r.innerHTML=`<div class="bar-label">${l}</div><div class="bar-track"><div class="bar-fill ${cl}" id="bf${i}">${v}</div></div>`;
+    ch.appendChild(r);
+    setTimeout(()=>document.getElementById('bf'+i).style.width=Math.max(w,3)+'%',300+i*200);
+  });
 }
-
-// CSS for filter dots
-const sty=document.createElement('style');
-sty.textContent=`
-@keyframes fdotPass{0%{top:-10px;opacity:0}10%{opacity:1}44%{top:44%}46%{top:46%}100%{top:110%;opacity:.6}}
-@keyframes fdotCatch{0%{top:-10px;opacity:0}10%{opacity:1}44%{top:44%}50%{top:46%;left:85%}100%{top:80%;left:90%;opacity:0}}`;
-document.head.appendChild(sty);
-
 // TTS
 let voice=null,playing=false,si=0;
 function pv(){const v=speechSynthesis.getVoices();
@@ -226,27 +176,28 @@ speechSynthesis.onvoiceschanged=pv;pv();
 function say(t,cb){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);
   u.voice=voice;u.lang='zh-CN';u.rate=.85;u.pitch=1;
   u.onend=()=>setTimeout(cb,700);u.onerror=()=>setTimeout(cb,700);speechSynthesis.speak(u)}
-function show(id){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
-  document.getElementById(id).classList.add('on')}
+function show(id,bgc){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.getElementById(id).classList.add('on');document.getElementById('bg').className='bg '+bgc}
 
 const S=[
-  {p:'p0',t:'很多人问，自动化最大的风险是什么？'},
-  {p:'p1',t:'不是做错。是做错了没人发现。'},
-  {p:'p2',t:'手工做错一次，就是错一次。'},
-  {p:'p3',t:'自动跑错一次，是每次都错。',fn:infect},
-  {p:'p4',t:'因为人已经不看了。'},
-  {p:'p4',t:'但"有人看一眼"这件事，不能省。'},
-  {p:'p5',t:'设好检查点，只看异常。',fn:filterAnim},
-  {p:'p6',t:'人工从五百份降到三十份。',fn:ringAnim},
-  {p:'p7',t:'这才叫真的提效。'},
+  {p:'p0',bg:'s0',t:'如果让你查十篇参考文献'},
+  {p:'p0',bg:'s0',t:'有几篇是真的？'},
+  {p:'p1',bg:'s1',t:'研究者让模型生成六百多条文献引用',fn:()=>makeRefs('refs')},
+  {p:'p1',bg:'s1',t:'然后逐篇去核查，每一条都查'},
+  {p:'p2',bg:'s2',t:'结果，超过一半根本不存在',fn:()=>makeRefs('refs2',[0,2,4,5,7,9])},
+  {p:'p2',bg:'s2',t:'六百三十六条里，三百五十条是编的'},
+  {p:'p3',bg:'s1',t:'模型换代后有改善，但没解决',fn:drawChart},
+  {p:'p3',bg:'s1',t:'二零二六年最新测试，仍有四成出错'},
+  {p:'p4',bg:'s3',t:'有律师把这样的引用交给了法院'},
+  {p:'p4',bg:'s3',t:'罚款十一万美元'},
+  {p:'p5',bg:'s4',t:'用之前，点开原文看一眼'},
+  {p:'p5',bg:'s4',t:'你上次用它查的资料，验过吗？'},
 ];
 function run(){if(si>=S.length){si=0;playing=false;document.getElementById('go').classList.remove('hide');
   document.getElementById('go').textContent='▶ 重新播放';return}
-  const s=S[si];show(s.p);if(s.fn)setTimeout(s.fn,400);
+  const s=S[si];show(s.p,s.bg);if(s.fn)setTimeout(s.fn,300);
   document.getElementById('nar').innerHTML=s.t;
   document.getElementById('bar').style.width=Math.round(((si+1)/S.length)*100)+'%';
   say(s.t,()=>{si++;run()})}
-function start(){if(playing)return;playing=true;si=0;
-  document.querySelectorAll('.node').forEach(n=>n.classList.remove('infected'));
-  document.getElementById('go').classList.add('hide');run()}
+function start(){if(playing)return;playing=true;si=0;document.getElementById('go').classList.add('hide');run()}
 </script></body></html>
