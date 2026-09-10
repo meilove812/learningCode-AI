@@ -132,115 +132,151 @@ var items=[
   {s:'c',cl:G,lb:'绿'},{s:'c',cl:G,lb:'绿'},{s:'r',cl:G,lb:'绿'},{s:'r',cl:G,lb:'绿'}
 ];
 
-// 直接画法（跟canvas-test一样简单可靠）
-function drawCircle(ctx,x,y,r,color,label){
-  ctx.fillStyle=color;ctx.shadowColor=color;ctx.shadowBlur=10+6*Math.sin((window._animFrame||0)*.15);
-  ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
-  ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=2;ctx.stroke();
-  ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.font='bold 16px sans-serif';
+// === 画图函数（全部重写，确保数量和形状一致） ===
+
+// items共12个：
+// [0]红圆 [1]红圆 [2]红方 [3]红方
+// [4]蓝圆 [5]蓝圆 [6]蓝方 [7]蓝方
+// [8]绿圆 [9]绿圆 [10]绿方 [11]绿方
+// 按颜色：红(0-3)=4  蓝(4-7)=4  绿(8-11)=4  共12
+// 按形状：圆(0,1,4,5,8,9)=6  方(2,3,6,7,10,11)=6  共12
+
+// 画圆形物品
+function drawCircleItem(ctx,x,y,radius,color,label){
+  ctx.save();
+  ctx.fillStyle=color;ctx.shadowColor=color;
+  ctx.shadowBlur=10+6*Math.sin((window._animFrame||0)*.15);
+  ctx.beginPath();ctx.arc(x,y,radius,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,.25)';ctx.lineWidth=1.5;ctx.stroke();
+  ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.font='bold 12px sans-serif';
   ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,x,y);
+  ctx.restore();
 }
-function drawRect(ctx,x,y,w,h,color,label){
-  ctx.fillStyle=color;ctx.shadowColor=color;ctx.shadowBlur=10+6*Math.sin((window._animFrame||0)*.15);
-  ctx.fillRect(x-w/2,y-h/2,w,h);
-  ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=2;ctx.strokeRect(x-w/2,y-h/2,w,h);
-  ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.font='bold 16px sans-serif';
+
+// 画方形物品
+function drawSquareItem(ctx,x,y,half,color,label){
+  ctx.save();
+  ctx.fillStyle=color;ctx.shadowColor=color;
+  ctx.shadowBlur=10+6*Math.sin((window._animFrame||0)*.15);
+  ctx.fillRect(x-half,y-half,half*2,half*2);
+  ctx.strokeStyle='rgba(255,255,255,.25)';ctx.lineWidth=1.5;
+  ctx.strokeRect(x-half,y-half,half*2,half*2);
+  ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.font='bold 12px sans-serif';
   ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,x,y);
-}
-function drawOne(ctx,it,x,y,sz){
-  if(it.s==='c')drawCircle(ctx,x,y,sz,it.cl,it.lb);
-  else drawRect(ctx,x,y,sz*2,sz*2,it.cl,it.lb);
+  ctx.restore();
 }
 
-// 画全部6个散落
-function drawAll(cid){
-  var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
-  ctx.clearRect(0,0,c.width,c.height);
-  var positions=[[50,55],[140,45],[240,55],[340,45],[50,120],[140,120],[240,115],[340,120],[50,180],[140,175],[240,180],[340,170]];
-  for(var i=0;i<12;i++)drawOne(ctx,items[i],positions[i][0],positions[i][1],24);
+// 画一个物品（根据形状自动选圆或方）
+function drawItem(ctx,idx,x,y,size,alpha){
+  var it=items[idx];
+  ctx.globalAlpha=(alpha===undefined)?1:alpha;
+  if(it.s==='c') drawCircleItem(ctx,x,y,size,it.cl,it.lb);
+  else drawSquareItem(ctx,x,y,size,it.cl,it.lb);
+  ctx.globalAlpha=1;
 }
 
-// 高亮特定颜色
-function drawColorGroup(cid,color){
+// 12个物品的散落位置（3行4列，canvas 400x260）
+var POS=[[55,60],[145,50],[245,60],[345,50],[55,130],[145,125],[245,130],[345,125],[55,195],[145,190],[245,195],[345,190]];
+
+// S0封面 / S1全部 / S2全部（发光轮换）/ S7全部
+function drawAllItems(cid){
   var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
   ctx.clearRect(0,0,c.width,c.height);
-  var positions=[[50,55],[140,45],[240,55],[340,45],[50,120],[140,120],[240,115],[340,120],[50,180],[140,175],[240,180],[340,170]];
-  // 先画暗的非目标物品
-  for(var i=0;i<12;i++){
-    if(items[i].cl!==color){ctx.globalAlpha=.12;drawOne(ctx,items[i],positions[i][0],positions[i][1],18);ctx.globalAlpha=1;}
-  }
-  // 再画亮的目标物品（4个一排居中）
-  var ti=0;
-  for(var i=0;i<12;i++){
-    if(items[i].cl===color){drawOne(ctx,items[i],60+ti*90,120,28);ti++;}
-  }
+  for(var i=0;i<12;i++) drawItem(ctx,i,POS[i][0],POS[i][1],18,1);
 }
 
-// 高亮特定形状
-function drawShapeGroup(cid,shape){
+// 颜色分组：高亮指定颜色的4个，其他暗
+function drawByColor(cid,color){
   var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
   ctx.clearRect(0,0,c.width,c.height);
-  var positions=[[50,55],[140,45],[240,55],[340,45],[50,120],[140,120],[240,115],[340,120],[50,180],[140,175],[240,180],[340,170]];
-  // 先画暗的非目标
-  for(var i=0;i<12;i++){
-    if(items[i].s!==shape){ctx.globalAlpha=.12;drawOne(ctx,items[i],positions[i][0],positions[i][1],18);ctx.globalAlpha=1;}
-  }
-  // 再画亮的目标（6个分两排）
-  var ti=0;
-  for(var i=0;i<12;i++){
-    if(items[i].s===shape){
-      var row=Math.floor(ti/3),col=ti%3;
-      drawOne(ctx,items[i],80+col*110,70+row*80,26);ti++;}
+  // 暗的
+  for(var i=0;i<12;i++){if(items[i].cl!==color) drawItem(ctx,i,POS[i][0],POS[i][1],14,.1);}
+  // 亮的：4个排成一排
+  var bright=[];for(var i=0;i<12;i++){if(items[i].cl===color) bright.push(i);}
+  // 验证：bright.length必须=4
+  for(var j=0;j<bright.length;j++){
+    drawItem(ctx,bright[j], 65+j*95, 130, 22, 1);
   }
 }
 
-// 按颜色汇总
-function drawColorSummary(cid){
+// 颜色汇总：三组各4个
+function drawColorSum(cid){
   var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
   ctx.clearRect(0,0,c.width,c.height);
-  var colors=[R,B,G];var clabels=['红','蓝','绿'];
+  var groups=[{cl:R,name:'红'},{cl:B,name:'蓝'},{cl:G,name:'绿'}];
   for(var g=0;g<3;g++){
-    var bx=8+g*134;var ci=0;
-    ctx.fillStyle='rgba(255,255,255,.03)';ctx.fillRect(bx,10,126,170);
-    ctx.fillStyle=colors[g];ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.fillText(clabels[g]+'色',bx+63,28);
-    for(var i=0;i<12;i++){if(items[i].cl===colors[g]){
-      var row=Math.floor(ci/2),col=ci%2;
-      drawOne(ctx,items[i],bx+24+col*54,50+row*48,22);ci++;}}
-    ctx.fillStyle=colors[g];ctx.font='bold 22px sans-serif';
-    ctx.shadowColor=colors[g];ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('4',bx+63,158);ctx.shadowBlur=0;
+    var bx=5+g*134;
+    ctx.fillStyle='rgba(255,255,255,.03)';ctx.fillRect(bx,8,128,165);
+    ctx.fillStyle=groups[g].cl;ctx.font='bold 13px sans-serif';ctx.textAlign='center';
+    ctx.fillText(groups[g].name+'色',bx+64,24);
+    var matched=[];for(var i=0;i<12;i++){if(items[i].cl===groups[g].cl) matched.push(i);}
+    for(var j=0;j<matched.length;j++){
+      var row=Math.floor(j/2),col=j%2;
+      drawItem(ctx,matched[j], bx+34+col*56, 50+row*46, 18, 1);
+    }
+    ctx.fillStyle=groups[g].cl;ctx.font='bold 20px sans-serif';
+    ctx.shadowColor=groups[g].cl;ctx.shadowBlur=8;ctx.fillText('4',bx+64,152);ctx.shadowBlur=0;
   }
 }
 
-// 按形状汇总
-function drawShapeSummary(cid){
+// 形状分组：高亮指定形状的6个
+function drawByShape(cid,shape){
   var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
   ctx.clearRect(0,0,c.width,c.height);
-  var shapes=['c','r'];var slabels=['圆形','方形'];
-  for(var g=0;g<2;g++){
-    var bx=10+g*200;var ci=0;
-    ctx.fillStyle='rgba(255,255,255,.03)';ctx.fillRect(bx,10,185,170);
-    ctx.fillStyle='#b388ff';ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.fillText(slabels[g],bx+92,28);
-    for(var i=0;i<12;i++){if(items[i].s===shapes[g]){
-      var row=Math.floor(ci/3),col=ci%3;
-      drawOne(ctx,items[i],bx+28+col*56,50+row*52,22);ci++;}}
-    ctx.fillStyle='#b388ff';ctx.font='bold 22px sans-serif';
-    ctx.shadowColor='#b388ff';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('6',bx+92,158);ctx.shadowBlur=0;
+  for(var i=0;i<12;i++){if(items[i].s!==shape) drawItem(ctx,i,POS[i][0],POS[i][1],14,.1);}
+  var bright=[];for(var i=0;i<12;i++){if(items[i].s===shape) bright.push(i);}
+  // 6个分两排（3+3）
+  for(var j=0;j<bright.length;j++){
+    var row=Math.floor(j/3),col=j%3;
+    drawItem(ctx,bright[j], 80+col*110, 80+row*80, 20, 1);
   }
 }
 
-// 画各页
+// 形状汇总：两组各6个
+function drawShapeSum(cid){
+  var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+  var groups=[{sh:'c',name:'圆形'},{sh:'r',name:'方形'}];
+  for(var g=0;g<2;g++){
+    var bx=5+g*200;
+    ctx.fillStyle='rgba(255,255,255,.03)';ctx.fillRect(bx,8,190,165);
+    ctx.fillStyle='#b388ff';ctx.font='bold 13px sans-serif';ctx.textAlign='center';
+    ctx.fillText(groups[g].name,bx+95,24);
+    var matched=[];for(var i=0;i<12;i++){if(items[i].s===groups[g].sh) matched.push(i);}
+    for(var j=0;j<matched.length;j++){
+      var row=Math.floor(j/3),col=j%3;
+      drawItem(ctx,matched[j], bx+32+col*56, 50+row*46, 18, 1);
+    }
+    ctx.fillStyle='#b388ff';ctx.font='bold 20px sans-serif';
+    ctx.shadowColor='#b388ff';ctx.shadowBlur=8;ctx.fillText('6',bx+95,152);ctx.shadowBlur=0;
+  }
+}
+
+// 发现规律
+function drawDiscover(cid){
+  var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.fillStyle='rgba(255,215,0,.06)';ctx.fillRect(20,20,360,80);
+  ctx.fillStyle='#ffd700';ctx.font='bold 17px sans-serif';ctx.textAlign='center';
+  ctx.shadowColor='#ffd700';ctx.shadowBlur=8;ctx.fillText('按颜色：4 + 4 + 4 = 12 ✅',200,65);ctx.shadowBlur=0;
+  ctx.fillStyle='rgba(0,210,255,.06)';ctx.fillRect(20,120,360,80);
+  ctx.fillStyle='#00d2ff';ctx.shadowColor='#00d2ff';ctx.shadowBlur=8;ctx.fillText('按形状：6 + 6 = 12 ✅',200,165);ctx.shadowBlur=0;
+  ctx.fillStyle='#fff';ctx.font='bold 15px sans-serif';ctx.fillText('分法不同，总数不变！',200,228);
+}
+
 var drawFns={
-  0:function(){drawAll('c0')},
-  1:function(){drawAll('c1')},
-  2:function(){drawAll('c2')},
-  3:function(){drawColorGroup('c3',R)},
-  4:function(){drawColorGroup('c4',B)},
-  5:function(){drawColorGroup('c5',G)},
-  6:function(){drawColorSummary('c6')},
-  7:function(){drawAll('c7')},
-  8:function(){drawShapeGroup('c8','c')},
-  9:function(){drawShapeGroup('c9','r')},
-  10:function(){drawShapeSummary('c10')}
+  0:function(){drawAllItems('c0')},
+  1:function(){drawAllItems('c1')},
+  2:function(){drawAllItems('c2')},
+  3:function(){drawByColor('c3',R)},
+  4:function(){drawByColor('c4',B)},
+  5:function(){drawByColor('c5',G)},
+  6:function(){drawColorSum('c6')},
+  7:function(){drawAllItems('c7')},
+  8:function(){drawByShape('c8','c')},
+  9:function(){drawByShape('c9','r')},
+  10:function(){drawShapeSum('c10')},
+  11:function(){drawDiscover('c11')}
 };
 
 function showSlide(){
