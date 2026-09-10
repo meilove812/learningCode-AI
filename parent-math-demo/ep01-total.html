@@ -134,15 +134,16 @@ function showItems(id){
 function showColorGroups(id,calcId){
   var el=document.getElementById(id);el.innerHTML='';
   var groups=[
-    {name:'红色',bg:'linear-gradient(135deg,#ff6b6b,#ee5a5a)',items:['红','红','红','红']},
-    {name:'蓝色',bg:'linear-gradient(135deg,#74b9ff,#5a9bdb)',items:['蓝','蓝','蓝','蓝']},
-    {name:'绿色',bg:'linear-gradient(135deg,#55efc4,#3dc9a0)',items:['绿','绿','绿','绿']}
+    {name:'红色',bg:'linear-gradient(135deg,#ff6b6b,#ee5a5a)',shapes:['circle','square','circle','square']},
+    {name:'蓝色',bg:'linear-gradient(135deg,#74b9ff,#5a9bdb)',shapes:['circle','square','circle','square']},
+    {name:'绿色',bg:'linear-gradient(135deg,#55efc4,#3dc9a0)',shapes:['circle','square','circle','square']}
   ];
   for(var i=0;i<groups.length;i++){
     var g=document.createElement('div');g.className='group';g.style.animationDelay=(i*0.2)+'s';
     var html='<div class="g-title"><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:'+groups[i].bg+';vertical-align:middle;margin-right:4px;box-shadow:0 2px 6px rgba(0,0,0,.15)"></span>'+groups[i].name+'</div><div class="g-items">';
-    for(var j=0;j<groups[i].items.length;j++){
-      html+='<div style="width:38px;height:38px;border-radius:10px;background:'+groups[i].bg+';display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 3px 8px rgba(0,0,0,.12);animation:fadeScale .3s '+(i*0.2+j*0.1)+'s backwards">'+groups[i].items[j]+'</div>';
+    for(var j=0;j<groups[i].shapes.length;j++){
+      var radius=groups[i].shapes[j]==='circle'?'50%':'10px';
+      html+='<div style="width:38px;height:38px;border-radius:'+radius+';background:'+groups[i].bg+';display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 3px 8px rgba(0,0,0,.12);animation:fadeScale .3s '+(i*0.2+j*0.1)+'s backwards">'+groups[i].name[0]+'</div>';
     }
     html+='</div><div class="g-count">4</div>';
     g.innerHTML=html;el.appendChild(g);
