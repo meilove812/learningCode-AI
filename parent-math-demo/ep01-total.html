@@ -145,11 +145,11 @@ var items=[
 function drawCircleItem(ctx,x,y,radius,color,label){
   ctx.save();
   ctx.fillStyle=color;ctx.shadowColor=color;
-  ctx.shadowBlur=10+6*Math.sin((window._animFrame||0)*.15);
+  ctx.shadowBlur=14+10*Math.sin((window._animFrame||0)*.08);
   ctx.beginPath();ctx.arc(x,y,radius,0,Math.PI*2);ctx.fill();
   ctx.strokeStyle='rgba(255,255,255,.25)';ctx.lineWidth=1.5;ctx.stroke();
-  ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.font='bold 12px sans-serif';
-  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,x,y);
+  ctx.shadowBlur=0;ctx.font='bold 13px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.strokeStyle='rgba(0,0,0,.6)';ctx.lineWidth=3;ctx.strokeText(label,x,y);ctx.fillStyle='#fff';ctx.fillText(label,x,y);
   ctx.restore();
 }
 
@@ -157,21 +157,28 @@ function drawCircleItem(ctx,x,y,radius,color,label){
 function drawSquareItem(ctx,x,y,half,color,label){
   ctx.save();
   ctx.fillStyle=color;ctx.shadowColor=color;
-  ctx.shadowBlur=10+6*Math.sin((window._animFrame||0)*.15);
+  ctx.shadowBlur=14+10*Math.sin((window._animFrame||0)*.08);
   ctx.fillRect(x-half,y-half,half*2,half*2);
   ctx.strokeStyle='rgba(255,255,255,.25)';ctx.lineWidth=1.5;
   ctx.strokeRect(x-half,y-half,half*2,half*2);
-  ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.font='bold 12px sans-serif';
-  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,x,y);
+  ctx.shadowBlur=0;ctx.font='bold 13px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.strokeStyle='rgba(0,0,0,.6)';ctx.lineWidth=3;ctx.strokeText(label,x,y);ctx.fillStyle='#fff';ctx.fillText(label,x,y);
   ctx.restore();
 }
 
 // 画一个物品（根据形状自动选圆或方）
 function drawItem(ctx,idx,x,y,size,alpha){
   var it=items[idx];
-  ctx.globalAlpha=(alpha===undefined)?1:alpha;
-  if(it.s==='c') drawCircleItem(ctx,x,y,size,it.cl,it.lb);
-  else drawSquareItem(ctx,x,y,size,it.cl,it.lb);
+  var a=(alpha===undefined)?1:alpha;
+  ctx.globalAlpha=a;
+  // 浮动动画：每个物品有不同相位
+  var f=window._animFrame||0;
+  var floatY=Math.sin(f*0.04+idx*1.2)*3;
+  var floatX=Math.cos(f*0.03+idx*0.8)*2;
+  var pulse=1+Math.sin(f*0.06+idx*2)*0.05;
+  var sz=size*pulse;
+  if(it.s==='c') drawCircleItem(ctx,x+floatX,y+floatY,sz,it.cl,it.lb);
+  else drawSquareItem(ctx,x+floatX,y+floatY,sz,it.cl,it.lb);
   ctx.globalAlpha=1;
 }
 
@@ -284,11 +291,11 @@ function showSlide(){
   for(var i=0;i<slides.length;i++)slides[i].classList.toggle('active',i===cur);
   document.getElementById('pgInfo').textContent=(cur+1)+'/'+TOTAL;
   document.getElementById('bar').style.width=((cur+1)/TOTAL*100)+'%';
-  if(window._animTimer)clearInterval(window._animTimer);
-  if(drawFns[cur]){try{drawFns[cur]()}catch(e){}
-    // 持续脉冲动画：每100ms重绘当前页Canvas
+  if(window._animTimer)cancelAnimationFrame(window._animTimer);
+  if(drawFns[cur]){
     window._animFrame=0;
-    window._animTimer=setInterval(function(){window._animFrame++;try{drawFns[cur]()}catch(e){}},100);}
+    function animLoop(){window._animFrame++;try{drawFns[cur]()}catch(e){}window._animTimer=requestAnimationFrame(animLoop);}
+    animLoop();}
   // 总结卡片动画
   if(cur===11){['sc1','sc2','sc3','sc4'].forEach(function(id,i){
     setTimeout(function(){var el=document.getElementById(id);if(el)el.classList.add('show')},i*300);});}
