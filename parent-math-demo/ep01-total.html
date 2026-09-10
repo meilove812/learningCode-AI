@@ -39,7 +39,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Micr
 </div>
 
 <div class="slide" id="s1">
-  <div class="stitle">看看这6个东西</div>
+  <div class="stitle">看看这12个东西</div>
   <div class="cbox"><canvas id="c1" width="400" height="200"></canvas></div>
   <p class="sdesc">有圆有方，颜色也不一样🤔</p>
 </div>
@@ -51,27 +51,27 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Micr
 </div>
 
 <div class="slide" id="s3">
-  <div class="stitle">红色：2个</div>
+  <div class="stitle">红色：4个</div>
   <div class="cbox"><canvas id="c3" width="400" height="200"></canvas></div>
-  <p class="sdesc">红圆 + 红方 = <span class="hl">2</span> 个</p>
+  <p class="sdesc">红色一共 <span class="hl">4</span> 个</p>
 </div>
 
 <div class="slide" id="s4">
-  <div class="stitle">蓝色：2个</div>
+  <div class="stitle">蓝色：4个</div>
   <div class="cbox"><canvas id="c4" width="400" height="200"></canvas></div>
-  <p class="sdesc">蓝圆 + 蓝方 = <span class="bl">2</span> 个</p>
+  <p class="sdesc">蓝色一共 <span class="bl">4</span> 个</p>
 </div>
 
 <div class="slide" id="s5">
-  <div class="stitle">绿色：2个</div>
+  <div class="stitle">绿色：4个</div>
   <div class="cbox"><canvas id="c5" width="400" height="200"></canvas></div>
-  <p class="sdesc">绿圆 + 绿方 = <span class="gn">2</span> 个</p>
+  <p class="sdesc">绿色一共 <span class="gn">4</span> 个</p>
 </div>
 
 <div class="slide" id="s6">
   <div class="stitle">加起来！</div>
   <div class="cbox"><canvas id="c6" width="400" height="180"></canvas></div>
-  <div class="formula">2 + 2 + 2 = 6 ✅</div>
+  <div class="formula">4 + 4 + 4 = 12 ✅</div>
   <p class="sdesc">跟总数一样，没重没漏！</p>
 </div>
 
@@ -82,21 +82,21 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Micr
 </div>
 
 <div class="slide" id="s8">
-  <div class="stitle">圆形：3个</div>
+  <div class="stitle">圆形：6个</div>
   <div class="cbox"><canvas id="c8" width="400" height="200"></canvas></div>
-  <p class="sdesc">红圆 + 蓝圆 + 绿圆 = <span class="bl">3</span> 个</p>
+  <p class="sdesc">圆形一共 <span class="bl">6</span> 个</p>
 </div>
 
 <div class="slide" id="s9">
-  <div class="stitle">方形：3个</div>
+  <div class="stitle">方形：6个</div>
   <div class="cbox"><canvas id="c9" width="400" height="200"></canvas></div>
-  <p class="sdesc">红方 + 蓝方 + 绿方 = <span class="hl">3</span> 个</p>
+  <p class="sdesc">方形一共 <span class="hl">6</span> 个</p>
 </div>
 
 <div class="slide" id="s10">
   <div class="stitle">加起来！</div>
   <div class="cbox"><canvas id="c10" width="400" height="180"></canvas></div>
-  <div class="formula">3 + 3 = 6 ✅</div>
+  <div class="formula">6 + 6 = 12 ✅</div>
   <p class="sdesc">换了分法，总数不变！</p>
 </div>
 
@@ -121,15 +121,15 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Micr
 </div>
 
 <script>
-// 6个物品：红圆 红方 蓝圆 蓝方 绿圆 绿方
-// 按颜色：红2+蓝2+绿2=6  按形状：圆3+方3=6
+// 12个物品：红圆2+红方2+蓝圆2+蓝方2+绿圆2+绿方2=12
+// 按颜色：红4+蓝4+绿4=12  按形状：圆6+方6=12（与课本第一课同步）
 var TOTAL=12, cur=0, speaking=false;
 
 var R='#ff6b6b', B='#74b9ff', G='#55efc4';
 var items=[
-  {s:'c',cl:R,lb:'红'},{s:'r',cl:R,lb:'红'},
-  {s:'c',cl:B,lb:'蓝'},{s:'r',cl:B,lb:'蓝'},
-  {s:'c',cl:G,lb:'绿'},{s:'r',cl:G,lb:'绿'}
+  {s:'c',cl:R,lb:'红'},{s:'c',cl:R,lb:'红'},{s:'r',cl:R,lb:'红'},{s:'r',cl:R,lb:'红'},
+  {s:'c',cl:B,lb:'蓝'},{s:'c',cl:B,lb:'蓝'},{s:'r',cl:B,lb:'蓝'},{s:'r',cl:B,lb:'蓝'},
+  {s:'c',cl:G,lb:'绿'},{s:'c',cl:G,lb:'绿'},{s:'r',cl:G,lb:'绿'},{s:'r',cl:G,lb:'绿'}
 ];
 
 // 直接画法（跟canvas-test一样简单可靠）
@@ -156,15 +156,15 @@ function drawOne(ctx,it,x,y,sz){
 function drawAll(cid){
   var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
   ctx.clearRect(0,0,c.width,c.height);
-  var positions=[[70,80],[200,60],[330,80],[70,160],[200,160],[330,140]];
-  for(var i=0;i<6;i++)drawOne(ctx,items[i],positions[i][0],positions[i][1],28);
+  var positions=[[50,55],[140,45],[240,55],[340,45],[50,120],[140,120],[240,115],[340,120],[50,180],[140,175],[240,180],[340,170]];
+  for(var i=0;i<12;i++)drawOne(ctx,items[i],positions[i][0],positions[i][1],24);
 }
 
 // 高亮特定颜色
 function drawColorGroup(cid,color){
   var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
   ctx.clearRect(0,0,c.width,c.height);
-  var positions=[[70,80],[200,60],[330,80],[70,160],[200,160],[330,140]];
+  var positions=[[50,55],[140,45],[240,55],[340,45],[50,120],[140,120],[240,115],[340,120],[50,180],[140,175],[240,180],[340,170]];
   var tx=120,ti=0;
   for(var i=0;i<6;i++){
     if(items[i].cl===color){
@@ -179,7 +179,7 @@ function drawColorGroup(cid,color){
 function drawShapeGroup(cid,shape){
   var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
   ctx.clearRect(0,0,c.width,c.height);
-  var positions=[[70,80],[200,60],[330,80],[70,160],[200,160],[330,140]];
+  var positions=[[50,55],[140,45],[240,55],[340,45],[50,120],[140,120],[240,115],[340,120],[50,180],[140,175],[240,180],[340,170]];
   var tx=80,ti=0;
   for(var i=0;i<6;i++){
     if(items[i].s===shape){
@@ -194,12 +194,12 @@ function drawShapeGroup(cid,shape){
 function drawColorSummary(cid){
   var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
   ctx.clearRect(0,0,c.width,c.height);
-  var colors=[R,B,G];var labels=['红','蓝','绿'];
+  var colors=[R,B,G];
   for(var g=0;g<3;g++){
-    var bx=20+g*140;var ci=0;
-    for(var i=0;i<6;i++){if(items[i].cl===colors[g]){drawOne(ctx,items[i],bx+ci*56+28,70,24);ci++;}}
-    ctx.fillStyle=colors[g];ctx.font='bold 18px sans-serif';ctx.textAlign='center';
-    ctx.fillText('2',bx+56,130);
+    var bx=10+g*136;var ci=0;
+    for(var i=0;i<12;i++){if(items[i].cl===colors[g]){drawOne(ctx,items[i],bx+ci*32+16,70,16);ci++;}}
+    ctx.fillStyle=colors[g];ctx.font='bold 20px sans-serif';ctx.textAlign='center';
+    ctx.shadowColor=colors[g];ctx.shadowBlur=8;ctx.fillText('4',bx+ci*32+20,72);ctx.shadowBlur=0;
   }
 }
 
@@ -207,12 +207,12 @@ function drawColorSummary(cid){
 function drawShapeSummary(cid){
   var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
   ctx.clearRect(0,0,c.width,c.height);
-  var shapes=['c','r'];var slabels=['圆形','方形'];
+  var shapes=['c','r'];
   for(var g=0;g<2;g++){
-    var bx=30+g*200;var ci=0;
-    for(var i=0;i<6;i++){if(items[i].s===shapes[g]){drawOne(ctx,items[i],bx+ci*52+26,70,24);ci++;}}
-    ctx.fillStyle='#b388ff';ctx.font='bold 18px sans-serif';ctx.textAlign='center';
-    ctx.fillText('3',bx+ci*52+10,70);
+    var bx=20+g*200;var ci=0;
+    for(var i=0;i<12;i++){if(items[i].s===shapes[g]){drawOne(ctx,items[i],bx+ci*30+16,70,16);ci++;}}
+    ctx.fillStyle='#b388ff';ctx.font='bold 20px sans-serif';ctx.textAlign='center';
+    ctx.shadowColor='#b388ff';ctx.shadowBlur=8;ctx.fillText('6',bx+ci*30+20,72);ctx.shadowBlur=0;
   }
 }
 
@@ -245,17 +245,17 @@ function next(){if(cur<TOTAL-1){cur++;showSlide();if(speaking)speakCur();}}
 function prev(){if(cur>0){cur--;showSlide();if(speaking)speakCur();}}
 
 var NAR=[
-'小朋友们好！今天学分类题的解题技巧。看，这里有6个东西，有圆的有方的，颜色也不一样。怎么理清楚呢？跟着老师来！',
-'先数一数，一共6个。有红色、蓝色、绿色，有圆形、方形。乱乱的对不对？',
+'小朋友们好！今天学分类题的解题技巧。看，这里有12个东西，有圆的有方的，颜色也不一样。怎么理清楚呢？跟着老师来！',
+'先数一数，一共12个。有红色、蓝色、绿色，有圆形、方形。乱乱的对不对？',
 '分类第一步，想好按什么来分。可以按颜色，也可以按形状。先按颜色试试！',
-'红色的挑出来！红圆一个，红方一个，红色一共2个。',
-'蓝色的挑出来！蓝圆一个，蓝方一个，蓝色也是2个。',
-'绿色的挑出来！绿圆一个，绿方一个，绿色还是2个。',
-'加起来！2加2加2等于6，跟总数一样！没数重也没漏掉。',
-'同样6个，换一种分法！这次按形状来分，看看结果一不一样。',
-'圆形的挑出来。红圆、蓝圆、绿圆，一共3个！',
-'方形的挑出来。红方、蓝方、绿方，也是3个！',
-'加起来！3加3等于6，总数不变！换了分法，结果不同，但总数一定对得上。',
+'红色的挑出来！红圆一个，红方一个，红色一共4个。',
+'蓝色的挑出来！蓝圆一个，蓝方一个，蓝色也是4个。',
+'绿色的挑出来！绿圆一个，绿方一个，绿色还是4个。',
+'加起来！4加4加4等于12，跟总数一样！没数重也没漏掉。',
+'同样12个，换一种分法！这次按形状来分，看看结果一不一样。',
+'圆形的挑出来。红圆、蓝圆、绿圆，一共6个！',
+'方形的挑出来。红方、蓝方、绿方，也是6个！',
+'加起来！6加6等于12，总数不变！换了分法，结果不同，但总数一定对得上。',
 '总结三步法！第一步想好按什么分。第二步分一分数一数。第三步加一加对总数。掌握这个思路，分类题都能用！'
 ];
 
