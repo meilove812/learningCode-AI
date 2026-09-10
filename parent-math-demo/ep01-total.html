@@ -133,14 +133,33 @@ body{background:#faf6f1;color:#2d2d2d;font-family:'PingFang SC','Microsoft YaHei
     <div class="calc fi d3" id="calc2"></div>
   </div>
 
-  <!-- P5: 技巧 -->
+  <!-- P5: 方法卡（值得截图保存） -->
   <div class="pg" id="p5">
-    <div class="badge tip fi">💡 记住一招</div>
-    <div class="tip-box fi d1">
-      <div class="tip">分完加一加<br>加不回原数<br>就是数重了或者漏了</div>
+    <div class="badge tip fi">📌 收藏这张方法卡</div>
+    <div style="width:330px;padding:20px;border-radius:18px;background:#fff;border:2px solid #f5d0a0;
+      box-shadow:0 4px 20px rgba(0,0,0,.06);margin:10px 0" class="fi d1">
+      <div style="text-align:center;font-size:18px;font-weight:900;color:#e67e22;margin-bottom:14px">
+        分类题检查三步法</div>
+      <div style="display:flex;align-items:flex-start;gap:10px;margin:10px 0">
+        <div style="width:26px;height:26px;border-radius:50%;background:#e67e22;color:#fff;
+          font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+        <div style="font-size:14px;line-height:1.7"><b>分之前先数总数</b><br><span style="color:#888">记住这个数</span></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;margin:10px 0">
+        <div style="width:26px;height:26px;border-radius:50%;background:#e67e22;color:#fff;
+          font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+        <div style="font-size:14px;line-height:1.7"><b>分完每组数一数</b><br><span style="color:#888">写下每组有几个</span></div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;margin:10px 0">
+        <div style="width:26px;height:26px;border-radius:50%;background:#e67e22;color:#fff;
+          font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+        <div style="font-size:14px;line-height:1.7"><b>加一加，对总数</b><br><span style="color:#888">对上了 = 没重没漏</span></div>
+      </div>
+      <div style="margin-top:12px;padding:10px;border-radius:10px;background:#fff8ee;text-align:center;
+        font-size:13px;color:#e67e22;font-weight:600">
+        ⚠️ 不对？→ 重复了或漏了，回去再查一遍</div>
     </div>
-    <div class="t-md fi d2" style="margin-top:12px;font-size:15px;color:#888">
-      所有分类题<br>都用这一招检查</div>
+    <div class="t-sm fi d2" style="color:#27ae60;font-weight:600">今晚作业有分类题，让孩子试一次</div>
   </div>
 
   <div class="nw"><div class="nar" id="nar">点击按钮，开始自动讲解</div>
@@ -213,8 +232,8 @@ const S=[
   {p:'p3',t:'蓝绿交界处，两边各数了一遍。'},
   {p:'p4',t:'正确做法：分完加一加，必须等于十二。',fn:()=>showGroups('groups2','calc2',false)},
   {p:'p4',t:'四加四加四等于十二，对上了。'},
-  {p:'p5',t:'记住这一招：分完加一加。'},
-  {p:'p5',t:'加不回原数，就是数重了或者漏了。'},
+  {p:'p5',t:'三步检查：数总数、分完数、加一加。'},
+  {p:'p5',t:'今晚作业有分类题，让孩子试一次。'},
 ];
 function run(){if(si>=S.length){si=0;playing=false;document.getElementById('go').classList.remove('hide');
   document.getElementById('go').textContent='▶ 重新播放';return}
