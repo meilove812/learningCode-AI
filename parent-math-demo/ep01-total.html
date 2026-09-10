@@ -57,8 +57,8 @@ body{background:#faf6f1;color:#2d2d2d;font-family:'PingFang SC','Microsoft YaHei
 
 <div class="pg on" id="p0">
   <div class="badge tip fi">分类题</div>
-  <div class="t-lg fi d1"><span class="warm">按什么分 → 分一分 → 数一数</span></div>
-  <div class="t-md fi d2" style="margin-top:12px">掌握这个思路<br>分类题都能用这个思路</div>
+  <div class="items-area fi d1" id="a0"></div>
+  <div class="t-md fi d2" style="font-size:15px;color:#888">这堆东西怎么分？</div>
 </div>
 
 <div class="pg" id="p1">
@@ -152,8 +152,7 @@ function speak(text,cb){
 function showPage(id){var ps=document.querySelectorAll('.pg');for(var i=0;i<ps.length;i++)ps[i].classList.remove('on');document.getElementById(id).classList.add('on')}
 
 var STEPS=[
-  {p:'p0',t:'分类题，掌握一个思路就够了。'},
-  {p:'p0',t:'按什么分，分一分，数一数。'},
+  {p:'p0',t:'分类题，看到这堆东西怎么分？',fn:function(){showItems('a0')}},
   {p:'p1',t:'比如这十二个物品混在一起。',fn:function(){showItems('a1')}},
   {p:'p1',t:'第一步，想好按什么来分。'},
   {p:'p2',t:'按颜色分成三组，每组数一数。',fn:function(){showGroups('g1','c1',true)}},
