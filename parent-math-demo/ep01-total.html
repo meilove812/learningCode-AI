@@ -144,7 +144,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Micr
 </div>
 <script>
 var TOTAL=13;
-let cur=0,speaking=false,animId=null;
+var cur=0,speaking=false,animId=null;
 var DPR=Math.min(window.devicePixelRatio||1,2);
 
 // 12物品：红圆2+红方2+蓝圆2+蓝方2+绿圆2+绿方2
@@ -163,7 +163,7 @@ var ITEMS=[
   {shape:'rect',color:'#55efc4',glow:'#3dc9a0',label:'绿',x:0,y:0}
 ];
 
-function setupCanvas(id){const c=document.getElementById(id);if(!c)return null;const w=+c.getAttribute('width'),h=+c.getAttribute('height');c.width=w*DPR;c.height=h*DPR;c.style.width=w+'px';c.style.height=h+'px';const ctx=c.getContext('2d');ctx.scale(DPR,DPR);return{c,ctx,w,h};}
+function setupCanvas(id){var c=document.getElementById(id);if(!c)return null;var w=+c.getAttribute('width'),h=+c.getAttribute('height');c.width=w*DPR;c.height=h*DPR;c.style.width=w+'px';c.style.height=h+'px';var ctx=c.getContext('2d');ctx.scale(DPR,DPR);return{c,ctx,w,h};}
 
 // 散落位置
 function scatterPos(w,h){var ps=[];var cols=4,rows=3,pad=20,gx=(w-pad*2)/(cols),gy=(h-pad*2)/(rows);
