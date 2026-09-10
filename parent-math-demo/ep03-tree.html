@@ -104,7 +104,7 @@ var btns=[
 
 function drawBtn(ctx,b,x,y,sz,alpha){
   ctx.save();ctx.globalAlpha=alpha||1;
-  ctx.fillStyle=b.cl;ctx.shadowColor=b.cl;ctx.shadowBlur=8;
+  ctx.fillStyle=b.cl;ctx.shadowColor=b.cl;ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);
   if(b.sh==='c'){ctx.beginPath();ctx.arc(x,y,sz,0,Math.PI*2);ctx.fill();ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=1.5;ctx.stroke();}
   else{ctx.fillRect(x-sz,y-sz,sz*2,sz*2);ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=1.5;ctx.strokeRect(x-sz,y-sz,sz*2,sz*2);}
   ctx.shadowBlur=0;
@@ -195,9 +195,9 @@ function drawDiscovery(cid){
   var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);
   ctx.fillStyle='rgba(255,215,0,.06)';ctx.fillRect(20,20,360,60);
   ctx.fillStyle='#ffd700';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
-  ctx.shadowColor='#ffd700';ctx.shadowBlur=8;ctx.fillText('形状→颜色→扣眼 = 8类',200,55);ctx.shadowBlur=0;
+  ctx.shadowColor='#ffd700';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('形状→颜色→扣眼 = 8类',200,55);ctx.shadowBlur=0;
   ctx.fillStyle='rgba(0,210,255,.06)';ctx.fillRect(20,100,360,60);
-  ctx.fillStyle='#00d2ff';ctx.shadowColor='#00d2ff';ctx.shadowBlur=8;ctx.fillText('颜色→形状→扣眼 = 8类',200,135);ctx.shadowBlur=0;
+  ctx.fillStyle='#00d2ff';ctx.shadowColor='#00d2ff';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('颜色→形状→扣眼 = 8类',200,135);ctx.shadowBlur=0;
   ctx.fillStyle='#fff';ctx.font='bold 14px sans-serif';ctx.fillText('不管先分哪个，最后都一样！',200,190);
 }
 
@@ -213,7 +213,11 @@ function showSlide(){
   for(var i=0;i<slides.length;i++)slides[i].classList.toggle('active',i===cur);
   document.getElementById('pgInfo').textContent=(cur+1)+'/'+TOTAL;
   document.getElementById('bar').style.width=((cur+1)/TOTAL*100)+'%';
-  if(drawFns[cur])try{drawFns[cur]()}catch(e){}
+  if(window._animTimer)clearInterval(window._animTimer);
+  if(drawFns[cur]){try{drawFns[cur]()}catch(e){}
+    // 持续脉冲动画：每100ms重绘当前页Canvas
+    window._animFrame=0;
+    window._animTimer=setInterval(function(){window._animFrame++;try{drawFns[cur]()}catch(e){}},100);}
   if(cur===7){['sc1','sc2','sc3','sc4'].forEach(function(id,i){setTimeout(function(){var el=document.getElementById(id);if(el)el.classList.add('show')},i*300);});}
 }
 function next(){if(cur<TOTAL-1){cur++;showSlide();if(speaking)speakCur();}}

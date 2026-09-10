@@ -134,14 +134,14 @@ var items=[
 
 // 直接画法（跟canvas-test一样简单可靠）
 function drawCircle(ctx,x,y,r,color,label){
-  ctx.fillStyle=color;ctx.shadowColor=color;ctx.shadowBlur=12;
+  ctx.fillStyle=color;ctx.shadowColor=color;ctx.shadowBlur=10+6*Math.sin((window._animFrame||0)*.15);
   ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
   ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=2;ctx.stroke();
   ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.font='bold 16px sans-serif';
   ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,x,y);
 }
 function drawRect(ctx,x,y,w,h,color,label){
-  ctx.fillStyle=color;ctx.shadowColor=color;ctx.shadowBlur=12;
+  ctx.fillStyle=color;ctx.shadowColor=color;ctx.shadowBlur=10+6*Math.sin((window._animFrame||0)*.15);
   ctx.fillRect(x-w/2,y-h/2,w,h);
   ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=2;ctx.strokeRect(x-w/2,y-h/2,w,h);
   ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.font='bold 16px sans-serif';
@@ -199,7 +199,7 @@ function drawColorSummary(cid){
     var bx=10+g*136;var ci=0;
     for(var i=0;i<12;i++){if(items[i].cl===colors[g]){drawOne(ctx,items[i],bx+ci*32+16,70,16);ci++;}}
     ctx.fillStyle=colors[g];ctx.font='bold 20px sans-serif';ctx.textAlign='center';
-    ctx.shadowColor=colors[g];ctx.shadowBlur=8;ctx.fillText('4',bx+ci*32+20,72);ctx.shadowBlur=0;
+    ctx.shadowColor=colors[g];ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('4',bx+ci*32+20,72);ctx.shadowBlur=0;
   }
 }
 
@@ -212,7 +212,7 @@ function drawShapeSummary(cid){
     var bx=20+g*200;var ci=0;
     for(var i=0;i<12;i++){if(items[i].s===shapes[g]){drawOne(ctx,items[i],bx+ci*30+16,70,16);ci++;}}
     ctx.fillStyle='#b388ff';ctx.font='bold 20px sans-serif';ctx.textAlign='center';
-    ctx.shadowColor='#b388ff';ctx.shadowBlur=8;ctx.fillText('6',bx+ci*30+20,72);ctx.shadowBlur=0;
+    ctx.shadowColor='#b388ff';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('6',bx+ci*30+20,72);ctx.shadowBlur=0;
   }
 }
 
@@ -236,7 +236,11 @@ function showSlide(){
   for(var i=0;i<slides.length;i++)slides[i].classList.toggle('active',i===cur);
   document.getElementById('pgInfo').textContent=(cur+1)+'/'+TOTAL;
   document.getElementById('bar').style.width=((cur+1)/TOTAL*100)+'%';
-  if(drawFns[cur])try{drawFns[cur]()}catch(e){}
+  if(window._animTimer)clearInterval(window._animTimer);
+  if(drawFns[cur]){try{drawFns[cur]()}catch(e){}
+    // 持续脉冲动画：每100ms重绘当前页Canvas
+    window._animFrame=0;
+    window._animTimer=setInterval(function(){window._animFrame++;try{drawFns[cur]()}catch(e){}},100);}
   // 总结卡片动画
   if(cur===11){['sc1','sc2','sc3','sc4'].forEach(function(id,i){
     setTimeout(function(){var el=document.getElementById(id);if(el)el.classList.add('show')},i*300);});}

@@ -135,7 +135,7 @@ var allPos=[[30,60],[100,50],[170,60],[260,50],[340,60],[30,130],[100,130],[180,
 
 function drawPerson(ctx,p,x,y,alpha){
   ctx.save();ctx.globalAlpha=alpha||1;
-  ctx.fillStyle=p.cl;ctx.shadowColor=p.cl;ctx.shadowBlur=10;
+  ctx.fillStyle=p.cl;ctx.shadowColor=p.cl;ctx.shadowBlur=8+5*Math.sin((window._animFrame||0)*.15);
   ctx.beginPath();ctx.arc(x,y,p.r,0,Math.PI*2);ctx.fill();
   ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=1.5;ctx.stroke();
   ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.font='bold '+(p.r>16?14:12)+'px sans-serif';
@@ -179,11 +179,11 @@ function drawAgeSummary(cid){
   var ti=0;
   for(var i=0;i<14;i++){if(people[i].t==='am'||people[i].t==='af'){drawPerson(ctx,people[i],20+ti*40+20,70,1);ti++;}}
   ctx.fillStyle='#ffd700';ctx.font='bold 20px sans-serif';ctx.textAlign='center';
-  ctx.shadowColor='#ffd700';ctx.shadowBlur=8;ctx.fillText('8',ti*40+40,72);ctx.shadowBlur=0;
+  ctx.shadowColor='#ffd700';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('8',ti*40+40,72);ctx.shadowBlur=0;
   // 小孩组
   ti=0;
   for(var i=0;i<14;i++){if(people[i].t==='cm'||people[i].t==='cf'){drawPerson(ctx,people[i],20+ti*40+20,150,1);ti++;}}
-  ctx.fillStyle='#00d2ff';ctx.shadowColor='#00d2ff';ctx.shadowBlur=8;ctx.fillText('6',ti*40+40,152);ctx.shadowBlur=0;
+  ctx.fillStyle='#00d2ff';ctx.shadowColor='#00d2ff';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('6',ti*40+40,152);ctx.shadowBlur=0;
 }
 
 function drawGenderSummary(cid){
@@ -192,10 +192,10 @@ function drawGenderSummary(cid){
   var ti=0;
   for(var i=0;i<14;i++){if(people[i].t==='am'||people[i].t==='cm'){drawPerson(ctx,people[i],20+ti*46+24,70,1);ti++;}}
   ctx.fillStyle='#00d2ff';ctx.font='bold 20px sans-serif';ctx.textAlign='center';
-  ctx.shadowColor='#00d2ff';ctx.shadowBlur=8;ctx.fillText('7',ti*46+44,72);ctx.shadowBlur=0;
+  ctx.shadowColor='#00d2ff';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('7',ti*46+44,72);ctx.shadowBlur=0;
   ti=0;
   for(var i=0;i<14;i++){if(people[i].t==='af'||people[i].t==='cf'){drawPerson(ctx,people[i],20+ti*46+24,150,1);ti++;}}
-  ctx.fillStyle='#ff6b9d';ctx.shadowColor='#ff6b9d';ctx.shadowBlur=8;ctx.fillText('7',ti*46+44,152);ctx.shadowBlur=0;
+  ctx.fillStyle='#ff6b9d';ctx.shadowColor='#ff6b9d';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('7',ti*46+44,152);ctx.shadowBlur=0;
 }
 
 function drawDiscovery(cid){
@@ -203,9 +203,9 @@ function drawDiscovery(cid){
   ctx.clearRect(0,0,c.width,c.height);
   ctx.fillStyle='rgba(255,215,0,.06)';ctx.fillRect(20,20,360,80);
   ctx.fillStyle='#ffd700';ctx.font='bold 18px sans-serif';ctx.textAlign='center';
-  ctx.shadowColor='#ffd700';ctx.shadowBlur=8;ctx.fillText('按年龄：8 + 6 = 14 ✅',200,65);ctx.shadowBlur=0;
+  ctx.shadowColor='#ffd700';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('按年龄：8 + 6 = 14 ✅',200,65);ctx.shadowBlur=0;
   ctx.fillStyle='rgba(0,210,255,.06)';ctx.fillRect(20,120,360,80);
-  ctx.fillStyle='#00d2ff';ctx.shadowColor='#00d2ff';ctx.shadowBlur=8;ctx.fillText('按男女：7 + 7 = 14 ✅',200,165);ctx.shadowBlur=0;
+  ctx.fillStyle='#00d2ff';ctx.shadowColor='#00d2ff';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('按男女：7 + 7 = 14 ✅',200,165);ctx.shadowBlur=0;
   ctx.fillStyle='#fff';ctx.font='bold 16px sans-serif';ctx.fillText('分法不同，总数永远不变！',200,230);
 }
 
@@ -228,7 +228,11 @@ function showSlide(){
   for(var i=0;i<slides.length;i++)slides[i].classList.toggle('active',i===cur);
   document.getElementById('pgInfo').textContent=(cur+1)+'/'+TOTAL;
   document.getElementById('bar').style.width=((cur+1)/TOTAL*100)+'%';
-  if(drawFns[cur])try{drawFns[cur]()}catch(e){}
+  if(window._animTimer)clearInterval(window._animTimer);
+  if(drawFns[cur]){try{drawFns[cur]()}catch(e){}
+    // 持续脉冲动画：每100ms重绘当前页Canvas
+    window._animFrame=0;
+    window._animTimer=setInterval(function(){window._animFrame++;try{drawFns[cur]()}catch(e){}},100);}
   if(cur===11){['sc1','sc2','sc3','sc4'].forEach(function(id,i){setTimeout(function(){var el=document.getElementById(id);if(el)el.classList.add('show')},i*300);});}
 }
 function next(){if(cur<TOTAL-1){cur++;showSlide();if(speaking)speakCur();}}
