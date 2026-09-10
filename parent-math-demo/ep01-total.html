@@ -57,7 +57,7 @@ body{background:#faf6f1;color:#2d2d2d;font-family:'PingFang SC','Microsoft YaHei
 
 <div class="pg on" id="p0">
   <div class="badge tip fi">分类题</div>
-  <div class="t-lg fi d1"><span class="warm">选标准 → 分一分 → 数一数</span></div>
+  <div class="t-lg fi d1"><span class="warm">按什么分 → 分一分 → 数一数</span></div>
   <div class="t-md fi d2" style="margin-top:12px">掌握这个思路<br>所有分类题都能解</div>
 </div>
 
@@ -68,7 +68,7 @@ body{background:#faf6f1;color:#2d2d2d;font-family:'PingFang SC','Microsoft YaHei
 </div>
 
 <div class="pg" id="p2">
-  <div class="badge tip fi">第一步：选标准</div>
+  <div class="badge tip fi">第一步：按什么分</div>
   <div class="t-md fi d1">按<span style="color:#e67e22;font-weight:700">颜色</span>分成三组</div>
   <div class="groups fi d2" id="g1"></div>
   <div class="calc fi d3" id="c1"></div>
@@ -90,7 +90,7 @@ body{background:#faf6f1;color:#2d2d2d;font-family:'PingFang SC','Microsoft YaHei
 
 <div class="pg" id="p5">
   <div class="tip-box fi">
-    <div class="tip">选标准 → 分一分 → 数一数<br>加一加对总数<br>对上了就没重没漏</div>
+    <div class="tip">按什么分 → 分一分 → 数一数<br>加一加对总数<br>对上了就没重没漏</div>
   </div>
   <div class="t-md fi d1" style="margin-top:16px;font-size:15px;color:#888">掌握思路比做对一道题重要<br>所有分类题都是同一个方法</div>
 </div>
@@ -153,16 +153,16 @@ function showPage(id){var ps=document.querySelectorAll('.pg');for(var i=0;i<ps.l
 
 var STEPS=[
   {p:'p0',t:'分类题，掌握一个思路就够了。'},
-  {p:'p0',t:'选标准，分一分，数一数。'},
+  {p:'p0',t:'按什么分，分一分，数一数。'},
   {p:'p1',t:'比如这十二个物品混在一起。',fn:function(){showItems('a1')}},
-  {p:'p1',t:'第一步，选一个标准来分。'},
+  {p:'p1',t:'第一步，想好按什么来分。'},
   {p:'p2',t:'按颜色分成三组，每组数一数。',fn:function(){showGroups('g1','c1',true)}},
   {p:'p2',t:'五加五加四等于十四，多了两个。'},
   {p:'p3',t:'问题在这里，两个物品数了两遍。',fn:function(){showItems('a2',[4,8])}},
   {p:'p3',t:'交界处的最容易重复。'},
   {p:'p4',t:'正确做法，每组数完加一加对总数。',fn:function(){showGroups('g2','c2',false)}},
   {p:'p4',t:'四加四加四等于十二，对上了。'},
-  {p:'p5',t:'选标准，分一分，数一数，加一加对总数。'},
+  {p:'p5',t:'按什么分，分一分，数一数，加一加对总数。'},
   {p:'p5',t:'掌握思路比做对一道题重要，所有分类题都是同一个方法。'},
 ];
 
