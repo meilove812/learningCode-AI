@@ -3,221 +3,250 @@
 <title>AI自动化最大的风险</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--g1:#0f0c29;--g2:#302b63;--g3:#24243e;--gold:#ffd700;--red:#ff4757;--green:#2ed573;--blue:#70a1ff}
-body{background:var(--g1);color:#fff;font-family:'PingFang SC','Microsoft YaHei',-apple-system,sans-serif;
-  display:flex;justify-content:center;overflow:hidden;height:100vh;-webkit-font-smoothing:antialiased}
+body{background:#080818;color:#fff;font-family:'PingFang SC','Microsoft YaHei',sans-serif;
+  display:flex;justify-content:center;height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased}
 .s{width:100vw;max-width:430px;height:100vh;position:relative;overflow:hidden}
 
-/* 流动渐变背景 */
-.bg{position:absolute;inset:0;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
-  background-size:400% 400%;animation:gradFlow 12s ease infinite}
-@keyframes gradFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-.bg::after{content:'';position:absolute;inset:0;
-  background:radial-gradient(circle at 50% 30%,rgba(112,161,255,.08) 0%,transparent 60%)}
+/* === 背景层 === */
+.bg{position:absolute;inset:0;z-index:0}
+.bg-grad{position:absolute;inset:0;background:linear-gradient(160deg,#0d0b2e,#1a0a2e,#0a1628);
+  background-size:300% 300%;animation:bgShift 10s ease infinite}
+@keyframes bgShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.bg-glow{position:absolute;width:300px;height:300px;border-radius:50%;filter:blur(80px);opacity:.12}
+.bg-glow.a{background:#7c4dff;top:-80px;left:-60px;animation:gFloat 7s ease-in-out infinite}
+.bg-glow.b{background:#ff4757;bottom:60px;right:-80px;animation:gFloat 9s ease-in-out infinite reverse}
+.bg-glow.c{background:#ffd700;top:50%;left:50%;transform:translate(-50%,-50%);animation:gFloat 11s ease-in-out infinite}
+@keyframes gFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(20px,-30px) scale(1.1)}66%{transform:translate(-20px,20px) scale(.9)}}
+/* 粒子 */
+.particles{position:absolute;inset:0;overflow:hidden}
+.pt{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;opacity:0;
+  animation:ptFloat linear infinite}
+@keyframes ptFloat{0%{transform:translateY(100vh);opacity:0}10%{opacity:.5}90%{opacity:.5}100%{transform:translateY(-20px);opacity:0}}
 
-/* 浮动光点 */
-.orb{position:absolute;border-radius:50%;filter:blur(40px);opacity:.15;animation:float 8s ease-in-out infinite}
-.orb1{width:200px;height:200px;background:#7c4dff;top:-60px;right:-40px;animation-delay:0s}
-.orb2{width:160px;height:160px;background:#ff6b6b;bottom:100px;left:-50px;animation-delay:3s}
-.orb3{width:120px;height:120px;background:#ffd700;top:40%;right:-30px;animation-delay:6s}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-30px)}}
+/* === 页面 === */
+.pg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:60px 24px 150px;opacity:0;pointer-events:none;z-index:2;
+  transition:opacity .8s cubic-bezier(.4,0,.2,1)}
+.pg.on{opacity:1;pointer-events:auto}
 
-/* 页面 */
-.page{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;padding:50px 28px 160px;opacity:0;transform:translateY(30px) scale(.97);
-  transition:opacity .7s cubic-bezier(.4,0,.2,1),transform .7s cubic-bezier(.4,0,.2,1);pointer-events:none;z-index:1}
-.page.active{opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+/* 文字动画基础 */
+.txt-in{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s cubic-bezier(.2,0,.2,1)}
+.pg.on .txt-in{opacity:1;transform:translateY(0)}
+.txt-in.d1{transition-delay:.15s}.txt-in.d2{transition-delay:.3s}.txt-in.d3{transition-delay:.45s}.txt-in.d4{transition-delay:.6s}
 
-/* 标题排版 */
-.hero{text-align:center;line-height:1.5}
-.hero .main{font-size:38px;font-weight:900;letter-spacing:2px;
-  background:linear-gradient(135deg,#fff 30%,rgba(255,255,255,.7));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero .accent{font-size:42px;font-weight:900;letter-spacing:2px;
-  background:linear-gradient(135deg,var(--gold),#ffaa00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 20px rgba(255,215,0,.3))}
-.hero .danger{font-size:42px;font-weight:900;
-  background:linear-gradient(135deg,var(--red),#ff6b81);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+/* === 文字样式 === */
+.t1{font-size:18px;color:rgba(255,255,255,.5);font-weight:500;text-align:center;letter-spacing:2px}
+.t2{font-size:40px;font-weight:900;text-align:center;line-height:1.4;letter-spacing:1px}
+.t2 .gold{background:linear-gradient(135deg,#ffd700,#ffaa00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 20px rgba(255,215,0,.25))}
+.t2 .red{background:linear-gradient(135deg,#ff4757,#ff6b81);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
   filter:drop-shadow(0 0 20px rgba(255,71,87,.3))}
-.hero .safe{font-size:42px;font-weight:900;
-  background:linear-gradient(135deg,var(--green),#7bed9f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+.t2 .grn{background:linear-gradient(135deg,#2ed573,#7bed9f);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
   filter:drop-shadow(0 0 20px rgba(46,213,115,.3))}
+.t3{font-size:15px;color:rgba(255,255,255,.45);text-align:center;margin-top:16px;line-height:1.8}
 
-/* 传送带动画 */
-.conveyor{width:100%;max-width:340px;height:160px;position:relative;margin:20px 0;
-  border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);overflow:hidden}
-.belt{position:absolute;bottom:0;left:0;right:0;height:24px;
-  background:repeating-linear-gradient(90deg,#1a1a3e 0,#1a1a3e 20px,#252550 20px,#252550 40px);
-  animation:beltMove 2s linear infinite}
-@keyframes beltMove{to{background-position:40px 0}}
-.item{position:absolute;width:44px;height:44px;border-radius:10px;display:flex;align-items:center;
-  justify-content:center;font-size:18px;font-weight:800;bottom:28px;
-  animation:slideItem 3s linear infinite;opacity:0}
-.item.ok{background:rgba(46,213,115,.15);border:2px solid rgba(46,213,115,.3);color:var(--green)}
-.item.err{background:rgba(255,71,87,.15);border:2px solid rgba(255,71,87,.3);color:var(--red);
-  animation:slideItem 3s linear infinite,shake .3s ease-in-out infinite}
-@keyframes slideItem{0%{left:-50px;opacity:0}10%{opacity:1}90%{opacity:1}100%{left:calc(100% + 50px);opacity:0}}
-@keyframes shake{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+/* === 感染扩散网格 === */
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;width:280px;margin:24px 0}
+.node{aspect-ratio:1;border-radius:50%;background:rgba(46,213,115,.2);border:2px solid rgba(46,213,115,.25);
+  position:relative;transition:all .4s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:center}
+.node::after{content:'';position:absolute;inset:-4px;border-radius:50%;opacity:0;transition:opacity .4s}
+.node.infected{background:rgba(255,71,87,.25);border-color:rgba(255,71,87,.5);
+  animation:infPulse 1s ease-out;box-shadow:0 0 16px rgba(255,71,87,.3)}
+.node.infected::after{background:radial-gradient(circle,rgba(255,71,87,.3),transparent);opacity:1}
+@keyframes infPulse{0%{transform:scale(1.3);opacity:.5}100%{transform:scale(1);opacity:1}}
 
-/* 多米诺连锁 */
-.dominos{display:flex;justify-content:center;gap:6px;margin:20px 0;height:120px;align-items:flex-end}
-.domino{width:24px;height:80px;border-radius:6px 6px 2px 2px;
-  background:linear-gradient(180deg,rgba(255,71,87,.8),rgba(255,71,87,.4));
-  transform-origin:bottom center;transition:transform .3s;position:relative}
-.domino.fallen{transform:rotate(18deg);background:linear-gradient(180deg,rgba(255,71,87,.3),rgba(255,71,87,.1))}
-.domino::after{content:'❌';position:absolute;top:-24px;left:50%;transform:translateX(-50%);font-size:14px;
-  opacity:0;transition:opacity .3s}
-.domino.fallen::after{opacity:1}
+/* === 传送带（改进版）=== */
+.conv-wrap{width:100%;max-width:340px;height:180px;position:relative;margin:20px 0;
+  border-radius:20px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);overflow:hidden}
+.conv-belt{position:absolute;bottom:0;left:0;right:0;height:16px;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0,rgba(255,255,255,.03) 24px,rgba(255,255,255,.06) 24px,rgba(255,255,255,.06) 48px);
+  animation:belt 1.5s linear infinite}
+@keyframes belt{to{background-position:48px 0}}
+.doc{position:absolute;width:48px;height:60px;border-radius:8px;bottom:20px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  font-size:8px;font-weight:700;letter-spacing:1px}
+.doc .icon{font-size:20px}
+.doc.ok{background:linear-gradient(135deg,rgba(46,213,115,.15),rgba(46,213,115,.08));
+  border:1.5px solid rgba(46,213,115,.25);color:rgba(46,213,115,.8)}
+.doc.err{background:linear-gradient(135deg,rgba(255,71,87,.2),rgba(255,71,87,.08));
+  border:1.5px solid rgba(255,71,87,.4);color:rgba(255,71,87,.9);
+  animation:docShake .15s ease-in-out infinite alternate}
+@keyframes docShake{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}
+.doc-anim{animation:docSlide 4s linear infinite}
+@keyframes docSlide{0%{left:-60px;opacity:0}5%{opacity:1}95%{opacity:1}100%{left:calc(100% + 10px);opacity:0}}
 
-/* 漏斗过滤器 */
-.funnel{width:100%;max-width:300px;margin:16px 0;position:relative}
-.funnel-top{height:50px;background:rgba(112,161,255,.1);border:1px solid rgba(112,161,255,.2);
-  border-radius:14px 14px 0 0;display:flex;align-items:center;justify-content:center;
-  font-size:14px;font-weight:700;color:var(--blue)}
-.funnel-mid{height:40px;background:linear-gradient(180deg,rgba(112,161,255,.1),rgba(255,215,0,.1));
-  clip-path:polygon(0 0,100% 0,85% 100%,15% 100%);display:flex;align-items:center;justify-content:center;
-  font-size:20px;color:var(--gold);font-weight:900}
-.funnel-bot{display:flex;gap:12px;margin-top:4px}
-.funnel-out{flex:1;padding:12px;border-radius:12px;text-align:center;font-size:13px;font-weight:700}
-.funnel-out.pass{background:rgba(46,213,115,.08);border:1px solid rgba(46,213,115,.2);color:var(--green)}
-.funnel-out.flag{background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.2);color:var(--red)}
-.funnel-out .fn{font-size:28px;font-weight:900;display:block;margin-bottom:4px}
+/* === 过滤可视化 === */
+.filter-vis{width:100%;max-width:320px;height:280px;position:relative;margin:16px 0;overflow:hidden}
+.filter-line{position:absolute;top:45%;left:10%;right:10%;height:3px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  box-shadow:0 0 20px rgba(255,215,0,.3);z-index:1}
+.filter-label{position:absolute;top:calc(45% - 16px);left:50%;transform:translateX(-50%);
+  font-size:11px;font-weight:700;color:var(--gold);background:#080818;padding:2px 10px;z-index:2;
+  border:1px solid rgba(255,215,0,.3);border-radius:10px}
+.fdot{position:absolute;width:8px;height:8px;border-radius:50%;opacity:0}
+.fdot.pass{background:#2ed573;box-shadow:0 0 6px rgba(46,213,115,.5)}
+.fdot.catch{background:#ff4757;box-shadow:0 0 6px rgba(255,71,87,.5)}
 
-/* 动态计数器 */
-.counter-box{display:flex;gap:20px;align-items:center;margin:20px 0}
-.ctr{text-align:center;padding:20px 24px;border-radius:16px;min-width:120px}
-.ctr.bad{background:rgba(255,71,87,.08);border:2px solid rgba(255,71,87,.15)}
-.ctr.good{background:rgba(46,213,115,.08);border:2px solid rgba(46,213,115,.15)}
-.ctr .num{font-size:48px;font-weight:900;font-feature-settings:'tnum';
-  transition:all .8s cubic-bezier(.4,0,.2,1)}
-.ctr.bad .num{color:var(--red)}
-.ctr.good .num{color:var(--green)}
-.ctr .lab{font-size:12px;color:#8a95b8;margin-top:4px}
-.arrow{font-size:32px;color:var(--gold);animation:arrowPulse 1.5s ease-in-out infinite}
-@keyframes arrowPulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.2);opacity:1}}
+/* === 计数器 === */
+.ring-wrap{display:flex;gap:24px;align-items:center;margin:20px 0}
+.ring{position:relative;width:120px;height:120px}
+.ring svg{transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:6;stroke-linecap:round}
+.ring .bg-ring{stroke:rgba(255,255,255,.06)}
+.ring .fg-ring{stroke:url(#ringGrad);stroke-dasharray:339.292;stroke-dashoffset:339.292;
+  transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1)}
+.ring .val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .val .num{font-size:32px;font-weight:900}
+.ring .val .lab{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
 
-/* 底部旁白 */
-.nar-wrap{position:absolute;bottom:0;left:0;right:0;z-index:10;
-  background:linear-gradient(transparent,rgba(15,12,41,.98) 40%);padding:20px 24px 36px}
-.nar{text-align:center;font-size:17px;line-height:1.8;font-weight:500}
-.nar .hl{color:var(--gold);font-weight:700}
-.bar-track{height:3px;border-radius:2px;background:rgba(255,255,255,.08);margin-top:12px}
-.bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--gold),#ff9500);transition:width .5s}
-
-/* 系列标签 */
-.series{position:absolute;top:20px;left:24px;font-size:11px;color:rgba(255,255,255,.3);
-  letter-spacing:2px;font-weight:600;z-index:10}
-/* 开始 */
-.go{position:absolute;bottom:44px;left:50%;transform:translateX(-50%);z-index:20;
-  padding:14px 52px;border:none;border-radius:28px;font-size:17px;font-weight:700;
-  background:linear-gradient(135deg,var(--gold),#ff9500);color:#0a0e27;cursor:pointer;
-  box-shadow:0 4px 30px rgba(255,215,0,.25);transition:transform .2s}
-.go:active{transform:translateX(-50%) scale(.96)}
+/* === 底部 === */
+.nar-area{position:absolute;bottom:0;left:0;right:0;z-index:10;
+  padding:16px 24px 32px;background:linear-gradient(transparent,rgba(8,8,24,.97) 35%)}
+.nar-text{text-align:center;font-size:17px;line-height:1.8;font-weight:500;min-height:40px}
+.nar-text .hl{color:#ffd700;font-weight:700}
+.bar-t{height:2px;border-radius:1px;background:rgba(255,255,255,.06);margin-top:10px}
+.bar-f{height:100%;border-radius:1px;background:linear-gradient(90deg,#ffd700,#ff9500);transition:width .5s}
+.tag{position:absolute;top:18px;left:20px;font-size:10px;color:rgba(255,255,255,.2);
+  letter-spacing:3px;font-weight:600;z-index:10;text-transform:uppercase}
+.go{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:20;
+  padding:14px 52px;border:none;border-radius:30px;font-size:17px;font-weight:700;
+  background:linear-gradient(135deg,#ffd700,#ff9500);color:#080818;cursor:pointer;
+  box-shadow:0 4px 30px rgba(255,215,0,.2),0 0 60px rgba(255,215,0,.1)}
 .go.hide{display:none}
 </style></head><body>
 <div class="s">
-  <div class="bg"></div>
-  <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
-  <div class="series">AI 落地观点 · 01</div>
+  <div class="bg">
+    <div class="bg-grad"></div>
+    <div class="bg-glow a"></div><div class="bg-glow b"></div><div class="bg-glow c"></div>
+    <div class="particles" id="pts"></div>
+  </div>
+  <div class="tag">AI 落地观点 · 01</div>
 
-  <div class="page active" id="p0">
-    <div class="hero"><span class="main">AI 自动化</span><br><span class="accent">最大的风险是什么？</span></div>
+  <div class="pg on" id="p0">
+    <div class="t1 txt-in">AI 自动化</div>
+    <div class="t2 txt-in d1"><span class="gold">最大的风险</span><br>是什么？</div>
   </div>
-  <div class="page" id="p1">
-    <div class="hero"><span class="main">不是做错</span><br><span class="danger">是做错了<br>没人发现</span></div>
+  <div class="pg" id="p1">
+    <div class="t2 txt-in">不是做错</div>
+    <div class="t2 txt-in d1"><span class="red">是做错了<br>没人发现</span></div>
   </div>
-  <div class="page" id="p2">
-    <div class="hero" style="margin-bottom:24px"><span class="main" style="font-size:22px">手工做错一次</span></div>
-    <div class="conveyor" id="conv1">
-      <div class="belt"></div>
-      <div class="item ok" style="animation-delay:0s">✓</div>
-      <div class="item ok" style="animation-delay:.6s">✓</div>
-      <div class="item err" style="animation-delay:1.2s">✗</div>
-      <div class="item ok" style="animation-delay:1.8s">✓</div>
-      <div class="item ok" style="animation-delay:2.4s">✓</div>
-    </div>
-    <div style="font-size:16px;color:#8a95b8">偶尔一个红的 → <span style="color:var(--red);font-weight:700">就错这一个</span></div>
+  <div class="pg" id="p2">
+    <div class="t1 txt-in">手工处理</div>
+    <div class="conv-wrap txt-in d1" id="conv"></div>
+    <div class="t3 txt-in d2">偶尔错一个 → 就错这一个</div>
   </div>
-  <div class="page" id="p3">
-    <div class="hero" style="margin-bottom:16px"><span class="danger" style="font-size:28px">自动跑错</span></div>
-    <div class="dominos" id="dominos"></div>
-    <div style="font-size:16px;color:var(--red);font-weight:700;margin-top:12px">每一个都倒 —— 而且没人看见</div>
+  <div class="pg" id="p3">
+    <div class="t1 txt-in">自动处理</div>
+    <div class="grid txt-in d1" id="grid"></div>
+    <div class="t3 txt-in d2" style="color:rgba(255,71,87,.8)">一个接一个，全部沦陷</div>
   </div>
-  <div class="page" id="p4">
-    <div class="hero"><span class="danger">人已经<br>不看了</span></div>
-    <div style="margin-top:20px;font-size:15px;color:#8a95b8;text-align:center;line-height:1.8">
-      自动化省掉的是人工<br><span style="color:var(--gold);font-weight:700">"有人看一眼"不能省</span></div>
+  <div class="pg" id="p4">
+    <div class="t2 txt-in"><span class="red">人已经<br>不看了</span></div>
+    <div class="t3 txt-in d1">"有人看一眼"这件事<br><span style="color:#ffd700;font-weight:700">不能省</span></div>
   </div>
-  <div class="page" id="p5">
-    <div class="hero" style="margin-bottom:20px"><span class="accent" style="font-size:28px">设好检查点</span></div>
-    <div class="funnel">
-      <div class="funnel-top">📥 AI 产出 500 份</div>
-      <div class="funnel-mid">🔍 检查点</div>
-      <div class="funnel-bot">
-        <div class="funnel-out pass"><span class="fn">470</span>✅ 通过</div>
-        <div class="funnel-out flag"><span class="fn">30</span>⚠️ 人工看</div>
-      </div>
+  <div class="pg" id="p5">
+    <div class="t1 txt-in">解决方案</div>
+    <div class="t2 txt-in d1" style="font-size:30px"><span class="gold">设好检查点</span></div>
+    <div class="filter-vis txt-in d2" id="fvis">
+      <div class="filter-line"></div><div class="filter-label">🔍 检查点</div>
     </div>
   </div>
-  <div class="page" id="p6">
-    <div class="counter-box">
-      <div class="ctr bad"><div class="num" id="n1">500</div><div class="lab">全量人工</div></div>
-      <div class="arrow">→</div>
-      <div class="ctr good"><div class="num" id="n2">30</div><div class="lab">只看异常</div></div>
+  <div class="pg" id="p6">
+    <div class="t1 txt-in">人工量</div>
+    <div class="ring-wrap txt-in d1">
+      <div class="ring"><svg viewBox="0 0 120 120"><defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff4757"/><stop offset="100%" stop-color="#ffd700"/></linearGradient></defs><circle class="bg-ring" cx="60" cy="60" r="54"/><circle class="fg-ring" id="ring" cx="60" cy="60" r="54"/></svg><div class="val"><div class="num grn" id="pct">0%</div><div class="lab">减少</div></div></div>
+      <div style="text-align:center"><div class="t2" style="font-size:28px"><span class="red">500</span><br><span style="font-size:18px;color:rgba(255,255,255,.3)">↓</span><br><span class="grn">30</span></div><div class="t3" style="margin-top:8px">只看异常</div></div>
     </div>
-    <div style="margin-top:16px;font-size:16px;color:var(--gold);font-weight:700">人工量降低 94%</div>
   </div>
-  <div class="page" id="p7">
-    <div class="hero"><span class="accent">这才叫<br>真的提效</span></div>
-    <div style="margin-top:28px;font-size:15px;color:#8a95b8;text-align:center">你们的自动化流程<br>有检查点吗？</div>
+  <div class="pg" id="p7">
+    <div class="t2 txt-in"><span class="gold">这才叫<br>真的提效</span></div>
+    <div class="t3 txt-in d1">你们的自动化流程<br>有检查点吗？</div>
   </div>
 
-  <div class="nar-wrap"><div class="nar" id="nar">点击下方按钮，开始自动讲解</div>
-    <div class="bar-track"><div class="bar-fill" id="bar" style="width:0"></div></div></div>
+  <div class="nar-area"><div class="nar-text" id="nar">点击按钮，开始自动讲解</div>
+    <div class="bar-t"><div class="bar-f" id="bar" style="width:0"></div></div></div>
   <button class="go" id="go" onclick="start()">▶ 开始讲解</button>
 </div>
 <script>
-// 多米诺初始化
-(()=>{const d=document.getElementById('dominos');for(let i=0;i<12;i++){
-  const el=document.createElement('div');el.className='domino';el.style.height=(60+Math.random()*30)+'px';
-  d.appendChild(el)}})();
+// 粒子
+(()=>{const c=document.getElementById('pts');for(let i=0;i<30;i++){const p=document.createElement('div');p.className='pt';
+  p.style.cssText=`left:${Math.random()*100}%;width:${1+Math.random()*2}px;height:${1+Math.random()*2}px;animation-duration:${6+Math.random()*8}s;animation-delay:${Math.random()*6}s`;
+  c.appendChild(p)}})();
+// 网格
+(()=>{const g=document.getElementById('grid');for(let i=0;i<24;i++){const n=document.createElement('div');n.className='node';n.dataset.idx=i;g.appendChild(n)}})();
+// 传送带
+(()=>{const c=document.getElementById('conv');c.innerHTML='<div class="conv-belt"></div>';
+  const items=[0,0,0,1,0,0,0];
+  items.forEach((err,i)=>{const d=document.createElement('div');
+    d.className=`doc ${err?'err':'ok'} doc-anim`;d.style.animationDelay=(i*.7)+'s';
+    d.innerHTML=`<div class="icon">${err?'✗':'✓'}</div><div>${err?'错误':'通过'}</div>`;
+    c.appendChild(d)})})();
 
+// 感染扩散
+function infect(){
+  const nodes=document.querySelectorAll('.node');
+  const order=[9,10,8,15,16,3,4,14,2,21,22,20,11,17,5,23,1,7,13,19,0,6,12,18];
+  nodes.forEach(n=>n.classList.remove('infected'));
+  order.forEach((idx,i)=>setTimeout(()=>nodes[idx].classList.add('infected'),i*100));
+}
+// 过滤粒子
+function filterAnim(){
+  const vis=document.getElementById('fvis');
+  vis.querySelectorAll('.fdot').forEach(d=>d.remove());
+  for(let i=0;i<20;i++){
+    const d=document.createElement('div');const isCatch=i%5===3;
+    d.className=`fdot ${isCatch?'catch':'pass'}`;
+    const x=20+Math.random()*60;
+    d.style.left=x+'%';
+    d.style.animation=isCatch
+      ?`fdotCatch 2.5s ${i*.2}s linear infinite`
+      :`fdotPass 2.5s ${i*.2}s linear infinite`;
+    vis.appendChild(d);
+  }
+}
+// 环形进度
+function ringAnim(){
+  const circ=339.292;document.getElementById('ring').style.strokeDashoffset=circ*(1-.94);
+  let v=0;const iv=setInterval(()=>{v+=2;if(v>94){v=94;clearInterval(iv)}document.getElementById('pct').textContent=v+'%'},25);
+}
+
+// CSS for filter dots
+const sty=document.createElement('style');
+sty.textContent=`
+@keyframes fdotPass{0%{top:-10px;opacity:0}10%{opacity:1}44%{top:44%}46%{top:46%}100%{top:110%;opacity:.6}}
+@keyframes fdotCatch{0%{top:-10px;opacity:0}10%{opacity:1}44%{top:44%}50%{top:46%;left:85%}100%{top:80%;left:90%;opacity:0}}`;
+document.head.appendChild(sty);
+
+// TTS
 let voice=null,playing=false,si=0;
 function pv(){const v=speechSynthesis.getVoices();
   voice=v.find(x=>/Yunyang.*Online.*Natural/i.test(x.name))||v.find(x=>/云扬/i.test(x.name))
-    ||v.find(x=>/Online.*Natural/i.test(x.name)&&/zh/i.test(x.lang))||v.find(x=>/zh/i.test(x.lang))||v[0]}
+  ||v.find(x=>/Online.*Natural/i.test(x.name)&&/zh/i.test(x.lang))||v.find(x=>/zh/i.test(x.lang))||v[0]}
 speechSynthesis.onvoiceschanged=pv;pv();
-
 function say(t,cb){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);
   u.voice=voice;u.lang='zh-CN';u.rate=.85;u.pitch=1;
   u.onend=()=>setTimeout(cb,700);u.onerror=()=>setTimeout(cb,700);speechSynthesis.speak(u)}
-function show(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active')}
-function dominoFall(){const ds=document.querySelectorAll('.domino');
-  ds.forEach((d,i)=>setTimeout(()=>d.classList.add('fallen'),i*120))}
-function animateCount(el,from,to,dur){const start=performance.now();
-  (function tick(now){const t=Math.min((now-start)/dur,1);
-    el.textContent=Math.round(from+(to-from)*t);
-    if(t<1)requestAnimationFrame(tick)})(performance.now())}
+function show(id){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.getElementById(id).classList.add('on')}
 
 const S=[
   {p:'p0',t:'很多人问，自动化最大的风险是什么？'},
   {p:'p1',t:'不是做错。是做错了没人发现。'},
   {p:'p2',t:'手工做错一次，就是错一次。'},
-  {p:'p3',t:'自动跑错一次，是每次都错。',fn:()=>setTimeout(dominoFall,300)},
+  {p:'p3',t:'自动跑错一次，是每次都错。',fn:infect},
   {p:'p4',t:'因为人已经不看了。'},
   {p:'p4',t:'但"有人看一眼"这件事，不能省。'},
-  {p:'p5',t:'设好检查点，只看异常。'},
-  {p:'p6',t:'人工从五百份降到三十份。',fn:()=>{animateCount(document.getElementById('n1'),500,500,1);animateCount(document.getElementById('n2'),500,30,1200)}},
+  {p:'p5',t:'设好检查点，只看异常。',fn:filterAnim},
+  {p:'p6',t:'人工从五百份降到三十份。',fn:ringAnim},
   {p:'p7',t:'这才叫真的提效。'},
 ];
-
 function run(){if(si>=S.length){si=0;playing=false;document.getElementById('go').classList.remove('hide');
   document.getElementById('go').textContent='▶ 重新播放';return}
-  const s=S[si];show(s.p);if(s.fn)s.fn();
-  const hl=s.t;document.getElementById('nar').innerHTML=hl;
+  const s=S[si];show(s.p);if(s.fn)setTimeout(s.fn,400);
+  document.getElementById('nar').innerHTML=s.t;
   document.getElementById('bar').style.width=Math.round(((si+1)/S.length)*100)+'%';
   say(s.t,()=>{si++;run()})}
 function start(){if(playing)return;playing=true;si=0;
-  document.querySelectorAll('.domino').forEach(d=>d.classList.remove('fallen'));
+  document.querySelectorAll('.node').forEach(n=>n.classList.remove('infected'));
   document.getElementById('go').classList.add('hide');run()}
 </script></body></html>
