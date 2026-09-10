@@ -3,107 +3,69 @@
 <title>分组题解题技巧 - 动画版</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#080820;color:#fff}
-.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 16px 110px;opacity:0;pointer-events:none;transition:opacity .6s}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#faf6f1;color:#2d2d2d}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 20px 120px;opacity:0;pointer-events:none;transition:opacity .6s;overflow-y:auto}
 .slide.active{opacity:1;pointer-events:auto}
-.slide::after{content:'';position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle,rgba(255,215,0,.04) 1px,transparent 1px);background-size:60px 60px}
 .slide>*{position:relative;z-index:1}
-.stitle{font-size:clamp(22px,5vw,40px);font-weight:900;text-align:center;margin-bottom:8px;background:linear-gradient(135deg,#ffd700,#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 12px rgba(255,180,0,.4))}
-.sdesc{font-size:clamp(15px,3vw,22px);color:#d0d8ff;text-align:center;line-height:1.7;max-width:600px}
-.hl{color:#ffcc00;font-weight:900}.bl{color:#00d2ff;font-weight:900}.pk{color:#ff6b9d;font-weight:900}
-.formula{font-size:clamp(24px,5vw,44px);font-weight:900;text-align:center;margin:10px 0;color:#00d2ff;text-shadow:0 0 20px rgba(0,210,255,.5)}
-.cbox{width:100%;max-width:500px;margin:8px auto;background:rgba(255,255,255,.03);border-radius:14px;padding:8px;border:1px solid rgba(255,255,255,.06)}
-.cbox canvas{width:100%;height:auto;display:block;border-radius:10px}
-.sum-card{background:rgba(255,255,255,.05);border-radius:14px;padding:14px 18px;margin:6px 0;width:100%;max-width:500px;border-left:4px solid #ffd700;border:1px solid rgba(255,255,255,.08);border-left:4px solid #ffd700;opacity:0;transform:translateX(-40px);transition:all .6s}
+.stitle{font-size:clamp(22px,5vw,36px);font-weight:900;text-align:center;margin-bottom:10px;color:#e67e22}
+.sdesc{font-size:clamp(15px,3vw,20px);color:#666;text-align:center;line-height:1.8;max-width:600px}
+.hl{color:#e67e22;font-weight:800}.bl{color:#3498db;font-weight:800}.pk{color:#e84393;font-weight:800}
+.formula{font-size:clamp(24px,5vw,40px);font-weight:900;text-align:center;margin:12px 0;color:#27ae60}
+.ppl-box{width:100%;max-width:420px;min-height:160px;margin:10px auto;padding:16px;border-radius:20px;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.04);display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center}
+.p{display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:11px;font-weight:800;color:#fff;box-shadow:0 3px 8px rgba(0,0,0,.1)}
+.p.am{width:42px;height:42px;background:linear-gradient(135deg,#3a7bd5,#2c5faa)}.p.af{width:42px;height:42px;background:linear-gradient(135deg,#e84393,#c0357a)}
+.p.cm{width:34px;height:34px;background:linear-gradient(135deg,#74b9ff,#5a9bdb)}.p.cf{width:34px;height:34px;background:linear-gradient(135deg,#fd79a8,#e56b8a)}
+.p.dim{opacity:.12;transform:scale(.7)}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes pulse{0%,100%{box-shadow:0 3px 8px rgba(0,0,0,.1)}50%{box-shadow:0 3px 16px rgba(0,0,0,.18)}}
+.p.bright{animation:floatY 2.5s ease-in-out infinite,pulse 2s ease-in-out infinite}
+.group-box{width:100%;max-width:420px;display:flex;gap:8px;margin:10px auto;justify-content:center}
+.group{flex:1;padding:10px 6px;border-radius:16px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.04);text-align:center}
+.group .g-title{font-size:13px;color:#888;margin-bottom:6px;font-weight:700}
+.group .g-items{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;min-height:40px}
+.group .g-count{font-size:24px;font-weight:900;margin-top:6px;color:#27ae60}
+.compare{width:100%;max-width:420px;margin:10px auto;padding:16px;border-radius:16px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.04);text-align:center}
+.compare .row{padding:10px 0;font-size:17px;font-weight:700;line-height:1.8}
+.sum-card{background:#fff;border-radius:16px;padding:16px 20px;margin:6px 0;width:100%;max-width:420px;border-left:4px solid #e67e22;box-shadow:0 2px 12px rgba(0,0,0,.04);opacity:0;transform:translateX(-30px);transition:all .5s}
 .sum-card.show{opacity:1;transform:translateX(0)}
-.sum-card h3{color:#ffd700;font-size:clamp(15px,3vw,19px);margin-bottom:2px}
-.sum-card p{color:#b8c0e8;font-size:clamp(13px,2.5vw,16px);line-height:1.5}
-.ctrl{position:fixed;bottom:0;left:0;right:0;height:52px;background:rgba(8,8,32,.95);border-top:1px solid rgba(255,215,0,.1);display:flex;align-items:center;justify-content:center;gap:8px;padding:0 10px;z-index:100}
-.ctrl button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#c8d0f0;border-radius:50px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit}
-.ctrl .pri{background:linear-gradient(135deg,#ffd700,#ff8c00);color:#1a1a4e;font-weight:700;border:none}
-.ctrl .pg{color:#556;font-size:11px;min-width:44px;text-align:center}
-.sub{position:fixed;bottom:56px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.8);border-radius:12px;padding:8px 20px;max-width:90%;text-align:center;font-size:clamp(14px,2.8vw,18px);color:#f0f0ff;line-height:1.5;z-index:99;display:none}
+.sum-card h3{color:#e67e22;font-size:clamp(15px,3vw,18px);margin-bottom:3px}
+.sum-card p{color:#888;font-size:clamp(13px,2.5vw,15px);line-height:1.6}
+.ctrl{position:fixed;bottom:0;left:0;right:0;height:54px;background:linear-gradient(180deg,rgba(250,246,241,.9),rgba(250,246,241,.98));backdrop-filter:blur(12px);border-top:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;gap:8px;padding:0 12px;z-index:100}
+.ctrl button{background:#fff;border:1px solid rgba(0,0,0,.08);color:#666;border-radius:50px;padding:7px 16px;font-size:13px;cursor:pointer;font-family:inherit;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.ctrl .pri{background:linear-gradient(135deg,#ff9a76,#e67e22);color:#fff;font-weight:700;border:none}
+.ctrl .pg{color:#bbb;font-size:11px;min-width:44px;text-align:center}
+.sub{position:fixed;bottom:58px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-radius:14px;padding:10px 22px;max-width:90%;text-align:center;font-size:clamp(14px,2.8vw,17px);color:#444;line-height:1.6;z-index:99;display:none;box-shadow:0 4px 20px rgba(0,0,0,.08)}
 .sub.vis{display:block}
-.bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#ffd700,#ff6b6b);z-index:101;transition:width .4s}
+.bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#ff9a76,#e67e22);z-index:101;transition:width .4s}
+.tag{position:fixed;top:8px;left:12px;font-size:10px;color:#ccc;letter-spacing:1px;z-index:102}
 </style></head><body>
 <div class="bar" id="bar"></div>
+<div class="tag">数学思维 · 分类与整理 · 二年级上第一单元</div>
 <div id="slides">
 
 <div class="slide active" id="s0">
-  <div class="stitle" style="font-size:clamp(28px,6vw,48px);background:linear-gradient(135deg,#ffd700,#ff8c00,#00d2ff,#ff6b9d);-webkit-background-clip:text;-webkit-text-fill-color:transparent">分组题解题技巧</div>
-  <div class="cbox"><canvas id="c0" width="400" height="260"></canvas></div>
-  <p class="sdesc" style="color:#a8b4e0">二年级上 · 分类与整理 · 第一单元</p>
+  <div class="stitle" style="font-size:clamp(28px,6vw,44px)">分组题解题技巧</div>
+  <div class="ppl-box" id="b0"></div>
+  <p class="sdesc" style="color:#bbb;font-size:13px">二年级上 · 分类与整理 · 第一单元</p>
+  <p class="sdesc"><span class="hl">🌟 不管怎么分，总数永远不变！</span></p>
 </div>
-
-<div class="slide" id="s1">
-  <div class="stitle">操场上来了一群人</div>
-  <div class="cbox"><canvas id="c1" width="400" height="260"></canvas></div>
-  <p class="sdesc">数一数，一共 <span class="hl">14</span> 个人</p>
-</div>
-
-<div class="slide" id="s2">
-  <div class="stitle">怎么分组？</div>
-  <div class="cbox"><canvas id="c2" width="400" height="260"></canvas></div>
-  <p class="sdesc">可以按 <span class="hl">年龄</span> 分，也可以按 <span class="bl">男女</span> 分</p>
-</div>
-
-<div class="slide" id="s3">
-  <div class="stitle">按年龄分：大人</div>
-  <div class="cbox"><canvas id="c3" width="400" height="240"></canvas></div>
-  <p class="sdesc">大人有 <span class="hl">8</span> 个</p>
-</div>
-
-<div class="slide" id="s4">
-  <div class="stitle">按年龄分：小孩</div>
-  <div class="cbox"><canvas id="c4" width="400" height="240"></canvas></div>
-  <p class="sdesc">小孩有 <span class="bl">6</span> 个</p>
-</div>
-
-<div class="slide" id="s5">
-  <div class="stitle">加起来！</div>
-  <div class="cbox"><canvas id="c5" width="400" height="200"></canvas></div>
-  <div class="formula">8 + 6 = 14 ✅</div>
-  <p class="sdesc">跟总数一样！</p>
-</div>
-
-<div class="slide" id="s6">
-  <div class="stitle">换一种分法！</div>
-  <div class="cbox"><canvas id="c6" width="400" height="260"></canvas></div>
-  <p class="sdesc">这次按 <span class="pk">男女</span> 来分</p>
-</div>
-
-<div class="slide" id="s7">
-  <div class="stitle">男的有几个？</div>
-  <div class="cbox"><canvas id="c7" width="400" height="240"></canvas></div>
-  <p class="sdesc">男的有 <span class="bl">7</span> 个（大人5个+小孩2个）</p>
-</div>
-
-<div class="slide" id="s8">
-  <div class="stitle">女的有几个？</div>
-  <div class="cbox"><canvas id="c8" width="400" height="240"></canvas></div>
-  <p class="sdesc">女的有 <span class="pk">7</span> 个（大人3个+小孩4个）</p>
-</div>
-
-<div class="slide" id="s9">
-  <div class="stitle">加起来！</div>
-  <div class="cbox"><canvas id="c9" width="400" height="200"></canvas></div>
-  <div class="formula">7 + 7 = 14 ✅</div>
-  <p class="sdesc">换了分法，总数不变！</p>
-</div>
-
-<div class="slide" id="s10">
-  <div class="stitle">发现规律</div>
-  <div class="cbox"><canvas id="c10" width="400" height="240"></canvas></div>
-  <p class="sdesc">不管怎么分，<span class="hl">总数永远不变</span>！</p>
-</div>
-
+<div class="slide" id="s1"><div class="stitle">操场上来了一群人</div><div class="ppl-box" id="b1"></div><p class="sdesc">一共 <span class="hl">14</span> 个人</p></div>
+<div class="slide" id="s2"><div class="stitle">怎么分组？</div><div class="ppl-box" id="b2"></div><p class="sdesc">可以按 <span class="hl">年龄</span> 分，也可以按 <span class="pk">男女</span> 分</p></div>
+<div class="slide" id="s3"><div class="stitle">大人有几个？</div><div class="ppl-box" id="b3"></div><p class="sdesc">大人 → <span class="hl">8</span> 个</p></div>
+<div class="slide" id="s4"><div class="stitle">小孩有几个？</div><div class="ppl-box" id="b4"></div><p class="sdesc">小孩 → <span class="bl">6</span> 个</p></div>
+<div class="slide" id="s5"><div class="stitle">按年龄分 — 加起来！</div><div class="group-box" id="g5"></div><div class="formula">8 + 6 = 14 ✅</div><p class="sdesc">跟总数一样！</p></div>
+<div class="slide" id="s6"><div class="stitle">换一种分法！</div><div class="ppl-box" id="b6"></div><p class="sdesc">这次按 <span class="pk">男女</span> 来分</p></div>
+<div class="slide" id="s7"><div class="stitle">男的有几个？</div><div class="ppl-box" id="b7"></div><p class="sdesc">男 → <span class="bl">7</span> 个</p></div>
+<div class="slide" id="s8"><div class="stitle">女的有几个？</div><div class="ppl-box" id="b8"></div><p class="sdesc">女 → <span class="pk">7</span> 个</p></div>
+<div class="slide" id="s9"><div class="stitle">按男女分 — 加起来！</div><div class="group-box" id="g9"></div><div class="formula">7 + 7 = 14 ✅</div><p class="sdesc">换了分法，总数不变！</p></div>
+<div class="slide" id="s10"><div class="stitle">发现规律</div><div class="compare" id="cmp"></div><p class="sdesc">不管怎么分，<span class="hl">总数永远不变</span>！</p></div>
 <div class="slide" id="s11">
   <div class="stitle">🌟 分组题要点</div>
-  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;max-width:500px">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;max-width:420px">
     <div class="sum-card" id="sc1"><h3>1️⃣ 先数总数</h3><p>分之前先数清楚一共有多少</p></div>
-    <div class="sum-card" id="sc2" style="border-left-color:#00d2ff"><h3 style="color:#00d2ff">2️⃣ 选标准来分</h3><p>同一组东西可以用不同标准来分</p></div>
-    <div class="sum-card" id="sc3" style="border-left-color:#ff6b9d"><h3 style="color:#ff6b9d">3️⃣ 加一加对总数</h3><p>分法不同结果不同，但总数永远不变</p></div>
-    <div class="sum-card" id="sc4" style="border-left-color:#b388ff;text-align:center"><h3 style="background:linear-gradient(90deg,#ffd700,#00d2ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:clamp(16px,3vw,22px)">总数不变，就是验证的法宝！</h3></div>
+    <div class="sum-card" id="sc2" style="border-left-color:#3498db"><h3 style="color:#3498db">2️⃣ 选标准来分</h3><p>同一组东西可以用不同标准来分</p></div>
+    <div class="sum-card" id="sc3" style="border-left-color:#e84393"><h3 style="color:#e84393">3️⃣ 加一加对总数</h3><p>分法不同结果不同，但总数永远不变</p></div>
+    <div class="sum-card" id="sc4" style="border-left-color:#9b59b6;text-align:center"><h3 style="color:#9b59b6;font-size:clamp(16px,3vw,20px)">总数不变，就是验证的法宝！</h3></div>
   </div>
 </div>
 </div>
@@ -116,147 +78,69 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Micr
   <button onclick="goFS()">⛶</button>
 </div>
 <script>
-// 14个人：大人男5+大人女3+小孩男2+小孩女4=14
-// 按年龄：大人8+小孩6=14  按男女：男7+女7=14（与课本第二课同步）
-var TOTAL=12, cur=0, speaking=false;
-
-// 大人用大圆(r=18)深色，小孩用小圆(r=14)浅色
-// 男=蓝色系，女=粉色系
-var AM='#3a7bd5',AF='#e84393',CM='#74b9ff',CF='#fd79a8';
-var people=[
-  {t:'am',cl:AM,lb:'父',r:18},{t:'am',cl:AM,lb:'父',r:18},{t:'am',cl:AM,lb:'父',r:18},{t:'am',cl:AM,lb:'父',r:18},{t:'am',cl:AM,lb:'父',r:18},
-  {t:'af',cl:AF,lb:'母',r:18},{t:'af',cl:AF,lb:'母',r:18},{t:'af',cl:AF,lb:'母',r:18},
-  {t:'cm',cl:CM,lb:'男',r:14},{t:'cm',cl:CM,lb:'男',r:14},
-  {t:'cf',cl:CF,lb:'女',r:14},{t:'cf',cl:CF,lb:'女',r:14},{t:'cf',cl:CF,lb:'女',r:14},{t:'cf',cl:CF,lb:'女',r:14}
+// 14人：大人男5+大人女3+小孩男2+小孩女4=14
+// 按年龄：大人8+小孩6=14  按男女：男7+女7=14
+var TOTAL=12,cur=0,speaking=false;
+var PPL=[
+  {t:'am',lb:'父'},{t:'am',lb:'父'},{t:'am',lb:'父'},{t:'am',lb:'父'},{t:'am',lb:'父'},
+  {t:'af',lb:'母'},{t:'af',lb:'母'},{t:'af',lb:'母'},
+  {t:'cm',lb:'男'},{t:'cm',lb:'男'},
+  {t:'cf',lb:'女'},{t:'cf',lb:'女'},{t:'cf',lb:'女'},{t:'cf',lb:'女'}
 ];
-// 验证：am5+af3+cm2+cf4=14 ✓  大人(am+af)=8 小孩(cm+cf)=6 → 8+6=14 ✓  男(am+cm)=7 女(af+cf)=7 → 7+7=14 ✓
 
-var allPos=[[30,60],[100,50],[170,60],[260,50],[340,60],[30,130],[100,130],[180,125],[260,130],[340,125],[70,195],[160,195],[250,190],[340,195]];
-
-function drawPerson(ctx,p,x,y,alpha){
-  ctx.save();ctx.globalAlpha=alpha||1;
-  ctx.fillStyle=p.cl;ctx.shadowColor=p.cl;ctx.shadowBlur=8+5*Math.sin((window._animFrame||0)*.15);
-  ctx.beginPath();ctx.arc(x,y,p.r,0,Math.PI*2);ctx.fill();
-  ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=1.5;ctx.stroke();
-  ctx.shadowBlur=0;ctx.fillStyle='#fff';ctx.font='bold '+(p.r>16?14:12)+'px sans-serif';
-  ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.lb,x,y);
-  ctx.restore();
+function mkP(p,bright){
+  var d=document.createElement('div');
+  d.className='p '+p.t+(bright?' bright':'')+(bright===false?' dim':'');
+  d.textContent=p.lb;return d;
 }
+function fillAll(id){var b=document.getElementById(id);if(!b)return;b.innerHTML='';for(var i=0;i<14;i++){var d=mkP(PPL[i],true);d.style.animation='floatY 2.5s '+(i*.1)+'s ease-in-out infinite';b.appendChild(d);}}
+function fillByAge(id,type){var b=document.getElementById(id);if(!b)return;b.innerHTML='';for(var i=0;i<14;i++){var isA=(type==='adult')?(PPL[i].t==='am'||PPL[i].t==='af'):(PPL[i].t==='cm'||PPL[i].t==='cf');b.appendChild(mkP(PPL[i],isA?true:false));}}
+function fillByGender(id,gender){var b=document.getElementById(id);if(!b)return;b.innerHTML='';for(var i=0;i<14;i++){var isG=(gender==='m')?(PPL[i].t==='am'||PPL[i].t==='cm'):(PPL[i].t==='af'||PPL[i].t==='cf');b.appendChild(mkP(PPL[i],isG?true:false));}}
+function fillAgeGroups(id){var b=document.getElementById(id);if(!b)return;b.innerHTML='';
+  var gs=[{name:'大人',filter:function(p){return p.t==='am'||p.t==='af'},count:8},{name:'小孩',filter:function(p){return p.t==='cm'||p.t==='cf'},count:6}];
+  for(var g=0;g<2;g++){var grp=document.createElement('div');grp.className='group';
+    var html='<div class="g-title">'+gs[g].name+'</div><div class="g-items">';
+    for(var i=0;i<14;i++){if(gs[g].filter(PPL[i]))html+='<div class="p '+PPL[i].t+' bright" style="animation:floatY 2.5s '+(i*.08)+'s ease-in-out infinite">'+PPL[i].lb+'</div>';}
+    html+='</div><div class="g-count">'+gs[g].count+'</div>';grp.innerHTML=html;b.appendChild(grp);}}
+function fillGenderGroups(id){var b=document.getElementById(id);if(!b)return;b.innerHTML='';
+  var gs=[{name:'男',filter:function(p){return p.t==='am'||p.t==='cm'},count:7},{name:'女',filter:function(p){return p.t==='af'||p.t==='cf'},count:7}];
+  for(var g=0;g<2;g++){var grp=document.createElement('div');grp.className='group';
+    var html='<div class="g-title">'+gs[g].name+'</div><div class="g-items">';
+    for(var i=0;i<14;i++){if(gs[g].filter(PPL[i]))html+='<div class="p '+PPL[i].t+' bright" style="animation:floatY 2.5s '+(i*.08)+'s ease-in-out infinite">'+PPL[i].lb+'</div>';}
+    html+='</div><div class="g-count">'+gs[g].count+'</div>';grp.innerHTML=html;b.appendChild(grp);}}
+function fillCompare(){var b=document.getElementById('cmp');if(!b)return;b.innerHTML='<div class="row" style="color:#e67e22">按年龄：8 + 6 = 14 ✅</div><div class="row" style="color:#e84393">按男女：7 + 7 = 14 ✅</div><div class="row" style="color:#27ae60;font-size:15px;margin-top:6px">分法不同，总数永远不变！</div>';}
 
-function drawAllPeople(cid){
-  var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
-  ctx.clearRect(0,0,c.width,c.height);
-  for(var i=0;i<14;i++)drawPerson(ctx,people[i],allPos[i][0],allPos[i][1],1);
-}
+var drawFns={0:function(){fillAll('b0')},1:function(){fillAll('b1')},2:function(){fillAll('b2')},
+  3:function(){fillByAge('b3','adult')},4:function(){fillByAge('b4','child')},5:function(){fillAgeGroups('g5')},
+  6:function(){fillAll('b6')},7:function(){fillByGender('b7','m')},8:function(){fillByGender('b8','f')},
+  9:function(){fillGenderGroups('g9')},10:function(){fillCompare()}};
 
-function drawAgeGroup(cid,type){
-  // type='adult' or 'child'
-  var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
-  ctx.clearRect(0,0,c.width,c.height);
-  var tx=40,ti=0;
-  for(var i=0;i<14;i++){
-    var isTarget=(type==='adult')?(people[i].t==='am'||people[i].t==='af'):(people[i].t==='cm'||people[i].t==='cf');
-    if(isTarget){drawPerson(ctx,people[i],tx+ti*44,100,1);ti++;}
-    else{drawPerson(ctx,people[i],allPos[i][0],allPos[i][1],.12);}
-  }
-}
-
-function drawGenderGroup(cid,gender){
-  var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
-  ctx.clearRect(0,0,c.width,c.height);
-  var tx=40,ti=0;
-  for(var i=0;i<14;i++){
-    var isTarget=(gender==='m')?(people[i].t==='am'||people[i].t==='cm'):(people[i].t==='af'||people[i].t==='cf');
-    if(isTarget){drawPerson(ctx,people[i],tx+ti*50,100,1);ti++;}
-    else{drawPerson(ctx,people[i],allPos[i][0],allPos[i][1],.12);}
-  }
-}
-
-function drawAgeSummary(cid){
-  var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
-  ctx.clearRect(0,0,c.width,c.height);
-  // 大人组
-  var ti=0;
-  for(var i=0;i<14;i++){if(people[i].t==='am'||people[i].t==='af'){drawPerson(ctx,people[i],20+ti*40+20,70,1);ti++;}}
-  ctx.fillStyle='#ffd700';ctx.font='bold 20px sans-serif';ctx.textAlign='center';
-  ctx.shadowColor='#ffd700';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('8',ti*40+40,72);ctx.shadowBlur=0;
-  // 小孩组
-  ti=0;
-  for(var i=0;i<14;i++){if(people[i].t==='cm'||people[i].t==='cf'){drawPerson(ctx,people[i],20+ti*40+20,150,1);ti++;}}
-  ctx.fillStyle='#00d2ff';ctx.shadowColor='#00d2ff';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('6',ti*40+40,152);ctx.shadowBlur=0;
-}
-
-function drawGenderSummary(cid){
-  var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
-  ctx.clearRect(0,0,c.width,c.height);
-  var ti=0;
-  for(var i=0;i<14;i++){if(people[i].t==='am'||people[i].t==='cm'){drawPerson(ctx,people[i],20+ti*46+24,70,1);ti++;}}
-  ctx.fillStyle='#00d2ff';ctx.font='bold 20px sans-serif';ctx.textAlign='center';
-  ctx.shadowColor='#00d2ff';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('7',ti*46+44,72);ctx.shadowBlur=0;
-  ti=0;
-  for(var i=0;i<14;i++){if(people[i].t==='af'||people[i].t==='cf'){drawPerson(ctx,people[i],20+ti*46+24,150,1);ti++;}}
-  ctx.fillStyle='#ff6b9d';ctx.shadowColor='#ff6b9d';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('7',ti*46+44,152);ctx.shadowBlur=0;
-}
-
-function drawDiscovery(cid){
-  var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');
-  ctx.clearRect(0,0,c.width,c.height);
-  ctx.fillStyle='rgba(255,215,0,.06)';ctx.fillRect(20,20,360,80);
-  ctx.fillStyle='#ffd700';ctx.font='bold 18px sans-serif';ctx.textAlign='center';
-  ctx.shadowColor='#ffd700';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('按年龄：8 + 6 = 14 ✅',200,65);ctx.shadowBlur=0;
-  ctx.fillStyle='rgba(0,210,255,.06)';ctx.fillRect(20,120,360,80);
-  ctx.fillStyle='#00d2ff';ctx.shadowColor='#00d2ff';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('按男女：7 + 7 = 14 ✅',200,165);ctx.shadowBlur=0;
-  ctx.fillStyle='#fff';ctx.font='bold 16px sans-serif';ctx.fillText('分法不同，总数永远不变！',200,230);
-}
-
-var drawFns={
-  0:function(){drawAllPeople('c0')},
-  1:function(){drawAllPeople('c1')},
-  2:function(){drawAllPeople('c2')},
-  3:function(){drawAgeGroup('c3','adult')},
-  4:function(){drawAgeGroup('c4','child')},
-  5:function(){drawAgeSummary('c5')},
-  6:function(){drawAllPeople('c6')},
-  7:function(){drawGenderGroup('c7','m')},
-  8:function(){drawGenderGroup('c8','f')},
-  9:function(){drawGenderSummary('c9')},
-  10:function(){drawDiscovery('c10')}
-};
-
-function showSlide(){
-  var slides=document.querySelectorAll('.slide');
-  for(var i=0;i<slides.length;i++)slides[i].classList.toggle('active',i===cur);
-  document.getElementById('pgInfo').textContent=(cur+1)+'/'+TOTAL;
-  document.getElementById('bar').style.width=((cur+1)/TOTAL*100)+'%';
-  if(window._animTimer)clearInterval(window._animTimer);
-  if(drawFns[cur]){try{drawFns[cur]()}catch(e){}
-    // 持续脉冲动画：每100ms重绘当前页Canvas
-    window._animFrame=0;
-    window._animTimer=setInterval(function(){window._animFrame++;try{drawFns[cur]()}catch(e){}},100);}
-  if(cur===11){['sc1','sc2','sc3','sc4'].forEach(function(id,i){setTimeout(function(){var el=document.getElementById(id);if(el)el.classList.add('show')},i*300);});}
-}
+function showSlide(){var slides=document.querySelectorAll('.slide');for(var i=0;i<slides.length;i++)slides[i].classList.toggle('active',i===cur);
+  document.getElementById('pgInfo').textContent=(cur+1)+'/'+TOTAL;document.getElementById('bar').style.width=((cur+1)/TOTAL*100)+'%';
+  if(drawFns[cur])try{drawFns[cur]()}catch(e){}
+  if(cur===11){['sc1','sc2','sc3','sc4'].forEach(function(id,i){setTimeout(function(){var el=document.getElementById(id);if(el)el.classList.add('show')},i*300);});}}
 function next(){if(cur<TOTAL-1){cur++;showSlide();if(speaking)speakCur();}}
 function prev(){if(cur>0){cur--;showSlide();if(speaking)speakCur();}}
 
 var NAR=[
-'小朋友们好！今天我们来学分组题的解题技巧。看，操场上来了好多人！有大人也有小孩，有男的也有女的。他们要分成两组做游戏，怎么分呢？跟着老师来！',
-'先数总数！看，一个一个数。大人有高高的深色圆圈，小朋友是小一点的浅色圆圈。数好了，一共14个人！记住这个数，等下要用来验证。',
-'怎么分呢？可以按年龄分，大人一组小孩一组。也可以按男女分，男的一组女的一组。我们先按年龄来分！',
-'先找大人！看，大人们亮起来了，深色的大圆圈。数一数，第一个，第二个，第三个……一共8个大人！有5个爸爸，3个妈妈。',
-'再找小孩！看，小孩们亮起来了，浅色的小圆圈。数一数，一共6个小朋友！有2个小男孩，4个小女孩。',
-'加起来验证！大人8个，加上小孩6个，等于14！跟我们一开始数的总数一模一样。说明没有数重也没有漏掉！',
-'同样14个人，换一种分法！这次不分大人小孩了，按男女来分。男的站一边，女的站一边。看看结果一不一样！',
-'先找男的！看，所有男的都亮起来了。注意看，里面有大人也有小孩哦！5个爸爸加2个小男孩，一共7个男的。',
-'再找女的！女的也亮起来了。3个妈妈加4个小女孩，也是7个！男女刚好一样多呢！',
-'加起来！男的7个，加上女的7个，等于14！跟总数还是一样！你发现了吗？按年龄分是8加6等于14，按男女分是7加7也等于14。分法不同，结果不同，但总数永远不变！',
-'来看看我们发现了什么规律。按年龄分，大人8个加小孩6个等于14。按男女分，男7个加女7个也等于14。不管用什么标准来分，加起来的总数永远是14，不会变！这就是分组题最重要的规律！',
-'总结分组题要点！第一步，先数总数，记清楚一共有多少。第二步，选一个标准来分。第三步，分完加一加对总数，等于原来的数就对了。记住，同一组东西可以用不同标准来分，分法不同结果不同，但总数永远不变！学会了吗？'
+'小朋友们好！今天学分组题。看，操场上来了好多人，有大人也有小孩，有男的也有女的。他们要分成两组做游戏，怎么分呢？',
+'先数总数。大圆圈是大人，小圆圈是小朋友。一个一个数，数好了，一共14个人。记住这个数字，等下要用来验证。',
+'怎么分呢？可以按年龄分，大人一组小孩一组。也可以按男女分。先试试按年龄来分！',
+'先找大人。看，大人们亮起来了，其他暗下去了。数一数，第一个，第二个……一共8个大人。有5个爸爸，3个妈妈。',
+'再找小孩。小朋友们亮起来了。数一数，一共6个。有2个小男孩，4个小女孩。',
+'加起来验证！大人8个加小孩6个，等于14。跟一开始数的总数一模一样，说明没数重也没漏掉。',
+'同样14个人，换一种分法。这次不分大人小孩了，按男女来分。男的站一边，女的站一边。看看结果一不一样。',
+'先找男的。注意看，男的里面有大人也有小孩。5个爸爸加2个小男孩，一共7个。',
+'再找女的。3个妈妈加4个小女孩，也是7个。男女刚好一样多。',
+'加起来！7加7等于14，跟总数还是一样。按年龄分是8加6，按男女分是7加7，结果不同，但总数都是14。',
+'这就是分组题最重要的规律：不管用什么标准来分，加起来的总数永远不变。这也是验证的方法——分完加一加，对得上总数就对了。',
+'总结！第一步先数总数。第二步选一个标准来分。第三步分完加一加对总数。记住，同一组东西可以用不同标准来分，分法不同结果不同，但总数永远不变。'
 ];
 
 var voice=null;
 function pickVoice(){var vs=speechSynthesis.getVoices();var names=['Xiaoxiao','Yunxi'];for(var k=0;k<names.length;k++)for(var i=0;i<vs.length;i++)if(vs[i].name.indexOf(names[k])>=0&&vs[i].lang.indexOf('zh')>=0)return vs[i];for(var i=0;i<vs.length;i++)if(vs[i].lang==='zh-CN')return vs[i];return null;}
 if(window.speechSynthesis){voice=pickVoice();speechSynthesis.onvoiceschanged=function(){voice=pickVoice()};}
-function speakCur(){speechSynthesis.cancel();var text=NAR[cur];if(!text)return;var utt=new SpeechSynthesisUtterance(text);utt.lang='zh-CN';utt.rate=0.85;utt.pitch=1.1;if(!voice)voice=pickVoice();if(voice)utt.voice=voice;var sub=document.getElementById('subBar');sub.classList.add('vis');sub.textContent=text;utt.onend=function(){if(speaking&&cur<TOTAL-1)setTimeout(next,800);else{speaking=false;document.getElementById('ttsBtn').textContent='🔊 开始讲解';sub.classList.remove('vis');}};utt.onerror=function(){if(speaking&&cur<TOTAL-1)setTimeout(next,500);};speechSynthesis.speak(utt);}
+function speakCur(){speechSynthesis.cancel();var text=NAR[cur];if(!text)return;var utt=new SpeechSynthesisUtterance(text);utt.lang='zh-CN';utt.rate=0.85;utt.pitch=1.1;if(!voice)voice=pickVoice();if(voice)utt.voice=voice;var sub=document.getElementById('subBar');var sents=text.match(/[^。？！；]+[。？！；]?/g)||[text];var si=0;sub.classList.add('vis');sub.textContent=sents[0]||'';utt.onboundary=function(e){if(e.charIndex!==undefined&&sents.length>1){var cc=0;for(var i=0;i<sents.length;i++){cc+=sents[i].length;if(e.charIndex<cc){if(i!==si){si=i;sub.textContent=sents[i].trim();}break;}}}};utt.onend=function(){if(speaking&&cur<TOTAL-1)setTimeout(next,800);else{speaking=false;document.getElementById('ttsBtn').textContent='🔊 开始讲解';sub.classList.remove('vis');}};utt.onerror=function(){if(speaking&&cur<TOTAL-1)setTimeout(next,500);};speechSynthesis.speak(utt);}
 function toggleTTS(){if(speaking){speaking=false;speechSynthesis.cancel();document.getElementById('ttsBtn').textContent='🔊 开始讲解';document.getElementById('subBar').classList.remove('vis');}else{speaking=true;document.getElementById('ttsBtn').textContent='⏹ 停止';speakCur();}}
 function goFS(){if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(function(){});else document.exitFullscreen();}
 var tx=0;document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX});document.addEventListener('touchend',function(e){var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>60){d<0?next():prev();}});

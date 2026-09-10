@@ -3,241 +3,123 @@
 <title>多次分类解题技巧 - 动画版</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#080820;color:#fff}
-.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px 16px 110px;opacity:0;pointer-events:none;transition:opacity .6s}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#faf6f1;color:#2d2d2d}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 20px 120px;opacity:0;pointer-events:none;transition:opacity .6s;overflow-y:auto}
 .slide.active{opacity:1;pointer-events:auto}
-.slide::after{content:'';position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle,rgba(255,215,0,.04) 1px,transparent 1px);background-size:60px 60px}
 .slide>*{position:relative;z-index:1}
-.stitle{font-size:clamp(22px,5vw,40px);font-weight:900;text-align:center;margin-bottom:8px;background:linear-gradient(135deg,#ffd700,#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 2px 12px rgba(255,180,0,.4))}
-.sdesc{font-size:clamp(15px,3vw,22px);color:#d0d8ff;text-align:center;line-height:1.7;max-width:600px}
-.hl{color:#ffcc00;font-weight:900}.bl{color:#00d2ff;font-weight:900}.pk{color:#ff6b9d;font-weight:900}.pp{color:#b388ff;font-weight:900}
-.formula{font-size:clamp(24px,5vw,44px);font-weight:900;text-align:center;margin:10px 0;color:#00d2ff;text-shadow:0 0 20px rgba(0,210,255,.5)}
-.cbox{width:100%;max-width:500px;margin:8px auto;background:rgba(255,255,255,.03);border-radius:14px;padding:8px;border:1px solid rgba(255,255,255,.06)}
-.cbox canvas{width:100%;height:auto;display:block;border-radius:10px}
-.sum-card{background:rgba(255,255,255,.05);border-radius:14px;padding:14px 18px;margin:6px 0;width:100%;max-width:500px;border-left:4px solid #ffd700;border:1px solid rgba(255,255,255,.08);border-left:4px solid #ffd700;opacity:0;transform:translateX(-40px);transition:all .6s}
+.stitle{font-size:clamp(22px,5vw,36px);font-weight:900;text-align:center;margin-bottom:10px;color:#e67e22}
+.sdesc{font-size:clamp(15px,3vw,20px);color:#666;text-align:center;line-height:1.8;max-width:600px}
+.hl{color:#e67e22;font-weight:800}.bl{color:#3498db;font-weight:800}.pp{color:#9b59b6;font-weight:800}
+.formula{font-size:clamp(22px,4.5vw,36px);font-weight:900;text-align:center;margin:12px 0;color:#9b59b6}
+.btn-box{width:100%;max-width:420px;min-height:140px;margin:10px auto;padding:16px;border-radius:20px;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.04);display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+.bt{width:44px;height:44px;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 3px 10px rgba(0,0,0,.1)}
+.bt.c{border-radius:50%}.bt.r{border-radius:8px}
+.bt.red{background:linear-gradient(135deg,#ff6b6b,#ee5a5a)}.bt.blue{background:linear-gradient(135deg,#74b9ff,#5a9bdb)}
+.bt.dim{opacity:.12;transform:scale(.7)}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.bt.bright{animation:floatY 2.5s ease-in-out infinite}
+.dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.75);position:absolute}
+.group-box{width:100%;max-width:420px;display:flex;gap:6px;margin:10px auto;flex-wrap:wrap;justify-content:center}
+.group{padding:8px 6px;border-radius:14px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.03);text-align:center;min-width:70px}
+.group .g-title{font-size:12px;color:#888;margin-bottom:4px;font-weight:700}
+.group .g-items{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;min-height:36px}
+.group .g-count{font-size:18px;font-weight:900;margin-top:4px;color:#27ae60}
+.tree-box{width:100%;max-width:420px;margin:10px auto;padding:16px;border-radius:16px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.04);font-size:14px;line-height:2.2}
+.tree-box .lv0{font-weight:900;color:#e67e22}.tree-box .lv1{margin-left:16px;color:#3498db;font-weight:700}
+.tree-box .lv2{margin-left:32px;color:#27ae60}.tree-box .lv3{margin-left:48px;color:#888;font-size:12px}
+.compare{width:100%;max-width:420px;margin:10px auto;padding:16px;border-radius:16px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.04);text-align:center}
+.compare .row{padding:8px 0;font-size:16px;font-weight:700;line-height:1.8}
+.sum-card{background:#fff;border-radius:16px;padding:16px 20px;margin:6px 0;width:100%;max-width:420px;border-left:4px solid #e67e22;box-shadow:0 2px 12px rgba(0,0,0,.04);opacity:0;transform:translateX(-30px);transition:all .5s}
 .sum-card.show{opacity:1;transform:translateX(0)}
-.sum-card h3{color:#ffd700;font-size:clamp(15px,3vw,19px);margin-bottom:2px}
-.sum-card p{color:#b8c0e8;font-size:clamp(13px,2.5vw,16px);line-height:1.5}
-.ctrl{position:fixed;bottom:0;left:0;right:0;height:52px;background:rgba(8,8,32,.95);border-top:1px solid rgba(255,215,0,.1);display:flex;align-items:center;justify-content:center;gap:8px;padding:0 10px;z-index:100}
-.ctrl button{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#c8d0f0;border-radius:50px;padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit}
-.ctrl .pri{background:linear-gradient(135deg,#ffd700,#ff8c00);color:#1a1a4e;font-weight:700;border:none}
-.ctrl .pg{color:#556;font-size:11px;min-width:44px;text-align:center}
-.sub{position:fixed;bottom:56px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.8);border-radius:12px;padding:8px 20px;max-width:90%;text-align:center;font-size:clamp(14px,2.8vw,18px);color:#f0f0ff;line-height:1.5;z-index:99;display:none}
+.sum-card h3{color:#e67e22;font-size:clamp(15px,3vw,18px);margin-bottom:3px}
+.sum-card p{color:#888;font-size:clamp(13px,2.5vw,15px);line-height:1.6}
+.ctrl{position:fixed;bottom:0;left:0;right:0;height:54px;background:linear-gradient(180deg,rgba(250,246,241,.9),rgba(250,246,241,.98));backdrop-filter:blur(12px);border-top:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;gap:8px;padding:0 12px;z-index:100}
+.ctrl button{background:#fff;border:1px solid rgba(0,0,0,.08);color:#666;border-radius:50px;padding:7px 16px;font-size:13px;cursor:pointer;font-family:inherit;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.ctrl .pri{background:linear-gradient(135deg,#ff9a76,#e67e22);color:#fff;font-weight:700;border:none}
+.ctrl .pg{color:#bbb;font-size:11px;min-width:44px;text-align:center}
+.sub{position:fixed;bottom:58px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-radius:14px;padding:10px 22px;max-width:90%;text-align:center;font-size:clamp(14px,2.8vw,17px);color:#444;line-height:1.6;z-index:99;display:none;box-shadow:0 4px 20px rgba(0,0,0,.08)}
 .sub.vis{display:block}
-.bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#ffd700,#b388ff);z-index:101;transition:width .4s}
+.bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#ff9a76,#9b59b6);z-index:101;transition:width .4s}
+.tag{position:fixed;top:8px;left:12px;font-size:10px;color:#ccc;letter-spacing:1px;z-index:102}
 </style></head><body>
 <div class="bar" id="bar"></div>
+<div class="tag">数学思维 · 分类与整理 · 二年级上第一单元</div>
 <div id="slides">
 
-<div class="slide active" id="s0">
-  <div class="stitle" style="font-size:clamp(28px,6vw,48px);background:linear-gradient(135deg,#ffd700,#b388ff,#00d2ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">多次分类解题技巧</div>
-  <div class="cbox"><canvas id="c0" width="400" height="260"></canvas></div>
-  <p class="sdesc" style="color:#a8b4e0">二年级上 · 分类与整理 · 第一单元</p>
-</div>
-
-<div class="slide" id="s1">
-  <div class="stitle">丽丽打翻了纽扣盒</div>
-  <div class="cbox"><canvas id="c1" width="400" height="260"></canvas></div>
-  <p class="sdesc">8个纽扣：<span class="hl">红/蓝</span> × <span class="bl">圆/方</span> × <span class="pp">2孔/4孔</span></p>
-</div>
-
-<div class="slide" id="s2">
-  <div class="stitle">第一次分：按形状</div>
-  <div class="cbox"><canvas id="c2" width="400" height="240"></canvas></div>
-  <p class="sdesc">圆的 <span class="hl">4</span> 个 + 方的 <span class="bl">4</span> 个 = 8 → <span class="pp">2类</span></p>
-</div>
-
-<div class="slide" id="s3">
-  <div class="stitle">第二次分：每组再按颜色</div>
-  <div class="cbox"><canvas id="c3" width="400" height="240"></canvas></div>
-  <p class="sdesc">2类变成 <span class="pp">4类</span>！</p>
-</div>
-
-<div class="slide" id="s4">
-  <div class="stitle">第三次分：再按扣眼</div>
-  <div class="cbox"><canvas id="c4" width="400" height="260"></canvas></div>
-  <p class="sdesc">4类变成 <span class="pp">8类</span>！每类1个</p>
-</div>
-
-<div class="slide" id="s5">
-  <div class="stitle">分类树</div>
-  <div class="cbox"><canvas id="c5" width="400" height="300"></canvas></div>
-  <p class="sdesc">每多分一次，类别翻一倍</p>
-</div>
-
-<div class="slide" id="s6">
-  <div class="stitle">发现规律</div>
-  <div class="cbox"><canvas id="c6" width="400" height="200"></canvas></div>
-  <div class="formula">2 → 4 → 8 类</div>
-  <p class="sdesc">不管先分哪个，最后都是 <span class="hl">8类</span></p>
-</div>
-
+<div class="slide active" id="s0"><div class="stitle" style="font-size:clamp(28px,6vw,44px)">多次分类解题技巧</div><div class="btn-box" id="b0"></div><p class="sdesc" style="color:#bbb;font-size:13px">二年级上 · 分类与整理 · 第一单元</p><p class="sdesc"><span class="pp">🌟 分完一次还能继续分！</span></p></div>
+<div class="slide" id="s1"><div class="stitle">丽丽打翻了纽扣盒</div><div class="btn-box" id="b1"></div><p class="sdesc"><span class="hl">红/蓝</span> × <span class="bl">圆/方</span> × <span class="pp">2孔/4孔</span> 一共8个</p></div>
+<div class="slide" id="s2"><div class="stitle">第一次分：按形状</div><div class="group-box" id="g2"></div><p class="sdesc">圆 <span class="hl">4</span> 个 + 方 <span class="bl">4</span> 个 → <span class="pp">2类</span></p></div>
+<div class="slide" id="s3"><div class="stitle">还能继续分！</div><div class="group-box" id="g3"></div><p class="sdesc">每组再按颜色分 → <span class="pp">4类</span></p></div>
+<div class="slide" id="s4"><div class="stitle">再分一次！</div><div class="group-box" id="g4"></div><p class="sdesc">每组再按扣眼分 → <span class="pp">8类</span></p></div>
+<div class="slide" id="s5"><div class="stitle">分类树</div><div class="tree-box" id="tree"></div><p class="sdesc">每多分一次，类别翻一倍</p></div>
+<div class="slide" id="s6"><div class="stitle">发现规律</div><div class="compare" id="cmp"></div><div class="formula">2 → 4 → 8 类</div><p class="sdesc">不管先分哪个，最后都是 <span class="pp">8类</span></p></div>
 <div class="slide" id="s7">
   <div class="stitle">🌟 多次分类要点</div>
-  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;max-width:500px">
-    <div class="sum-card" id="sc1"><h3>1️⃣ 分完一次还能继续分</h3><p>每一组里如果还有不同，就可以再分</p></div>
-    <div class="sum-card" id="sc2" style="border-left-color:#00d2ff"><h3 style="color:#00d2ff">2️⃣ 每多分一次，类别翻一倍</h3><p>2类→4类→8类，越分越细</p></div>
-    <div class="sum-card" id="sc3" style="border-left-color:#ff6b9d"><h3 style="color:#ff6b9d">3️⃣ 顺序不影响结果</h3><p>先分形状还是先分颜色，最后都是8类</p></div>
-    <div class="sum-card" id="sc4" style="border-left-color:#b388ff;text-align:center"><h3 style="background:linear-gradient(90deg,#ffd700,#b388ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:clamp(16px,3vw,22px)">画分类树，层次一目了然！</h3></div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;max-width:420px">
+    <div class="sum-card" id="sc1"><h3>1️⃣ 分完一次还能继续分</h3><p>每组里如果还有不同，就可以再分</p></div>
+    <div class="sum-card" id="sc2" style="border-left-color:#3498db"><h3 style="color:#3498db">2️⃣ 每多分一次，类别翻一倍</h3><p>2类→4类→8类</p></div>
+    <div class="sum-card" id="sc3" style="border-left-color:#27ae60"><h3 style="color:#27ae60">3️⃣ 顺序不影响结果</h3><p>先分形状还是先分颜色，最后都是8类</p></div>
+    <div class="sum-card" id="sc4" style="border-left-color:#9b59b6;text-align:center"><h3 style="color:#9b59b6;font-size:clamp(16px,3vw,20px)">画分类树，层次一目了然！</h3></div>
   </div>
 </div>
 </div>
 <div class="sub" id="subBar"></div>
-<div class="ctrl">
-  <button onclick="prev()">⏮</button>
-  <button class="pri" id="ttsBtn" onclick="toggleTTS()">🔊 开始讲解</button>
-  <button onclick="next()">⏭</button>
-  <span class="pg" id="pgInfo">1/8</span>
-  <button onclick="goFS()">⛶</button>
-</div>
+<div class="ctrl"><button onclick="prev()">⏮</button><button class="pri" id="ttsBtn" onclick="toggleTTS()">🔊 开始讲解</button><button onclick="next()">⏭</button><span class="pg" id="pgInfo">1/8</span><button onclick="goFS()">⛶</button></div>
 <script>
 // 8个纽扣：圆红2孔 圆红4孔 圆蓝2孔 圆蓝4孔 方红2孔 方红4孔 方蓝2孔 方蓝4孔
-// 按形状:圆4+方4=8 再按颜色:4类 再按扣眼:8类（与课本第三课同步）
-var TOTAL=8, cur=0, speaking=false;
-var RED='#ff6b6b',BLUE='#74b9ff';
-var btns=[
-  {sh:'c',cl:RED,h:2,lb:'红圆2'},{sh:'c',cl:RED,h:4,lb:'红圆4'},
-  {sh:'c',cl:BLUE,h:2,lb:'蓝圆2'},{sh:'c',cl:BLUE,h:4,lb:'蓝圆4'},
-  {sh:'r',cl:RED,h:2,lb:'红方2'},{sh:'r',cl:RED,h:4,lb:'红方4'},
-  {sh:'r',cl:BLUE,h:2,lb:'蓝方2'},{sh:'r',cl:BLUE,h:4,lb:'蓝方4'}
-];
+var TOTAL=8,cur=0,speaking=false;
+var BTNS=[{s:'c',c:'red',h:2},{s:'c',c:'red',h:4},{s:'c',c:'blue',h:2},{s:'c',c:'blue',h:4},{s:'r',c:'red',h:2},{s:'r',c:'red',h:4},{s:'r',c:'blue',h:2},{s:'r',c:'blue',h:4}];
 
-function drawBtn(ctx,b,x,y,sz,alpha){
-  ctx.save();ctx.globalAlpha=alpha||1;
-  ctx.fillStyle=b.cl;ctx.shadowColor=b.cl;ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);
-  if(b.sh==='c'){ctx.beginPath();ctx.arc(x,y,sz,0,Math.PI*2);ctx.fill();ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=1.5;ctx.stroke();}
-  else{ctx.fillRect(x-sz,y-sz,sz*2,sz*2);ctx.strokeStyle='rgba(255,255,255,.2)';ctx.lineWidth=1.5;ctx.strokeRect(x-sz,y-sz,sz*2,sz*2);}
-  ctx.shadowBlur=0;
-  // 画扣眼
-  ctx.fillStyle='rgba(255,255,255,.7)';
-  if(b.h===2){ctx.beginPath();ctx.arc(x-4,y,2.5,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(x+4,y,2.5,0,Math.PI*2);ctx.fill();}
-  else{ctx.beginPath();ctx.arc(x-4,y-4,2,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(x+4,y-4,2,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(x-4,y+4,2,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(x+4,y+4,2,0,Math.PI*2);ctx.fill();}
-  ctx.restore();
+function mkBtn(b,sz,bright){
+  var d=document.createElement('div');d.className='bt '+b.s+' '+b.c+(bright?' bright':'')+(bright===false?' dim':'');
+  if(sz){d.style.width=sz+'px';d.style.height=sz+'px';}
+  var dots=b.h===2?[['38%','25%'],['38%','65%']]:[['28%','28%'],['28%','62%'],['62%','28%'],['62%','62%']];
+  for(var i=0;i<dots.length;i++){var dot=document.createElement('div');dot.className='dot';dot.style.top=dots[i][0];dot.style.left=dots[i][1];d.appendChild(dot);}
+  return d;
 }
-
-function drawAllBtns(cid){
-  var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);
-  var ps=[[60,80],[140,60],[240,80],[340,60],[60,180],[140,170],[240,180],[340,165]];
-  for(var i=0;i<8;i++)drawBtn(ctx,btns[i],ps[i][0],ps[i][1],20,1);
-}
-
-function drawShape2(cid){
-  var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);
-  // 圆组
-  ctx.fillStyle='rgba(255,215,0,.06)';ctx.fillRect(10,10,190,220);
-  ctx.fillStyle='#ffd700';ctx.font='bold 14px sans-serif';ctx.textAlign='center';ctx.fillText('圆形',100,30);
-  for(var i=0;i<4;i++)drawBtn(ctx,btns[i],40+i*44,100,18,1);
-  ctx.fillText('4个',100,160);
-  // 方组
-  ctx.fillStyle='rgba(0,210,255,.06)';ctx.fillRect(210,10,190,220);
-  ctx.fillStyle='#00d2ff';ctx.fillText('方形',300,30);
-  for(var i=4;i<8;i++)drawBtn(ctx,btns[i],240+(i-4)*44,100,18,1);
-  ctx.fillText('4个',300,160);
-}
-
-function drawColor4(cid){
-  var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);
-  var groups=[{name:'圆红',items:[0,1]},{name:'圆蓝',items:[2,3]},{name:'方红',items:[4,5]},{name:'方蓝',items:[6,7]}];
-  for(var g=0;g<4;g++){
-    var bx=10+g*100;
-    ctx.fillStyle='rgba(255,255,255,.03)';ctx.fillRect(bx,10,90,220);
-    ctx.fillStyle='#b388ff';ctx.font='bold 12px sans-serif';ctx.textAlign='center';ctx.fillText(groups[g].name,bx+45,28);
-    for(var j=0;j<groups[g].items.length;j++){drawBtn(ctx,btns[groups[g].items[j]],bx+25+j*40,100,16,1);}
-    ctx.fillText('2个',bx+45,160);
-  }
-}
-
-function drawHoles8(cid){
-  var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);
+function fillAllBtns(id){var b=document.getElementById(id);if(!b)return;b.innerHTML='';for(var i=0;i<8;i++){var d=mkBtn(BTNS[i],44,true);d.style.animationDelay=(i*.12)+'s';b.appendChild(d);}}
+function fillShape2(id){var b=document.getElementById(id);if(!b)return;b.innerHTML='';
+  var gs=[{name:'圆形',f:function(x){return x.s==='c'}},{name:'方形',f:function(x){return x.s==='r'}}];
+  for(var g=0;g<2;g++){var grp=document.createElement('div');grp.className='group';grp.style.minWidth='140px';
+    var html='<div class="g-title">'+gs[g].name+'</div><div class="g-items">';html+='</div><div class="g-count">4</div>';grp.innerHTML=html;
+    var gi=grp.querySelector('.g-items');for(var i=0;i<8;i++){if(gs[g].f(BTNS[i])){var d=mkBtn(BTNS[i],38,true);d.style.animationDelay=(i*.1)+'s';gi.appendChild(d);}}b.appendChild(grp);}}
+function fillColor4(id){var b=document.getElementById(id);if(!b)return;b.innerHTML='';
+  var gs=[{name:'圆红',f:function(x){return x.s==='c'&&x.c==='red'}},{name:'圆蓝',f:function(x){return x.s==='c'&&x.c==='blue'}},{name:'方红',f:function(x){return x.s==='r'&&x.c==='red'}},{name:'方蓝',f:function(x){return x.s==='r'&&x.c==='blue'}}];
+  for(var g=0;g<4;g++){var grp=document.createElement('div');grp.className='group';
+    var html='<div class="g-title">'+gs[g].name+'</div><div class="g-items">';html+='</div><div class="g-count">2</div>';grp.innerHTML=html;
+    var gi=grp.querySelector('.g-items');for(var i=0;i<8;i++){if(gs[g].f(BTNS[i])){var d=mkBtn(BTNS[i],34,true);d.style.animationDelay=(i*.08)+'s';gi.appendChild(d);}}b.appendChild(grp);}}
+function fillHoles8(id){var b=document.getElementById(id);if(!b)return;b.innerHTML='';
   var names=['圆红2孔','圆红4孔','圆蓝2孔','圆蓝4孔','方红2孔','方红4孔','方蓝2孔','方蓝4孔'];
-  for(var i=0;i<8;i++){
-    var col=i%4,row=Math.floor(i/4);
-    var bx=10+col*100,by=10+row*130;
-    ctx.fillStyle='rgba(255,255,255,.03)';ctx.fillRect(bx,by,90,120);
-    drawBtn(ctx,btns[i],bx+45,by+50,16,1);
-    ctx.fillStyle='#b388ff';ctx.font='bold 10px sans-serif';ctx.textAlign='center';ctx.fillText(names[i],bx+45,by+95);
-  }
-}
+  for(var i=0;i<8;i++){var grp=document.createElement('div');grp.className='group';grp.style.minWidth='45%';grp.style.maxWidth='48%';
+    var html='<div class="g-title" style="font-size:11px">'+names[i]+'</div><div class="g-items">';html+='</div><div class="g-count">1</div>';grp.innerHTML=html;
+    grp.querySelector('.g-items').appendChild(mkBtn(BTNS[i],32,true));b.appendChild(grp);}}
+function fillTree(){var b=document.getElementById('tree');if(!b)return;b.innerHTML='<div class="lv0">全部纽扣（8个）</div><div class="lv1">⭕ 圆形（4）</div><div class="lv2">🔴 圆红（2）</div><div class="lv3">· 2孔 · 4孔</div><div class="lv2">🔵 圆蓝（2）</div><div class="lv3">· 2孔 · 4孔</div><div class="lv1">🟧 方形（4）</div><div class="lv2">🔴 方红（2）</div><div class="lv3">· 2孔 · 4孔</div><div class="lv2">🔵 方蓝（2）</div><div class="lv3">· 2孔 · 4孔</div>';}
+function fillCompare(){var b=document.getElementById('cmp');if(!b)return;b.innerHTML='<div class="row" style="color:#e67e22">形状→颜色→扣眼 = 8类</div><div class="row" style="color:#3498db">颜色→形状→扣眼 = 8类</div><div class="row" style="color:#27ae60;font-size:14px;margin-top:4px">不管先分哪个，结果一样！</div>';}
 
-function drawTree(cid){
-  var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);
-  ctx.fillStyle='#ffd700';ctx.font='bold 14px sans-serif';ctx.textAlign='center';
-  ctx.fillText('全部纽扣（8个）',200,20);
-  // 第1层
-  ctx.strokeStyle='rgba(255,215,0,.3)';ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(200,28);ctx.lineTo(100,55);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(200,28);ctx.lineTo(300,55);ctx.stroke();
-  ctx.fillStyle='#00d2ff';ctx.fillText('⭕圆(4)',100,70);ctx.fillText('🟧方(4)',300,70);
-  // 第2层
-  ctx.strokeStyle='rgba(0,210,255,.3)';
-  ctx.beginPath();ctx.moveTo(100,78);ctx.lineTo(55,110);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(100,78);ctx.lineTo(145,110);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(300,78);ctx.lineTo(255,110);ctx.stroke();
-  ctx.beginPath();ctx.moveTo(300,78);ctx.lineTo(345,110);ctx.stroke();
-  ctx.fillStyle='#ff6b6b';ctx.font='bold 12px sans-serif';
-  ctx.fillText('圆红(2)',55,125);ctx.fillText('方红(2)',255,125);
-  ctx.fillStyle='#74b9ff';ctx.fillText('圆蓝(2)',145,125);ctx.fillText('方蓝(2)',345,125);
-  // 第3层
-  ctx.strokeStyle='rgba(179,136,255,.3)';
-  var x3=[30,80,120,170,230,280,320,370];
-  var p2=[55,55,145,145,255,255,345,345];
-  for(var i=0;i<8;i++){ctx.beginPath();ctx.moveTo(p2[i],133);ctx.lineTo(x3[i],160);ctx.stroke();}
-  ctx.fillStyle='#b388ff';ctx.font='bold 10px sans-serif';
-  var h3=['2孔','4孔','2孔','4孔','2孔','4孔','2孔','4孔'];
-  for(var i=0;i<8;i++)ctx.fillText(h3[i],x3[i],175);
-  // 画8个纽扣
-  for(var i=0;i<8;i++)drawBtn(ctx,btns[i],x3[i],210,10,1);
-  ctx.fillStyle='#fff';ctx.font='bold 14px sans-serif';
-  ctx.fillText('2类 → 4类 → 8类',200,270);
-}
+var drawFns={0:function(){fillAllBtns('b0')},1:function(){fillAllBtns('b1')},2:function(){fillShape2('g2')},3:function(){fillColor4('g3')},4:function(){fillHoles8('g4')},5:function(){fillTree()},6:function(){fillCompare()}};
 
-function drawDiscovery(cid){
-  var c=document.getElementById(cid);if(!c)return;var ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);
-  ctx.fillStyle='rgba(255,215,0,.06)';ctx.fillRect(20,20,360,60);
-  ctx.fillStyle='#ffd700';ctx.font='bold 16px sans-serif';ctx.textAlign='center';
-  ctx.shadowColor='#ffd700';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('形状→颜色→扣眼 = 8类',200,55);ctx.shadowBlur=0;
-  ctx.fillStyle='rgba(0,210,255,.06)';ctx.fillRect(20,100,360,60);
-  ctx.fillStyle='#00d2ff';ctx.shadowColor='#00d2ff';ctx.shadowBlur=6+4*Math.sin((window._animFrame||0)*.12);ctx.fillText('颜色→形状→扣眼 = 8类',200,135);ctx.shadowBlur=0;
-  ctx.fillStyle='#fff';ctx.font='bold 14px sans-serif';ctx.fillText('不管先分哪个，最后都一样！',200,190);
-}
-
-var drawFns={
-  0:function(){drawAllBtns('c0')},1:function(){drawAllBtns('c1')},
-  2:function(){drawShape2('c2')},3:function(){drawColor4('c3')},
-  4:function(){drawHoles8('c4')},5:function(){drawTree('c5')},
-  6:function(){drawDiscovery('c6')}
-};
-
-function showSlide(){
-  var slides=document.querySelectorAll('.slide');
-  for(var i=0;i<slides.length;i++)slides[i].classList.toggle('active',i===cur);
-  document.getElementById('pgInfo').textContent=(cur+1)+'/'+TOTAL;
-  document.getElementById('bar').style.width=((cur+1)/TOTAL*100)+'%';
-  if(window._animTimer)clearInterval(window._animTimer);
-  if(drawFns[cur]){try{drawFns[cur]()}catch(e){}
-    // 持续脉冲动画：每100ms重绘当前页Canvas
-    window._animFrame=0;
-    window._animTimer=setInterval(function(){window._animFrame++;try{drawFns[cur]()}catch(e){}},100);}
-  if(cur===7){['sc1','sc2','sc3','sc4'].forEach(function(id,i){setTimeout(function(){var el=document.getElementById(id);if(el)el.classList.add('show')},i*300);});}
-}
+function showSlide(){var slides=document.querySelectorAll('.slide');for(var i=0;i<slides.length;i++)slides[i].classList.toggle('active',i===cur);
+  document.getElementById('pgInfo').textContent=(cur+1)+'/'+TOTAL;document.getElementById('bar').style.width=((cur+1)/TOTAL*100)+'%';
+  if(drawFns[cur])try{drawFns[cur]()}catch(e){}
+  if(cur===7){['sc1','sc2','sc3','sc4'].forEach(function(id,i){setTimeout(function(){var el=document.getElementById(id);if(el)el.classList.add('show')},i*300);});}}
 function next(){if(cur<TOTAL-1){cur++;showSlide();if(speaking)speakCur();}}
 function prev(){if(cur>0){cur--;showSlide();if(speaking)speakCur();}}
 
 var NAR=[
-'小朋友们好！今天学多次分类的技巧。看，丽丽不小心打翻了纽扣盒，纽扣撒了一地！这些纽扣有什么不一样呢？有的是红色有的是蓝色，有的是圆的有的是方的，还有的有2个孔有的有4个孔。一共8个纽扣，怎么帮丽丽整理呢？',
-'先来看看这8个纽扣。红色的圆形纽扣，上面有2个孔或4个孔。蓝色的圆形纽扣，也是有2个孔或4个孔。还有红色方形和蓝色方形的。颜色、形状、扣眼都不一样呢！',
-'第一次分类，按形状来分！圆的放一边，方的放一边。看，圆形4个，方形4个，分成了2类！4加4等于8，跟总数一样。',
-'分完了吗？还没呢！看圆形这4个，里面有红色的也有蓝色的。再按颜色分一分！方形那边也一样。现在2类变成了4类！圆红2个，圆蓝2个，方红2个，方蓝2个。',
-'还能继续分吗？当然能！看，圆红这2个，一个是2个孔的，一个是4个孔的。每一组都可以再分！最后变成了8类，每类就1个纽扣。从2类变4类再变8类，越分越细！',
-'画成分类树就很清楚了！最上面是全部8个纽扣。第一层按形状分成圆和方。第二层按颜色分成圆红、圆蓝、方红、方蓝。第三层按扣眼分成8类。每多分一次，类别就翻一倍！',
-'来看一个重要发现！如果先按形状再按颜色再按扣眼，最后是8类。如果换一种顺序，先按颜色再按形状再按扣眼呢？结果还是8类！不管先分哪个，最后的结果都一样！',
-'总结多次分类要点！第一，分完一次还可以继续分，只要每组里还有不同的。第二，每多分一次，类别翻一倍，2变4变8。第三，不管按什么顺序分，最后结果一样！画分类树，层次一目了然。学会了吗？回去拿扣子试试吧！'
+'小朋友们好！今天学多次分类。看，丽丽打翻了纽扣盒，纽扣撒了一地。这些纽扣长得不一样：有红的有蓝的，有圆的有方的，上面的孔也不同，有的2个孔有的4个孔。一共8个，怎么整理呢？',
+'先来认认这8个纽扣。圆形红色的两个，一个2个孔一个4个孔。圆形蓝色的也是两个。方形红色两个，方形蓝色两个。颜色、形状、扣眼都不一样，混在一起看不清。',
+'第一次分，按形状来。圆的放一边，方的放一边。数一数，圆形4个，方形4个，4加4等于8，跟总数一样。现在分成了2类。',
+'分完了吗？还没。看圆形这4个，里面有红的也有蓝的，还能继续分。方形那边也一样。按颜色再分一次，圆红2个、圆蓝2个、方红2个、方蓝2个，2类变成了4类。',
+'还能分吗？能！圆红这2个，一个2孔一个4孔，还是不一样。每组都可以再分一次。最后8个纽扣，每个自成一类，一共8类。从2类到4类到8类，每分一次翻一倍。',
+'画成分类树就清楚了。最上面是全部8个。第一层按形状分成圆和方。第二层按颜色分成圆红、圆蓝、方红、方蓝。第三层按扣眼分到底，8类。像树一样往下长，每一层都更细。',
+'还有一个发现。如果换一种顺序，先按颜色再按形状再按扣眼，最后还是8类。不管先分哪个，最后的结果都一样。这就是多次分类的规律。',
+'总结！第一，分完一次如果每组里还有不同，就可以继续分。第二，每多分一次类别翻一倍，2变4变8。第三，不管按什么顺序分，最后结果一样。画分类树，层次一目了然。'
 ];
 
 var voice=null;
 function pickVoice(){var vs=speechSynthesis.getVoices();var names=['Xiaoxiao','Yunxi'];for(var k=0;k<names.length;k++)for(var i=0;i<vs.length;i++)if(vs[i].name.indexOf(names[k])>=0&&vs[i].lang.indexOf('zh')>=0)return vs[i];for(var i=0;i<vs.length;i++)if(vs[i].lang==='zh-CN')return vs[i];return null;}
 if(window.speechSynthesis){voice=pickVoice();speechSynthesis.onvoiceschanged=function(){voice=pickVoice()};}
-function speakCur(){speechSynthesis.cancel();var text=NAR[cur];if(!text)return;var utt=new SpeechSynthesisUtterance(text);utt.lang='zh-CN';utt.rate=0.85;utt.pitch=1.1;if(!voice)voice=pickVoice();if(voice)utt.voice=voice;var sub=document.getElementById('subBar');sub.classList.add('vis');sub.textContent=text;utt.onend=function(){if(speaking&&cur<TOTAL-1)setTimeout(next,800);else{speaking=false;document.getElementById('ttsBtn').textContent='🔊 开始讲解';sub.classList.remove('vis');}};utt.onerror=function(){if(speaking&&cur<TOTAL-1)setTimeout(next,500);};speechSynthesis.speak(utt);}
+function speakCur(){speechSynthesis.cancel();var text=NAR[cur];if(!text)return;var utt=new SpeechSynthesisUtterance(text);utt.lang='zh-CN';utt.rate=0.85;utt.pitch=1.1;if(!voice)voice=pickVoice();if(voice)utt.voice=voice;var sub=document.getElementById('subBar');var sents=text.match(/[^。？！；]+[。？！；]?/g)||[text];var si=0;sub.classList.add('vis');sub.textContent=sents[0]||'';utt.onboundary=function(e){if(e.charIndex!==undefined&&sents.length>1){var cc=0;for(var i=0;i<sents.length;i++){cc+=sents[i].length;if(e.charIndex<cc){if(i!==si){si=i;sub.textContent=sents[i].trim();}break;}}}};utt.onend=function(){if(speaking&&cur<TOTAL-1)setTimeout(next,800);else{speaking=false;document.getElementById('ttsBtn').textContent='🔊 开始讲解';sub.classList.remove('vis');}};utt.onerror=function(){if(speaking&&cur<TOTAL-1)setTimeout(next,500);};speechSynthesis.speak(utt);}
 function toggleTTS(){if(speaking){speaking=false;speechSynthesis.cancel();document.getElementById('ttsBtn').textContent='🔊 开始讲解';document.getElementById('subBar').classList.remove('vis');}else{speaking=true;document.getElementById('ttsBtn').textContent='⏹ 停止';speakCur();}}
 function goFS(){if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(function(){});else document.exitFullscreen();}
 var tx=0;document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX});document.addEventListener('touchend',function(e){var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>60){d<0?next():prev();}});
