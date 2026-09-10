@@ -139,13 +139,8 @@ body{background:#06081a;color:#fff;font-family:'PingFang SC','Microsoft YaHei',s
   <div style="display:flex;gap:16px;margin-top:16px;opacity:.15" class="fi d4"><span style="font-size:28px">🚀</span><span style="font-size:28px">📈</span><span style="font-size:28px">💡</span></div>
 </div>
 
-<div class="sub" id="subBar" style="position:fixed;bottom:58px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.8);backdrop-filter:blur(12px);border-radius:12px;padding:8px 22px;max-width:90%;text-align:center;font-size:clamp(14px,2.8vw,18px);color:#f0f0ff;line-height:1.5;z-index:99;display:none;border:1px solid rgba(255,255,255,.08)"></div>
-<div style="position:fixed;bottom:0;left:0;right:0;height:54px;background:linear-gradient(180deg,rgba(6,8,26,.92),rgba(6,8,26,.98));backdrop-filter:blur(16px);border-top:1px solid rgba(255,215,0,.1);display:flex;align-items:center;justify-content:center;gap:8px;padding:0 10px;z-index:100">
-  <button onclick="prevS()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#c8d0f0;border-radius:50px;padding:7px 16px;font-size:13px;cursor:pointer">⏮</button>
-  <button id="ttsBtn" onclick="toggleTTS()" style="background:linear-gradient(135deg,#ffd700,#ff8c00);color:#1a1a4e;font-weight:700;border:none;border-radius:50px;padding:7px 20px;font-size:13px;cursor:pointer;box-shadow:0 4px 20px rgba(255,180,0,.3)">🔊 开始讲解</button>
-  <button onclick="nextS()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:#c8d0f0;border-radius:50px;padding:7px 16px;font-size:13px;cursor:pointer">⏭</button>
-  <span style="color:#556;font-size:11px;min-width:40px;text-align:center" id="pgInfo">1/7</span>
-</div>
+<div class="nw"><div class="nar" id="nar"></div><div class="bt"><div class="bf" id="bar" style="width:0"></div></div></div>
+<button class="go" id="go" onclick="doStart()">▶</button>
 </div>
 
 <script>
@@ -185,47 +180,65 @@ function speak(text,callback){
   }catch(e){finish()}
 }
 
-var TOTAL_PAGES=7;var curPage=0;var speaking=false;var si=0;
-var PAGES=['p0','p1','p2','p3','p4','p5','p6'];
+function showPage(id){
+  var pages=document.querySelectorAll('.pg');
+  for(var i=0;i<pages.length;i++)pages[i].classList.remove('on');
+  document.getElementById(id).classList.add('on');
+}
 
-function showPage(id){var ps=document.querySelectorAll('.pg');for(var i=0;i<ps.length;i++)ps[i].classList.remove('on');document.getElementById(id).classList.add('on')}
-function updatePage(){
-  showPage(PAGES[curPage]);
-  document.getElementById('pgInfo').textContent=(curPage+1)+'/'+TOTAL_PAGES;
-  // 执行当前页第一个step的fn
-  for(var i=0;i<STEPS.length;i++){if(STEPS[i].p===PAGES[curPage]&&STEPS[i].fn){try{STEPS[i].fn()}catch(e){}break;}}
+function animRing(){
+  var target=502*(1-0.78);
+  document.getElementById('ring1').style.strokeDashoffset=target;
+  var v=0;
+  var iv=setInterval(function(){v+=2;if(v>78){v=78;clearInterval(iv)}document.getElementById('rn1').textContent=v+'%'},30);
 }
-function nextS(){if(curPage<TOTAL_PAGES-1){curPage++;updatePage();if(speaking)speakPage();}}
-function prevS(){if(curPage>0){curPage--;updatePage();if(speaking)speakPage();}}
 
-function speakPage(){
-  speechSynthesis.cancel();
-  var texts=[];for(var i=0;i<STEPS.length;i++){if(STEPS[i].p===PAGES[curPage])texts.push(STEPS[i].t);}
-  var fullText=texts.join('');
-  if(!fullText){if(speaking&&curPage<TOTAL_PAGES-1)setTimeout(nextS,500);return;}
-  var utt=new SpeechSynthesisUtterance(fullText);
-  utt.lang='zh-CN';utt.rate=0.85;utt.pitch=1;
-  if(!voice)voice=pickVoice();
-  if(voice)utt.voice=voice;
-  var sub=document.getElementById('subBar');
-  var sents=fullText.match(/[^。？！；]+[。？！；]?/g)||[fullText];
-  var si2=0;sub.style.display='block';sub.textContent=sents[0]||'';
-  // timer fallback防止onend不触发
-  var done=false;
-  var timer=setTimeout(function(){if(!done){done=true;if(speaking&&curPage<TOTAL_PAGES-1)setTimeout(nextS,500);else{speaking=false;document.getElementById('ttsBtn').textContent='🔊 开始讲解';sub.style.display='none';}}},Math.max(fullText.length*350,5000));
-  utt.onboundary=function(e){if(e.charIndex!==undefined&&sents.length>1){var cc=0;for(var i=0;i<sents.length;i++){cc+=sents[i].length;if(e.charIndex<cc){if(i!==si2){si2=i;sub.textContent=sents[i].trim();}break;}}}};
-  utt.onend=function(){if(!done){done=true;clearTimeout(timer);if(speaking&&curPage<TOTAL_PAGES-1){setTimeout(nextS,800);}else{speaking=false;document.getElementById('ttsBtn').textContent='🔊 开始讲解';sub.style.display='none';}}};
-  utt.onerror=function(){if(!done){done=true;clearTimeout(timer);if(speaking&&curPage<TOTAL_PAGES-1)setTimeout(nextS,500);}};
-  try{speechSynthesis.speak(utt)}catch(e){if(!done){done=true;clearTimeout(timer);if(speaking&&curPage<TOTAL_PAGES-1)setTimeout(nextS,500);}}
+function drawBars(){
+  var data=[['人才',85,'low','⚠️ 第一名'],['成本',62,'warn',''],['数据',48,'full',''],['算力',35,'full',''],['安全',30,'full','']];
+  var el=document.getElementById('bars');if(!el)return;el.innerHTML='';
+  for(var i=0;i<data.length;i++){
+    (function(idx){
+      var d=data[idx];
+      var r=document.createElement('div');r.className='br';r.style.animationDelay=(0.2+idx*0.2)+'s';
+      r.innerHTML='<div class="br-lab">'+d[0]+'</div><div class="br-track"><div class="br-fill '+d[2]+'" id="bf'+idx+'">'+d[1]+'%</div></div><div class="br-alert" id="ba'+idx+'">'+d[3]+'</div>';
+      el.appendChild(r);
+      setTimeout(function(){
+        document.getElementById('bf'+idx).style.width=d[1]+'%';
+        if(d[3])document.getElementById('ba'+idx).classList.add('show');
+      },300+idx*200);
+    })(i);
+  }
 }
-function toggleTTS(){
-  if(speaking){speaking=false;speechSynthesis.cancel();document.getElementById('ttsBtn').textContent='🔊 开始讲解';document.getElementById('subBar').style.display='none';}
-  else{speaking=true;document.getElementById('ttsBtn').textContent='⏹ 停止讲解';speakPage();}
+
+var STEPS=[
+  {p:'p0',t:'斯坦福最新报告显示，将近八成企业已经在使用AI。',fn:animRing},
+  {p:'p0',t:'两年前这个数字还不到六成。渗透速度超出了多数人的预期。'},
+  {p:'p1',t:'但有意思的是，企业反馈的最大瓶颈，不是技术层面的。'},
+  {p:'p1',t:'算力不再是稀缺资源，数据管道日趋成熟，模型本身已经是基础设施。'},
+  {p:'p2',t:'三千两百家企业的调研指向同一个答案：缺人。',fn:drawBars},
+  {p:'p2',t:'准确地说，缺的是能在真实业务环节中完成工具验证闭环的人。'},
+  {p:'p3',t:'这个定义有三个关键词。真实业务环节，说明不是实验室场景。'},
+  {p:'p3',t:'工具验证，说明不是会调参数就够了。闭环，说明结果必须可衡量、可交接。'},
+  {p:'p4',t:'具体来说，验证闭环分三步。第一步跑通，在真实数据和流程中运行，不只是演示。'},
+  {p:'p4',t:'第二步验证，用业务指标而不是技术指标衡量产出质量。第三步交接，让其他人能独立复现和维护。'},
+  {p:'p5',t:'这件事的门槛其实比想象中低。不需要从模型原理学起。'},
+  {p:'p5',t:'从最熟悉的业务环节切入，找到其中重复性最高的判断动作，用工具试着处理。'},
+  {p:'p5',t:'关键是记录：成功的条件是什么，失败的模式是什么。这些就是可验证的实践经验。'},
+  {p:'p6',t:'选环节，做验证，建闭环。能力的壁垒不在工具本身。'},
+  {p:'p6',t:'在于特定业务场景中积累的验证经验。这是当前最稀缺的能力。'}
+]
+  showPage(s.p);
+  if(s.fn){try{s.fn()}catch(e){console.log('fn error',e)}}
+  document.getElementById('nar').innerHTML=s.t;
+  document.getElementById('bar').style.width=Math.round(((si+1)/STEPS.length)*100)+'%';
+  speak(s.t,function(){si++;runStep()});
 }
-// 触摸滑动
-var tx=0;document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX});
-document.addEventListener('touchend',function(e){var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>60){d<0?nextS():prevS();}});
-document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();nextS();}else if(e.key==='ArrowLeft'){e.preventDefault();prevS();}});
-updatePage();
+
+function doStart(){
+  if(playing)return;
+  playing=true;si=0;
+  document.getElementById('go').classList.add('hide');
+  runStep();
+}
 </script>
 </body></html>
