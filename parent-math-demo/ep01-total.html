@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>分类题解题思路</title>
+<title>分类题解题技巧</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#faf6f1;color:#2d2d2d;font-family:'PingFang SC','Microsoft YaHei',sans-serif;display:flex;justify-content:center;height:100vh;overflow:hidden}
@@ -13,34 +13,31 @@ body{background:#faf6f1;color:#2d2d2d;font-family:'PingFang SC','Microsoft YaHei
 .pg.on .fi{opacity:1;transform:translateY(0)}
 .fi{opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s}
 .fi.d1{transition-delay:.15s}.fi.d2{transition-delay:.3s}.fi.d3{transition-delay:.45s}
-@keyframes shake{0%,100%{transform:translate(0)}25%{transform:translate(-3px,2px)}75%{transform:translate(3px,-2px)}}
-@keyframes popIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+@keyframes bounceIn{0%{opacity:0;transform:scale(.3)}50%{transform:scale(1.05)}70%{transform:scale(.95)}100%{opacity:1;transform:scale(1)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeScale{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
 .badge{display:inline-block;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:10px}
 .badge.tip{background:#fff8ee;color:#e67e22;border:1px solid #f5d0a0}
-.badge.err{background:#fff0f0;color:#e74c3c;border:1px solid #f5c6c6}
 .badge.ok{background:#f0fff4;color:#27ae60;border:1px solid #a3d9b1}
+.badge.step{background:#eef6ff;color:#3498db;border:1px solid #a8d8ea}
 .t-lg{font-size:30px;font-weight:900;text-align:center;line-height:1.4}
-.t-lg .warm{color:#e67e22}.t-lg .red{color:#e74c3c}.t-lg .grn{color:#27ae60}
+.t-lg .warm{color:#e67e22}
 .t-md{font-size:18px;font-weight:600;text-align:center;line-height:1.7;color:#444}
 .t-sm{font-size:13px;color:#aaa;text-align:center;margin-top:6px}
-.items-area{width:330px;min-height:200px;position:relative;margin:14px 0;padding:16px;border-radius:20px;background:#fff;border:1px solid rgba(0,0,0,.04);box-shadow:0 4px 20px rgba(0,0,0,.04);display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
-.item{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;position:relative;box-shadow:0 3px 10px rgba(0,0,0,.1);transition:all .6s}
+.items-area{width:330px;min-height:180px;position:relative;margin:14px 0;padding:16px;border-radius:20px;background:#fff;border:1px solid rgba(0,0,0,.04);box-shadow:0 4px 20px rgba(0,0,0,.04);display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+.item{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;box-shadow:0 3px 10px rgba(0,0,0,.1);animation:bounceIn .5s backwards}
 .item.circle{border-radius:50%}
 .item.c-red{background:linear-gradient(135deg,#ff6b6b,#ee5a5a)}
 .item.c-blue{background:linear-gradient(135deg,#74b9ff,#5a9bdb)}
 .item.c-green{background:linear-gradient(135deg,#55efc4,#3dc9a0)}
-.item.dup{animation:shake .3s ease-in-out infinite;box-shadow:0 0 0 3px #e74c3c,0 4px 16px rgba(231,76,60,.3)}
-.item.dup::after{content:'重复';position:absolute;top:-10px;right:-10px;padding:2px 6px;border-radius:8px;font-size:9px;font-weight:700;background:#e74c3c;color:#fff;animation:popIn .3s}
 .groups{width:330px;display:flex;gap:8px;margin:10px 0}
-.group{flex:1;padding:10px 6px;border-radius:14px;background:#fff;border:1px solid rgba(0,0,0,.04);box-shadow:0 2px 8px rgba(0,0,0,.03);text-align:center}
+.group{flex:1;padding:10px 6px;border-radius:14px;background:#fff;border:1px solid rgba(0,0,0,.04);box-shadow:0 2px 8px rgba(0,0,0,.03);text-align:center;animation:slideUp .5s backwards}
 .group .g-title{font-size:12px;color:#888;margin-bottom:6px;font-weight:600}
 .group .g-items{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;min-height:40px}
-.group .g-item{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.08)}
-.group .g-count{font-size:20px;font-weight:900;margin-top:6px}
-.group .g-count.red{color:#e74c3c}.group .g-count.grn{color:#27ae60}
-.calc{width:330px;padding:16px 20px;border-radius:16px;background:#fff;border:1px solid rgba(0,0,0,.04);box-shadow:0 3px 12px rgba(0,0,0,.04);margin:10px 0;text-align:center}
-.calc .eq{animation:bounceIn .6s .3s backwards;font-size:22px;font-weight:900;line-height:2}
-.calc .eq .red{color:#e74c3c}.calc .eq .grn{color:#27ae60}
+.group .g-count{font-size:22px;font-weight:900;margin-top:6px;color:#27ae60}
+.calc{width:330px;padding:16px 20px;border-radius:16px;background:#fff;border:1px solid rgba(0,0,0,.04);box-shadow:0 3px 12px rgba(0,0,0,.04);margin:10px 0;text-align:center;animation:bounceIn .6s .3s backwards}
+.calc .eq{font-size:22px;font-weight:900;line-height:2}
+.calc .eq .grn{color:#27ae60}
 .tip-box{width:330px;padding:18px;border-radius:16px;text-align:center;background:linear-gradient(135deg,#fff8ee,#fff3e0);border:2px solid #f5d0a0;margin:10px 0}
 .tip-box .tip{font-size:18px;font-weight:900;color:#e67e22;line-height:1.7}
 .nw{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:14px 24px 30px;background:linear-gradient(transparent,rgba(250,246,241,.97) 30%)}
@@ -50,52 +47,51 @@ body{background:#faf6f1;color:#2d2d2d;font-family:'PingFang SC','Microsoft YaHei
 .tag{position:absolute;top:16px;left:20px;font-size:10px;color:#ccc;letter-spacing:2px;font-weight:600;z-index:10}
 .go{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);z-index:20;padding:12px 44px;border:none;border-radius:26px;font-size:16px;font-weight:700;background:linear-gradient(135deg,#ff9a76,#e67e22);color:#fff;cursor:pointer;box-shadow:0 4px 16px rgba(230,126,34,.2)}
 .go.hide{display:none}
-
-@keyframes bounceIn{0%{opacity:0;transform:scale(.3)}50%{transform:scale(1.05)}70%{transform:scale(.95)}100%{opacity:1;transform:scale(1)}}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeScale{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
-.item{animation:bounceIn .5s backwards}
-.g-item{animation:fadeScale .3s backwards}
-.group{animation:slideUp .5s backwards}
 </style></head><body>
 <div class="s">
 <div class="deco dc1"></div><div class="deco dc2"></div>
-<div class="tag">分类题 · 解题思路</div>
+<div class="tag">数学思维 · 分类与整理</div>
 
+<!-- P0: 首屏-散落物品 -->
 <div class="pg on" id="p0">
   <div class="badge tip fi">分类题解题技巧</div>
   <div class="items-area fi d1" id="a0"></div>
   <div class="t-md fi d2" style="font-size:15px;color:#888">这堆东西怎么分？</div>
-  <div style="margin-top:10px;font-size:11px;color:#bbb;letter-spacing:2px" class="fi d3">数学思维 · 分类与整理</div>
 </div>
 
+<!-- P1: 第一步-选分法 -->
 <div class="pg" id="p1">
-  <div class="t-md fi">比如这12个物品混在一起</div>
-  <div class="items-area fi d1" id="a1"></div>
-  <div class="t-md fi d2" style="font-size:15px;color:#888">怎么分？第一步：选一个标准</div>
+  <div class="badge step fi">第一步</div>
+  <div class="t-lg fi d1"><span class="warm">想好按什么来分</span></div>
+  <div class="items-area fi d2" id="a1"></div>
+  <div class="t-md fi d3" style="font-size:15px;color:#888">可以按颜色，也可以按形状</div>
 </div>
 
+<!-- P2: 第二步-按颜色分 -->
 <div class="pg" id="p2">
-  <div class="badge tip fi">第一步：按什么分</div>
-  <div class="t-md fi d1">按<span style="color:#e67e22;font-weight:700">颜色</span>分成三组</div>
+  <div class="badge step fi">第二步 · 按颜色分</div>
+  <div class="t-md fi d1">分成三组，<span style="color:#e67e22;font-weight:700">每组数一数</span></div>
   <div class="groups fi d2" id="g1"></div>
   <div class="calc fi d3" id="c1"></div>
 </div>
 
+<!-- P3: 第三步-验证 -->
 <div class="pg" id="p3">
-  <div class="badge err fi">⚠️ 常见错误</div>
-  <div class="t-md fi d1">有两个被<span style="color:#e74c3c;font-weight:700">数了两遍</span></div>
-  <div class="items-area fi d2" id="a2"></div>
-  <div class="t-sm fi d3">交界处的物品容易重复计数</div>
+  <div class="badge ok fi">第三步 · 验证</div>
+  <div class="t-md fi d1">每组加一加，<span style="color:#27ae60;font-weight:700">对总数</span></div>
+  <div class="calc fi d2" id="c2"></div>
+  <div class="t-md fi d3" style="font-size:15px;color:#27ae60">对上了，说明没数重也没漏</div>
 </div>
 
+<!-- P4: 换一种分法 -->
 <div class="pg" id="p4">
-  <div class="badge ok fi">✅ 第二步：数一数</div>
-  <div class="t-md fi d1">每组数完<span style="color:#27ae60;font-weight:700">加一加</span>，对总数</div>
+  <div class="badge step fi">换一种分法</div>
+  <div class="t-md fi d1">同样的东西，按<span style="color:#3498db;font-weight:700">形状</span>分</div>
   <div class="groups fi d2" id="g2"></div>
-  <div class="calc fi d3" id="c2"></div>
+  <div class="calc fi d3" id="c3"></div>
 </div>
 
+<!-- P5: 总结 -->
 <div class="pg" id="p5">
   <div class="tip-box fi">
     <div class="tip">按什么分 → 分一分 → 数一数<br>加一加对总数<br>对上了就没重没漏</div>
@@ -108,38 +104,81 @@ body{background:#faf6f1;color:#2d2d2d;font-family:'PingFang SC','Microsoft YaHei
 </div>
 
 <script>
+// === 数据定义 ===
+// 12个物品：红圆2 红方2 蓝圆2 蓝方2 绿圆2 绿方2
+// 按颜色分：红4 蓝4 绿4 = 12 ✓
+// 按形状分：圆6 方6 = 12 ✓
 var ITEMS=[
-  {s:'circle',c:'c-red',l:'红'},{s:'',c:'c-red',l:'红'},{s:'circle',c:'c-red',l:'红'},{s:'',c:'c-red',l:'红'},
-  {s:'circle',c:'c-blue',l:'蓝'},{s:'',c:'c-blue',l:'蓝'},{s:'circle',c:'c-blue',l:'蓝'},{s:'',c:'c-blue',l:'蓝'},
-  {s:'circle',c:'c-green',l:'绿'},{s:'',c:'c-green',l:'绿'},{s:'circle',c:'c-green',l:'绿'},{s:'',c:'c-green',l:'绿'}
+  {s:'circle',c:'c-red',l:'红'},{s:'',c:'c-red',l:'红'},
+  {s:'circle',c:'c-red',l:'红'},{s:'',c:'c-red',l:'红'},
+  {s:'circle',c:'c-blue',l:'蓝'},{s:'',c:'c-blue',l:'蓝'},
+  {s:'circle',c:'c-blue',l:'蓝'},{s:'',c:'c-blue',l:'蓝'},
+  {s:'circle',c:'c-green',l:'绿'},{s:'',c:'c-green',l:'绿'},
+  {s:'circle',c:'c-green',l:'绿'},{s:'',c:'c-green',l:'绿'}
 ];
+// 验证：共12个
+// 按颜色：红(0,1,2,3)=4 蓝(4,5,6,7)=4 绿(8,9,10,11)=4 → 4+4+4=12 ✓
+// 按形状：圆(0,2,4,6,8,10)=6 方(1,3,5,7,9,11)=6 → 6+6=12 ✓
 
-function showItems(id,dupIdx){
+function showItems(id){
   var el=document.getElementById(id);el.innerHTML='';
   for(var i=0;i<ITEMS.length;i++){
     var d=document.createElement('div');
     d.className='item '+(ITEMS[i].s?ITEMS[i].s:'')+' '+ITEMS[i].c;
     d.textContent=ITEMS[i].l;
-    if(dupIdx&&dupIdx.indexOf(i)>=0)(function(dd){setTimeout(function(){dd.classList.add('dup')},400)})(d);
-    d.style.animationDelay=(i*0.08)+'s';el.appendChild(d);
+    d.style.animationDelay=(i*0.08)+'s';
+    el.appendChild(d);
   }
 }
 
-function showGroups(id,calcId,wrong){
+function showColorGroups(id,calcId){
   var el=document.getElementById(id);el.innerHTML='';
-  var colors=[{name:'红色',cls:'c-red',bg:'linear-gradient(135deg,#ff6b6b,#ee5a5a)',count:wrong?5:4},{name:'蓝色',cls:'c-blue',bg:'linear-gradient(135deg,#74b9ff,#5a9bdb)',count:wrong?5:4},{name:'绿色',cls:'c-green',bg:'linear-gradient(135deg,#55efc4,#3dc9a0)',count:4}];
-  for(var i=0;i<colors.length;i++){
-    var g=document.createElement('div');g.className='group';
-    var html='<div class="g-title"><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:'+colors[i].bg+';vertical-align:middle;margin-right:4px;box-shadow:0 2px 6px rgba(0,0,0,.15)"></span>'+colors[i].name+'</div><div class="g-items">';
-    for(var j=0;j<colors[i].count;j++)html+='<div class="g-item" style="width:38px;height:38px;border-radius:10px;background:'+colors[i].bg+';box-shadow:0 3px 8px rgba(0,0,0,.12)">'+colors[i].name[0]+'</div>';
-    html+='</div><div class="g-count '+(wrong&&colors[i].count!==4?'red':'grn')+'">'+colors[i].count+'</div>';
-    g.innerHTML=html;g.style.animationDelay=(i*0.2)+'s';var items=g.querySelectorAll('.g-item');for(var k=0;k<items.length;k++)items[k].style.animationDelay=(i*0.2+k*0.1)+'s';el.appendChild(g);
+  var groups=[
+    {name:'红色',bg:'linear-gradient(135deg,#ff6b6b,#ee5a5a)',items:['红','红','红','红']},
+    {name:'蓝色',bg:'linear-gradient(135deg,#74b9ff,#5a9bdb)',items:['蓝','蓝','蓝','蓝']},
+    {name:'绿色',bg:'linear-gradient(135deg,#55efc4,#3dc9a0)',items:['绿','绿','绿','绿']}
+  ];
+  for(var i=0;i<groups.length;i++){
+    var g=document.createElement('div');g.className='group';g.style.animationDelay=(i*0.2)+'s';
+    var html='<div class="g-title"><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:'+groups[i].bg+';vertical-align:middle;margin-right:4px;box-shadow:0 2px 6px rgba(0,0,0,.15)"></span>'+groups[i].name+'</div><div class="g-items">';
+    for(var j=0;j<groups[i].items.length;j++){
+      html+='<div style="width:38px;height:38px;border-radius:10px;background:'+groups[i].bg+';display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 3px 8px rgba(0,0,0,.12);animation:fadeScale .3s '+(i*0.2+j*0.1)+'s backwards">'+groups[i].items[j]+'</div>';
+    }
+    html+='</div><div class="g-count">4</div>';
+    g.innerHTML=html;el.appendChild(g);
   }
-  var ce=document.getElementById(calcId);
-  if(wrong)ce.innerHTML='<div class="eq"><span class="red">5</span> + <span class="red">5</span> + 4 = <span class="red">14</span> ≠ 12 ❌</div>';
-  else ce.innerHTML='<div class="eq"><span class="grn">4</span> + <span class="grn">4</span> + <span class="grn">4</span> = <span class="grn">12</span> = 12 ✅</div>';
+  document.getElementById(calcId).innerHTML='<div class="eq"><span class="grn">4</span> + <span class="grn">4</span> + <span class="grn">4</span> = <span class="grn">12</span> ✅</div>';
 }
 
+function showShapeGroups(id,calcId){
+  var el=document.getElementById(id);el.innerHTML='';
+  var groups=[
+    {name:'圆形',items:[{c:'c-red',l:'红'},{c:'c-red',l:'红'},{c:'c-blue',l:'蓝'},{c:'c-blue',l:'蓝'},{c:'c-green',l:'绿'},{c:'c-green',l:'绿'}]},
+    {name:'方形',items:[{c:'c-red',l:'红'},{c:'c-red',l:'红'},{c:'c-blue',l:'蓝'},{c:'c-blue',l:'蓝'},{c:'c-green',l:'绿'},{c:'c-green',l:'绿'}]}
+  ];
+  for(var i=0;i<groups.length;i++){
+    var g=document.createElement('div');g.className='group';g.style.animationDelay=(i*0.2)+'s';
+    var html='<div class="g-title">'+groups[i].name+'</div><div class="g-items">';
+    for(var j=0;j<groups[i].items.length;j++){
+      var it=groups[i].items[j];
+      var bg=it.c==='c-red'?'linear-gradient(135deg,#ff6b6b,#ee5a5a)':it.c==='c-blue'?'linear-gradient(135deg,#74b9ff,#5a9bdb)':'linear-gradient(135deg,#55efc4,#3dc9a0)';
+      var radius=i===0?'50%':'10px';
+      html+='<div style="width:32px;height:32px;border-radius:'+radius+';background:'+bg+';display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.1);animation:fadeScale .3s '+(i*0.2+j*0.08)+'s backwards">'+it.l+'</div>';
+    }
+    html+='</div><div class="g-count">6</div>';
+    g.innerHTML=html;el.appendChild(g);
+  }
+  document.getElementById(calcId).innerHTML='<div class="eq"><span class="grn">6</span> + <span class="grn">6</span> = <span class="grn">12</span> ✅</div>';
+}
+
+function showVerify(calcId){
+  document.getElementById(calcId).innerHTML='<div class="eq">先数总数：<span class="grn">12</span> 个<br>分完加一加：4 + 4 + 4 = <span class="grn">12</span><br>对上了 ✅ 没重没漏</div>';
+}
+
+// 页面加载初始化
+showItems('a0');
+
+// === TTS ===
 var voice=null,playing=false,si=0;
 function pickVoice(){
   var vs=speechSynthesis.getVoices();voice=null;
@@ -148,7 +187,6 @@ function pickVoice(){
   if(!voice)for(var i=0;i<vs.length;i++){if(/zh/i.test(vs[i].lang)){voice=vs[i];break}}
 }
 if(typeof speechSynthesis!=='undefined'){speechSynthesis.onvoiceschanged=pickVoice;pickVoice()}
-
 function speak(text,cb){
   var done=false;
   function finish(){if(!done){done=true;clearTimeout(tmr);setTimeout(cb,600)}}
@@ -160,26 +198,22 @@ function speak(text,cb){
 function showPage(id){
   var ps=document.querySelectorAll('.pg');for(var i=0;i<ps.length;i++)ps[i].classList.remove('on');
   document.getElementById(id).classList.add('on');
-  // 切页时预填充视觉，确保框不空
-  if(id==='p0'&&!document.getElementById('a0').hasChildNodes())showItems('a0');
-  if(id==='p1'&&!document.getElementById('a1').hasChildNodes())showItems('a1');
-  if(id==='p2'&&!document.getElementById('g1').hasChildNodes())showGroups('g1','c1',true);
-  if(id==='p3'&&!document.getElementById('a2').hasChildNodes())showItems('a2',[4,8]);
-  if(id==='p4'&&!document.getElementById('g2').hasChildNodes())showGroups('g2','c2',false);
 }
 
+// === 步骤 ===
+// 只讲正确技巧，不讲错误示范
 var STEPS=[
   {p:'p0',t:'分类题，看到这堆东西怎么分？',fn:function(){showItems('a0')}},
-  {p:'p1',t:'比如这十二个物品混在一起。',fn:function(){showItems('a1')}},
-  {p:'p1',t:'第一步，想好按什么来分。'},
-  {p:'p2',t:'按颜色分成三组，每组数一数。',fn:function(){showGroups('g1','c1',true)}},
-  {p:'p2',t:'五加五加四等于十四，多了两个。'},
-  {p:'p3',t:'问题在这里，两个物品数了两遍。',fn:function(){showItems('a2',[4,8])}},
-  {p:'p3',t:'交界处的最容易重复。'},
-  {p:'p4',t:'正确做法，每组数完加一加对总数。',fn:function(){showGroups('g2','c2',false)}},
-  {p:'p4',t:'四加四加四等于十二，对上了。'},
+  {p:'p1',t:'第一步，想好按什么来分。',fn:function(){showItems('a1')}},
+  {p:'p1',t:'可以按颜色，也可以按形状。'},
+  {p:'p2',t:'比如按颜色分，分成三组。',fn:function(){showColorGroups('g1','c1')}},
+  {p:'p2',t:'红色四个，蓝色四个，绿色四个。'},
+  {p:'p3',t:'第三步，加一加对总数。',fn:function(){showVerify('c2')}},
+  {p:'p3',t:'四加四加四等于十二，对上了。'},
+  {p:'p4',t:'换一种，按形状分。',fn:function(){showShapeGroups('g2','c3')}},
+  {p:'p4',t:'圆的六个，方的六个，六加六也是十二。'},
   {p:'p5',t:'按什么分，分一分，数一数，加一加对总数。'},
-  {p:'p5',t:'掌握思路比做对一道题重要，分类题都能用这个思路来解。'},
+  {p:'p5',t:'掌握思路比做对一道题重要。'},
 ];
 
 function runStep(){
@@ -190,9 +224,6 @@ function runStep(){
   document.getElementById('bar').style.width=Math.round(((si+1)/STEPS.length)*100)+'%';
   speak(s.t,function(){si++;runStep()});
 }
-
-// 页面加载时初始化首屏物品
-showItems('a0');
 function doStart(){if(playing)return;playing=true;si=0;document.getElementById('go').classList.add('hide');runStep()}
 </script>
 </body></html>
