@@ -47,7 +47,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Noto Sans SC',sans
 <div id="slides">
 <div class="slide active" id="s0">
   <div class="stitle" style="font-size:clamp(30px,6.5vw,52px);background:linear-gradient(135deg,#ffd700,#ff8c00,#ff6b6b,#00d2ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;filter:drop-shadow(0 3px 16px rgba(255,150,0,.5))">分类题解题技巧</div>
-  <div class="canvas-area" style="max-width:560px"><canvas id="c0" width="560" height="200"></canvas></div>
+  <div class="canvas-area" style="max-width:560px"><canvas id="c0" width="560" height="280"></canvas></div>
   <p class="sdesc" style="margin-top:6px;color:#a8b4e0">二年级上 · 分类与整理</p>
   <p class="sdesc" style="margin-top:8px"><span class="hl">🌟 按什么分 → 分一分 → 数一数 → 加一加对总数！</span></p>
 </div>
@@ -167,8 +167,8 @@ const ITEMS=[
 function setupCanvas(id){const c=document.getElementById(id);if(!c)return null;const w=+c.getAttribute('width'),h=+c.getAttribute('height');c.width=w*DPR;c.height=h*DPR;c.style.width=w+'px';c.style.height=h+'px';const ctx=c.getContext('2d');ctx.scale(DPR,DPR);return{c,ctx,w,h};}
 
 // 散落位置
-function scatterPos(w,h){var ps=[];var cols=4,rows=3,gx=w/(cols+1),gy=h/(rows+1);
-  for(var r=0;r<rows;r++)for(var c=0;c<cols;c++)ps.push({x:gx*(c+1)-20+Math.random()*10,y:gy*(r+1)-20+Math.random()*10});return ps;}
+function scatterPos(w,h){var ps=[];var cols=4,rows=3,pad=20,gx=(w-pad*2)/(cols),gy=(h-pad*2)/(rows);
+  for(var r=0;r<rows;r++)for(var c=0;c<cols;c++)ps.push({x:pad+gx*(c+0.5)-20+Math.random()*10,y:pad+gy*(r+0.5)-20+Math.random()*10});return ps;}
 
 // 画单个物品
 function drawItem(ctx,it,x,y,sz,pulse,alpha){
@@ -191,16 +191,16 @@ function stopAnim(){if(animId){cancelAnimationFrame(animId);animId=null;}}
 // S0 封面
 function animS0(){var r=setupCanvas('c0');if(!r)return;var ctx=r.ctx,w=r.w,h=r.h;var t=0;var ps=scatterPos(w,h);
   function tick(){t++;ctx.clearRect(0,0,w,h);var n=Math.min(12,Math.floor(t/15)+1);
-    for(var i=0;i<n;i++){var sc=Math.min(1,(t-i*15)/20);var sz=36*sc;
+    for(var i=0;i<n;i++){var sc=Math.min(1,(t-i*15)/20);var sz=44*sc;
       drawItem(ctx,ITEMS[i],ps[i].x,ps[i].y,sz,t*.05,sc);}
-    if(t<400)animId=requestAnimationFrame(tick);}tick();}
+    animId=requestAnimationFrame(tick);}tick();}
 
 // S1 看看这堆东西
 function animS1(){var r=setupCanvas('c1');if(!r)return;var ctx=r.ctx,w=r.w,h=r.h;var t=0;var ps=scatterPos(w,h);
   function tick(){t++;ctx.clearRect(0,0,w,h);
     for(var i=0;i<12;i++){drawItem(ctx,ITEMS[i],ps[i].x,ps[i].y,38,t*.04,1);}
     drawNum(ctx,'12个',w/2,h-16,'#ffd700',20);
-    if(t<400)animId=requestAnimationFrame(tick);}tick();}
+    animId=requestAnimationFrame(tick);}tick();}
 
 // S2 想好按什么分
 function animS2(){var r=setupCanvas('c2');if(!r)return;var ctx=r.ctx,w=r.w,h=r.h;var t=0;var ps=scatterPos(w,h);
@@ -211,7 +211,7 @@ function animS2(){var r=setupCanvas('c2');if(!r)return;var ctx=r.ctx,w=r.w,h=r.h
     ctx.fillStyle=blink?'rgba(255,204,0,.15)':'rgba(0,210,255,.15)';
     ctx.font='bold 18px "Noto Sans SC"';ctx.textAlign='center';
     ctx.fillText(blink?'按颜色？':'按形状？',w/2,h-16);
-    if(t<500)animId=requestAnimationFrame(tick);}tick();}
+    animId=requestAnimationFrame(tick);}tick();}
 
 // 颜色分组公共
 function animColorGroup(canvasId,eqId,targetColor,targetIndices){
@@ -230,7 +230,7 @@ function animColorGroup(canvasId,eqId,targetColor,targetIndices){
       var sz=32+(38-32)*ease;
       drawItem(ctx,it,cx,cy,sz,t*.06,1);}
     if(t>targetIndices.length*30+80){var eq=document.getElementById(eqId);if(eq)eq.style.opacity='1';}
-    if(t<400)animId=requestAnimationFrame(tick);}tick();}
+    animId=requestAnimationFrame(tick);}tick();}
 
 function animS3(){animColorGroup('c3','s3eq','#ff6b6b',[0,1,2,3]);}
 function animS4(){animColorGroup('c4','s4eq','#74b9ff',[4,5,6,7]);}
@@ -248,7 +248,7 @@ function animS6(){var r=setupCanvas('c6');if(!r)return;var ctx=r.ctx,w=r.w,h=r.h
         drawItem(ctx,it,startX+j*46,h/2-24,40,t*.05,g===phase?1:.5);}
       drawNum(ctx,'4',startX+grp.indices.length*46+10,h/2,grp.color,28);}
     if(t>260){var eq=document.getElementById('s6eq');if(eq)eq.style.opacity='1';}
-    if(t<400)animId=requestAnimationFrame(tick);}tick();}
+    animId=requestAnimationFrame(tick);}tick();}
 
 // S7 换分法提示
 function animS7(){var r=setupCanvas('c7');if(!r)return;var ctx=r.ctx,w=r.w,h=r.h;var t=0;var ps=scatterPos(w,h);
@@ -256,7 +256,7 @@ function animS7(){var r=setupCanvas('c7');if(!r)return;var ctx=r.ctx,w=r.w,h=r.h
     for(var i=0;i<12;i++){drawItem(ctx,ITEMS[i],ps[i].x,ps[i].y,38,t*.04,1);}
     ctx.fillStyle='rgba(179,136,255,.8)';ctx.font='bold 20px "Noto Sans SC"';ctx.textAlign='center';
     ctx.fillText('这次按形状分！',w/2,h-16);
-    if(t<400)animId=requestAnimationFrame(tick);}tick();}
+    animId=requestAnimationFrame(tick);}tick();}
 
 // 形状分组
 function animShapeGroup(canvasId,eqId,targetShape,targetIndices){
@@ -272,7 +272,7 @@ function animShapeGroup(canvasId,eqId,targetShape,targetIndices){
       var cy=ps[idx].y+(targets[j].y-ps[idx].y)*ease;
       drawItem(ctx,it,cx,cy,38,t*.06,1);}
     if(t>targetIndices.length*25+80){var eq=document.getElementById(eqId);if(eq)eq.style.opacity='1';}
-    if(t<400)animId=requestAnimationFrame(tick);}tick();}
+    animId=requestAnimationFrame(tick);}tick();}
 
 // 圆形：索引0,1,4,5,8,9 方形：索引2,3,6,7,10,11
 function animS8(){animShapeGroup('c8','s8eq','circle',[0,1,4,5,8,9]);}
@@ -289,7 +289,7 @@ function animS10(){var r=setupCanvas('c10');if(!r)return;var ctx=r.ctx,w=r.w,h=r
         drawItem(ctx,it,startX+j*42,h/2-24,36,t*.05,g===phase?1:.5);}
       drawNum(ctx,'6',startX+grp.indices.length*42+10,h/2,'#b388ff',28);}
     if(t>220){var eq=document.getElementById('s10eq');if(eq)eq.style.opacity='1';}
-    if(t<400)animId=requestAnimationFrame(tick);}tick();}
+    animId=requestAnimationFrame(tick);}tick();}
 
 // S11 验证
 function animS11(){var r=setupCanvas('c11');if(!r)return;var ctx=r.ctx,w=r.w,h=r.h;var t=0;
@@ -306,12 +306,12 @@ function animS11(){var r=setupCanvas('c11');if(!r)return;var ctx=r.ctx,w=r.w,h=r
       if(t>110)drawNum(ctx,'6 + 6 = 12 ✅',w/2+60,y2+15,'#00d2ff',18);}
     // 总数
     if(t>160){drawNum(ctx,'总数不变，都是 12！',w/2,h-20,'#fff',20);}
-    if(t<400)animId=requestAnimationFrame(tick);}tick();}
+    animId=requestAnimationFrame(tick);}tick();}
 
 // S12 总结
 function animS12(){var t=0;var ids=['s12c1','s12c2','s12c3','s12c4'];
   function tick(){t++;ids.forEach(function(id,i){if(t>(i+1)*40){var el=document.getElementById(id);if(el)el.classList.add('show');}});
-    if(t<300)animId=requestAnimationFrame(tick);}tick();}
+    animId=requestAnimationFrame(tick);}tick();}
 
 var ANIM_FN={0:animS0,1:animS1,2:animS2,3:animS3,4:animS4,5:animS5,6:animS6,7:animS7,8:animS8,9:animS9,10:animS10,11:animS11,12:animS12};
 
