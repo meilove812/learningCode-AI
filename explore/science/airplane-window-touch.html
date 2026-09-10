@@ -370,31 +370,32 @@ h1 { text-align: center; font-size: 1.6em; margin-bottom: 5px; }
   </div>
   <div class="step">
     <div class="step-num">5</div>
-    <div class="step-text"><b>恢复透明</b> — 反向电压，离子回家，玻璃变亮！可反复万次</div>
+    <div class="step-text"><b>恢复透明</b> — 反向电压，离子回家，玻璃变亮！可反复切换，寿命依产品和使用条件而定</div>
   </div>
 </div>
 
+<p style="padding:12px;color:#b2bec3">技术示意：以下以氧化钨与锂离子说明一种电致变色方案，不代表具体机型的材料、结构或参数；滑块向上暗、向下亮。</p>
 <!-- Fun Facts -->
 <div class="facts">
   <div class="fact">
     <div class="fact-emoji">🔋</div>
-    <div class="fact-title">超省电</div>
-    <div class="fact-desc">只需1V电压，比一节电池还少</div>
+    <div class="fact-title">电压依产品</div>
+    <div class="fact-desc">控制电压依产品而定；不是本图的实测参数</div>
   </div>
   <div class="fact">
     <div class="fact-emoji">✈️</div>
-    <div class="fact-title">波音787首创</div>
-    <div class="fact-desc">梦想客机取消了传统遮阳板</div>
+    <div class="fact-title">机型与技术分开看</div>
+    <div class="fact-desc">本图是技术示意，不代表具体机型材料</div>
   </div>
   <div class="fact">
     <div class="fact-emoji">♻️</div>
     <div class="fact-title">可重复使用</div>
-    <div class="fact-desc">切换数万次不衰减</div>
+    <div class="fact-desc">可多次切换，但会老化，也可能故障</div>
   </div>
   <div class="fact">
     <div class="fact-emoji">⏱️</div>
     <div class="fact-title">渐变效果</div>
-    <div class="fact-desc">完全变暗约需15-30秒</div>
+    <div class="fact-desc">切换时间依产品、温度等条件而定</div>
   </div>
 </div>
 
@@ -453,7 +454,7 @@ function getVal(clientY) {
   const rect = track.getBoundingClientRect();
   const y = clientY - rect.top;
   // top = dark (1), bottom = bright (0)
-  return Math.max(0, Math.min(1, y / rect.height));
+  return Math.max(0, Math.min(1, 1 - y / rect.height));
 }
 
 track.addEventListener('touchstart', e => {
@@ -514,15 +515,15 @@ function speak() {
     speakerBtn.classList.remove('playing');
     return;
   }
-  const text = `你坐过波音787飞机吗？它的窗户很特别，没有传统的遮阳板，而是用一个按钮就能让窗户变暗或变亮。这是怎么做到的呢？
+  const text = `有些飞机使用电致变色窗，用按钮调节明暗。这里用氧化钨和锂离子说明一种电致变色技术，不代表某个机型实际采用的材料、结构或参数。滑块向上更暗，向下更亮。
 秘密藏在玻璃里面。窗户其实是好几层玻璃夹在一起的三明治。
-中间最关键的一层叫做变色层，用的材料是氧化钨。
-当你按下调暗按钮，电路通电，只需要大约1伏特的电压，比一节干电池还少。
+在这张技术示意里，中间最关键的一层叫变色层，以氧化钨为例。
+调暗时，控制电路施加电压，具体电压依产品而定。
 这时候，锂离子就像一群小蚂蚁，从储存层出发，穿过电解质这条高速公路，跑到变色层里去。
 离子跑进氧化钨之后，氧化钨的颜色就从透明变成了深蓝色。
 深蓝色的玻璃会吸收大部分阳光，窗户就变暗了，不会刺眼了。
 想让窗户变亮？只要反过来给电，离子就会回到老家，玻璃又变透明了。
-这个过程可以重复几万次都不会坏。是不是很神奇？`;
+这个过程可以多次切换，但器件会老化，也可能故障，寿命取决于产品和使用条件。`;
 
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'zh-CN';

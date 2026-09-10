@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>🏰 海市蜃楼 · 秦始皇求仙记</title>
+<title>🏰 海市蜃楼 · 求仙题材虚构故事</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,'PingFang SC',sans-serif;background:#0a0a1a;color:#fff;min-height:100vh;overflow-x:hidden}
@@ -33,7 +33,7 @@ canvas{width:100%;height:100%;display:block}
 <body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
 <div class="header">
   <h1>🏰 海市蜃楼</h1>
-  <p>秦始皇求仙记 · 动画讲解</p>
+  <p>求仙题材虚构故事 · 非史实复原</p>
 </div>
 <div class="scene"><canvas id="c"></canvas></div>
 <div class="chapter-tag" id="chap">序幕</div>
@@ -56,17 +56,17 @@ let W,H;function resize(){const r=C.parentElement.getBoundingClientRect();W=C.wi
 resize();window.addEventListener('resize',resize);
 
 const scenes=[
-{ch:'第一幕 · 海上奇景',text:'两千多年前，渤海边的渔民惊恐地看到——海面上凭空出现了金碧辉煌的宫殿！',speech:'两千多年前，渤海边的渔民看到了不可思议的一幕。平静的海面上，凭空出现了金碧辉煌的宫殿和城楼！时隐时现，如梦如幻。'},
+{ch:'第一幕 · 海上奇景',text:'【虚构故事，非史实复原】两千多年前，渤海边的渔民惊恐地看到——海面上凭空出现了金碧辉煌的宫殿！',speech:'先说明：这是一段借求仙传说创作的虚构故事，人物对白、细节和因果不是史实复原。在故事里，两千多年前，渤海边的渔民看到了不可思议的一幕。平静的海面上，凭空出现了金碧辉煌的宫殿和城楼！时隐时现，如梦如幻。'},
 {ch:'第一幕 · 海上奇景',text:'宫殿在云雾间若隐若现，城楼巍峨，甚至能看到人影走动…',speech:'宫殿在云雾间若隐若现，城楼巍峨壮丽，甚至能看到人影在里面走动。渔民吓坏了，跪在地上大喊：那是神仙住的地方！'},
 {ch:'第二幕 · 方士献策',text:'方士徐福跪在秦始皇面前说："陛下！海上有蓬莱、方丈、瀛洲三座仙山，上有长生不老药！"',speech:'消息传到了咸阳宫。方士徐福跪在秦始皇面前说：陛下！海上有三座仙山，蓬莱、方丈、瀛洲。仙人居住其上，藏有长生不老之药！'},
 {ch:'第二幕 · 方士献策',text:'秦始皇一生最怕一件事——死。他统一天下，却无法征服时间。',speech:'秦始皇一生最怕一件事，那就是死。他统一了六国，修筑了万里长城，却无法征服时间。听到有长生药，他激动万分。'},
 {ch:'第三幕 · 出海求仙',text:'始皇帝拨下巨资：三千童男童女、大船数十艘、金银无数，命徐福出海求药。',speech:'始皇帝立刻拨下巨资，三千童男童女、大船数十艘、金银珠宝无数。他命徐福出海，务必找到仙山，带回长生之药。'},
 {ch:'第三幕 · 出海求仙',text:'船队浩浩荡荡驶入大海，追逐那海天之间的幻影…',speech:'船队浩浩荡荡驶入茫茫大海。他们追逐着海天之间的幻影，越追越远，越追越远。那宫殿仿佛永远在前方，却永远够不到。'},
 {ch:'第四幕 · 一去不返',text:'徐福再也没有回来。传说他到了日本，在那里定居。始皇帝至死没有等到仙药。',speech:'徐福再也没有回来。传说他到了日本，在那里定居，再没有回头。始皇帝苦等多年，最终在第五次东巡途中病死，至死也没等到他的长生药。'},
-{ch:'第五幕 · 真相揭开',text:'两千年后，科学家揭开了谜底。那座"仙山"只是一场光的把戏——海市蜃楼。',speech:'两千年后，科学家终于揭开了谜底。那座仙山，那些宫殿，根本不存在。那只是一场光的把戏，叫做海市蜃楼。'},
-{ch:'第五幕 · 真相揭开',text:'太阳加热海面空气，形成冷热不同的气层。光线穿过时会拐弯——折射。',speech:'太阳把靠近海面的空气晒得很热，上面的空气却很冷。当光线穿过这些温度不同的空气层时，它会拐弯，科学家叫它折射。'},
-{ch:'第五幕 · 真相揭开',text:'远处城市的光弯曲着穿过大气层，最终落入人的眼睛。大脑以为光是直着来的——于是"看到"城市浮在天上！',speech:'远处真实城市的光，弯弯曲曲穿过大气层，最后落入人的眼睛。可大脑以为光是直着飞来的，于是就看到城市浮在了天空中。一座真实的城市变成了空中幻影。'},
-{ch:'尾声',text:'一场光学现象，骗了千古一帝，改写了历史。大自然的魔术，玩得最大的一次。🎭',speech:'一场光学现象，骗过了千古一帝，让三千人远渡重洋，改写了历史走向。这是大自然的魔术玩得最大的一次。光能欺骗眼睛，眼睛欺骗大脑，大脑编出了流传千年的神话。'},
+{ch:'第五幕 · 光学示意',text:'离开虚构故事，来看真实光学：海市蜃楼可形成空中影像，但不能据此断定历史上的求仙原因。',speech:'现在离开虚构故事。海市蜃楼是一种真实的光学现象，能让远处景物的像出现在不同位置，但不能据此断定历史上的求仙原因。'},
+{ch:'第五幕 · 光学示意',text:'这里示意上蜃景：海面附近空气较冷，上层较暖，形成逆温；折射使光路向较冷、折射率较高的一侧弯曲。',speech:'这里讲海上上蜃景的一种典型条件：海面附近空气较冷，上层较暖，叫做逆温。空气的折射率随高度变化，使光路向较冷的一侧弯曲。这是放大的示意，不是按真实比例计算。'},
+{ch:'第五幕 · 光学示意',text:'逆温条件下，远处景物的光沿弯曲路径进入眼睛（光路非比例示意）。大脑以为光是直着来的——于是"看到"城市浮在天上！',speech:'远处真实城市的光，弯弯曲曲穿过大气层，最后落入人的眼睛。可大脑以为光是直着飞来的，于是就看到城市浮在了天空中。一座真实的城市变成了空中幻影。'},
+{ch:'尾声',text:'海市蜃楼能解释一种视觉现象，不能替我们证明历史故事的因果。🎭',speech:'海市蜃楼能解释一种视觉现象。前面的求仙情节是虚构故事，不是已证实的历史因果。看见奇景时，可以先问：光经过了怎样的空气层？再寻找证据。'},
 ];
 
 let step=-1,vOn=true,timer=null;
@@ -193,7 +193,10 @@ waves(H*0.68,0.4);
 X.beginPath();X.arc(W*0.82,H*0.1,W*0.06,0,Math.PI*2);X.fillStyle='#FFD700';X.shadowColor='#FFD700';X.shadowBlur=20;X.fill();X.shadowBlur=0;
 // Air layers
 const colors=['rgba(255,80,40,0.12)','rgba(255,140,50,0.10)','rgba(200,200,80,0.08)','rgba(100,160,255,0.08)','rgba(50,100,220,0.10)'];
-for(let i=0;i<5;i++){const y=H*0.25+i*(H*0.43/5);X.fillStyle=colors[4-i];X.fillRect(0,y,W,H*0.43/5);}
+for(let i=0;i<5;i++){const y=H*0.25+i*(H*0.43/5);X.fillStyle=colors[i];X.fillRect(0,y,W,H*0.43/5);}
+X.fillStyle="#16344a";X.font=`${W*0.025}px sans-serif`;
+X.fillText("上层较暖 · 逆温",W*0.58,H*0.28);
+X.fillText("近海较冷 · 光路非比例示意",W*0.48,H*0.65);
 // City
 city(W*0.05,H*0.67,0.8);
 // Light ray curve
@@ -219,9 +222,9 @@ X.beginPath();X.moveTo(W/2,H/2);X.lineTo(W/2+Math.cos(a)*W*0.5,H/2+Math.sin(a)*H
 X.strokeStyle=`rgba(255,215,0,${0.1+Math.sin(t+i)*0.05})`;X.lineWidth=2;X.stroke();}
 // Center text
 X.fillStyle='rgba(255,215,0,0.8)';X.font=`bold ${W*0.04}px sans-serif`;X.textAlign='center';
-X.fillText('光欺骗眼睛',W/2,H*0.38);
-X.fillText('眼睛欺骗大脑',W/2,H*0.48);
-X.fillText('大脑编出千年神话',W/2,H*0.58);
+X.fillText('光路可以弯曲',W/2,H*0.38);
+X.fillText('影像位置会改变',W/2,H*0.48);
+X.fillText('历史因果另需证据',W/2,H*0.58);
 X.font=`${W*0.07}px sans-serif`;X.fillText('🎭',W/2,H*0.75);
 X.textAlign='left';}
 

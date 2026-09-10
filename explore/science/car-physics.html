@@ -372,8 +372,8 @@ body {
     <div class="chain-box" id="chainBox">
       <div class="chain-step" id="cs1"><span class="icon">⛽</span><span class="text">喝汽油</span><div class="bar"><div class="bar-fill bar-fuel" id="bf1"></div></div></div>
       <div class="chain-step" id="cs2"><span class="icon">🔥</span><span class="text">汽油燃烧产生力量</span><div class="bar"><div class="bar-fill bar-power" id="bf2"></div></div></div>
-      <div class="chain-step" id="cs3"><span class="icon">⚙️</span><span class="text">推力传到车轮</span><div class="bar"><div class="bar-fill bar-force" id="bf3"></div></div></div>
-      <div class="chain-step" id="cs4"><span class="icon">🚗</span><span class="text">汽车加速前进！</span><div class="bar"><div class="bar-fill bar-speed" id="bf4"></div></div></div>
+      <div class="chain-step" id="cs3"><span class="icon">⚙️</span><span class="text">转矩传到驱动轮</span><div class="bar"><div class="bar-fill bar-force" id="bf3"></div></div></div>
+      <div class="chain-step" id="cs4"><span class="icon">🚗</span><span class="text">汽车运动（看合力）</span><div class="bar"><div class="bar-fill bar-speed" id="bf4"></div></div></div>
     </div>
 
     <!-- Brake slider -->
@@ -407,18 +407,18 @@ body {
         <span class="step"><div class="mini-wheel"></div></span><span class="arrow">→</span>
         <span class="step">🚗💨</span>
       </div>
-      <p>发动机（心脏❤️）喝汽油→产生力量→转车轮→前进！</p>
+      <p>发动机输出转矩→驱动轮向后推路面→路面对驱动轮的静摩擦力向前，帮助车前进（不打滑时）！</p>
       <div class="kp">💡 就像你骑车踩踏板，发动机是汽车的"腿"！</div>
     </div>
     <div class="info-card">
-      <h3>⚡ 油门=加速</h3>
+      <h3>⚡ 油门影响驱动力</h3>
       <div class="mini-anim">
         <span class="step">⛽⬆️</span><span class="arrow">→</span>
         <span class="step">🔥🔥</span><span class="arrow">→</span>
         <span class="step">💪⬆️</span><span class="arrow">→</span>
         <span class="step">🚀</span>
       </div>
-      <p>油门越大→喝更多油→力气更大→车更快！</p>
+      <p>本简化模型中油门影响驱动力；合力向前才加速，驱动力与阻力平衡时速度不再增加</p>
       <div class="kp">💡 推力 &gt; 阻力 = 加速！就像用力推秋千🏃</div>
     </div>
     <div class="info-card">
@@ -429,8 +429,8 @@ body {
         <span class="step">🔥烫</span><span class="arrow">→</span>
         <span class="step">🐢</span>
       </div>
-      <p>刹车片夹车轮→大摩擦力→车变慢</p>
-      <div class="kp">💡 能量变成热，刹车盘超烫！像滑梯抓两边✋</div>
+      <p>盘式制动器的刹车片夹紧制动盘，减慢车轮转动；路面对轮胎的制动力使车减速</p>
+      <div class="kp">💡 部分动能转化成热；制动盘可能很烫，不要触摸，也不要在滑梯上模仿✋</div>
     </div>
     <div class="info-card">
       <h3>🌬️ 松油门也变慢</h3>
@@ -439,7 +439,7 @@ body {
         <span class="step"><div class="wind-lines"><div class="wind-line"></div><div class="wind-line"></div><div class="wind-line"></div></div></span><span class="arrow">←</span>
         <span class="step">🌬️空气</span>
       </div>
-      <p>空气阻力+地面摩擦一直在"拖"车</p>
+      <p>平路滑行时，空气阻力、轮胎形变等造成的滚动阻力让车变慢；不能说所有路面摩擦都向后</p>
       <div class="kp">💡 球在地上滚，没人推→自己停🏀</div>
     </div>
     <div class="info-card">
@@ -451,7 +451,7 @@ body {
         <span class="step">💨排</span>
       </div>
       <p>1️⃣吸气 2️⃣压紧 3️⃣点火🔥 4️⃣排气</p>
-      <p>一秒重复几十次！每次燃烧都推车前进</p>
+      <p>循环频率依转速而定，燃烧推动活塞，经传动系统输出转矩</p>
       <div class="kp">💡 迷你燃烧室！嘭嘭嘭地使劲💨</div>
     </div>
   </div>
@@ -551,9 +551,9 @@ function updateChain() {
     document.getElementById('cs1').querySelector('.icon').textContent = '🛑';
     document.getElementById('cs1').querySelector('.text').textContent = '踩下刹车';
     document.getElementById('cs2').querySelector('.icon').textContent = '🔥';
-    document.getElementById('cs2').querySelector('.text').textContent = '刹车片夹住车轮';
+    document.getElementById('cs2').querySelector('.text').textContent = '刹车片夹紧制动盘';
     document.getElementById('cs3').querySelector('.icon').textContent = '✋';
-    document.getElementById('cs3').querySelector('.text').textContent = '摩擦力变大！';
+    document.getElementById('cs3').querySelector('.text').textContent = '路面制动力向后';
     document.getElementById('cs4').querySelector('.icon').textContent = '🐢';
     document.getElementById('cs4').querySelector('.text').textContent = '汽车减速停下';
     const bpct = brakeLevel * 100;
@@ -575,9 +575,9 @@ function updateChain() {
     document.getElementById('cs2').querySelector('.icon').textContent = '🔥';
     document.getElementById('cs2').querySelector('.text').textContent = '汽油燃烧产生力量';
     document.getElementById('cs3').querySelector('.icon').textContent = '⚙️';
-    document.getElementById('cs3').querySelector('.text').textContent = '推力传到车轮';
+    document.getElementById('cs3').querySelector('.text').textContent = '转矩传到驱动轮';
     document.getElementById('cs4').querySelector('.icon').textContent = '🚗';
-    document.getElementById('cs4').querySelector('.text').textContent = '汽车加速前进！';
+    document.getElementById('cs4').querySelector('.text').textContent = '汽车运动（看合力）';
     const pct = gasLevel * 100;
     document.getElementById('bf1').style.width = pct + '%';
     document.getElementById('bf1').style.background = '#fdcb6e';
@@ -612,12 +612,12 @@ function getMsg(s,g,b) {
   if(s===0&&g<0.05) return '👆 向上拖油门出发！';
   if(g>0.05&&s<15) return '🚀 发动机点火…开始动了！';
   if(g>0.5&&s<50) return '💨 油门加大→推力变强→加速！';
-  if(g>0.5&&s>=50) return '⚡ 全速前进！推力超大！';
+  if(g>0.5&&s>=50) return '⚡ 速度较高，是否加速要看合力';
   if(b>0.3&&s>20) return '🛑 刹车！摩擦力把车拉住！';
-  if(b>0.3&&s>0&&s<=20) return '✋ 快停了…刹车片夹紧车轮';
+  if(b>0.3&&s>0&&s<=20) return '✋ 快停了…刹车片夹紧制动盘';
   if(b>0.3&&s===0) return '🅿️ 停住了！刹车的力量！';
   if(g<0.05&&s>30) return '🌬️ 松了油门，空气拖着车变慢';
-  if(g<0.05&&s>0) return '🐢 没推力了…摩擦让它慢下来';
+  if(g<0.05&&s>0) return '🐢 滑行中，空气与滚动阻力使车减速';
   return '👆 拖油门滑块试试！';
 }
 
@@ -683,11 +683,11 @@ function loop() {
 
 // === VOICE ===
 const vtexts = [
-  '向上拖动油门滑块，发动机开始工作！你能看到：喝汽油的量变多了，燃烧更猛了，推力变大了，车就越来越快！',
+  '这是简化的平路受力示意，不是驾驶指导。发动机输出转矩，带动驱动轮；驱动轮向后推路面，不打滑时路面对驱动轮的静摩擦力向前，帮助车前进。',
   '踩油门越大，发动机喝的汽油越多，产生的推力越大。推力大于阻力，车就加速！就像你用力推秋千。',
-  '拖动刹车滑块，刹车片夹住车轮产生摩擦力，阻力大于推力，车就减速了！就像在滑梯上用手抓住两边。',
-  '松开油门，虽然没有刹车，但空气一直在推着车不让它跑，轮胎和地面的摩擦也让车慢下来。就像球在地上滚，没人推就会自己停。',
-  '看右边的条形图，油门越大，喝汽油就越多，燃烧就越旺，传到车轮的推力就越大，速度就越快。这就是汽车加速的原理！'
+  '以盘式制动器为例，刹车片夹紧制动盘，摩擦减慢车轮转动，路面对轮胎的制动力帮助整车减速。动能转化成热，制动盘可能很烫，不要触摸，也不要在滑梯上模仿。',
+  '平路松油门滑行时，空气阻力和轮胎形变等造成的滚动阻力通常让车变慢。摩擦力不总是向后；驱动轮加速且不打滑时，路面的静摩擦力可以向前。',
+  '条形图是教学示意，不是实测数据。本模型中，油门影响驱动力；驱动力大于阻力时加速，两者平衡时速度不再增加。实际还受挡位、坡度和路面等条件影响。'
 ];
 let vi = 0;
 function toggleVoice() {

@@ -330,8 +330,8 @@ const PROBLEMS = {
     count: 3, emoji: '🥞', unit: '饼', perFace: 4,
     colors: ['c1','c2','c3'], icons: ['🔴','🔵','🟢'],
     smartTime: 12, dumbTime: 16,
-    formula: '3饼 × 2面 = 6面 → 6 ÷ 2 = 3轮 → 3 × 4分钟 = <strong>12分钟</strong> 🎉',
-    formulaVoice: '三张饼乘以两面等于六个面，六除以二等于三轮，三轮乘以四分钟等于十二分钟！',
+    formula: '3饼 × 2面 = 6面 → 6 ÷ 2 = 至少3轮（本排程达到） → 3 × 4分钟 = <strong>12分钟</strong> 🎉',
+    formulaVoice: '三张饼乘以两面等于六个面，六除以二说明至少三轮，本排程正好达到三轮，三轮乘以四分钟等于十二分钟！',
     smart: {
       steps: [
         { text: '第1轮：放入🔴饼①和🔵饼②煎正面', time: 0, pan: ['①正','②正'], pc: ['c1','c2'], wait: [2], status: [[0,'cooking'],[1,'cooking'],[]], label: '🔴正+🔵正' },
@@ -378,8 +378,8 @@ const PROBLEMS = {
     count: 5, emoji: '🥩', unit: '排', perFace: 2,
     colors: ['c1','c2','c3','c4','c5'], icons: ['🔴','🔵','🟢','🟠','🟣'],
     smartTime: 10, dumbTime: 12,
-    formula: '5排 × 2面 = 10面 → 10 ÷ 2 = 5轮 → 5 × 2分钟 = <strong>10分钟</strong> 🎉',
-    formulaVoice: '五块牛排乘以两面等于十个面，十除以二等于五轮，五轮乘以两分钟等于十分钟！',
+    formula: '5排 × 2面 = 10面 → 10 ÷ 2 = 至少5轮（本排程达到） → 5 × 2分钟 = <strong>10分钟</strong> 🎉',
+    formulaVoice: '五块牛排乘以两面等于十个面，十除以二说明至少五轮，本排程正好达到五轮，五轮乘以两分钟等于十分钟！',
     smart: {
       steps: [
         { text: '第1轮：🔴排①和🔵排②煎正面', time: 0, pan: ['①正','②正'], pc: ['c1','c2'], wait: [2,3,4], status: [[0,'cooking'],[1,'cooking'],[],[],[]], label: '🔴正+🔵正' },
@@ -483,8 +483,9 @@ function renderStatus(statuses) {
   const p = getP();
   const nums = ['①','②','③','④','⑤'];
   document.getElementById('statusGrid').innerHTML = statuses.slice(0,p.count).map((s,i)=>{
-    const fc=s[0]==='done'?'done':s[0]==='cooking'?'cooking':'waiting';
-    const bc=s[1]==='done'?'done':s[1]==='cooking'?'cooking':'waiting';
+    // s = [编号, 正面状态, 反面状态]；空数组表示两面等待
+    const fc=s[1]==='done'?'done':s[1]==='cooking'?'cooking':'waiting';
+    const bc=s[2]==='done'?'done':s[2]==='cooking'?'cooking':'waiting';
     return `<div class="item-status"><div class="name" style="color:var(--c)">${p.icons[i]}${nums[i]}</div>
       <div>正<span class="face-icon ${fc}"></span> 反<span class="face-icon ${bc}"></span></div></div>`;
   }).join('');
@@ -505,9 +506,11 @@ function renderNarration() {
 function renderFormula() {
   const p = getP();
   document.getElementById('formulaCard').innerHTML = `
-    <div>🧮 万能公式：总面数 ÷ 锅容量 = 最少轮数</div>
+    <div>🧮 先算容量下界，再用排程验证能否达到</div>
+    <div>本例：每面耗时相同，翻面和换饼时间忽略，同一张饼不能同时煎两面。只作纸片排程，不是实际烹饪指导。</div>
+    <div>总面数÷容量向上取整，只给轮数下界。1张饼、容量2，也至少需要2轮。</div>
     <div class="formula" style="margin:8px 0">${p.formula}</div>
-    <button class="voice-preview" style="margin-top:8px" onclick="speak('${p.formulaVoice}')">🔊 听公式</button>
+    <button class="voice-preview" style="margin-top:8px" onclick="speak('本例假设每面耗时相同，翻面和换饼时间忽略，同一张饼不能同时煎两面。这是纸片排程，不是实际烹饪指导。总面数除以容量向上取整，只是轮数下界。比如一张饼，容量二，也至少需要两轮。${p.formulaVoice}')">🔊 听公式</button>
   `;
 }
 

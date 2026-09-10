@@ -116,15 +116,16 @@ body {
   border-radius: 50% 40% 60% 30%;
   opacity: 0.6;
 }
-/* 地球自转（昼夜分界线） */
+/* 轨道总览仅表示公转；昼夜见下方固定光照模型 */
 .earth-shadow {
   position: absolute; top:0; left:0;
   width: 100%; height: 100%;
   border-radius: 50%;
   background: linear-gradient(90deg, transparent 45%, rgba(0,0,20,0.85) 55%);
-  animation: earth-rotate 2.5s linear infinite;
+  /* 光照方向不通过旋转阴影来表示自转 */
 }
 @keyframes earth-rotate { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+.earth-surface { position:absolute; inset:0; animation:earth-rotate 2.5s linear infinite; }
 
 /* 月球轨道 - 虚线圈表示月球绕地球转的路径 */
 .moon-orbit {
@@ -186,7 +187,7 @@ body {
 }
 @keyframes ray-pulse { from{opacity:0.5} to{opacity:0.9} }
 
-/* 大地球（侧视图） */
+/* 大地球（极区俯视简化模型，位置随球转；不是比例地图） */
 .big-earth {
   position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
   width: 120px; height: 120px; border-radius: 50%;
@@ -331,11 +332,12 @@ body {
     
     <!-- 大地球 -->
     <div class="big-earth">
-      <div class="big-earth-land1"></div>
-      <div class="big-earth-land2"></div>
+      <div class="earth-surface" id="earthSurface">
+        <div class="big-earth-land1"></div>
+        <div class="big-earth-land2"></div>
+        <div class="person person-day">📍</div>
+      </div>
       <div class="big-earth-night"></div>
-      <div class="person person-day">🧒</div>
-      <div class="person person-night">🧒</div>
     </div>
     
     <!-- 昼夜标签 -->
@@ -343,7 +345,7 @@ body {
     <div class="dn-label label-night">🌙 黑夜（背对太阳）</div>
   </div>
   <p style="text-align:center;font-size:0.78em;color:#b2bec3;margin-top:8px;">
-    ⬅️ 阳光从左边照来 → 面向太阳的一面是白天，背对太阳的一面是黑夜
+    阳光固定从左边照来；地球表面与📍位置一起自转，依次进入亮面和暗面（极区俯视简化示意，非比例地图）
   </p>
 </div>
 
@@ -401,8 +403,8 @@ sun:{t:'☀️ 太阳 — 我们的大火球',h:`<p>太阳是一颗<b style="col
 <p>太阳给地球送来<span style="color:#ffd700">光和热</span>：</p>
 <p>☀️ 光→让我们看见东西</p>
 <p>🔥 热→让地球不会冻成冰球</p>
-<p style="margin-top:8px;padding:6px 10px;background:rgba(255,215,0,0.1);border-left:3px solid #ffd700;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 太阳已经燃烧了46亿年了，还能烧50亿年！像个永远不灭的超级火炉。</p>`,
-v:'太阳是一颗恒星，一个超级大的火球！它有多大呢？能装下一百三十万个地球！有多热呢？表面五千五百度，核心一千五百万度！太阳光要跑八分钟才能到地球。太阳给地球送来光和热，让我们看见东西，让地球不会冻成冰球。'},
+<p style="margin-top:8px;padding:6px 10px;background:rgba(255,215,0,0.1);border-left:3px solid #ffd700;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 太阳靠核心的核聚变释放能量，不是普通燃烧。它约46亿岁，目前的稳定发光阶段预计还会持续约50亿年，并非永远不灭。</p>`,
+v:'太阳是一颗恒星，靠核心的核聚变释放能量，不是普通燃烧。它约四十六亿岁，目前的稳定发光阶段预计还会持续约五十亿年，寿命有限。它有多大呢？能装下一百三十万个地球！有多热呢？表面五千五百度，核心一千五百万度！太阳光要跑八分钟才能到地球。太阳给地球送来光和热，让我们看见东西，让地球不会冻成冰球。'},
 
 earth:{t:'🌍 地球 — 我们的家',h:`<p>地球是太阳系的<b style="color:#4fc3f7">第三颗行星</b>，也是我们的家🏠</p>
 <p style="margin:8px 0;padding:10px;background:rgba(0,0,0,0.3);border-radius:8px;">
@@ -416,19 +418,19 @@ earth:{t:'🌍 地球 — 我们的家',h:`<p>地球是太阳系的<b style="col
 <p style="margin-top:8px;padding:6px 10px;background:rgba(79,195,247,0.1);border-left:3px solid #4fc3f7;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 地球自转速度超快！赤道上每秒465米，比高铁还快！但我们感觉不到，因为所有东西都跟着一起转。</p>`,
 v:'地球是太阳系第三颗行星，也是我们的家。它为什么看起来是蓝色的呢？因为百分之七十是海洋！地球做两件事：第一，像陀螺一样自转，转一圈就是一天。第二，绕太阳公转一大圈，转一圈就是一年。'},
 
-moon:{t:'🌙 月亮 — 地球的小伙伴',h:`<p>月亮是地球的<b style="color:#e0e0e0">卫星</b>——永远跟着地球转的小伙伴👯</p>
+moon:{t:'🌙 月亮 — 地球的小伙伴',h:`<p>月亮是地球的<b style="color:#e0e0e0">卫星</b>——绕着地球转的小伙伴👯</p>
 <p style="margin:8px 0;padding:10px;background:rgba(0,0,0,0.3);border-radius:8px;">
-📏 大小？地球的四分之一（差不多中国那么大）<br>
-📍 距离？38万公里（坐火箭要3天）<br>
-🪨 表面？全是坑坑洼洼的陨石坑，没有水没有空气<br>
+📏 大小？直径约为地球的四分之一<br>
+📍 距离？平均约38万公里（飞行时间取决于任务路线）<br>
+🪨 表面？有陨石坑和平原；极地阴影区发现了水冰，没有地球那样的海洋和可呼吸的大气<br>
 🌓 月相？它绕地球转，我们看到被太阳照亮的不同角度
 </p>
 <p><b>月亮的秘密：</b></p>
 <p>🔦 自己不发光！反射太阳光（像镜子）</p>
-<p>🔒 永远同一面朝着我们（背面我们看不到！）</p>
+<p>🔒 大致同一面朝向地球；从地球不能直接看到月背大部，但航天器可以观测月背</p>
 <p>🌊 引力拉动海水→潮涨潮落！</p>
 <p style="margin-top:8px;padding:6px 10px;background:rgba(200,200,200,0.1);border-left:3px solid #bbb;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 1969年人类第一次踏上月球！宇航员阿姆斯特朗说："这是个人的一小步，人类的一大步。"</p>`,
-v:'月亮是地球的卫星，永远跟着地球转的小伙伴。它有多大呢？大约是地球的四分之一，差不多有中国那么大。月亮自己不发光，是反射太阳的光，像镜子一样。月亮永远同一面朝着我们，背面我们永远看不到。'},
+v:'月亮是地球的卫星，绕着地球转的小伙伴。它有多大呢？直径约为地球的四分之一。月球极地阴影区发现了水冰，但没有地球那样的海洋和可呼吸的大气。月亮自己不发光，是反射太阳的光，像镜子一样。月亮大致同一面朝向地球。从地球不能直接看到月背的大部分区域，但航天器可以观测月背。'},
 
 daynight:{t:'🌓 白天黑夜的秘密',h:`<p><b style="color:#ffd700">核心原理：地球自转！</b></p>
 <p style="margin:8px 0;padding:12px;background:rgba(0,0,0,0.3);border-radius:8px;text-align:center;font-size:0.95em;">
@@ -442,21 +444,20 @@ daynight:{t:'🌓 白天黑夜的秘密',h:`<p><b style="color:#ffd700">核心�
 <p>→ 有光的一面=白天 ☀️</p>
 <p>→ 没光的一面=黑夜 🌙</p>
 <p>→ 慢慢转篮球，白天黑夜就交替了！</p>
-<p style="margin-top:8px;padding:6px 10px;background:rgba(255,215,0,0.1);border-left:3px solid #ffd700;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 中国白天的时候，美国是黑夜！因为他们在地球另一边，背对太阳。所以说"倒时差"。</p>`,
-v:'白天黑夜的秘密就是地球在自转！太阳照亮地球的一半，面向太阳的一面是白天，背对太阳的一面是黑夜。地球不停地转，白天黑夜就交替了。就像你拿手电筒照篮球，有光的一面是白天，没光的一面是黑夜。中国白天的时候美国是黑夜，因为他们在地球另一边。'},
+<p style="margin-top:8px;padding:6px 10px;background:rgba(255,215,0,0.1);border-left:3px solid #ffd700;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 不同经度的地方，白天黑夜的时刻常不同；比较昼夜要说清具体城市、日期和时刻，不能概括成一个国家白天、另一个国家就一定黑夜。</p>`,
+v:'白天黑夜的秘密就是地球在自转！太阳照亮地球的一半，面向太阳的一面是白天，背对太阳的一面是黑夜。地球不停地转，白天黑夜就交替了。就像你拿手电筒照篮球，有光的一面是白天，没光的一面是黑夜。比较两地昼夜，要说清具体城市、日期和时刻，不能只按国家判断。手电筒保持不动，转动篮球和贴在球上的位置标记，观察标记进入亮面和暗面。'},
 
 fun:{t:'🤯 有趣的事实',h:`<p><b>好玩的数字：</b></p>
-<p>🚀 从地球到太阳：火箭要飞<b style="color:#ffd700">半年</b>！</p>
-<p>🏃 如果能走路去太阳：要走<b style="color:#ffd700">3400年</b>！</p>
+<p>🚀 到太阳附近要多久？取决于速度、轨道与任务目标，不能给所有火箭一个固定时间。</p>
 <p>⚽ 太阳系里太阳占了<b style="color:#ffd700">99.86%</b>的重量！</p>
-<p>🦕 地球一天其实在变长！恐龙时代一天只有23小时。</p>
+<p>🦕 地球一天其实在变长！不同地质时期一天的长度不同，不能给整个恐龙时代一个固定时长。</p>
 <p style="margin:10px 0;"><b>好玩的现象：</b></p>
 <p>🌅 <span style="color:#ffd700">日出</span>=你所在的地方转到了面向太阳的一侧</p>
 <p>🌇 <span style="color:#ff8c00">日落</span>=你所在的地方转到了背对太阳的一侧</p>
 <p>🌑 <span style="color:#bbb">日食</span>=月亮跑到了太阳和地球中间，挡住了阳光！</p>
 <p>🌕 <span style="color:#ffa">月食</span>=地球跑到了太阳和月亮中间，地球的影子落在月亮上！</p>
 <p style="margin-top:8px;padding:6px 10px;background:rgba(255,215,0,0.1);border-left:3px solid #ffd700;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 月亮每年离地球远3.8厘米！几十亿年后月亮会跑得很远很远～</p>`,
-v:'好玩的事实！从地球到太阳火箭要飞半年，走路要走三千四百年。太阳系里太阳占了百分之九十九点八六的重量。日出就是你转到了面向太阳的一侧，日落就是你转到了背对太阳的一侧。日食是月亮跑到太阳和地球中间挡住了阳光。'}
+v:'好玩的事实！到太阳附近需要多久，取决于速度、轨道与任务目标，没有统一的火箭旅行时间。太阳系里太阳占了百分之九十九点八六的重量。日出就是你转到了面向太阳的一侧，日落就是你转到了背对太阳的一侧。日食是月亮跑到太阳和地球中间挡住了阳光。'}
 };
 
 let cur='sun', speaking=false;
@@ -473,7 +474,7 @@ const ss=document.getElementById('speedSlider');
 const sl=document.getElementById('speedLabel');
 const eo=document.getElementById('earthOrbit');
 const mo=document.getElementById('moonOrbit');
-const es=document.getElementById('earthShadow');
+const es=document.getElementById('earthSurface');
 
 ss.addEventListener('input',function(){
   const v=+this.value;

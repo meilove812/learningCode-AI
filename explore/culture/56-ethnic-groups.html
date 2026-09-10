@@ -279,12 +279,13 @@ header p { font-size: 1em; opacity: 0.9; }
   <header>
     <h1>🇨🇳 中国56个民族</h1>
     <p>Coco的民族知识学习卡 🌸</p>
+    <p id="dataNote">人口为原稿约数，年份、来源及统计范围待核，不代表当前普查数据。“大陆”口径单列在排序末尾，不与其他条目直接比较。地区筛选仅是目录分组，不是完整分布；文化实例不代表每个人，今天生活方式多样。</p>
   </header>
   <div class="controls">
     <input type="text" class="search-box" id="searchBox" placeholder="🔍 搜索民族名称或拼音...">
     <div class="filter-btns">
       <button class="filter-btn active" data-filter="all">全部</button>
-      <button class="filter-btn" data-filter="pop">按人口排序</button>
+      <button class="filter-btn" data-filter="pop">按原稿数值排序（口径待核）</button>
       <button class="filter-btn" data-filter="东北">东北</button>
       <button class="filter-btn" data-filter="华北">华北</button>
       <button class="filter-btn" data-filter="西北">西北</button>
@@ -459,7 +460,7 @@ function renderGrid(list) {
         </div>
         <div class="card-back">
           <div class="detail-title">${item.emoji} ${item.name}</div>
-          <p><strong>人口：</strong>${item.pop}</p>
+          <p><strong>人口（原稿约数，年份/口径待核）：</strong>${item.pop}</p>
           <p><strong>分布：</strong>${item.area}</p>
           <p><strong>特色：</strong>${item.feature}</p>
           <p style="margin-top:6px">${item.detail}</p>
@@ -484,6 +485,21 @@ document.getElementById('searchBox').addEventListener('input', function() {
   renderGrid(filtered);
 });
 
+// 将显示单位统一为人数；保留原稿数值，不推定统计年份/口径。
+function populationInPeople(pop) {
+  const match = pop.match(/([0-9]+(?:\.[0-9]+)?)\s*(亿|万|人)/);
+  if (!match) return NaN;
+  return Number(match[1]) * ({'亿':1e8, '万':1e4, '人':1}[match[2]]);
+}
+function comparePopulation(a, b) {
+  const separateA = a.pop.includes('大陆');
+  const separateB = b.pop.includes('大陆');
+  if (separateA !== separateB) return separateA ? 1 : -1;
+  const na = populationInPeople(a.pop), nb = populationInPeople(b.pop);
+  if (!Number.isFinite(na)) return Number.isFinite(nb) ? 1 : 0;
+  if (!Number.isFinite(nb)) return -1;
+  return nb - na;
+}
 // Filters
 document.querySelectorAll('.filter-btn').forEach(btn => {
   btn.addEventListener('click', function() {
@@ -493,11 +509,7 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     if (f === 'all') {
       currentList = [...ethnicGroups];
     } else if (f === 'pop') {
-      currentList = [...ethnicGroups].sort((a, b) => {
-        const na = parseFloat(a.pop.replace(/[^0-9.]/g, ''));
-        const nb = parseFloat(b.pop.replace(/[^0-9.]/g, ''));
-        return nb - na;
-      });
+      currentList = [...ethnicGroups].sort(comparePopulation);
     } else {
       currentList = ethnicGroups.filter(item => item.region === f);
     }
@@ -518,7 +530,7 @@ function showModal(item) {
   document.getElementById('modalName').textContent = item.name;
   document.getElementById('modalPinyin').textContent = item.pinyin;
   document.getElementById('modalInfo').innerHTML = `
-    <p><strong>👥 人口：</strong>${item.pop}</p>
+    <p><strong>👥 人口（原稿约数，年份/口径待核）：</strong>${item.pop}</p>
     <p><strong>📍 分布：</strong>${item.area}</p>
     <p><strong>✨ 特色：</strong>${item.feature}</p>
     <p style="margin-top:10px">${item.detail}</p>`;

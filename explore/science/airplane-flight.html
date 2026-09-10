@@ -157,14 +157,14 @@ canvas { display: block; width: 100%; height: 480px; border-radius: 12px; margin
         <line x1="260" y1="258" x2="260" y2="246" stroke="#27ae60" stroke-width="5"/>
         <text x="260" y="256" text-anchor="middle" font-size="11" fill="#27ae60" font-weight="bold">⬆ 升力</text>
         <!-- Wing labels -->
-        <text x="255" y="74" text-anchor="middle" font-size="12" fill="#c0392b" font-weight="bold">弯曲面（路长）</text>
-        <text x="255" y="150" text-anchor="middle" font-size="12" fill="#2980b9" font-weight="bold">平直面（路短）</text>
+        <text x="255" y="74" text-anchor="middle" font-size="12" fill="#c0392b" font-weight="bold">上表面（流场示意）</text>
+        <text x="255" y="150" text-anchor="middle" font-size="12" fill="#2980b9" font-weight="bold">下表面（流场示意）</text>
       </svg>
     </div>
     <p class="wing-text">
-      🔴 上面<strong class="red">弯曲</strong> → 路长 → 空气跑得<strong class="red">快</strong> → 压力<strong class="red">小</strong><br>
-      🔵 下面<strong class="blue">平直</strong> → 路短 → 空气跑得<strong class="blue">慢</strong> → 压力<strong class="blue">大</strong><br>
-      🟢 压力差把机翼<strong class="green">往上推</strong> → 飞机就飞起来了！
+      🔴 机翼形状和迎角改变周围气流，产生<strong class="red">压力分布</strong><br>
+      🔵 机翼使气流<strong class="blue">向下偏转</strong>，空气也给机翼向上的力（牛顿第三定律）<br>
+      🟢 压力分布与气流偏转描述的是同一升力过程；并不是路长就必然流得快。
     </p>
   </div>
 </div>
@@ -675,7 +675,7 @@ if (!ctx.roundRect) {
 }
 
 function speak() {
-  const text = '飞机起飞分三个阶段。第一阶段，滑跑加速。发动机产生巨大推力，飞机在跑道上越跑越快，速度越快，流过机翼的空气越多。第二阶段，抬头离地。当速度够快时，机翼产生的升力超过飞机重量，飞行员拉起机头，飞机就离开地面了！第三阶段，爬升飞行。飞机继续爬升到预定高度，这时候升力等于重力，飞机稳定飞行。机翼为什么能产生升力呢？因为机翼上面是弯的，下面是平的。空气从上面走的路更长，速度更快，压力就变小。下面的空气走的路短，速度慢，压力大。下面的大压力把机翼推上去，这就是升力！';
+  const text = '飞机起飞分三个阶段。第一阶段，滑跑加速。发动机产生巨大推力，飞机在跑道上越跑越快，速度越快，流过机翼的空气越多。第二阶段，抬头离地。当速度够快时，机翼产生的升力超过飞机重量，飞行员拉起机头，飞机就离开地面了！第三阶段，爬升飞行。飞机在推力、升力、重力和阻力共同作用下继续爬升。达到预定高度并转入稳定平飞后，升力才与重力近似平衡。机翼为什么能产生升力呢？机翼形状和迎角改变周围的气流与压力分布，使气流向下偏转。根据牛顿第三定律，空气也给机翼向上的力。压力分布与气流偏转是同一过程的两种描述。上下两股空气不必同时到达后缘，不能因为上面路长就断定空气必须更快。';
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'zh-CN'; u.rate = 0.85; u.pitch = 1.1;
   // 优先使用 Edge TTS 语音

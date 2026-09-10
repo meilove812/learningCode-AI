@@ -357,7 +357,7 @@ body {
 }
 @keyframes blink { 0%,100%{opacity:0.7} 50%{opacity:0.2} }
 
-/* 弯道旋涡效果（飞沙堰上方内江弯道处，离心力甩沙） */
+/* 弯道水流装饰：不表示真实三维流场或排沙率 */
 .vortex {
   position: absolute;
   top: 56%; left: 32%; width: 10%; height: 7%;
@@ -414,7 +414,7 @@ body {
 <body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
 <div class="header">
   <h1>🌊 都江堰 — 2000年前的超级工程</h1>
-  <p>按航拍实景还原 | 上=上游（岷江） 下=下游（成都平原）</p>
+  <p>概念示意，不按比例；左右仅指本图 | 上=上游（岷江） 下=下游（成都平原）</p>
 </div>
 
 <div class="map" id="map">
@@ -516,9 +516,9 @@ body {
 
 <!-- 水量控制 -->
 <div class="panel">
-  <label style="font-size:0.85em;color:#b2bec3;">🌊 拖动模拟：枯水 ← → 洪水</label>
+  <label style="font-size:0.85em;color:#b2bec3;">🌊 拖动概念示意：枯水 ← → 洪水（非实测流量）</label>
   <input type="range" id="waterSlider" min="0" max="100" value="50" style="width:85%;margin:8px auto;display:block;accent-color:#0984e3;">
-  <div id="waterStatus" style="font-size:0.85em;color:#74b9ff;font-weight:bold;min-height:1.5em;">💧 正常 — 内江六成灌溉，外江四成排洪</div>
+  <div id="waterStatus" style="font-size:0.85em;color:#74b9ff;font-weight:bold;min-height:1.5em;">💧 常水示意 — 两江分水，不表示实测比例</div>
 </div>
 
 <!-- Tab讲解 -->
@@ -539,7 +539,7 @@ body {
   </div>
   <div class="card">
     <b>🔑 六字真言</b>
-    <p>"深淘滩，低作堰"— 河底淘深保水量，堰顶修低自动溢洪</p>
+    <p>“深淘滩，低作堰”体现清淤与维护经验；还需持续检修和管理</p>
   </div>
   <div class="card">
     <b>🧠 古人怎么凿山？</b>
@@ -565,58 +565,48 @@ _initEdgeVoice();
 if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = function(){ _initEdgeVoice(); };
 
 const T={
-overview:{t:'🏗️ 都江堰怎么工作？',h:`<p>岷江从山上冲下来，水大泥沙多。李冰父子设计了<b style="color:#ffeaa7">三级工程</b>：</p>
+overview:{t:'🏗️ 都江堰怎么工作？',h:`<p>都江堰利用地形与水流，三部分协同发挥作用：</p>
 <p style="margin:8px 0;padding:10px;background:rgba(0,0,0,0.2);border-radius:8px;font-size:0.9em;text-align:center;">
 岷江 ⬇️<br>
-❶ <span style="color:#ffeaa7">鱼嘴</span> — 把水劈成内江(左)+外江(右)<br>⬇️<br>
-❷ <span style="color:#ffeaa7">飞沙堰</span> — 多余水+泥沙甩到外江<br>⬇️<br>
-❸ <span style="color:#ffeaa7">宝瓶口</span> — 窄口限流，保护平原<br>⬇️<br>
+❶ <span style="color:#ffeaa7">鱼嘴</span> — 分为内江和外江<br>⬇️<br>
+❷ <span style="color:#ffeaa7">飞沙堰</span> — 溢洪、排沙<br>⬇️<br>
+❸ <span style="color:#ffeaa7">宝瓶口</span> — 约束进入灌区的水流<br>⬇️<br>
 🌾 成都平原
 </p>
-<p>🌤️ 枯水：六成水→内江灌溉<br>🌧️ 洪水：六成水→外江排洪</p>
-<p style="margin-top:8px;padding:6px 10px;background:rgba(116,185,255,0.1);border-left:3px solid #74b9ff;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 不建大坝！顺水的脾气，让它自己分配。拖上方滑块看效果👆</p>`,
-v:'岷江从山上冲下来水大泥沙多。李冰父子设计了三级工程：第一，鱼嘴把水劈成左边的内江和右边的外江。第二，飞沙堰把多余的水和泥沙排到外江。第三，宝瓶口用窄口限流保护成都平原。枯水时六成水灌溉，洪水时六成水排走，全自动！'},
+<p>🌤️ 枯水时重在引水灌溉；🌧️ 水大时还要分洪、泄洪。</p>
+<p>概念示意，不按比例；图中左右不是地理方位。滑块和粒子是预设动画，不是水力模拟，也不表示实测分水比例或排沙率。工程长期运行还需要清淤、检修和管理。</p>`,
+v:'这是都江堰的概念示意，不按比例，图中左右不是地理方位。鱼嘴分水，飞沙堰溢洪排沙，宝瓶口约束进入灌区的水流，三部分协同发挥作用。枯水时重在引水灌溉，水大时还要分洪泄洪。滑块和粒子是预设动画，不是水力模拟，不表示实测分水比例或排沙率。长期运行还需要清淤、检修和管理。'},
 
-fish:{t:'🐟 鱼嘴 — 一分为二',h:`<p><b>形状</b>：流线型尖头，像航母舰首🚢，朝上游破水。</p>
-<p><b>作用</b>：把岷江劈成两条——</p>
-<p>⬅️ <span style="color:#80cbc4">内江</span>（左/东）= 灌溉渠，水清</p>
-<p>➡️ <span style="color:#64B5F6">外江</span>（右/西）= 排洪道，携沙</p>
-<p style="margin-top:8px"><b>"四六分水"的秘密：</b></p>
-<p>🌤️ 水少时：弯道主流走深的内侧 → 六成入内江</p>
-<p>🌧️ 水多时：水漫过鱼嘴走宽的外侧 → 六成走外江</p>
-<p style="margin-top:8px;padding:6px 10px;background:rgba(116,185,255,0.1);border-left:3px solid #74b9ff;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 不用开关！水自己会按需分配。利用弯道+深浅差的自然规律。</p>`,
-v:'鱼嘴是流线型的长条尖头，像航母舰首一样朝着上游破水。它把岷江劈成左边的内江和右边的外江。水少时弯道主流走深的内侧，六成水自动进内江灌溉。水多时水漫过鱼嘴走宽的外侧，六成水走外江排洪。不用开关，水自己会分配！'},
+fish:{t:'🐟 鱼嘴 — 一分为二',h:`<p><b>形状</b>：尖头朝向上游的分水堤。</p>
+<p><b>作用</b>：将岷江水分入内江和外江。</p>
+<p>⬅️ <span style="color:#80cbc4">内江</span>（图左）主要引水灌溉，也会携带泥沙。</p>
+<p>➡️ <span style="color:#64B5F6">外江</span>（图右）承担排洪等作用。</p>
+<p>两江分水受河道形态、水位及来水条件影响，并不是任何时候都按固定比例分配。</p>
+<p>常说的“四六分水”是概括，不是每种工况的精确比例；本图只演示分水去向。</p>`,
+v:'鱼嘴是尖头朝向上游的分水堤，将岷江水分入内江和外江。内江主要引水灌溉，也会携带泥沙；外江承担排洪等作用。分水受河道形态、水位和来水条件影响。四六分水是概括，不是任何时候的固定比例。这幅图只演示分水去向。'},
 
-feisha:{t:'⏳ 飞沙堰 — 排沙+溢洪',h:`<p><b>位置</b>：金刚堤尾端，<b>斜向</b>连接到右岸（航拍可见）。</p>
-<p><b>两大超能力：</b></p>
-<p>1️⃣ <b>溢洪</b>：水位涨过堰顶 → 自动漫过去排到外江溢洪道</p>
-<p>2️⃣ <b>排沙</b>：弯道产生旋涡🌀 → 离心力把泥沙甩过矮堰</p>
-<p style="margin:8px 0;padding:8px;background:rgba(0,0,0,0.2);border-radius:8px;font-size:0.85em;text-align:center;">
-弯道旋涡🌀 → 重沙被甩向外 → 飞越矮堰 → 经溢洪道排入外江<br>
-<span style="color:#ffeaa7">实测：98%泥沙从这排出！</span></p>
-<p style="padding:6px 10px;background:rgba(116,185,255,0.1);border-left:3px solid #74b9ff;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 搅一杯沙子水试试——重沙会被甩到杯壁！飞沙堰就是这个原理(离心力)。拖滑块到最右看溢洪效果👆</p>`,
-v:'飞沙堰在金刚堤尾端，斜着连接到右岸。航拍照片里清楚可见。它有两个超能力：第一，水位高了自动漫过去排洪，水流进入溢洪道排到外江。第二，利用弯道旋涡的离心力把百分之九十八的泥沙甩出去！就像搅沙子水，重的沙子被甩到杯壁。'},
+feisha:{t:'⏳ 飞沙堰 — 排沙+溢洪',h:`<p><b>位置</b>：内江一侧的低堰，图中位置仅作概念示意。</p>
+<p>1️⃣ <b>溢洪</b>：内江水位超过堰顶时，部分水越堰流向外江。</p>
+<p>2️⃣ <b>排沙</b>：弯道中的三维水流、河床形态和越堰水流共同影响泥沙输运，一部分泥沙随水排向外江。</p>
+<p>排沙效果随来水、含沙量、泥沙粒径及工程状况变化，不能给出脱离工况的固定排沙率。</p>
+<p>这里没有实测排沙率；装饰旋涡和粒子轨迹不能证明排沙机制，也不能用搅杯子来等同解释。</p>`,
+v:'飞沙堰是内江一侧的低堰。当水位超过堰顶，部分水越堰流向外江。弯道中的三维水流、河床形态和越堰水流共同影响泥沙输运，一部分泥沙随水排向外江。效果随来水、含沙量、粒径及工程状况变化。这里没有实测排沙率，装饰旋涡和粒子不能证明机制，也不能用搅杯子来等同解释。'},
 
-bottle:{t:'🏺 宝瓶口 — 最后关卡',h:`<p><b>位置</b>：穿过玉垒山的窄口（航拍左上方）。</p>
-<p><b>尺寸</b>：底宽仅14.3米！顶宽28.9米，长36米。</p>
-<p><b>功能</b>：</p>
-<p>✅ 限流：不管洪水多大，只能过这么宽</p>
-<p>✅ 多余水在上游就被飞沙堰排走了</p>
-<p>✅ 过了宝瓶口→分多条渠→灌溉整个成都平原</p>
-<p><b>离堆</b> = 凿下来分离的山丘（宝瓶口右侧）</p>
-<p style="padding:6px 10px;background:rgba(116,185,255,0.1);border-left:3px solid #74b9ff;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 水龙头原理！开口固定了，出水量就稳定。岩壁刻"水则"标尺——中国最早水位计！</p>`,
-v:'宝瓶口是在玉垒山上凿开的窄口子，底宽只有十四米。就像水龙头，不管上游水多大，流进平原的水量固定。多余的水在上游就被飞沙堰排走了。旁边的离堆是凿下来分离的山丘。'},
+bottle:{t:'🏺 宝瓶口 — 约束进水',h:`<p><b>位置</b>：穿过玉垒山的窄口。</p>
+<p><b>功能</b>：约束进入灌区的水流，与飞沙堰的溢洪作用协同调节。</p>
+<p>开口固定不等于流量固定；流量还受水位、水头、流速和上下游条件影响。</p>
+<p>水流经宝瓶口后进入灌渠。离堆是开凿后与山体分离的山丘。</p>
+<p>不能据此保证任何洪水条件下进水量不变；示意图不提供工程安全结论。</p>`,
+v:'宝瓶口是穿过玉垒山的窄口，约束进入灌区的水流，与飞沙堰溢洪协同调节。开口固定不等于流量固定，流量还受水位、水头、流速和上下游条件影响。水流经宝瓶口进入灌渠，旁边的离堆是开凿后与山体分离的山丘。不能保证任何洪水条件下进水量不变。'},
 
-why:{t:'❓ 为什么2000年还能用？',h:`<p><b>四大智慧：</b></p>
-<p>1️⃣ <span style="color:#ffeaa7">无坝引水</span> — 不堵！顺水流引导</p>
-<p>2️⃣ <span style="color:#ffeaa7">自动调节</span> — 枯水/洪水自动切换比例</p>
-<p>3️⃣ <span style="color:#ffeaa7">自动排沙</span> — 弯道离心力甩沙，永不淤堵</p>
-<p>4️⃣ <span style="color:#ffeaa7">极简维护</span> — "深淘滩，低作堰"六字搞定</p>
-<p style="margin-top:8px"><b>对比现代：</b></p>
-<p>🏗️ 三峡：混凝土硬堵，需电+机器+人工控制</p>
-<p>🌊 都江堰：全自动，不用电，鱼能游过🐟</p>
-<p style="padding:6px 10px;background:rgba(116,185,255,0.1);border-left:3px solid #74b9ff;border-radius:0 8px 8px 0;font-size:0.82em;color:#b2bec3;">💡 最厉害的工程师不是力气大的，是最懂自然规律的。"道法自然"！</p>`,
-v:'都江堰两千年还能用因为四大智慧：无坝引水不堵水、自动调节分流比例、利用弯道离心力自动排沙、维护只需六个字深淘滩低作堰。最厉害的工程师不是力气最大的而是最懂自然规律的。'}
+why:{t:'❓ 为什么2000年还能用？',h:`<p><b>工程设计与持续维护缺一不可：</b></p>
+<p>1️⃣ <span style="color:#ffeaa7">分水引水</span> — 利用地形与水流。</p>
+<p>2️⃣ <span style="color:#ffeaa7">协同调节</span> — 分水、限流与溢洪配合。</p>
+<p>3️⃣ <span style="color:#ffeaa7">排沙减淤</span> — 减少淤积不等于消除淤积。</p>
+<p>4️⃣ <span style="color:#ffeaa7">持续维护</span> — “深淘滩，低作堰”体现清淤和维护经验，还需要检修与管理。</p>
+<p>不同水利工程有不同环境与任务，不能仅凭动画给古今工程排优劣。</p>
+<p>亲子观察只看示意图，不到水渠或洪水边做实验；遇到危险先远离并求助。</p>`,
+v:'都江堰长期发挥作用，既靠分水、限流、溢洪和排沙的协同设计，也靠持续维护。排沙可以减少淤积，但不能消除淤积。深淘滩，低作堰体现清淤和维护经验，还需要检修与管理。不同水利工程的环境和任务不同，不能简单比较优劣。我们只看示意图，不到水渠或洪水边做实验，遇险先远离并求助。'}
 };
 
 let cur='overview', speaking=false;
@@ -630,6 +620,11 @@ function sw(t){
 
 // Water level control
 const ws=document.getElementById('waterSlider');
+// 三档概念动画共用阈值；概率仅用于粒子分布，不是工程参数。
+function waterState(lv){
+  return lv<30 ? {mode:'low',inner:0.6,spill:false} :
+    lv<70 ? {mode:'normal',inner:0.6,spill:false} : {mode:'high',inner:0.4,spill:true};
+}
 ws.addEventListener('input',updateW);
 
 function updateW(){
@@ -643,22 +638,23 @@ function updateW(){
   const bpk=document.getElementById('bpk');
   const bpkCh=document.getElementById('bpkChannel');
 
-  if(lv<30){
-    st.textContent='☀️ 枯水 — 主流走弯内侧，六成入内江保灌溉';
+  const state=waterState(lv);
+  if(state.mode==='low'){
+    st.textContent='☀️ 枯水示意 — 内江引水灌溉，不表示实测比例';
     ri.style.width='32%'; ri.style.opacity='1';
     ro.style.width='22%'; ro.style.opacity='0.4';
     ff.style.opacity='0'; sp.style.opacity='0'; vx.style.opacity='0';
     bpk.style.background='linear-gradient(180deg,#2bbbad,#26A69A,#1a9688)';
     bpkCh.style.opacity='1';
-  } else if(lv<70){
-    st.textContent='💧 正常 — 内江六成灌溉，外江四成排洪';
+  } else if(state.mode==='normal'){
+    st.textContent='💧 常水示意 — 两江分水，不表示实测比例';
     ri.style.width='30%'; ri.style.opacity='0.9';
     ro.style.width='28%'; ro.style.opacity='0.7';
     ff.style.opacity='0'; sp.style.opacity='0'; vx.style.opacity='0.3';
     bpk.style.background='linear-gradient(180deg,#2bbbad,#26A69A,#1a9688)';
     bpkCh.style.opacity='1';
   } else {
-    st.textContent='🌊 洪水！六成走外江 + 飞沙堰溢流排沙 + 溢洪道启动！';
+    st.textContent='🌊 水大示意 — 外江分洪、飞沙堰溢洪排沙；非安全预测';
     ri.style.width='24%'; ri.style.opacity='0.6';
     ro.style.width='35%'; ro.style.opacity='1';
     ff.style.opacity='0.95'; sp.style.opacity='0.85'; vx.style.opacity='0.9';
@@ -680,9 +676,9 @@ function spawn(){
   p.style.left=sx+'%'; p.style.top='2%';
   pc.appendChild(p);
 
-  const innerProb=lv<50?0.6:0.3;
-  const goInner=!sand&&Math.random()<innerProb;
-  const sandOut=sand&&lv>35;
+  const state=waterState(lv);
+  const goInner=Math.random()<state.inner; // 水和沙都可进入内江
+  const sandOut=sand&&goInner&&state.spill&&Math.random()<0.5; // 装饰路径，不代表排沙率
   let tx, ey;
 
   if(sandOut){
@@ -734,6 +730,7 @@ function toggleVoice(){
   btn.textContent='⏹️';
 }
 
+updateW(); // 使默认滑块值与首次水面宽度、透明度一致
 sw('overview');
 </script>
 </body>

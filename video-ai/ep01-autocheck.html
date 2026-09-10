@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI自动化最大的风险，不是做错</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#080c1e;color:#f0f2fa;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;
+  display:flex;justify-content:center;overflow:hidden;height:100vh}
+.s{width:100vw;max-width:430px;height:100vh;max-height:932px;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#0c1230 0%,#080c1e 40%,#0a0820 100%)}
+/* 粒子背景 */
+.bg{position:absolute;inset:0;overflow:hidden;opacity:.3}
+.bg i{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:twinkle 3s infinite}
+@keyframes twinkle{0%,100%{opacity:.2}50%{opacity:.8}}
+/* 页面容器 */
+.page{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:60px 24px 140px;opacity:0;transform:scale(.95);
+  transition:opacity .6s,transform .6s;pointer-events:none}
+.page.active{opacity:1;transform:scale(1);pointer-events:auto}
+/* 大字 */
+.hero{font-size:36px;font-weight:900;text-align:center;line-height:1.45;letter-spacing:1px}
+.hero .gold{color:#ffd700;text-shadow:0 0 30px rgba(255,215,0,.3)}
+.hero .red{color:#ff5252;text-shadow:0 0 30px rgba(255,82,82,.3)}
+.hero .green{color:#69f0ae;text-shadow:0 0 30px rgba(105,240,174,.3)}
+.hero .dim{color:#5a6080;font-size:28px}
+/* 错误扩散 */
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;width:100%;max-width:340px}
+.cell{aspect-ratio:1;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:22px;opacity:0;transform:scale(0) rotate(-20deg);transition:all .4s cubic-bezier(.2,0,.2,1)}
+.cell.ok{background:rgba(105,240,174,.12);border:1px solid rgba(105,240,174,.2)}
+.cell.err{background:rgba(255,82,82,.15);border:1px solid rgba(255,82,82,.3)}
+.cell.show{opacity:1;transform:scale(1) rotate(0)}
+/* 对比 */
+.vs{display:flex;gap:16px;width:100%;max-width:360px}
+.vs-col{flex:1;border-radius:16px;padding:24px 16px;text-align:center}
+.vs-col.bad{background:rgba(255,82,82,.08);border:2px solid rgba(255,82,82,.2)}
+.vs-col.good{background:rgba(105,240,174,.08);border:2px solid rgba(105,240,174,.2)}
+.vs-col h3{font-size:14px;margin-bottom:12px;font-weight:600}
+.vs-col .n{font-size:52px;font-weight:900;line-height:1}
+.vs-col.bad .n{color:#ff5252}
+.vs-col.good .n{color:#69f0ae}
+.vs-col .d{font-size:12px;color:#8a95b8;margin-top:8px}
+.vs-arrow{align-self:center;font-size:28px;color:#ffd700}
+/* 流程 */
+.flow-list{width:100%;max-width:340px}
+.fl{display:flex;align-items:center;gap:14px;padding:14px 16px;margin:8px 0;
+  border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);
+  opacity:0;transform:translateY(20px);transition:all .5s}
+.fl.show{opacity:1;transform:translateY(0)}
+.fl .ic{font-size:28px;width:40px;text-align:center;flex-shrink:0}
+.fl .tx{font-size:15px;line-height:1.5}
+.fl .tx b{color:#ffd700}
+/* 底部旁白 */
+.nar{position:absolute;bottom:0;left:0;right:0;padding:16px 24px 32px;
+  background:linear-gradient(transparent,rgba(8,12,30,.95) 30%);
+  text-align:center;font-size:16px;line-height:1.7;min-height:100px}
+.nar .hl{color:#ffd700;font-weight:700}
+.bar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(90deg,#ffd700,#ff9500);
+  transition:width .4s;border-radius:2px}
+/* 开始按钮 */
+.go{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:20;
+  padding:14px 48px;border:none;border-radius:28px;font-size:17px;font-weight:700;
+  background:linear-gradient(135deg,#ffd700,#ff9500);color:#0a0e27;cursor:pointer;
+  box-shadow:0 4px 24px rgba(255,215,0,.3)}
+.go.hide{display:none}
+/* 标签 */
+.tag{position:absolute;top:16px;left:20px;font-size:11px;color:#5a6080;letter-spacing:1px}
+</style></head><body>
+<div class="s">
+  <div class="bg" id="bg"></div>
+  <div class="tag">AI 落地观点 · 01</div>
+
+  <!-- P0: 标题 -->
+  <div class="page active" id="p0">
+    <div class="hero"><span class="dim">AI 自动化</span><br><span class="gold">最大的风险是什么？</span></div>
+  </div>
+  <!-- P1: 不是做错 -->
+  <div class="page" id="p1">
+    <div class="hero">不是做错<br><span class="red">是做错了<br>没人发现</span></div>
+  </div>
+  <!-- P2: 手工vs自动 -->
+  <div class="page" id="p2">
+    <div class="hero" style="font-size:24px;margin-bottom:20px">手工做错，错 <span class="gold">一次</span></div>
+    <div class="hero" style="font-size:24px">自动跑错，<span class="red">每次都错</span></div>
+  </div>
+  <!-- P3: 错误扩散 -->
+  <div class="page" id="p3">
+    <div style="font-size:16px;color:#8a95b8;margin-bottom:16px">24 份自动产出</div>
+    <div class="grid" id="grid"></div>
+    <div style="margin-top:16px;font-size:14px;color:#ff5252;font-weight:700">❌ 8 份出错 —— 无人发现</div>
+  </div>
+  <!-- P4: 人不看了 -->
+  <div class="page" id="p4">
+    <div class="hero"><span class="dim">因为</span><br><span class="red">人已经不看了</span></div>
+  </div>
+  <!-- P5: 但不能不看 -->
+  <div class="page" id="p5">
+    <div class="hero">"有人看一眼"<br><span class="gold">不能省</span></div>
+  </div>
+  <!-- P6: 流程 -->
+  <div class="page" id="p6">
+    <div class="flow-list">
+      <div class="fl" id="f1"><div class="ic">📥</div><div class="tx">AI 产出 <b>500 份</b></div></div>
+      <div class="fl" id="f2"><div class="ic">🔍</div><div class="tx">检查点自动过滤</div></div>
+      <div class="fl" id="f3"><div class="ic">✅</div><div class="tx"><b>470 份</b> 通过 → 放行</div></div>
+      <div class="fl" id="f4"><div class="ic">⚠️</div><div class="tx">异常 <b>30 份</b> → 人工复核</div></div>
+    </div>
+  </div>
+  <!-- P7: 对比 -->
+  <div class="page" id="p7">
+    <div class="vs">
+      <div class="vs-col bad"><h3>❌ 全量人工</h3><div class="n">500</div><div class="d">每份都看</div></div>
+      <div class="vs-arrow">→</div>
+      <div class="vs-col good"><h3>✅ 只看异常</h3><div class="n">30</div><div class="d">降低 94%</div></div>
+    </div>
+  </div>
+  <!-- P8: 结论 -->
+  <div class="page" id="p8">
+    <div class="hero"><span class="gold">这才叫<br>真的提效</span></div>
+    <div style="margin-top:24px;font-size:14px;color:#8a95b8">你们的自动化流程，有检查点吗？</div>
+  </div>
+
+  <div class="nar" id="nar">点击下方按钮，开始自动讲解<div class="bar" id="bar" style="width:0"></div></div>
+  <button class="go" id="go" onclick="start()">▶ 开始讲解</button>
+</div>
+<script>
+// 星星背景
+(()=>{const bg=document.getElementById('bg');for(let i=0;i<40;i++){const s=document.createElement('i');
+  s.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*3}s`;
+  bg.appendChild(s)}})();
+
+let voice=null,playing=false,si=0;
+function pickVoice(){
+  const v=speechSynthesis.getVoices();
+  voice=v.find(x=>/Yunyang.*Online.*Natural/i.test(x.name))
+    ||v.find(x=>/云扬/i.test(x.name))
+    ||v.find(x=>/Online.*Natural/i.test(x.name)&&/zh/i.test(x.lang))
+    ||v.find(x=>/zh/i.test(x.lang))||v[0];
+}
+speechSynthesis.onvoiceschanged=pickVoice;pickVoice();
+
+function say(t,cb){
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t);
+  u.voice=voice;u.lang='zh-CN';u.rate=.85;u.pitch=1;
+  u.onend=()=>setTimeout(cb,600);u.onerror=()=>setTimeout(cb,600);
+  speechSynthesis.speak(u);
+}
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+const STEPS=[
+  {p:'p0',text:'很多人问，自动化最大的风险是什么？',html:'很多人问，<span class="hl">自动化最大的风险</span>是什么？'},
+  {p:'p1',text:'不是做错。是做错了没人发现。',html:'不是做错。是<span class="hl">做错了没人发现</span>。'},
+  {p:'p2',text:'手工做错一次，就是错一次。',html:'手工做错一次，就是错一次。'},
+  {p:'p2',text:'自动跑错一次，是每次都错。',html:'自动跑错一次，是<span class="hl">每次都错</span>。'},
+  {p:'p3',text:'而且没人发现。',html:'而且<span class="hl">没人发现</span>。',
+   fn:()=>{const g=document.getElementById('grid');g.innerHTML='';const err=[2,5,8,11,14,17,20,23];
+     for(let i=0;i<24;i++){const c=document.createElement('div');
+       c.className='cell '+(err.includes(i)?'err':'ok');c.textContent=err.includes(i)?'❌':'✓';
+       g.appendChild(c);setTimeout(()=>c.classList.add('show'),i*60)}}},
+  {p:'p4',text:'因为人已经不看了。',html:'因为<span class="hl">人已经不看了</span>。'},
+  {p:'p5',text:'但"有人看一眼"这件事，不能省。',html:'但"有人看一眼"这件事，<span class="hl">不能省</span>。'},
+  {p:'p6',text:'设好检查点，只看异常。',html:'设好<span class="hl">检查点</span>，只看异常。',
+   fn:()=>{['f1','f2','f3','f4'].forEach((id,i)=>setTimeout(()=>document.getElementById(id).classList.add('show'),i*500))}},
+  {p:'p7',text:'人工从五百份降到三十份。',html:'人工从 <span class="hl">500</span> 份降到 <span class="hl">30</span> 份。'},
+  {p:'p8',text:'这才叫真的提效。',html:'<span class="hl">这才叫真的提效。</span>'},
+];
+
+function run(){
+  if(si>=STEPS.length){si=0;playing=false;document.getElementById('go').classList.remove('hide');
+    document.getElementById('go').textContent='▶ 重新播放';return}
+  const s=STEPS[si];
+  showPage(s.p);if(s.fn)s.fn();
+  document.getElementById('nar').innerHTML=(s.html||s.text)+'<div class="bar" id="bar" style="width:'+Math.round(((si+1)/STEPS.length)*100)+'%"></div>';
+  say(s.text,()=>{si++;run()});
+}
+function start(){if(playing)return;playing=true;si=0;document.getElementById('go').classList.add('hide');run()}
+</script></body></html>

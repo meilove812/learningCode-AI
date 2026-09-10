@@ -883,7 +883,7 @@
           },
           {
             "char": "已",
-            "pinyin": "jǐ",
+            "pinyin": "yǐ",
             "word": "已经",
             "group": "4.小公鸡和小鸭子",
             "groupIndex": 0,
@@ -2422,7 +2422,7 @@
           },
           {
             "char": "空",
-            "pinyin": "kòng",
+            "pinyin": "kōng",
             "word": "天空",
             "group": "13.要下雨了",
             "groupIndex": 3,
@@ -2918,7 +2918,7 @@
           },
           {
             "char": "兴",
-            "pinyin": "xīng",
+            "pinyin": "xìng",
             "word": "高兴",
             "group": "17.小猴子下山",
             "groupIndex": 3,
@@ -3185,7 +3185,7 @@
           },
           {
             "char": "干",
-            "pinyin": "gàn",
+            "pinyin": "gān",
             "word": "干净",
             "group": "18.棉花姑娘",
             "groupIndex": 0,
@@ -5666,7 +5666,7 @@
           },
           {
             "char": "干",
-            "pinyin": "gàn",
+            "pinyin": "gān",
             "word": "干净",
             "group": "20.小壁虎借尾巴",
             "groupIndex": 2,
