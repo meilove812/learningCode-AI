@@ -189,6 +189,14 @@ body{background:#06081a;color:#fff;font-family:'PingFang SC','Microsoft YaHei',s
 
 function animRing(){const c=502*(1-.78);document.getElementById('ring1').style.strokeDashoffset=c;
   let v=0;const iv=setInterval(()=>{v+=2;if(v>78){v=78;clearInterval(iv)}document.getElementById('rn1').textContent=v+'%'},30)}
+function drawBars(){
+  const d=[['\u4eba\u624d',85,'low','\u26a0\ufe0f \u7b2c\u4e00\u540d'],['\u6210\u672c',62,'warn',''],['\u6570\u636e',48,'full',''],['\u7b97\u529b',35,'full',''],['\u5b89\u5168',30,'full','']];
+  const el=document.getElementById('bars');if(!el)return;el.innerHTML='';
+  d.forEach(([l,w,cl,alert],i)=>{const r=document.createElement('div');r.className='br';r.style.animationDelay=(0.2+i*0.2)+'s';
+    r.innerHTML=`<div class="br-lab">${l}</div><div class="br-track"><div class="br-fill ${cl}" id="bf${i}">${w}%</div></div><div class="br-alert" id="ba${i}">${alert}</div>`;
+    el.appendChild(r);
+    setTimeout(()=>{document.getElementById('bf'+i).style.width=w+'%';if(alert)document.getElementById('ba'+i).classList.add('show')},300+i*200)})
+}
 
 let voice=null,playing=false,si=0;
 function pv(){const v=speechSynthesis.getVoices();
