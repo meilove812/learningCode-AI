@@ -89,15 +89,62 @@ body{background:#06081a;color:#fff;font-family:'PingFang SC','Microsoft YaHei',s
   background:linear-gradient(135deg,#ffd700,#ff9500);color:#06081a;cursor:pointer;
   box-shadow:0 4px 30px rgba(255,215,0,.15)}
 .go.hide{display:none}
+
+/* 增强动画 */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+@keyframes slideR{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.08);opacity:1}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes breathe{0%,100%{box-shadow:0 0 20px rgba(255,215,0,.1)}50%{box-shadow:0 0 40px rgba(255,215,0,.25)}}
+@keyframes countPulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+
+/* 进度环脉冲 */
+.ring-big{animation:breathe 3s ease-in-out infinite}
+/* 数字跳动 */
+.ring-num{animation:countPulse 2s ease-in-out infinite}
+/* 柱状图条目滑入 */
+.br{opacity:0;animation:slideR .6s forwards}
+.br:nth-child(1){animation-delay:.2s}.br:nth-child(2){animation-delay:.4s}
+.br:nth-child(3){animation-delay:.6s}.br:nth-child(4){animation-delay:.8s}.br:nth-child(5){animation-delay:1s}
+/* 桥梁呼吸 */
+.bridge-end.right{animation:breathe 2.5s ease-in-out infinite}
+/* 行动卡微光 */
+.action{animation:breathe 3s ease-in-out infinite;
+  background:linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,215,0,.04),rgba(255,255,255,.04));
+  background-size:200% 100%;animation:shimmer 4s linear infinite,breathe 3s ease-in-out infinite}
+/* 结论文字脉冲 */
+#p5 .t-lg{animation:pulse 2.5s ease-in-out infinite}
+/* 标签浮入 */
+.badge-float{display:inline-block;padding:5px 16px;border-radius:20px;font-size:11px;font-weight:700;
+  color:#ffd700;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.15);
+  margin-bottom:12px;animation:fadeUp .8s forwards}
+/* 背景动态线 */
+.bg-lines{position:absolute;inset:0;overflow:hidden;z-index:0}
+.bg-line{position:absolute;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.03),transparent);
+  animation:lineSweep 8s linear infinite}
+@keyframes lineSweep{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
+/* 数据源标注闪烁 */
+.src{animation:fadeUp 1s .5s forwards;opacity:0}
+/* 柱状警告闪烁 */
+.br-alert.show{animation:pulse 1.5s ease-in-out infinite}
+
 </style></head><body>
 <div class="s">
   <div class="bg"></div><div class="gw gw1"></div><div class="gw gw2"></div>
   <div class="pts" id="pts"></div>
+  <div class="bg-lines">
+<div class="bg-line" style="top:15%;width:60%;left:10%;animation-delay:0s"></div>
+<div class="bg-line" style="top:35%;width:80%;left:5%;animation-delay:2s"></div>
+<div class="bg-line" style="top:55%;width:50%;left:20%;animation-delay:4s"></div>
+<div class="bg-line" style="top:75%;width:70%;left:8%;animation-delay:6s"></div>
+</div>
   <div class="tag">AI 落地观点 · 01</div>
 
   <!-- P0: 78% -->
   <div class="pg on" id="p0">
-    <div class="t-sm fi">全球企业</div>
+    <div class="badge-float fi">📊 Stanford HAI 2026</div>
+    <div class="t-sm fi" style="animation-delay:.1s">全球企业</div>
     <div class="ring-big fi d1">
       <svg viewBox="0 0 200 200"><defs><linearGradient id="rg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#ff9500"/></linearGradient></defs>
         <circle class="ring-bg" cx="100" cy="100" r="90"/><circle class="ring-fg" id="ring1" cx="100" cy="100" r="90"/></svg>
@@ -115,7 +162,8 @@ body{background:#06081a;color:#fff;font-family:'PingFang SC','Microsoft YaHei',s
 
   <!-- P2: 柱状图 -->
   <div class="pg" id="p2">
-    <div class="t-md fi" style="margin-bottom:12px">企业反馈的 AI 挑战排名</div>
+    <div class="badge-float fi">📋 3200+ 企业调研</div>
+    <div class="t-md fi" style="margin-bottom:12px">企业反馈的挑战排名</div>
     <div class="bars fi d1" id="bars"></div>
     <div class="src fi d2">数据来源：NVIDIA State of AI 2026 · 3200+ 企业调研</div>
   </div>
@@ -160,7 +208,7 @@ function animRing(){const c=565.5*(1-.78);document.getElementById('ring1').style
 function drawBars(){
   const d=[['人才',85,'low','⚠️ 第一名'],['成本',62,'warn',''],['数据',48,'full',''],['算力',35,'full',''],['安全',30,'full','']];
   const el=document.getElementById('bars');el.innerHTML='';
-  d.forEach(([l,w,cl,alert],i)=>{const r=document.createElement('div');r.className='br';
+  d.forEach(([l,w,cl,alert],i)=>{const r=document.createElement('div');r.className='br';r.style.animationDelay=(0.2+i*0.2)+'s';
     r.innerHTML=`<div class="br-lab">${l}</div><div class="br-track"><div class="br-fill ${cl}" id="bf${i}">${w}%</div></div><div class="br-alert" id="ba${i}">${alert}</div>`;
     el.appendChild(r);
     setTimeout(()=>{document.getElementById('bf'+i).style.width=w+'%';if(alert)document.getElementById('ba'+i).classList.add('show')},300+i*200)})
