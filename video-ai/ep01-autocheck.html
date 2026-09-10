@@ -1,173 +1,172 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>AI 给你的参考文献，有多少是编的？</title>
+<title>78% 的企业在用 AI，最缺的不是技术</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#06081a;color:#fff;font-family:'PingFang SC','Microsoft YaHei',sans-serif;
   display:flex;justify-content:center;height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased}
 .s{width:100vw;max-width:430px;height:100vh;position:relative;overflow:hidden}
-.bg{position:absolute;inset:0;transition:background 1.2s}
-.bg.s0{background:linear-gradient(160deg,#06081a,#0d1440,#06081a)}
-.bg.s1{background:linear-gradient(160deg,#06081a,#0d1440,#0a0630)}
-.bg.s2{background:linear-gradient(160deg,#0a0020,#1a0a2e,#0d0020)}
-.bg.s3{background:linear-gradient(160deg,#1a0a0a,#2a0a1a,#1a0510)}
-.bg.s4{background:linear-gradient(160deg,#06081a,#0a1a30,#061828)}
-/* 光晕 */
-.glow{position:absolute;border-radius:50%;filter:blur(80px);opacity:.1;animation:gf 8s ease-in-out infinite alternate}
-.g1{width:300px;height:300px;background:#4a6cf7;top:-80px;right:-60px}
-.g2{width:250px;height:250px;background:#f74a4a;bottom:80px;left:-80px;animation-delay:3s}
-@keyframes gf{from{transform:scale(1) translate(0)}to{transform:scale(1.2) translate(20px,-20px)}}
+.bg{position:absolute;inset:0;background:linear-gradient(160deg,#06081a,#0d1440);
+  background-size:300% 300%;animation:bgS 12s ease infinite}
+@keyframes bgS{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+.gw{position:absolute;border-radius:50%;filter:blur(80px);opacity:.1;animation:gf 9s ease-in-out infinite alternate}
+.gw1{width:280px;height:280px;background:#4a6cf7;top:-60px;right:-80px}
+.gw2{width:220px;height:220px;background:#f7c948;bottom:120px;left:-80px;animation-delay:4s}
+@keyframes gf{from{transform:translate(0) scale(1)}to{transform:translate(20px,-25px) scale(1.15)}}
+.pts{position:absolute;inset:0;overflow:hidden}
+.pt{position:absolute;width:2px;height:2px;background:rgba(255,255,255,.4);border-radius:50%;
+  animation:ptU linear infinite}
+@keyframes ptU{0%{transform:translateY(100vh);opacity:0}10%{opacity:.6}90%{opacity:.6}100%{transform:translateY(-10px);opacity:0}}
 
-/* 页 */
 .pg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:50px 24px 150px;opacity:0;pointer-events:none;z-index:2;transition:opacity .8s}
 .pg.on{opacity:1;pointer-events:auto}
-.pg.on .fi{opacity:1;transform:translateY(0)}
-.fi{opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}
-.fi.d1{transition-delay:.2s}.fi.d2{transition-delay:.4s}.fi.d3{transition-delay:.6s}
+.pg.on .fi{opacity:1;transform:translateY(0) scale(1)}
+.fi{opacity:0;transform:translateY(20px) scale(.97);transition:opacity .6s,transform .6s}
+.fi.d1{transition-delay:.2s}.fi.d2{transition-delay:.4s}.fi.d3{transition-delay:.6s}.fi.d4{transition-delay:.8s}
 
-/* 排版 */
-.t-sm{font-size:14px;color:rgba(255,255,255,.4);letter-spacing:2px;text-align:center}
-.t-lg{font-size:38px;font-weight:900;text-align:center;line-height:1.4;letter-spacing:1px}
-.t-md{font-size:22px;font-weight:700;text-align:center;line-height:1.6}
-.grad-gold{background:linear-gradient(135deg,#ffd700,#ff9500);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.grad-red{background:linear-gradient(135deg,#ff4757,#ff6b81);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.grad-blue{background:linear-gradient(135deg,#70a1ff,#4a6cf7);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.grad-grn{background:linear-gradient(135deg,#2ed573,#7bed9f);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+/* 进度环 */
+.ring-big{position:relative;width:200px;height:200px;margin:16px 0}
+.ring-big svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring-big circle{fill:none;stroke-linecap:round}
+.ring-bg{stroke:rgba(255,255,255,.06);stroke-width:8}
+.ring-fg{stroke:url(#rg1);stroke-width:8;stroke-dasharray:565;stroke-dashoffset:565;transition:stroke-dashoffset 2s cubic-bezier(.4,0,.2,1)}
+.ring-val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-num{font-size:56px;font-weight:900;background:linear-gradient(135deg,#ffd700,#ff9500);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.ring-lab{font-size:13px;color:rgba(255,255,255,.4);margin-top:4px}
 
-/* 文献卡片 */
-.refs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;width:300px;margin:24px 0}
-.ref{aspect-ratio:.7;border-radius:10px;position:relative;overflow:hidden;
-  background:linear-gradient(135deg,rgba(74,108,247,.15),rgba(74,108,247,.05));
-  border:1.5px solid rgba(74,108,247,.2);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
-  transition:all .6s cubic-bezier(.4,0,.2,1)}
-.ref .ln{width:60%;height:3px;border-radius:2px;background:rgba(255,255,255,.15)}
-.ref .ln:nth-child(2){width:80%}.ref .ln:nth-child(4){width:40%}
-.ref.dead{background:rgba(255,71,87,.08);border-color:rgba(255,71,87,.3);transform:scale(.9);opacity:.5}
-.ref.dead::after{content:'✗';position:absolute;font-size:24px;color:#ff4757;font-weight:900;
-  opacity:0;animation:xIn .4s forwards}
-.ref.dead .ln{background:rgba(255,71,87,.2)}
-@keyframes xIn{to{opacity:1;transform:scale(1)}}
-.ref.ok::after{content:'✓';position:absolute;font-size:18px;color:#2ed573;font-weight:900}
+/* 柱状对比 */
+.bars{width:320px;margin:16px 0}
+.br{display:flex;align-items:center;gap:10px;margin:10px 0}
+.br-lab{font-size:13px;width:50px;text-align:right;color:rgba(255,255,255,.5);flex-shrink:0}
+.br-track{flex:1;height:32px;border-radius:10px;background:rgba(255,255,255,.04);overflow:hidden;position:relative}
+.br-fill{height:100%;border-radius:10px;display:flex;align-items:center;padding:0 10px;justify-content:flex-end;
+  font-size:12px;font-weight:800;width:0;transition:width 1.5s cubic-bezier(.4,0,.2,1)}
+.br-fill.full{background:linear-gradient(90deg,rgba(46,213,115,.2),rgba(46,213,115,.4));color:#2ed573}
+.br-fill.low{background:linear-gradient(90deg,rgba(255,71,87,.15),rgba(255,71,87,.35));color:#ff4757}
+.br-fill.warn{background:linear-gradient(90deg,rgba(255,165,0,.15),rgba(255,165,0,.35));color:#ffa500}
+.br-alert{font-size:11px;color:#ff4757;font-weight:700;margin-left:6px;opacity:0;transition:opacity .5s;white-space:nowrap}
+.br-alert.show{opacity:1}
 
-/* 柱状图 */
-.chart{width:300px;margin:20px 0}
-.bar-row{display:flex;align-items:center;gap:10px;margin:8px 0}
-.bar-label{font-size:11px;width:60px;text-align:right;color:rgba(255,255,255,.5);flex-shrink:0}
-.bar-track{flex:1;height:28px;border-radius:8px;background:rgba(255,255,255,.04);overflow:hidden;position:relative}
-.bar-fill{height:100%;border-radius:8px;width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1);
-  display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:12px;font-weight:800}
-.bar-fill.red{background:linear-gradient(90deg,rgba(255,71,87,.3),rgba(255,71,87,.6));color:#ff4757}
-.bar-fill.amber{background:linear-gradient(90deg,rgba(255,165,0,.3),rgba(255,165,0,.5));color:#ffa500}
-.bar-fill.grn{background:linear-gradient(90deg,rgba(46,213,115,.2),rgba(46,213,115,.4));color:#2ed573}
+/* 桥梁 */
+.bridge{width:320px;margin:20px 0;display:flex;align-items:center;gap:0}
+.bridge-end{padding:14px 16px;border-radius:14px;text-align:center;font-size:15px;font-weight:700;flex-shrink:0}
+.bridge-end.left{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.5)}
+.bridge-end.right{background:rgba(46,213,115,.08);border:1px solid rgba(46,213,115,.2);color:#2ed573}
+.bridge-gap{flex:1;height:3px;background:rgba(255,255,255,.08);position:relative;margin:0 -2px}
+.bridge-word{position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+  padding:4px 14px;border-radius:8px;font-size:13px;font-weight:800;
+  background:linear-gradient(135deg,#ffd700,#ff9500);color:#06081a;white-space:nowrap;
+  opacity:0;transform:translateX(-50%) scale(0);transition:all .5s cubic-bezier(.2,0,.2,1)}
+.bridge-word.show{opacity:1;transform:translateX(-50%) scale(1)}
 
-/* 罚款 */
-.fine{font-size:56px;font-weight:900;text-align:center;
-  background:linear-gradient(135deg,#ff4757,#ffd700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 30px rgba(255,71,87,.2))}
-.gavel{font-size:60px;margin-bottom:16px;animation:gavelHit 1s ease-out}
-@keyframes gavelHit{0%{transform:rotate(-30deg) scale(1.3)}40%{transform:rotate(5deg) scale(1)}60%{transform:rotate(-2deg)}100%{transform:rotate(0)}}
+/* 行动卡 */
+.action{width:320px;padding:20px;border-radius:18px;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,215,0,.15);margin:16px 0}
+.action .q{font-size:15px;color:rgba(255,255,255,.4);margin-bottom:10px}
+.action .a{font-size:18px;font-weight:700;color:#ffd700;line-height:1.7}
 
-/* 来源 */
-.src{font-size:10px;color:rgba(255,255,255,.25);text-align:center;margin-top:12px;line-height:1.6}
+/* 通用文字 */
+.t-sm{font-size:14px;color:rgba(255,255,255,.4);text-align:center;letter-spacing:1px}
+.t-lg{font-size:36px;font-weight:900;text-align:center;line-height:1.4}
+.t-md{font-size:20px;font-weight:600;text-align:center;line-height:1.6;color:rgba(255,255,255,.7)}
+.gold{background:linear-gradient(135deg,#ffd700,#ff9500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 16px rgba(255,215,0,.2))}
+.red{color:#ff4757}.grn{color:#2ed573}
+.src{font-size:9px;color:rgba(255,255,255,.2);text-align:center;margin-top:10px}
 
 /* 底部 */
-.nar-w{position:absolute;bottom:0;left:0;right:0;z-index:10;
+.nw{position:absolute;bottom:0;left:0;right:0;z-index:10;
   padding:14px 24px 30px;background:linear-gradient(transparent,rgba(6,8,26,.97) 35%)}
 .nar{text-align:center;font-size:17px;line-height:1.8;font-weight:500;min-height:36px}
 .nar .hl{color:#ffd700;font-weight:700}
-.bar-t{height:2px;border-radius:1px;background:rgba(255,255,255,.06);margin-top:10px}
-.bar-p{height:100%;border-radius:1px;background:linear-gradient(90deg,#ffd700,#ff9500);transition:width .5s}
+.bt{height:2px;border-radius:1px;background:rgba(255,255,255,.06);margin-top:10px}
+.bf{height:100%;border-radius:1px;background:linear-gradient(90deg,#ffd700,#ff9500);transition:width .5s}
 .tag{position:absolute;top:18px;left:20px;font-size:10px;color:rgba(255,255,255,.15);letter-spacing:3px;font-weight:600;z-index:10}
 .go{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);z-index:20;
   padding:14px 52px;border:none;border-radius:30px;font-size:17px;font-weight:700;
-  background:linear-gradient(135deg,#ffd700,#ff9500);color:#080818;cursor:pointer;
+  background:linear-gradient(135deg,#ffd700,#ff9500);color:#06081a;cursor:pointer;
   box-shadow:0 4px 30px rgba(255,215,0,.15)}
 .go.hide{display:none}
 </style></head><body>
 <div class="s">
-  <div class="bg s0" id="bg"></div>
-  <div class="glow g1"></div><div class="glow g2"></div>
+  <div class="bg"></div><div class="gw gw1"></div><div class="gw gw2"></div>
+  <div class="pts" id="pts"></div>
   <div class="tag">AI 落地观点 · 01</div>
 
-  <!-- P0: Hook -->
+  <!-- P0: 78% -->
   <div class="pg on" id="p0">
-    <div class="t-sm fi">如果 AI 给你十篇参考文献</div>
-    <div class="t-lg fi d1" style="margin-top:16px"><span class="grad-gold">有几篇<br>是真的？</span></div>
+    <div class="t-sm fi">全球企业</div>
+    <div class="ring-big fi d1">
+      <svg viewBox="0 0 200 200"><defs><linearGradient id="rg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#ff9500"/></linearGradient></defs>
+        <circle class="ring-bg" cx="100" cy="100" r="90"/><circle class="ring-fg" id="ring1" cx="100" cy="100" r="90"/></svg>
+      <div class="ring-val"><div class="ring-num" id="rn1">0%</div><div class="ring-lab">已在使用 AI</div></div>
+    </div>
+    <div class="t-md fi d2">十家公司里，<span class="hl" style="color:#ffd700">八家已经在用</span></div>
+    <div class="src fi d3">数据来源：Stanford HAI 2026 AI Index Report</div>
   </div>
 
-  <!-- P1: 10 refs -->
+  <!-- P1: 不是技术 -->
   <div class="pg" id="p1">
-    <div class="t-sm fi">研究者让 AI 生成参考文献</div>
-    <div class="t-md fi d1" style="margin:12px 0">然后<span class="grad-blue">逐篇核查</span></div>
-    <div class="refs fi d2" id="refs"></div>
-    <div class="src fi d3">Walters & Wilder, 2023 · Nature Scientific Reports · 636 条文献</div>
+    <div class="t-sm fi">但最大的瓶颈</div>
+    <div class="t-lg fi d1" style="margin:16px 0">不是技术<br><span class="gold">不是算力<br>不是数据</span></div>
   </div>
 
-  <!-- P2: 55% dead -->
+  <!-- P2: 柱状图 -->
   <div class="pg" id="p2">
-    <div class="t-lg fi"><span class="grad-red">超过一半</span></div>
-    <div class="t-md fi d1" style="margin:8px 0;color:rgba(255,255,255,.5)">根本不存在</div>
-    <div class="refs fi d2" id="refs2"></div>
-    <div class="t-sm fi d3" style="color:rgba(255,71,87,.7)">636 条文献中，55% 是编造的</div>
+    <div class="t-md fi" style="margin-bottom:12px">企业反馈的 AI 挑战排名</div>
+    <div class="bars fi d1" id="bars"></div>
+    <div class="src fi d2">数据来源：NVIDIA State of AI 2026 · 3200+ 企业调研</div>
   </div>
 
-  <!-- P3: 改善了？ -->
+  <!-- P3: 会用 vs 用得好 -->
   <div class="pg" id="p3">
-    <div class="t-sm fi">模型换代后有改善</div>
-    <div class="t-md fi d1" style="margin:12px 0">但 2026 年最新测试</div>
-    <div class="chart fi d2" id="chart"></div>
-    <div class="src fi d3">综合六项同行评审研究 · 2023–2026</div>
+    <div class="t-md fi">会用 ≠ 用得好</div>
+    <div class="bridge fi d1">
+      <div class="bridge-end left">会用</div>
+      <div class="bridge-gap"><div class="bridge-word" id="bw">交付</div></div>
+      <div class="bridge-end right">用得好</div>
+    </div>
+    <div class="t-sm fi d2" style="margin-top:16px;line-height:1.8">不是演示一下<br>是能落地、能验证、<span style="color:#ffd700">能交接</span></div>
   </div>
 
-  <!-- P4: 真实后果 -->
+  <!-- P4: 行动 -->
   <div class="pg" id="p4">
-    <div class="gavel fi">⚖️</div>
-    <div class="t-sm fi d1">美国律师提交 AI 生成的虚假判例</div>
-    <div class="fine fi d2">$110,204</div>
-    <div class="t-md fi d3" style="margin-top:8px"><span class="grad-red">法院罚款</span></div>
+    <div class="t-sm fi">从今天开始</div>
+    <div class="action fi d1">
+      <div class="q">每做一件事，多问自己一句：</div>
+      <div class="a">「这个结果<br>别人能接手吗？」</div>
+    </div>
+    <div class="t-sm fi d2" style="margin-top:12px;line-height:1.8">能接手 = 有文档、有验证、有交接<br>不能 = 只是你会做，换个人就崩</div>
   </div>
 
   <!-- P5: 结论 -->
   <div class="pg" id="p5">
-    <div class="t-lg fi"><span class="grad-gold">用之前<br>点开原文<br>看一眼</span></div>
-    <div class="t-sm fi d1" style="margin-top:20px;color:rgba(255,255,255,.35)">你上次用 AI 查的资料<br>验过吗？</div>
+    <div class="t-lg fi"><span class="gold">AI 不缺<br>缺的是<br>能把 AI<br>用到位的人</span></div>
+    <div class="t-sm fi d1" style="margin-top:20px">你，准备好了吗？</div>
   </div>
 
-  <div class="nar-w"><div class="nar" id="nar">点击按钮，开始自动讲解</div>
-    <div class="bar-t"><div class="bar-p" id="bar" style="width:0"></div></div></div>
+  <div class="nw"><div class="nar" id="nar">点击按钮，开始自动讲解</div>
+    <div class="bt"><div class="bf" id="bar" style="width:0"></div></div></div>
   <button class="go" id="go" onclick="start()">▶ 开始讲解</button>
 </div>
 <script>
-// 生成文献卡
-function makeRefs(id,deadIdx){
-  const c=document.getElementById(id);c.innerHTML='';
-  for(let i=0;i<10;i++){
-    const d=document.createElement('div');d.className='ref';d.dataset.i=i;
-    d.innerHTML='<div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div>';
-    c.appendChild(d);
-  }
-  if(deadIdx){setTimeout(()=>{
-    deadIdx.forEach((idx,j)=>setTimeout(()=>{
-      c.children[idx].classList.add('dead')},j*200))},400)}
-  else{setTimeout(()=>{for(let i=0;i<10;i++)c.children[i].classList.add('ok')},400)}
+(()=>{const c=document.getElementById('pts');for(let i=0;i<25;i++){const p=document.createElement('div');p.className='pt';
+  p.style.cssText=`left:${Math.random()*100}%;animation-duration:${7+Math.random()*8}s;animation-delay:${Math.random()*5}s`;c.appendChild(p)}})();
+
+function animRing(){const c=565.5*(1-.78);document.getElementById('ring1').style.strokeDashoffset=c;
+  let v=0;const iv=setInterval(()=>{v+=2;if(v>78){v=78;clearInterval(iv)}document.getElementById('rn1').textContent=v+'%'},30)}
+function drawBars(){
+  const d=[['人才',85,'low','⚠️ 第一名'],['成本',62,'warn',''],['数据',48,'full',''],['算力',35,'full',''],['安全',30,'full','']];
+  const el=document.getElementById('bars');el.innerHTML='';
+  d.forEach(([l,w,cl,alert],i)=>{const r=document.createElement('div');r.className='br';
+    r.innerHTML=`<div class="br-lab">${l}</div><div class="br-track"><div class="br-fill ${cl}" id="bf${i}">${w}%</div></div><div class="br-alert" id="ba${i}">${alert}</div>`;
+    el.appendChild(r);
+    setTimeout(()=>{document.getElementById('bf'+i).style.width=w+'%';if(alert)document.getElementById('ba'+i).classList.add('show')},300+i*200)})
 }
-// 柱状图
-function drawChart(){
-  const data=[
-    ['旧模型','55%',55,'red'],['新模型','18%',18,'amber'],
-    ['2026最新','39.8%',39.8,'red'],['最好的','0%',1,'grn']
-  ];
-  const ch=document.getElementById('chart');ch.innerHTML='';
-  data.forEach(([l,v,w,cl],i)=>{
-    const r=document.createElement('div');r.className='bar-row';
-    r.innerHTML=`<div class="bar-label">${l}</div><div class="bar-track"><div class="bar-fill ${cl}" id="bf${i}">${v}</div></div>`;
-    ch.appendChild(r);
-    setTimeout(()=>document.getElementById('bf'+i).style.width=Math.max(w,3)+'%',300+i*200);
-  });
-}
-// TTS
+function showBridge(){setTimeout(()=>document.getElementById('bw').classList.add('show'),500)}
+
 let voice=null,playing=false,si=0;
 function pv(){const v=speechSynthesis.getVoices();
   voice=v.find(x=>/Yunyang.*Online.*Natural/i.test(x.name))||v.find(x=>/云扬/i.test(x.name))
@@ -176,26 +175,25 @@ speechSynthesis.onvoiceschanged=pv;pv();
 function say(t,cb){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);
   u.voice=voice;u.lang='zh-CN';u.rate=.85;u.pitch=1;
   u.onend=()=>setTimeout(cb,700);u.onerror=()=>setTimeout(cb,700);speechSynthesis.speak(u)}
-function show(id,bgc){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
-  document.getElementById(id).classList.add('on');document.getElementById('bg').className='bg '+bgc}
+function show(id){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));document.getElementById(id).classList.add('on')}
 
 const S=[
-  {p:'p0',bg:'s0',t:'如果让你查十篇参考文献'},
-  {p:'p0',bg:'s0',t:'有几篇是真的？'},
-  {p:'p1',bg:'s1',t:'研究者让模型生成六百多条文献引用',fn:()=>makeRefs('refs')},
-  {p:'p1',bg:'s1',t:'然后逐篇去核查，每一条都查'},
-  {p:'p2',bg:'s2',t:'结果，超过一半根本不存在',fn:()=>makeRefs('refs2',[0,2,4,5,7,9])},
-  {p:'p2',bg:'s2',t:'六百三十六条里，三百五十条是编的'},
-  {p:'p3',bg:'s1',t:'模型换代后有改善，但没解决',fn:drawChart},
-  {p:'p3',bg:'s1',t:'二零二六年最新测试，仍有四成出错'},
-  {p:'p4',bg:'s3',t:'有律师把这样的引用交给了法院'},
-  {p:'p4',bg:'s3',t:'罚款十一万美元'},
-  {p:'p5',bg:'s4',t:'用之前，点开原文看一眼'},
-  {p:'p5',bg:'s4',t:'你上次用它查的资料，验过吗？'},
+  {p:'p0',t:'十家公司里，八家已经在用了。',fn:animRing},
+  {p:'p0',t:'两年前还不到六成，现在是七成八。'},
+  {p:'p1',t:'但他们最头疼的，不是技术不行。'},
+  {p:'p1',t:'不是算力不够，也不是数据不好。'},
+  {p:'p2',t:'三千两百家企业说：缺人，才是第一名。',fn:drawBars},
+  {p:'p2',t:'找不到真正会用的人。'},
+  {p:'p3',t:'会用和用得好之间，差一个词。',fn:showBridge},
+  {p:'p3',t:'交付。不是演示一下，是能落地能交接。'},
+  {p:'p4',t:'从今天开始，每做完一件事。'},
+  {p:'p4',t:'多问一句：这个结果，别人能接手吗？'},
+  {p:'p5',t:'缺的不是工具，是能把工具用到位的人。'},
+  {p:'p5',t:'你，准备好了吗？'},
 ];
 function run(){if(si>=S.length){si=0;playing=false;document.getElementById('go').classList.remove('hide');
   document.getElementById('go').textContent='▶ 重新播放';return}
-  const s=S[si];show(s.p,s.bg);if(s.fn)setTimeout(s.fn,300);
+  const s=S[si];show(s.p);if(s.fn)setTimeout(s.fn,300);
   document.getElementById('nar').innerHTML=s.t;
   document.getElementById('bar').style.width=Math.round(((si+1)/S.length)*100)+'%';
   say(s.t,()=>{si++;run()})}
