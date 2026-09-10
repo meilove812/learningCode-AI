@@ -113,24 +113,21 @@ body{background:#06081a;color:#fff;font-family:'PingFang SC','Microsoft YaHei',s
 
   <!-- P0: 矛盾 -->
   <div class="pg on" id="p0">
-    <div class="t-sm fi">一个矛盾</div>
-    <div class="paradox fi d1">
-      <div class="px-card">📰 「AI 将替代大量岗位」<div class="vs">—— 每天都能看到这类标题</div></div>
-      <div class="px-card">📊 「最缺的是会用 AI 的人」<div class="vs">—— 3200家企业的真实反馈</div></div>
-    </div>
-    <div class="t-md fi d2">都要替代了，怎么还缺人？</div>
-  </div>
-
-  <!-- P1: 数据 -->
-  <div class="pg" id="p1">
     <div class="badge fi">📊 Stanford HAI 2026</div>
     <div class="ring-big fi d1">
       <svg viewBox="0 0 180 180"><defs><linearGradient id="rg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ffd700"/><stop offset="100%" stop-color="#ff9500"/></linearGradient></defs>
         <circle class="ring-bg" cx="90" cy="90" r="80"/><circle class="ring-fg" id="ring1" cx="90" cy="90" r="80"/></svg>
       <div class="ring-val"><div class="ring-num" id="rn1">0%</div><div class="ring-lab">企业已在使用 AI</div></div>
     </div>
-    <div class="t-md fi d2">两年前不到六成，现在<span style="color:#ffd700">七成八</span></div>
+    <div class="t-md fi d2">两年前不到六成<br>现在<span style="color:#ffd700">将近八成</span></div>
     <div class="src fi d3">数据来源：Stanford HAI 2026 AI Index Report</div>
+  </div>
+
+  <!-- P1: 瓶颈 -->
+  <div class="pg" id="p1">
+    <div class="t-md fi">但他们说<br>最大的瓶颈</div>
+    <div class="t-lg fi d1" style="margin:12px 0"><span class="gold">不是技术<br>不是算力<br>不是数据</span></div>
+    <div class="t-md fi d2" style="font-size:16px;color:rgba(255,255,255,.45)">那是什么？</div>
   </div>
 
   <!-- P2: 替代的是什么 -->
@@ -205,21 +202,19 @@ function say(t,cb){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance
 function show(id){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));document.getElementById(id).classList.add('on')}
 
 const S=[
-  {p:'p0',t:'一边说替代，一边说缺人。'},
-  {p:'p0',t:'这个矛盾，其实不矛盾。'},
-  {p:'p1',t:'七成八的企业已经在用了。',fn:animRing},
-  {p:'p1',t:'但他们最头疼的，是找不到会用的人。'},
-  {p:'p2',t:'因为替代的不是人，是重复动作。'},
-  {p:'p2',t:'填表、核对、搬数据，这些被替代了。'},
-  {p:'p2',t:'但「决定做什么」，没有被替代。'},
-  {p:'p3',t:'缺的不是算法工程师。'},
-  {p:'p3',t:'是懂业务、又能让工具跑通的人。'},
+  {p:'p0',t:'将近八成企业已经在用了。',fn:animRing},
+  {p:'p0',t:'两年前还不到六成。'},
+  {p:'p1',t:'但他们说，最头疼的不是技术。'},
+  {p:'p1',t:'不是算力不够，也不是数据不好。'},
+  {p:'p2',t:'三千两百家企业的回答：缺人。',fn:drawBars},
+  {p:'p2',t:'找不到能把工具用到业务里的人。'},
+  {p:'p3',t:'不需要写算法。'},
+  {p:'p3',t:'需要的是懂业务、又能让工具落地的人。'},
   {p:'p4',t:'不需要你写模型。'},
-  {p:'p4',t:'需要你能跑通、能验证、能交接。'},
-  {p:'p5',t:'今天就能开始。'},
-  {p:'p5',t:'选你最熟的一个流程，找最重复的一步。'},
-  {p:'p5',t:'用一次，记下哪里行哪里不行。'},
-  {p:'p5',t:'这个经验，就是企业花钱买不到的。'},
+  {p:'p4',t:'跑通、验证、交接，这才是核心。'},
+  {p:'p5',t:'从你最熟的流程开始。'},
+  {p:'p5',t:'找最重复的一步，用一次，记下结果。'},
+  {p:'p5',t:'这个经验，就是别人花钱买不到的。'},
   {p:'p6',t:'不会替代你，但更会用的人会。'},
   {p:'p6',t:'今天就打开你最熟的流程，试一次。'},
 ];
