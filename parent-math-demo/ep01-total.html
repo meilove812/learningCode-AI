@@ -119,11 +119,11 @@ function showItems(id,dupIdx){
 
 function showGroups(id,calcId,wrong){
   var el=document.getElementById(id);el.innerHTML='';
-  var colors=[{name:'红色',cls:'c-red',count:wrong?5:4},{name:'蓝色',cls:'c-blue',count:wrong?5:4},{name:'绿色',cls:'c-green',count:4}];
+  var colors=[{name:'红色',cls:'c-red',bg:'linear-gradient(135deg,#ff6b6b,#ee5a5a)',count:wrong?5:4},{name:'蓝色',cls:'c-blue',bg:'linear-gradient(135deg,#74b9ff,#5a9bdb)',count:wrong?5:4},{name:'绿色',cls:'c-green',bg:'linear-gradient(135deg,#55efc4,#3dc9a0)',count:4}];
   for(var i=0;i<colors.length;i++){
     var g=document.createElement('div');g.className='group';
-    var html='<div class="g-title">'+colors[i].name+'</div><div class="g-items">';
-    for(var j=0;j<colors[i].count;j++)html+='<div class="g-item '+colors[i].cls+'">'+colors[i].name[0]+'</div>';
+    var html='<div class="g-title"><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:'+colors[i].bg+';vertical-align:middle;margin-right:4px;box-shadow:0 2px 6px rgba(0,0,0,.15)"></span>'+colors[i].name+'</div><div class="g-items">';
+    for(var j=0;j<colors[i].count;j++)html+='<div class="g-item" style="width:38px;height:38px;border-radius:10px;background:'+colors[i].bg+';box-shadow:0 3px 8px rgba(0,0,0,.12)">'+colors[i].name[0]+'</div>';
     html+='</div><div class="g-count '+(wrong&&colors[i].count!==4?'red':'grn')+'">'+colors[i].count+'</div>';
     g.innerHTML=html;el.appendChild(g);
   }
