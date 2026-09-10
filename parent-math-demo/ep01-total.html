@@ -1,188 +1,288 @@
 <!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>分类题解题技巧</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>分类题解题技巧 - 动画版</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#faf6f1;color:#2d2d2d;font-family:'PingFang SC','Microsoft YaHei',sans-serif;display:flex;justify-content:center;height:100vh;overflow:hidden}
-.s{width:100vw;max-width:430px;height:100vh;position:relative;overflow:hidden;background:linear-gradient(180deg,#faf6f1,#f5efe8)}
-.deco{position:absolute;border-radius:50%;opacity:.05}
-.dc1{width:280px;height:280px;background:#ff9a76;top:-80px;right:-80px}
-.dc2{width:200px;height:200px;background:#a8d8ea;bottom:80px;left:-60px}
-.pg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 24px 140px;opacity:0;pointer-events:none;z-index:2;transition:opacity .7s}
-.pg.on{opacity:1;pointer-events:auto}
-.pg.on .fi{opacity:1;transform:translateY(0)}
-.fi{opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s}
-.fi.d1{transition-delay:.15s}.fi.d2{transition-delay:.3s}.fi.d3{transition-delay:.45s}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#faf6f1;color:#2d2d2d}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 20px 120px;opacity:0;pointer-events:none;transition:opacity .6s;overflow-y:auto}
+.slide.active{opacity:1;pointer-events:auto}
+.slide>*{position:relative;z-index:1}
+.stitle{font-size:clamp(22px,5vw,36px);font-weight:900;text-align:center;margin-bottom:10px;color:#e67e22}
+.sdesc{font-size:clamp(15px,3vw,20px);color:#666;text-align:center;line-height:1.8;max-width:600px}
+.hl{color:#e67e22;font-weight:800}.bl{color:#3498db;font-weight:800}.gn{color:#27ae60;font-weight:800}
+.formula{font-size:clamp(24px,5vw,40px);font-weight:900;text-align:center;margin:12px 0;color:#27ae60}
+.item-box{width:100%;max-width:420px;min-height:180px;margin:10px auto;padding:16px;border-radius:20px;background:#fff;border:1px solid rgba(0,0,0,.06);box-shadow:0 4px 20px rgba(0,0,0,.04);display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center}
+.item{display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;box-shadow:0 3px 10px rgba(0,0,0,.1)}
+.item.c{border-radius:50%}.item.r{border-radius:8px}
+.item.red{background:linear-gradient(135deg,#ff6b6b,#ee5a5a)}
+.item.blue{background:linear-gradient(135deg,#74b9ff,#5a9bdb)}
+.item.green{background:linear-gradient(135deg,#55efc4,#3dc9a0)}
+.item.dim{opacity:.12;transform:scale(.7)}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes pulse{0%,100%{box-shadow:0 3px 10px rgba(0,0,0,.1)}50%{box-shadow:0 3px 20px rgba(0,0,0,.2)}}
 @keyframes bounceIn{0%{opacity:0;transform:scale(.3)}50%{transform:scale(1.05)}70%{transform:scale(.95)}100%{opacity:1;transform:scale(1)}}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeScale{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
-.badge{display:inline-block;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:10px;background:#fff8ee;color:#e67e22;border:1px solid #f5d0a0}
-.badge.step{background:#eef6ff;color:#3498db;border:1px solid #a8d8ea}
-.badge.ok{background:#f0fff4;color:#27ae60;border:1px solid #a3d9b1}
-.t-lg{font-size:30px;font-weight:900;text-align:center;line-height:1.4}
-.t-lg .warm{color:#e67e22}
-.t-md{font-size:18px;font-weight:600;text-align:center;line-height:1.7;color:#444}
-.t-sm{font-size:13px;color:#aaa;text-align:center;margin-top:6px}
-.items-area{width:330px;min-height:180px;position:relative;margin:14px 0;padding:16px;border-radius:20px;background:#fff;border:1px solid rgba(0,0,0,.04);box-shadow:0 4px 20px rgba(0,0,0,.04);display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
-.item{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;box-shadow:0 3px 10px rgba(0,0,0,.1);animation:bounceIn .5s backwards}
-.item.circle{border-radius:50%}
-.item.c-red{background:linear-gradient(135deg,#ff6b6b,#ee5a5a)}
-.item.c-blue{background:linear-gradient(135deg,#74b9ff,#5a9bdb)}
-.item.c-green{background:linear-gradient(135deg,#55efc4,#3dc9a0)}
-.groups{width:330px;display:flex;gap:8px;margin:10px 0}
-.group{flex:1;padding:10px 6px;border-radius:14px;background:#fff;border:1px solid rgba(0,0,0,.04);box-shadow:0 2px 8px rgba(0,0,0,.03);text-align:center;animation:slideUp .5s backwards}
-.group .g-title{font-size:12px;color:#888;margin-bottom:6px;font-weight:600}
+.item.bright{animation:floatY 2.5s ease-in-out infinite,pulse 2s ease-in-out infinite}
+.group-box{width:100%;max-width:420px;display:flex;gap:6px;margin:10px auto;justify-content:center}
+.group{flex:1;padding:10px 6px;border-radius:16px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.04);text-align:center}
+.group .g-title{font-size:13px;color:#888;margin-bottom:6px;font-weight:700}
 .group .g-items{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;min-height:40px}
-.group .g-count{font-size:22px;font-weight:900;margin-top:6px;color:#27ae60}
-.calc{width:330px;padding:14px 20px;border-radius:16px;background:#fff;border:1px solid rgba(0,0,0,.04);box-shadow:0 3px 12px rgba(0,0,0,.04);margin:10px 0;text-align:center;animation:bounceIn .6s .3s backwards}
-.calc .eq{font-size:20px;font-weight:900;line-height:1.8;color:#27ae60}
-.tip-box{width:330px;padding:18px;border-radius:16px;text-align:center;background:linear-gradient(135deg,#fff8ee,#fff3e0);border:2px solid #f5d0a0;margin:10px 0}
-.tip-box .tip{font-size:18px;font-weight:900;color:#e67e22;line-height:1.7}
-.nw{position:absolute;bottom:0;left:0;right:0;z-index:10;padding:14px 24px 20px;background:linear-gradient(transparent,rgba(250,246,241,.97) 30%)}
-.nar{text-align:center;font-size:16px;line-height:1.8;color:#444;font-weight:500;min-height:36px}
-.bt{height:3px;border-radius:2px;background:rgba(0,0,0,.05);margin-top:8px}
-.bf{height:100%;border-radius:2px;background:linear-gradient(90deg,#ff9a76,#e67e22);transition:width .5s}
-.tag{position:absolute;top:16px;left:20px;font-size:10px;color:#ccc;letter-spacing:2px;font-weight:600;z-index:10}
-.go{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:20;width:56px;height:56px;border:none;border-radius:50%;font-size:24px;background:linear-gradient(135deg,#ff9a76,#e67e22);color:#fff;cursor:pointer;box-shadow:0 4px 16px rgba(230,126,34,.2);display:flex;align-items:center;justify-content:center;padding:0}
-.go.hide{display:none}
+.group .g-count{font-size:24px;font-weight:900;margin-top:6px;color:#27ae60}
+.sum-card{background:#fff;border-radius:16px;padding:16px 20px;margin:6px 0;width:100%;max-width:420px;border-left:4px solid #e67e22;box-shadow:0 2px 12px rgba(0,0,0,.04);opacity:0;transform:translateX(-30px);transition:all .5s}
+.sum-card.show{opacity:1;transform:translateX(0)}
+.sum-card h3{color:#e67e22;font-size:clamp(15px,3vw,18px);margin-bottom:3px}
+.sum-card p{color:#888;font-size:clamp(13px,2.5vw,15px);line-height:1.6}
+.compare{width:100%;max-width:420px;margin:10px auto;padding:16px;border-radius:16px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.04);text-align:center}
+.compare .row{padding:10px 0;font-size:17px;font-weight:700;line-height:1.8}
+.ctrl{position:fixed;bottom:0;left:0;right:0;height:54px;background:linear-gradient(180deg,rgba(250,246,241,.9),rgba(250,246,241,.98));backdrop-filter:blur(12px);border-top:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;gap:8px;padding:0 12px;z-index:100}
+.ctrl button{background:#fff;border:1px solid rgba(0,0,0,.08);color:#666;border-radius:50px;padding:7px 16px;font-size:13px;cursor:pointer;font-family:inherit;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.ctrl .pri{background:linear-gradient(135deg,#ff9a76,#e67e22);color:#fff;font-weight:700;border:none;box-shadow:0 3px 12px rgba(230,126,34,.2)}
+.ctrl .pg{color:#bbb;font-size:11px;min-width:44px;text-align:center}
+.sub{position:fixed;bottom:58px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-radius:14px;padding:10px 22px;max-width:90%;text-align:center;font-size:clamp(14px,2.8vw,17px);color:#444;line-height:1.6;z-index:99;display:none;box-shadow:0 4px 20px rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.04)}
+.sub.vis{display:block}
+.bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#ff9a76,#e67e22);z-index:101;transition:width .4s}
+.tag{position:fixed;top:8px;left:12px;font-size:10px;color:#ccc;letter-spacing:1px;z-index:102}
 </style></head><body>
-<div class="s">
-<div class="deco dc1"></div><div class="deco dc2"></div>
+<div class="bar" id="bar"></div>
 <div class="tag">数学思维 · 分类与整理 · 二年级上第一单元</div>
-
-<div class="pg on" id="p0">
-  <div class="badge fi">分类题解题技巧</div>
-  <div class="items-area fi d1" id="a0"></div>
-  <div class="t-md fi d2" style="font-size:15px;color:#888">这堆东西怎么分？</div>
+<div id="slides">
+<div class="slide active" id="s0">
+  <div class="stitle" style="font-size:clamp(28px,6vw,44px)">分类题解题技巧</div>
+  <div class="item-box" id="b0"></div>
+  <p class="sdesc" style="color:#bbb;font-size:13px">二年级上 · 分类与整理 · 第一单元</p>
+  <p class="sdesc" style="margin-top:6px"><span class="hl">🌟 按什么分 → 分一分 → 数一数 → 加一加对总数</span></p>
 </div>
 
-<div class="pg" id="p1">
-  <div class="badge step fi">第一步</div>
-  <div class="t-lg fi d1"><span class="warm">想好按什么来分</span></div>
-  <div class="items-area fi d2" id="a1"></div>
-  <div class="t-md fi d3" style="font-size:15px;color:#888">可以按颜色，也可以按形状</div>
+<div class="slide" id="s1">
+  <div class="stitle">看看这堆东西</div>
+  <div class="item-box" id="b1"></div>
+  <p class="sdesc">一共 <span class="hl">12</span> 个，有圆有方，颜色也不一样🤔</p>
 </div>
 
-<div class="pg" id="p2">
-  <div class="badge step fi">第二步 · 按颜色分</div>
-  <div class="t-md fi d1">分成三组，<span style="color:#e67e22;font-weight:700">每组数一数</span></div>
-  <div class="groups fi d2" id="g1"></div>
-  <div class="calc fi d3" id="c1"></div>
+<div class="slide" id="s2">
+  <div class="stitle">想好按什么来分</div>
+  <div class="item-box" id="b2"></div>
+  <p class="sdesc">按 <span class="hl">颜色</span>？还是按 <span class="bl">形状</span>？先试颜色！</p>
 </div>
 
-<div class="pg" id="p3">
-  <div class="badge ok fi">第三步 · 验证</div>
-  <div class="t-md fi d1">每组加一加，<span style="color:#27ae60;font-weight:700">对总数</span></div>
-  <div class="calc fi d2" id="c2"></div>
-  <div class="t-md fi d3" style="font-size:15px;color:#27ae60">对上了，说明分对了</div>
+<div class="slide" id="s3">
+  <div class="stitle">红色的有几个？</div>
+  <div class="item-box" id="b3"></div>
+  <p class="sdesc">红色 → <span class="hl">4</span> 个（2个圆 + 2个方）</p>
 </div>
 
-<div class="pg" id="p4">
-  <div class="badge step fi">换一种分法</div>
-  <div class="t-md fi d1">同样的东西，按<span style="color:#3498db;font-weight:700">形状</span>分</div>
-  <div class="groups fi d2" id="g2"></div>
-  <div class="calc fi d3" id="c3"></div>
+<div class="slide" id="s4">
+  <div class="stitle">蓝色的有几个？</div>
+  <div class="item-box" id="b4"></div>
+  <p class="sdesc">蓝色 → <span class="bl">4</span> 个（2个圆 + 2个方）</p>
 </div>
 
-<div class="pg" id="p5">
-  <div class="tip-box fi">
-    <div class="tip">按什么分 → 分一分 → 数一数<br>加一加对总数<br>对上了就分对了</div>
+<div class="slide" id="s5">
+  <div class="stitle">绿色的有几个？</div>
+  <div class="item-box" id="b5"></div>
+  <p class="sdesc">绿色 → <span class="gn">4</span> 个（2个圆 + 2个方）</p>
+</div>
+
+<div class="slide" id="s6">
+  <div class="stitle">按颜色分 — 加起来！</div>
+  <div class="group-box" id="g6"></div>
+  <div class="formula">4 + 4 + 4 = 12 ✅</div>
+  <p class="sdesc">跟总数一样，没重没漏！</p>
+</div>
+
+<div class="slide" id="s7">
+  <div class="stitle">换一种分法！</div>
+  <div class="item-box" id="b7"></div>
+  <p class="sdesc">同样12个，这次按 <span class="bl">形状</span> 来分</p>
+</div>
+
+<div class="slide" id="s8">
+  <div class="stitle">圆形有几个？</div>
+  <div class="item-box" id="b8"></div>
+  <p class="sdesc">圆形 → <span class="bl">6</span> 个（红蓝绿各2个）</p>
+</div>
+
+<div class="slide" id="s9">
+  <div class="stitle">方形有几个？</div>
+  <div class="item-box" id="b9"></div>
+  <p class="sdesc">方形 → <span class="hl">6</span> 个（红蓝绿各2个）</p>
+</div>
+
+<div class="slide" id="s10">
+  <div class="stitle">按形状分 — 加起来！</div>
+  <div class="group-box" id="g10"></div>
+  <div class="formula">6 + 6 = 12 ✅</div>
+  <p class="sdesc">换了分法，总数不变！</p>
+</div>
+
+<div class="slide" id="s11">
+  <div class="stitle">发现规律</div>
+  <div class="compare" id="cmp11"></div>
+  <p class="sdesc">不管按什么分，加一加，<span class="hl">总数不变</span>！</p>
+</div>
+
+<div class="slide" id="s12">
+  <div class="stitle">🌟 三步法</div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;max-width:420px">
+    <div class="sum-card" id="sc1"><h3>1️⃣ 想好按什么分</h3><p>按颜色、按形状、按大小……选一个标准</p></div>
+    <div class="sum-card" id="sc2" style="border-left-color:#3498db"><h3 style="color:#3498db">2️⃣ 分一分，数一数</h3><p>按标准分组，每组数清楚有几个</p></div>
+    <div class="sum-card" id="sc3" style="border-left-color:#27ae60"><h3 style="color:#27ae60">3️⃣ 加一加，对总数</h3><p>各组加起来等于总数，就说明分对了</p></div>
+    <div class="sum-card" id="sc4" style="border-left-color:#9b59b6;text-align:center"><h3 style="color:#9b59b6;font-size:clamp(16px,3vw,20px)">掌握这个思路，分类题都能用！</h3></div>
   </div>
-  <div class="t-md fi d1" style="margin-top:16px;font-size:15px;color:#888">掌握思路比做对一道题重要<br>分类题都能用这个思路来解</div>
+</div>
 </div>
 
-<div class="nw"><div class="nar" id="nar"></div><div class="bt"><div class="bf" id="bar" style="width:0"></div></div></div>
-<button class="go" id="go" onclick="doStart()">▶</button>
+<div class="sub" id="subBar"></div>
+<div class="ctrl">
+  <button onclick="prev()">⏮</button>
+  <button class="pri" id="ttsBtn" onclick="toggleTTS()">🔊 开始讲解</button>
+  <button onclick="next()">⏭</button>
+  <span class="pg" id="pgInfo">1/13</span>
+  <button onclick="goFS()">⛶</button>
 </div>
-
 <script>
-// 12个物品：红圆2 红方2 蓝圆2 蓝方2 绿圆2 绿方2
-// 按颜色：红4+蓝4+绿4=12  按形状：圆6+方6=12
+// 12个物品：红圆2+红方2+蓝圆2+蓝方2+绿圆2+绿方2=12
+// 按颜色：红4+蓝4+绿4=12  按形状：圆6+方6=12（与课本第一课同步）
+var TOTAL=13, cur=0, speaking=false;
 var ITEMS=[
-  {s:'circle',c:'c-red',l:'红'},{s:'',c:'c-red',l:'红'},
-  {s:'circle',c:'c-red',l:'红'},{s:'',c:'c-red',l:'红'},
-  {s:'circle',c:'c-blue',l:'蓝'},{s:'',c:'c-blue',l:'蓝'},
-  {s:'circle',c:'c-blue',l:'蓝'},{s:'',c:'c-blue',l:'蓝'},
-  {s:'circle',c:'c-green',l:'绿'},{s:'',c:'c-green',l:'绿'},
-  {s:'circle',c:'c-green',l:'绿'},{s:'',c:'c-green',l:'绿'}
+  {s:'c',c:'red',lb:'红'},{s:'c',c:'red',lb:'红'},{s:'r',c:'red',lb:'红'},{s:'r',c:'red',lb:'红'},
+  {s:'c',c:'blue',lb:'蓝'},{s:'c',c:'blue',lb:'蓝'},{s:'r',c:'blue',lb:'蓝'},{s:'r',c:'blue',lb:'蓝'},
+  {s:'c',c:'green',lb:'绿'},{s:'c',c:'green',lb:'绿'},{s:'r',c:'green',lb:'绿'},{s:'r',c:'green',lb:'绿'}
 ];
 
-function showItems(id){
-  var el=document.getElementById(id);el.innerHTML='';
-  for(var i=0;i<ITEMS.length;i++){
-    var d=document.createElement('div');
-    d.className='item '+(ITEMS[i].s?ITEMS[i].s:'')+' '+ITEMS[i].c;
-    d.textContent=ITEMS[i].l;d.style.animationDelay=(i*0.08)+'s';el.appendChild(d);}
+function mkItem(it,sz,bright){
+  var d=document.createElement('div');
+  d.className='item '+it.s+' '+it.c+(bright?' bright':'')+(bright===false?' dim':'');
+  d.style.width=sz+'px';d.style.height=sz+'px';
+  d.style.animation='bounceIn .5s backwards';
+  d.textContent=it.lb;return d;
 }
 
-function showColorGroups(id,calcId){
-  var el=document.getElementById(id);el.innerHTML='';
-  var groups=[
-    {name:'红色',bg:'linear-gradient(135deg,#ff6b6b,#ee5a5a)',shapes:['circle','square','circle','square']},
-    {name:'蓝色',bg:'linear-gradient(135deg,#74b9ff,#5a9bdb)',shapes:['circle','square','circle','square']},
-    {name:'绿色',bg:'linear-gradient(135deg,#55efc4,#3dc9a0)',shapes:['circle','square','circle','square']}
-  ];
-  for(var i=0;i<groups.length;i++){
-    var g=document.createElement('div');g.className='group';g.style.animationDelay=(i*0.2)+'s';
-    var html='<div class="g-title"><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:'+groups[i].bg+';vertical-align:middle;margin-right:4px;box-shadow:0 2px 6px rgba(0,0,0,.15)"></span>'+groups[i].name+'</div><div class="g-items">';
-    for(var j=0;j<groups[i].shapes.length;j++){
-      var radius=groups[i].shapes[j]==='circle'?'50%':'10px';
-      html+='<div style="width:38px;height:38px;border-radius:'+radius+';background:'+groups[i].bg+';display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;box-shadow:0 3px 8px rgba(0,0,0,.12);animation:fadeScale .3s '+(i*0.2+j*0.1)+'s backwards">'+groups[i].name[0]+'</div>';}
-    html+='</div><div class="g-count">4</div>';g.innerHTML=html;el.appendChild(g);}
-  document.getElementById(calcId).innerHTML='<div class="eq">4 + 4 + 4 = 12 ✅</div>';
+// 画全部12个
+function fillAll(boxId,sz){
+  var box=document.getElementById(boxId);if(!box)return;box.innerHTML='';
+  for(var i=0;i<12;i++){var d=mkItem(ITEMS[i],sz||42,true);d.style.animationDelay=(i*0.06)+'s';box.appendChild(d);}
 }
 
-function showShapeGroups(id,calcId){
-  var el=document.getElementById(id);el.innerHTML='';
-  var groups=[
-    {name:'圆形',radius:'50%',items:[{bg:'linear-gradient(135deg,#ff6b6b,#ee5a5a)',l:'红'},{bg:'linear-gradient(135deg,#ff6b6b,#ee5a5a)',l:'红'},{bg:'linear-gradient(135deg,#74b9ff,#5a9bdb)',l:'蓝'},{bg:'linear-gradient(135deg,#74b9ff,#5a9bdb)',l:'蓝'},{bg:'linear-gradient(135deg,#55efc4,#3dc9a0)',l:'绿'},{bg:'linear-gradient(135deg,#55efc4,#3dc9a0)',l:'绿'}]},
-    {name:'方形',radius:'10px',items:[{bg:'linear-gradient(135deg,#ff6b6b,#ee5a5a)',l:'红'},{bg:'linear-gradient(135deg,#ff6b6b,#ee5a5a)',l:'红'},{bg:'linear-gradient(135deg,#74b9ff,#5a9bdb)',l:'蓝'},{bg:'linear-gradient(135deg,#74b9ff,#5a9bdb)',l:'蓝'},{bg:'linear-gradient(135deg,#55efc4,#3dc9a0)',l:'绿'},{bg:'linear-gradient(135deg,#55efc4,#3dc9a0)',l:'绿'}]}
-  ];
-  for(var i=0;i<groups.length;i++){
-    var g=document.createElement('div');g.className='group';g.style.animationDelay=(i*0.2)+'s';
-    var html='<div class="g-title">'+groups[i].name+'</div><div class="g-items">';
-    for(var j=0;j<groups[i].items.length;j++){
-      var it=groups[i].items[j];
-      html+='<div style="width:32px;height:32px;border-radius:'+groups[i].radius+';background:'+it.bg+';display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.1);animation:fadeScale .3s '+(i*0.2+j*0.08)+'s backwards">'+it.l+'</div>';}
-    html+='</div><div class="g-count">6</div>';g.innerHTML=html;el.appendChild(g);}
-  document.getElementById(calcId).innerHTML='<div class="eq">6 + 6 = 12 ✅</div>';
+// 高亮指定颜色
+function fillByColor(boxId,color){
+  var box=document.getElementById(boxId);if(!box)return;box.innerHTML='';
+  for(var i=0;i<12;i++){
+    var isBright=ITEMS[i].c===color;
+    var d=mkItem(ITEMS[i],isBright?46:30,isBright?true:false);
+    d.style.animationDelay=(i*0.05)+'s';box.appendChild(d);
+  }
 }
 
-function showVerify(calcId){
-  document.getElementById(calcId).innerHTML='<div class="eq">先数总数：12 个<br>分完加一加：4 + 4 + 4 = 12<br>对上了 ✅</div>';
+// 高亮指定形状
+function fillByShape(boxId,shape){
+  var box=document.getElementById(boxId);if(!box)return;box.innerHTML='';
+  for(var i=0;i<12;i++){
+    var isBright=ITEMS[i].s===shape;
+    var d=mkItem(ITEMS[i],isBright?46:30,isBright?true:false);
+    d.style.animationDelay=(i*0.05)+'s';box.appendChild(d);
+  }
 }
 
-showItems('a0');
+// 颜色分组汇总
+function fillColorGroups(gId){
+  var box=document.getElementById(gId);if(!box)return;box.innerHTML='';
+  var colors=['red','blue','green'];var names=['红色','蓝色','绿色'];
+  for(var g=0;g<3;g++){
+    var grp=document.createElement('div');grp.className='group';
+    grp.style.animation='bounceIn .5s '+(g*0.15)+'s backwards';
+    var html='<div class="g-title">'+names[g]+'</div><div class="g-items">';
+    for(var i=0;i<12;i++){if(ITEMS[i].c===colors[g]){
+      html+='<div class="item '+ITEMS[i].s+' '+ITEMS[i].c+' bright" style="width:36px;height:36px;font-size:11px;animation:bounceIn .4s '+(g*0.15+0.1)+'s backwards">'+ITEMS[i].lb+'</div>';
+    }}
+    html+='</div><div class="g-count">4</div>';grp.innerHTML=html;box.appendChild(grp);
+  }
+}
 
-var voice=null,playing=false,si=0;
-function pickVoice(){var vs=speechSynthesis.getVoices();voice=null;
-  for(var i=0;i<vs.length;i++){if(/Xiaoxiao.*Online.*Natural/i.test(vs[i].name)){voice=vs[i];break}}
-  if(!voice)for(var i=0;i<vs.length;i++){if(/Online.*Natural/i.test(vs[i].name)&&/zh/i.test(vs[i].lang)){voice=vs[i];break}}
-  if(!voice)for(var i=0;i<vs.length;i++){if(/zh/i.test(vs[i].lang)){voice=vs[i];break}}}
-if(typeof speechSynthesis!=='undefined'){speechSynthesis.onvoiceschanged=pickVoice;pickVoice()}
-function speak(text,cb){var done=false;function finish(){if(!done){done=true;clearTimeout(tmr);setTimeout(cb,600)}}
-  var tmr=setTimeout(finish,Math.max(text.length*400,3000));
-  try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(text);if(voice)u.voice=voice;u.lang='zh-CN';u.rate=0.9;u.pitch=1.05;u.onend=finish;u.onerror=finish;speechSynthesis.speak(u)}catch(e){finish()}}
-function showPage(id){var ps=document.querySelectorAll('.pg');for(var i=0;i<ps.length;i++)ps[i].classList.remove('on');document.getElementById(id).classList.add('on')}
+// 形状分组汇总
+function fillShapeGroups(gId){
+  var box=document.getElementById(gId);if(!box)return;box.innerHTML='';
+  var shapes=['c','r'];var names=['圆形','方形'];
+  for(var g=0;g<2;g++){
+    var grp=document.createElement('div');grp.className='group';
+    grp.style.animation='bounceIn .5s '+(g*0.2)+'s backwards';
+    var html='<div class="g-title">'+names[g]+'</div><div class="g-items">';
+    for(var i=0;i<12;i++){if(ITEMS[i].s===shapes[g]){
+      html+='<div class="item '+ITEMS[i].s+' '+ITEMS[i].c+' bright" style="width:34px;height:34px;font-size:10px;animation:bounceIn .4s '+(g*0.2+0.1)+'s backwards">'+ITEMS[i].lb+'</div>';
+    }}
+    html+='</div><div class="g-count">6</div>';grp.innerHTML=html;box.appendChild(grp);
+  }
+}
 
-var STEPS=[
-  {p:'p0',t:'分类题，看到这堆东西怎么分？',fn:function(){showItems('a0')}},
-  {p:'p1',t:'第一步，想好按什么来分。',fn:function(){showItems('a1')}},
-  {p:'p1',t:'可以按颜色，也可以按形状。'},
-  {p:'p2',t:'比如按颜色分，分成三组。',fn:function(){showColorGroups('g1','c1')}},
-  {p:'p2',t:'红色四个，蓝色四个，绿色四个。'},
-  {p:'p3',t:'第三步，加一加对总数。',fn:function(){showVerify('c2')}},
-  {p:'p3',t:'四加四加四等于十二，对上了。'},
-  {p:'p4',t:'换一种，按形状分。',fn:function(){showShapeGroups('g2','c3')}},
-  {p:'p4',t:'圆的六个，方的六个，六加六也是十二。'},
-  {p:'p5',t:'按什么分，分一分，数一数，加一加对总数。'},
-  {p:'p5',t:'掌握思路比做对一道题重要。'}
+// 发现规律
+function fillCompare(cId){
+  var box=document.getElementById(cId);if(!box)return;
+  box.innerHTML='<div class="row" style="color:#e67e22">按颜色：4 + 4 + 4 = 12 ✅</div><div class="row" style="color:#3498db">按形状：6 + 6 = 12 ✅</div><div class="row" style="color:#27ae60;font-size:15px;margin-top:6px">分法不同，总数永远不变！</div>';
+}
+
+var drawFns={
+  0:function(){fillAll('b0',42)},
+  1:function(){fillAll('b1',42)},
+  2:function(){fillAll('b2',42)},
+  3:function(){fillByColor('b3','red')},
+  4:function(){fillByColor('b4','blue')},
+  5:function(){fillByColor('b5','green')},
+  6:function(){fillColorGroups('g6')},
+  7:function(){fillAll('b7',42)},
+  8:function(){fillByShape('b8','c')},
+  9:function(){fillByShape('b9','r')},
+  10:function(){fillShapeGroups('g10')},
+  11:function(){fillCompare('cmp11')}
+};
+
+function showSlide(){
+  var slides=document.querySelectorAll('.slide');
+  for(var i=0;i<slides.length;i++)slides[i].classList.toggle('active',i===cur);
+  document.getElementById('pgInfo').textContent=(cur+1)+'/'+TOTAL;
+  document.getElementById('bar').style.width=((cur+1)/TOTAL*100)+'%';
+  if(drawFns[cur])try{drawFns[cur]()}catch(e){}
+  if(cur===12){['sc1','sc2','sc3','sc4'].forEach(function(id,i){
+    setTimeout(function(){var el=document.getElementById(id);if(el)el.classList.add('show')},i*300);});}
+}
+function next(){if(cur<TOTAL-1){cur++;showSlide();if(speaking)speakCur();}}
+function prev(){if(cur>0){cur--;showSlide();if(speaking)speakCur();}}
+
+var NAR=[
+'小朋友们好！今天我们来学分类题的解题技巧。看，画面上有好多彩色的东西，有圆的有方的，红的蓝的绿的，乱乱的混在一起。一共有多少个呢？跟着老师一步一步来，很简单哦！',
+'先来数一数。一共12个物品。看，有红色的圆、红色的方块，蓝色的圆、蓝色的方块，还有绿色的。颜色不一样，形状也不一样。这么多混在一起，看不清楚哪种有几个，对不对？',
+'分类的第一步，想好按什么来分。可以按颜色分，也可以按形状分。我们先试试按颜色来分！把同一种颜色的放在一起。',
+'先找红色的！看，红色的变大变亮了，其他的暗下去了。数一数，第一个，第二个，第三个，第四个。红色的一共有4个！有两个圆的，两个方的，但颜色都是红色。',
+'再找蓝色的！看，蓝色的亮起来了。第一个，第二个，第三个，第四个。蓝色的也是4个！跟红色一样多。',
+'最后找绿色的！绿色的也亮起来了。数一数，还是4个！三种颜色都是4个，一样多呢！',
+'好，现在加起来验证一下！红色4个，加上蓝色4个，再加绿色4个，等于12！跟总数一模一样！说明我们没有数重，也没有漏掉。记住，分完一定要加一加对总数！',
+'同样的12个东西，换一种分法！这次不看颜色了，按形状来分。圆的放一边，方的放一边。看看结果一不一样！',
+'先找圆形的！看，所有圆的都亮起来了。里面有红色的圆、蓝色的圆、绿色的圆，三种颜色都有哦！数一数，一共6个圆形。',
+'再找方形的！看，方形的亮起来了。红方、蓝方、绿方，也是三种颜色都有。数一数，也是6个！',
+'加起来！6个圆形，加上6个方形，等于12！跟总数还是一样！你发现了吗？按颜色分是4加4加4等于12，按形状分是6加6也等于12。分法不同，结果不同，但总数永远对得上！',
+'来看看我们发现了什么规律。不管按颜色分还是按形状分，加起来的总数都是12，不会变。这就是验证的方法：分完加一加，如果等于原来的总数，就说明分对了，没有重复也没有遗漏！',
+'总结三步法！第一步，想好按什么来分，选一个标准。第二步，分一分，数一数，把每组数清楚。第三步，加一加对总数，等于原来的数就说明分对了！掌握这个思路，分类题都能用！小朋友们，学会了吗？回去试一试吧！'
 ];
-function runStep(){if(si>=STEPS.length){si=0;playing=false;document.getElementById('go').classList.remove('hide');document.getElementById('go').textContent='↻';return}
-  var s=STEPS[si];showPage(s.p);if(s.fn)try{s.fn()}catch(e){}
-  document.getElementById('nar').innerHTML=s.t;document.getElementById('bar').style.width=Math.round(((si+1)/STEPS.length)*100)+'%';
-  speak(s.t,function(){si++;runStep()})}
-function doStart(){if(playing)return;playing=true;si=0;document.getElementById('go').classList.add('hide');runStep()}
-</script>
-</body></html>
-<!-- rebuild 1789039544 -->
+
+var voice=null;
+function pickVoice(){var vs=speechSynthesis.getVoices();var names=['Xiaoxiao','Yunxi'];for(var k=0;k<names.length;k++)for(var i=0;i<vs.length;i++)if(vs[i].name.indexOf(names[k])>=0&&vs[i].lang.indexOf('zh')>=0)return vs[i];for(var i=0;i<vs.length;i++)if(vs[i].lang==='zh-CN')return vs[i];return null;}
+if(window.speechSynthesis){voice=pickVoice();speechSynthesis.onvoiceschanged=function(){voice=pickVoice()};}
+function speakCur(){
+  speechSynthesis.cancel();var text=NAR[cur];if(!text)return;
+  var utt=new SpeechSynthesisUtterance(text);utt.lang='zh-CN';utt.rate=0.85;utt.pitch=1.1;
+  if(!voice)voice=pickVoice();if(voice)utt.voice=voice;
+  var sub=document.getElementById('subBar');
+  var sents=text.match(/[^。？！；]+[。？！；]?/g)||[text];var si=0;
+  sub.classList.add('vis');sub.textContent=sents[0]||'';
+  utt.onboundary=function(e){if(e.charIndex!==undefined&&sents.length>1){var cc=0;for(var i=0;i<sents.length;i++){cc+=sents[i].length;if(e.charIndex<cc){if(i!==si){si=i;sub.textContent=sents[i].trim();}break;}}}};
+  utt.onend=function(){if(speaking&&cur<TOTAL-1)setTimeout(next,800);
+    else{speaking=false;document.getElementById('ttsBtn').textContent='🔊 开始讲解';sub.classList.remove('vis');}};
+  utt.onerror=function(){if(speaking&&cur<TOTAL-1)setTimeout(next,500);};
+  speechSynthesis.speak(utt);
+}
+function toggleTTS(){if(speaking){speaking=false;speechSynthesis.cancel();document.getElementById('ttsBtn').textContent='🔊 开始讲解';document.getElementById('subBar').classList.remove('vis');}
+  else{speaking=true;document.getElementById('ttsBtn').textContent='⏹ 停止';speakCur();}}
+function goFS(){if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(function(){});else document.exitFullscreen();}
+var tx=0;document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX});
+document.addEventListener('touchend',function(e){var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>60){d<0?next():prev();}});
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();next();}else if(e.key==='ArrowLeft'){e.preventDefault();prev();}});
+showSlide();
+</script></body></html>
