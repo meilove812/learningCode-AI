@@ -149,7 +149,16 @@ function speak(text,cb){
     if(voice)u.voice=voice;u.lang='zh-CN';u.rate=0.9;u.pitch=1.05;
     u.onend=finish;u.onerror=finish;speechSynthesis.speak(u)}catch(e){finish()}
 }
-function showPage(id){var ps=document.querySelectorAll('.pg');for(var i=0;i<ps.length;i++)ps[i].classList.remove('on');document.getElementById(id).classList.add('on')}
+function showPage(id){
+  var ps=document.querySelectorAll('.pg');for(var i=0;i<ps.length;i++)ps[i].classList.remove('on');
+  document.getElementById(id).classList.add('on');
+  // 切页时预填充视觉，确保框不空
+  if(id==='p0'&&!document.getElementById('a0').hasChildNodes())showItems('a0');
+  if(id==='p1'&&!document.getElementById('a1').hasChildNodes())showItems('a1');
+  if(id==='p2'&&!document.getElementById('g1').hasChildNodes())showGroups('g1','c1',true);
+  if(id==='p3'&&!document.getElementById('a2').hasChildNodes())showItems('a2',[4,8]);
+  if(id==='p4'&&!document.getElementById('g2').hasChildNodes())showGroups('g2','c2',false);
+}
 
 var STEPS=[
   {p:'p0',t:'分类题，看到这堆东西怎么分？',fn:function(){showItems('a0')}},
@@ -173,6 +182,9 @@ function runStep(){
   document.getElementById('bar').style.width=Math.round(((si+1)/STEPS.length)*100)+'%';
   speak(s.t,function(){si++;runStep()});
 }
+
+// 页面加载时初始化首屏物品
+showItems('a0');
 function doStart(){if(playing)return;playing=true;si=0;document.getElementById('go').classList.add('hide');runStep()}
 </script>
 </body></html>
