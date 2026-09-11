@@ -30,10 +30,24 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Micr
 .sub.vis{display:block}
 .bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,#e0c97f,#7eb8d0);z-index:101;transition:width .4s}
 
+
+/* 柱状图 */
+.bars{width:100%;max-width:400px;margin:10px auto}
+.bar-row{display:flex;align-items:center;gap:8px;margin:7px 0;opacity:0;animation:fadeUp .5s ease-out forwards}
+.bar-label{width:60px;font-size:12px;color:#8a92a8;text-align:right;flex-shrink:0}
+.bar-track{flex:1;height:22px;background:rgba(255,255,255,.04);border-radius:6px;overflow:hidden}
+.bar-fill{height:100%;border-radius:6px;width:0;animation:barGrow 1.2s ease-out forwards;animation-delay:inherit;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:11px;font-weight:700;color:#fff}
+.bar-fill.warn{background:linear-gradient(90deg,rgba(224,201,127,.3),rgba(224,201,127,.7))}
+.bar-fill.mid{background:linear-gradient(90deg,rgba(126,184,208,.2),rgba(126,184,208,.4))}
+.bar-fill.ok{background:linear-gradient(90deg,rgba(126,184,208,.1),rgba(126,184,208,.25))}
+.bar-alert{font-size:11px;color:#e0c97f;font-weight:700;white-space:nowrap;opacity:0;animation:fadeUp .4s ease-out 1.2s forwards}
+@keyframes barGrow{to{width:var(--w)}}
+
 /* 环形图动画 */
 .ring{display:block;margin:8px auto}
 .ring-fill{animation:ringDraw 2s ease-out forwards;filter:drop-shadow(0 0 8px rgba(224,201,127,.3))}
 @keyframes ringDraw{to{stroke-dashoffset:94}}
+.ring text:first-of-type{opacity:0;animation:fadeUp .5s ease-out .8s forwards}
 
 /* 页面切换动画 */
 .slide.active .stitle{animation:fadeUp .6s ease-out both}
@@ -72,20 +86,15 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Micr
 </div>
 
 <div class="slide" id="s1">
-  <div class="stitle">算力够了 数据有了 模型现成</div>
-  <svg class="chart" viewBox="0 0 320 120" width="320" height="120" style="display:block;margin:6px auto">
-    <text x="12" y="30" fill="#5a6278" font-size="11">算力</text>
-    <rect x="52" y="18" width="0" height="18" rx="4" fill="rgba(126,184,208,.25)"><animate attributeName="width" from="0" to="200" dur="1s" fill="freeze"/></rect>
-    <text x="258" y="32" fill="#5a6278" font-size="10">充足</text>
-    <text x="12" y="58" fill="#5a6278" font-size="11">数据</text>
-    <rect x="52" y="46" width="0" height="18" rx="4" fill="rgba(126,184,208,.25)"><animate attributeName="width" from="0" to="180" dur="1s" begin=".2s" fill="freeze"/></rect>
-    <text x="238" y="60" fill="#5a6278" font-size="10">成熟</text>
-    <text x="12" y="86" fill="#5a6278" font-size="11">人才</text>
-    <rect x="52" y="74" width="0" height="18" rx="4" fill="rgba(224,201,127,.4)"><animate attributeName="width" from="0" to="60" dur="1s" begin=".4s" fill="freeze"/></rect>
-    <text x="118" y="88" fill="#e0c97f" font-size="10" font-weight="700">严重不足</text>
-  </svg>
-  <div class="insight" style="border-left:3px solid #e0c97f"><h3>三千两百家企业的答案</h3><p>缺的是能在真实业务环节中完成<span class="accent">验证闭环</span>的人——不是研究员，是把工具变成生产力的人。</p></div>
-</div>
+  <div class="stitle">瓶颈在哪？三千两百家企业的回答</div>
+  <div class="bars">
+    <div class="bar-row" style="animation-delay:.1s"><span class="bar-label">人才缺口</span><div class="bar-track"><div class="bar-fill warn" style="--w:85%">85%</div></div><span class="bar-alert">⚠️ 第一名</span></div>
+    <div class="bar-row" style="animation-delay:.3s"><span class="bar-label">成本压力</span><div class="bar-track"><div class="bar-fill mid" style="--w:62%">62%</div></div></div>
+    <div class="bar-row" style="animation-delay:.5s"><span class="bar-label">数据质量</span><div class="bar-track"><div class="bar-fill ok" style="--w:48%">48%</div></div></div>
+    <div class="bar-row" style="animation-delay:.7s"><span class="bar-label">算力供给</span><div class="bar-track"><div class="bar-fill ok" style="--w:35%">35%</div></div></div>
+    <div class="bar-row" style="animation-delay:.9s"><span class="bar-label">安全治理</span><div class="bar-track"><div class="bar-fill ok" style="--w:30%">30%</div></div></div>
+  </div>
+  <div class="insight" style="border-left:3px solid #e0c97f;margin-top:10px"><h3>缺的不是研究员</h3><p>是能在真实业务环节中完成<span class="accent">验证闭环</span>的人——把工具变成生产力的人。</p></div></div>
 
 <div class="slide" id="s2">
   <div class="stitle">三个关键词拆开看</div>
