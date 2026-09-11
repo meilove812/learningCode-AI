@@ -31,6 +31,16 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Micr
 .bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,#e0c97f,#7eb8d0);z-index:101;transition:width .4s}
 
 
+
+/* 数据卡片 */
+.stat-row{display:flex;gap:10px;margin:12px auto;max-width:400px;justify-content:center}
+.stat-card{flex:1;text-align:center;padding:12px 6px;border-radius:14px;background:rgba(224,201,127,.06);border:1px solid rgba(224,201,127,.1);opacity:0;animation:fadeUp .5s ease-out forwards}
+.stat-card:nth-child(1){animation-delay:.2s}
+.stat-card:nth-child(2){animation-delay:.4s}
+.stat-card:nth-child(3){animation-delay:.6s}
+.stat-num{font-size:clamp(22px,5vw,30px);font-weight:900;color:#e0c97f;letter-spacing:-1px}
+.stat-label{font-size:11px;color:#6a7290;margin-top:3px}
+
 /* 柱状图 */
 .bars{width:100%;max-width:400px;margin:10px auto}
 .bar-row{display:flex;align-items:center;gap:8px;margin:7px 0;opacity:0;animation:fadeUp .5s ease-out forwards}
@@ -46,7 +56,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Micr
 /* 环形图动画 */
 .ring{display:block;margin:8px auto}
 .ring-fill{animation:ringDraw 2s ease-out forwards;filter:drop-shadow(0 0 8px rgba(224,201,127,.3))}
-@keyframes ringDraw{to{stroke-dashoffset:94}}
+@keyframes ringDraw{to{stroke-dashoffset:80}}
 .ring text:first-of-type{opacity:0;animation:fadeUp .5s ease-out .8s forwards}
 
 /* 页面切换动画 */
@@ -74,15 +84,19 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Micr
 <div id="slides">
 
 <div class="slide active" id="s0">
-  <p class="sdesc" style="color:#5a6278;font-size:13px;margin-bottom:8px">工具越来越强之后</p>
+  <p class="sdesc" style="color:#5a6278;font-size:13px;margin-bottom:6px">工具越来越强之后</p>
   <div class="stitle" style="font-size:clamp(28px,6.5vw,42px)">能力瓶颈<br>到底在哪一侧</div>
-  <svg class="ring" viewBox="0 0 160 160" width="160" height="160">
-    <circle cx="80" cy="80" r="68" fill="none" stroke="rgba(224,201,127,.1)" stroke-width="10"/>
-    <circle class="ring-fill" cx="80" cy="80" r="68" fill="none" stroke="#e0c97f" stroke-width="10" stroke-linecap="round" stroke-dasharray="427" stroke-dashoffset="427" transform="rotate(-90 80 80)"/>
-    <text x="80" y="72" text-anchor="middle" fill="#e0c97f" font-size="36" font-weight="900">78%</text>
-    <text x="80" y="96" text-anchor="middle" fill="#6a7290" font-size="12">企业已在使用</text>
+  <div class="stat-row">
+    <div class="stat-card"><div class="stat-num">78%</div><div class="stat-label">企业已在使用</div></div>
+    <div class="stat-card"><div class="stat-num">3200</div><div class="stat-label">家企业调研</div></div>
+    <div class="stat-card"><div class="stat-num">#1</div><div class="stat-label">瓶颈是缺人</div></div>
+  </div>
+  <svg class="ring" viewBox="0 0 140 140" width="130" height="130">
+    <circle cx="70" cy="70" r="58" fill="none" stroke="rgba(224,201,127,.08)" stroke-width="8"/>
+    <circle class="ring-fill" cx="70" cy="70" r="58" fill="none" stroke="#e0c97f" stroke-width="8" stroke-linecap="round" stroke-dasharray="364" stroke-dashoffset="364" transform="rotate(-90 70 70)"/>
+    <text x="70" y="66" text-anchor="middle" fill="#e0c97f" font-size="28" font-weight="900">78%</text>
+    <text x="70" y="84" text-anchor="middle" fill="#6a7290" font-size="10">渗透率</text>
   </svg>
-  <p class="sdesc" style="margin-top:12px">将近八成企业已经在用<br>但最大瓶颈不在技术层</p>
 </div>
 
 <div class="slide" id="s1">
