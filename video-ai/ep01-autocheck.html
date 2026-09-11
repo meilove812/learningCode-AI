@@ -10,7 +10,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Micr
 .sdesc{font-size:clamp(15px,3.2vw,20px);color:#8a92a8;text-align:center;line-height:1.9;max-width:560px}
 .accent{color:#e0c97f;font-weight:800}
 .soft{color:#7eb8d0;font-weight:700}
-.num-hero{font-size:clamp(56px,12vw,80px);font-weight:900;text-align:center;margin:20px 0;color:#e0c97f;opacity:.9;letter-spacing:-2px}
+
 .insight{width:100%;max-width:400px;margin:10px auto;padding:18px 22px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid rgba(224,201,127,.12)}
 .insight h3{color:#e0c97f;font-size:16px;margin-bottom:6px;font-weight:800}
 .insight p{color:#9aa2b8;font-size:14px;line-height:1.7}
@@ -29,6 +29,28 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Micr
 .sub{position:fixed;bottom:58px;left:50%;transform:translateX(-50%);background:rgba(10,14,26,.92);border:1px solid rgba(224,201,127,.1);border-radius:14px;padding:10px 22px;max-width:88%;text-align:center;font-size:clamp(14px,2.8vw,17px);color:#c0c8e0;line-height:1.6;z-index:99;display:none}
 .sub.vis{display:block}
 .bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,#e0c97f,#7eb8d0);z-index:101;transition:width .4s}
+
+/* 环形图动画 */
+.ring{display:block;margin:8px auto}
+.ring-fill{animation:ringDraw 2s ease-out forwards;filter:drop-shadow(0 0 8px rgba(224,201,127,.3))}
+@keyframes ringDraw{to{stroke-dashoffset:94}}
+
+/* 页面切换动画 */
+.slide.active .stitle{animation:fadeUp .6s ease-out both}
+.slide.active .insight,.slide.active .flow-item,.slide.active .vs-box{animation:fadeUp .5s ease-out both}
+.slide.active .insight:nth-child(2){animation-delay:.1s}
+.slide.active .insight:nth-child(3){animation-delay:.2s}
+.slide.active .flow-item:nth-child(1){animation-delay:.05s}
+.slide.active .flow-item:nth-child(2){animation-delay:.15s}
+.slide.active .flow-item:nth-child(3){animation-delay:.25s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* 卡片悬浮阴影 */
+.insight{transition:transform .3s,box-shadow .3s}
+.insight:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(224,201,127,.08)}
+
+/* 背景微光 */
+.slide::before{content:"";position:absolute;top:-20%;left:-10%;width:120%;height:60%;background:radial-gradient(ellipse at 50% 0%,rgba(224,201,127,.04),transparent 70%);pointer-events:none;z-index:0}
 .tag{position:fixed;top:8px;left:14px;font-size:10px;color:#3a4058;letter-spacing:1px;z-index:102}
 .sig{position:fixed;top:8px;right:14px;font-size:10px;color:#3a4058;z-index:102}
 </style></head><body>
@@ -40,14 +62,29 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Micr
 <div class="slide active" id="s0">
   <p class="sdesc" style="color:#5a6278;font-size:13px;margin-bottom:8px">工具越来越强之后</p>
   <div class="stitle" style="font-size:clamp(28px,6.5vw,42px)">能力瓶颈<br>到底在哪一侧</div>
-  <div class="num-hero">78%</div>
-  <p class="sdesc">将近八成企业已经在用<br>但最大瓶颈不在技术层</p>
+  <svg class="ring" viewBox="0 0 160 160" width="160" height="160">
+    <circle cx="80" cy="80" r="68" fill="none" stroke="rgba(224,201,127,.1)" stroke-width="10"/>
+    <circle class="ring-fill" cx="80" cy="80" r="68" fill="none" stroke="#e0c97f" stroke-width="10" stroke-linecap="round" stroke-dasharray="427" stroke-dashoffset="427" transform="rotate(-90 80 80)"/>
+    <text x="80" y="72" text-anchor="middle" fill="#e0c97f" font-size="36" font-weight="900">78%</text>
+    <text x="80" y="96" text-anchor="middle" fill="#6a7290" font-size="12">企业已在使用</text>
+  </svg>
+  <p class="sdesc" style="margin-top:12px">将近八成企业已经在用<br>但最大瓶颈不在技术层</p>
 </div>
 
 <div class="slide" id="s1">
   <div class="stitle">算力够了 数据有了 模型现成</div>
-  <div class="insight"><h3>三千两百家企业的回答</h3><p>瓶颈不在技术侧。算力不再稀缺，数据管道成熟，模型已是基础设施。</p></div>
-  <div class="insight" style="border-left:3px solid #e0c97f"><h3>缺的是一种人</h3><p>能在真实业务环节中完成<span class="accent">验证闭环</span>的人——不是研究员，是把工具变成生产力的人。</p></div>
+  <svg class="chart" viewBox="0 0 320 120" width="320" height="120" style="display:block;margin:6px auto">
+    <text x="12" y="30" fill="#5a6278" font-size="11">算力</text>
+    <rect x="52" y="18" width="0" height="18" rx="4" fill="rgba(126,184,208,.25)"><animate attributeName="width" from="0" to="200" dur="1s" fill="freeze"/></rect>
+    <text x="258" y="32" fill="#5a6278" font-size="10">充足</text>
+    <text x="12" y="58" fill="#5a6278" font-size="11">数据</text>
+    <rect x="52" y="46" width="0" height="18" rx="4" fill="rgba(126,184,208,.25)"><animate attributeName="width" from="0" to="180" dur="1s" begin=".2s" fill="freeze"/></rect>
+    <text x="238" y="60" fill="#5a6278" font-size="10">成熟</text>
+    <text x="12" y="86" fill="#5a6278" font-size="11">人才</text>
+    <rect x="52" y="74" width="0" height="18" rx="4" fill="rgba(224,201,127,.4)"><animate attributeName="width" from="0" to="60" dur="1s" begin=".4s" fill="freeze"/></rect>
+    <text x="118" y="88" fill="#e0c97f" font-size="10" font-weight="700">严重不足</text>
+  </svg>
+  <div class="insight" style="border-left:3px solid #e0c97f"><h3>三千两百家企业的答案</h3><p>缺的是能在真实业务环节中完成<span class="accent">验证闭环</span>的人——不是研究员，是把工具变成生产力的人。</p></div>
 </div>
 
 <div class="slide" id="s2">
