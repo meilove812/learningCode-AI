@@ -1,0 +1,45 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TTS测试</title>
+<style>body{background:#080820;color:#fff;font-family:sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0;gap:20px}
+button{padding:20px 40px;font-size:20px;border:none;border-radius:16px;background:#ffd700;color:#1a1a4e;font-weight:bold;cursor:pointer}
+#status{font-size:16px;color:#aaa}</style>
+</head><body>
+<h2>TTS播放测试</h2>
+<button onclick="test1()">方法1: 直接speak</button>
+<button onclick="test2()">方法2: 先cancel再speak</button>
+<button onclick="test3()">方法3: 延迟speak</button>
+<div id="status">点击按钮测试</div>
+<script>
+var st=document.getElementById('status');
+function test1(){
+  st.textContent='方法1执行中...';
+  var u=new SpeechSynthesisUtterance('这是播放测试，能听到说明正常工作');
+  u.lang='zh-CN';u.rate=0.9;
+  u.onstart=function(){st.textContent='方法1: 正在播放 ✅'};
+  u.onend=function(){st.textContent='方法1: 播放完成 ✅'};
+  u.onerror=function(e){st.textContent='方法1: 错误 '+e.error};
+  speechSynthesis.speak(u);
+}
+function test2(){
+  st.textContent='方法2执行中...';
+  speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance('方法二测试，先取消再播放');
+  u.lang='zh-CN';u.rate=0.9;
+  u.onstart=function(){st.textContent='方法2: 正在播放 ✅'};
+  u.onend=function(){st.textContent='方法2: 播放完成 ✅'};
+  u.onerror=function(e){st.textContent='方法2: 错误 '+e.error};
+  speechSynthesis.speak(u);
+}
+function test3(){
+  st.textContent='方法3: 等100ms...';
+  speechSynthesis.cancel();
+  setTimeout(function(){
+    var u=new SpeechSynthesisUtterance('方法三，延迟一百毫秒后播放');
+    u.lang='zh-CN';u.rate=0.9;
+    u.onstart=function(){st.textContent='方法3: 正在播放 ✅'};
+    u.onend=function(){st.textContent='方法3: 播放完成 ✅'};
+    u.onerror=function(e){st.textContent='方法3: 错误 '+e.error};
+    speechSynthesis.speak(u);
+  },100);
+}
+</script></body></html>
