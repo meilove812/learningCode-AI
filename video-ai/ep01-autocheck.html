@@ -171,10 +171,11 @@ function speak(text,callback){
   function finish(){if(!done){done=true;clearTimeout(timer);setTimeout(callback,600)}}
   var timer=setTimeout(finish,Math.max(text.length*500,5000));
   try{
-    speechSynthesis.cancel();
     var u=new SpeechSynthesisUtterance(text);
+    if(!voice)voice=pickVoice();
     if(voice)u.voice=voice;
     u.lang='zh-CN';u.rate=0.85;u.pitch=1;
+    u.onstart=function(){document.getElementById('nar').innerHTML=text};
     u.onend=finish;u.onerror=finish;
     speechSynthesis.speak(u);
   }catch(e){finish()}
@@ -239,9 +240,10 @@ function doStart(){
     playing=false;speechSynthesis.cancel();
     document.getElementById('go').textContent='📢';return;
   }
+  speechSynthesis.cancel();
   playing=true;si=0;
   document.getElementById('go').textContent='⏹';
-  runStep();
+  setTimeout(runStep,50);
 }
 </script>
 </body></html>
