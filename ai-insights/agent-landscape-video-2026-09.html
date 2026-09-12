@@ -137,7 +137,7 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
     <!-- s0 封面 -->
     <div class="slide active" id="s0">
       <div class="kicker">2026年9月 · 深度观察</div>
-      <div class="stitle" style="font-size:clamp(24px,6.5vw,38px)">Agent框架替你做的越多<br>你该往上建什么</div>
+      <div class="stitle" style="font-size:clamp(24px,6.5vw,38px)">Agent框架做的越多<br>人该往哪里建壁垒</div>
       <div class="flow" style="margin-top:16px">
         <div class="flow-item" style="opacity:.4;border-color:rgba(255,255,255,.03)"><div class="flow-num" style="background:rgba(126,184,208,.1);color:#5a7a8a;font-size:12px">下</div><div class="flow-text" style="color:#5a6278"><b style="color:#6a7a8a">基础设施层</b> — 模型调用 · 上下文 · 工具路由 · 沙箱<br>八大Agent框架正在把这一层变成标配</div></div>
         <div class="flow-item" style="border-color:rgba(224,201,127,.15)"><div class="flow-num" style="font-size:12px">中</div><div class="flow-text"><b>业务验证层</b> — 工具设计 · 闭环验证 · 过程审计<br><span class="accent">差异化从这里开始</span></div></div>
@@ -147,14 +147,14 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
 
 <!-- s1 模型厂商上 -->
     <div class="slide" id="s1">
-      <div class="stitle">模型厂商（上）<br>两种托管哲学</div>
+      <div class="stitle">模型厂商 ①<br>两种托管哲学</div>
       <div class="insight" style="border-left:3px solid #e0c97f"><h3>OpenAI Agents API</h3><p>Codex引擎开放为<span class="accent">托管服务</span><br>· 自动上下文压缩 — 长Session不丢记忆<br>· 工具搜索 — 按需加载，省token保缓存<br>· 子Agent并行 — 复杂任务拆开同时跑<br>· MCP原生支持</p></div>
       <div class="insight" style="border-left:3px solid #7eb8d0"><h3>Claude Agent SDK</h3><p>Agent跑在<span class="soft">本地进程</span>里<br>· 内建权限系统 — permission_mode<br>· Hooks机制 — 循环关键节点插入审计<br>· Session持久化JSONL — resume/fork<br>· 从Claude Code演化而来</p></div>
     </div>
 
     <!-- s2 模型厂商下 -->
     <div class="slide" id="s2">
-      <div class="stitle">模型厂商（下）<br>协议驱动 vs 插件化</div>
+      <div class="stitle">模型厂商 ②<br>协议驱动 vs 插件化</div>
       <div class="insight" style="border-left:3px solid #e0c97f"><h3>Google ADK v2.0</h3><p><span class="accent">A2A协议</span>原生支持<br>· Agent之间直接通信，不经中心调度<br>· 多语言：Python / Java / Go / TS / Kotlin<br>· v2加入图工作流</p></div>
       <div class="insight" style="border-left:3px solid #7eb8d0"><h3>DeepSeek Harness</h3><p>MIT协议完全开源 · 仍在alpha阶段 · <span class="soft">一切皆插件</span><br>· Cordis微内核架构<br>· 模型/工具/沙箱/存储全部可拆卸<br>· 4种预设运行模式<br>· Trajectory轨迹日志</p></div>
     </div>
@@ -275,7 +275,7 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
 <script>
 // ===== 讲解文案（每页）=====
 const NARRATION = [
-  "Agent框架替你做的越多，你该往上建什么。2026年9月，八大Agent框架正在把模型调用、上下文管理、工具路由变成标配。基础设施层正在下沉。中间是业务验证层，工具设计、闭环验证、过程审计，差异化从这里开始。最上面是业务价值层，在特定场景积累的验证经验，这一层只有人能建。这期从底层拆到顶层。",
+  "Agent框架做的越多，人该往哪里建壁垒。2026年9月，八大Agent框架正在把模型调用、上下文管理、工具路由变成标配。基础设施层正在下沉。中间是业务验证层，工具设计、闭环验证、过程审计，差异化从这里开始。最上面是业务价值层，在特定场景积累的验证经验，这一层只有人能建。这期从底层拆到顶层。",
   "先看模型厂商的两种托管哲学。OpenAI把Codex引擎开放为托管API，开发者不用管运行基础设施。自动上下文压缩解决长Session记忆丢失，工具搜索按需加载省token，子Agent并行处理复杂任务。Anthropic走另一条路，Claude Agent SDK让Agent跑在本地进程里，内建权限系统和Hooks机制，开发者掌控全部细节。",
   "另外两家模型厂商各有特色。Google ADK走协议驱动路线，A2A协议让Agent之间直接通信，不经过中心调度，支持Python、Java、Go、TypeScript、Kotlin五种语言。DeepSeek Harness走MIT完全开源路线，用Cordis微内核架构把每个组件都变成可拆卸的插件，模型、工具、沙箱、存储全部解耦。",
   "AWS做了一个双层架构。底层Strands Agents是开源SDK，三行代码就能起步，多模型不锁定，内部产品线已经在用。上层AgentCore Harness是全托管运行环境，配置即Agent，每个Session跑在独立microVM里，Gateway层的安全策略Agent绕不过去。SDK写原型，Harness跑生产，不用重写。",
