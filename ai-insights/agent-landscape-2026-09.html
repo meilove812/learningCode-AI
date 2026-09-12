@@ -58,14 +58,14 @@ body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#0a0e1a;c
 </style></head><body>
 
 <div class="header">
-  <h1>Agent 框架全景图<br>九大平台架构对比</h1>
+  <h1>Agent 框架全景图<br>九大框架架构分析</h1>
   <p>2026年9月 · 中立视角 · 🦎 开心的舵手</p>
 </div>
 
 <!-- ===== 模型厂商原生 ===== -->
 <div class="section">
   <h2>模型厂商原生框架</h2>
-  <span class="cat-label">模型厂商自建，深度绑定自家模型</span>
+  <span class="cat-label">由模型厂商发布，与自家模型有原生集成</span>
   <div class="cards">
     <div class="card">
       <div class="logo">🅾️</div>
@@ -101,7 +101,7 @@ body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#0a0e1a;c
 <!-- ===== 云平台基础设施 ===== -->
 <div class="section">
   <h2>云平台基础设施</h2>
-  <span class="cat-label">云厂商提供，侧重生产部署和企业治理</span>
+  <span class="cat-label">云厂商提供，面向生产部署与企业级运维</span>
   <div class="cards">
     <div class="card">
       <div class="logo">🔶</div>
@@ -123,7 +123,7 @@ body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#0a0e1a;c
 <!-- ===== 社区开源 ===== -->
 <div class="section">
   <h2>社区开源框架</h2>
-  <span class="cat-label">社区驱动，不绑定模型厂商</span>
+  <span class="cat-label">社区驱动，支持多模型接入</span>
   <div class="cards">
     <div class="card">
       <div class="logo">🔗</div>
@@ -144,14 +144,14 @@ body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#0a0e1a;c
       <h3>Mastra</h3>
       <div class="sub">TypeScript · 15万周下载 · $13M融资</div>
       <div class="desc">TypeScript原生Agent框架，前端/全栈开发者友好，npm生态集成</div>
-      <div class="tags"><span class="tag green">开源</span><span class="tag blue">TypeScript</span><span class="tag">前端友好</span><span class="tag red">⚠ AutoGen/AG2 已退出主流</span></div>
+      <div class="tags"><span class="tag green">开源</span><span class="tag blue">TypeScript</span><span class="tag">前端友好</span><span class="tag red">AutoGen/AG2 已转维护</span></div>
     </div>
   </div>
 </div>
 
 <!-- ===== 九宫格对比 ===== -->
 <div class="section">
-  <h2>九框架横向对比</h2>
+  <h2>九框架特征总览</h2>
   <div class="tbl-wrap">
   <table class="tbl">
     <tr><th>维度</th><th>OpenAI API</th><th>Claude SDK</th><th>Google ADK</th><th>Strands</th><th>AgentCore</th><th>LangGraph</th><th>CrewAI</th><th>Mastra</th><th>OAI SDK</th></tr>
@@ -185,7 +185,7 @@ body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#0a0e1a;c
   <div class="trend"><h3>① 自建 <span class="arrow">→</span> 服务</h3><p>Agent harness 正在从开发者代码里抽出来变成平台能力，跟数据库从自建变RDS一条路</p></div>
   <div class="trend"><h3>② SDK + 托管 = 双轨标配</h3><p>Strands+AgentCore、Claude SDK+Managed、OpenAI SDK+API——本地开发，云端运行</p></div>
   <div class="trend"><h3>③ 协议层正在收敛</h3><p>MCP（工具连接）和 A2A（Agent通信）正在成为跨框架的通用语言，选框架的锁定在降低</p></div>
-  <div class="trend"><h3>④ 工具生态 > 模型能力</h3><p>模型能力趋同后，谁的工具连接更丰富、企业系统集成更顺，谁赢</p></div>
+  <div class="trend"><h3>④ 工具生态 > 模型能力</h3><p>模型能力趋同后，谁的工具连接更丰富、企业系统集成更顺，谁更有优势</p></div>
   <div class="trend"><h3>⑤ 安全治理从可选变必选</h3><p>AgentCore Gateway、OpenAI 过程审计——权限边界和行为审计正在变成准入门槛</p></div>
 </div>
 
@@ -198,8 +198,8 @@ body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#0a0e1a;c
 </div>
 
 <div class="footer">
-  数据截止 2026.9.12 · 基于各平台官方文档整理 · 不构成技术选型建议<br>
-  AutoGen/AG2 已退出生产主流，未列入对比<br>
+  数据截止 2026.9.12 · 基于各平台官方文档整理 · 不构成技术选型或投资建议<br>
+  AutoGen/AG2 已转入维护模式<br>
   🦎 开心的舵手 · 深度观察
 </div>
 
