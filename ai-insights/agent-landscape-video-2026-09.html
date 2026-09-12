@@ -161,8 +161,8 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
     <!-- s2 模型厂商下 -->
     <div class="slide" id="s2">
       <div class="stitle">模型厂商（下）<br>协议驱动 vs 插件化</div>
-      <div class="insight" style="border-left:3px solid #e0c97f"><h3>Google ADK v2.0</h3><p><span class="accent">A2A协议</span>原生支持<br>· Agent之间直接通信，不经中心调度<br>· 多语言：Python / Java / Go<br>· v2加入图工作流</p></div>
-      <div class="insight" style="border-left:3px solid #7eb8d0"><h3>DeepSeek Harness</h3><p>MIT协议完全开源 · <span class="soft">一切皆插件</span><br>· Cordis微内核架构<br>· 模型/工具/沙箱/存储全部可拆卸<br>· 4种预设运行模式<br>· Trajectory轨迹日志</p></div>
+      <div class="insight" style="border-left:3px solid #e0c97f"><h3>Google ADK v2.0</h3><p><span class="accent">A2A协议</span>原生支持<br>· Agent之间直接通信，不经中心调度<br>· 多语言：Python / Java / Go / TS / Kotlin<br>· v2加入图工作流</p></div>
+      <div class="insight" style="border-left:3px solid #7eb8d0"><h3>DeepSeek Harness</h3><p>MIT协议完全开源 · 仍在alpha阶段 · <span class="soft">一切皆插件</span><br>· Cordis微内核架构<br>· 模型/工具/沙箱/存储全部可拆卸<br>· 4种预设运行模式<br>· Trajectory轨迹日志</p></div>
     </div>
 
     <!-- s3 云平台 -->
@@ -178,8 +178,8 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
     <div class="slide" id="s4">
       <div class="stitle">社区开源双雄</div>
       <div class="bars">
-        <div class="bar-row"><span class="bar-label">CrewAI ⭐</span><div class="bar-track"><div class="bar-fill warn" data-w="92">45.9k</div></div></div>
-        <div class="bar-row"><span class="bar-label">LangGraph ⭐</span><div class="bar-track"><div class="bar-fill mid" data-w="49">24.6k</div></div></div>
+        <div class="bar-row"><span class="bar-label">CrewAI</span><div class="bar-track"><div class="bar-fill warn" data-w="92">GitHub热度高</div></div></div>
+        <div class="bar-row"><span class="bar-label">LangGraph</span><div class="bar-track"><div class="bar-fill mid" data-w="49">企业采用多</div></div></div>
       </div>
       <div class="insight"><h3>LangGraph · 图即Agent</h3><p>显式状态转移 · checkpoint恢复 · LangSmith追踪<br>审计合规性最强</p></div>
       <div class="insight"><h3>CrewAI · 角色即Agent</h3><p>按职能分工委派 · 从零到可用最快<br>Flows API补精细控制 · MCP + A2A支持</p></div>
@@ -283,9 +283,9 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
 const NARRATION = [
   "2026年9月，Agent框架进入了新阶段。八个主流框架，分属三大阵营：模型厂商原生、云平台基础设施、社区开源。看起来路径各不相同，但仔细分析会发现，它们正在朝同一个方向收敛。",
   "先看模型厂商的两种托管哲学。OpenAI把Codex引擎开放为托管API，开发者不用管运行基础设施。自动上下文压缩解决长Session记忆丢失，工具搜索按需加载省token，子Agent并行处理复杂任务。Anthropic走另一条路，Claude Agent SDK让Agent跑在本地进程里，内建权限系统和Hooks机制，开发者掌控全部细节。",
-  "另外两家模型厂商各有特色。Google ADK走协议驱动路线，A2A协议让Agent之间直接通信，不经过中心调度，支持Python、Java、Go三种语言。DeepSeek Harness走MIT完全开源路线，用Cordis微内核架构把每个组件都变成可拆卸的插件，模型、工具、沙箱、存储全部解耦。",
-  "AWS做了一个双层架构。底层Strands Agents是开源SDK，三行Python就能起步，多模型不锁定，内部产品线已经在用。上层AgentCore Harness是全托管运行环境，配置即Agent，每个Session跑在独立microVM里，Gateway层的安全策略Agent绕不过去。SDK写原型，Harness跑生产，不用重写。",
-  "社区开源有两个代表。CrewAI GitHub星标四万五千九，角色驱动多Agent，从零到可用最快。LangGraph两万四千六百星，图架构，每个状态转移都是显式的，配合LangSmith做追踪评估，审计合规性最强。",
+  "另外两家模型厂商各有特色。Google ADK走协议驱动路线，A2A协议让Agent之间直接通信，不经过中心调度，支持Python、Java、Go、TypeScript、Kotlin五种语言。DeepSeek Harness走MIT完全开源路线，用Cordis微内核架构把每个组件都变成可拆卸的插件，模型、工具、沙箱、存储全部解耦。",
+  "AWS做了一个双层架构。底层Strands Agents是开源SDK，三行代码就能起步，多模型不锁定，内部产品线已经在用。上层AgentCore Harness是全托管运行环境，配置即Agent，每个Session跑在独立microVM里，Gateway层的安全策略Agent绕不过去。SDK写原型，Harness跑生产，不用重写。",
+  "社区开源有两个代表。CrewAI是GitHub上最热门的Agent框架之一，角色驱动多Agent，从零到可用最快。LangGraph在企业场景广泛采用，图架构，每个状态转移都是显式的，配合LangSmith做追踪评估，审计合规性最强。",
   "把八个框架放到生态里看，分四层。最上面是托管服务层。中间是SDK和框架层。下面是协议层，MCP负责工具连接，A2A负责Agent通信，正在成为跨框架的通用语言。最底层是模型层。",
   "八个框架背后有一个共同规律。模型调用循环、上下文管理、工具路由、沙箱隔离，这些过去需要自己写的基础设施，正在变成平台标配。开发者的工作重心在上移。跟十年前数据库从自建变成托管服务，是同一条路。",
   "五个趋势按成熟度排列。自建变服务和SDK加托管双轨已经在发生。协议层正在收敛，MCP和A2A让选框架的锁定在降低。工具生态正在成为关键差异。过程审计和权限边界正在从最佳实践变成准入门槛。",
