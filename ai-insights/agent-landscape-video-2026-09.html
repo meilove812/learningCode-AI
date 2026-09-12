@@ -64,7 +64,7 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
 .bar-row { display:flex; align-items:center; gap:10px; margin:12px 0; }
 .bar-label { width:72px; font-size:14px; color:#9aa2b8; text-align:right; flex-shrink:0; }
 .bar-track { flex:1; height:28px; background:rgba(255,255,255,.04); border-radius:8px; overflow:hidden; position:relative; }
-.bar-fill { height:100%; border-radius:8px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; font-size:13px; font-weight:700; color:#fff; transition:width 1.1s ease-out; width:0; }
+.bar-fill { height:100%; border-radius:8px; display:flex; align-items:center; justify-content:flex-end; padding-right:10px; font-size:13px; font-weight:700; color:#fff; transition:width 1.1s ease-out; width:0; white-space:nowrap; overflow:hidden; }
 .bar-fill { position:relative; overflow:hidden; }
 .bar-fill::after { content:""; position:absolute; top:0; left:0; width:40%; height:100%;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
@@ -164,8 +164,8 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
     <div class="slide" id="s1">
       <div class="stitle">模型厂商 ①<br>托管路径与本地路径</div>
       <div class="bars" style="margin-bottom:8px">
-        <div class="bar-row"><span class="bar-label" style="width:68px">OpenAI</span><div class="bar-track"><div class="bar-fill warn" data-w="92">全托管 · 平台承担基础设施</div></div></div>
-        <div class="bar-row"><span class="bar-label" style="width:68px">Claude</span><div class="bar-track"><div class="bar-fill mid" data-w="35">本地进程 · 控制权在开发侧</div></div></div>
+        <div class="bar-row"><span class="bar-label" style="width:68px">OpenAI</span><div class="bar-track"><div class="bar-fill warn" data-w="92">全托管 · 平台承担</div></div></div>
+        <div class="bar-row"><span class="bar-label" style="width:68px">Claude</span><div class="bar-track"><div class="bar-fill mid" data-w="35">本地 · 控制权在开发侧</div></div></div>
       </div>
       <div class="insight" style="border-left:3px solid #e0c97f"><h3>OpenAI Agents API</h3><p>自动上下文压缩 · 工具按需搜索 · 子Agent并行<br>MCP原生支持 · <span class="accent">开发者专注定义Agent做什么</span></p></div>
       <div class="insight" style="border-left:3px solid #7eb8d0"><h3>Claude Agent SDK</h3><p>权限系统permission_mode · Hooks插入审计<br>Session持久化JSONL · <span class="soft">开发者掌控全部细节</span></p></div>
@@ -176,8 +176,8 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
     <div class="slide" id="s2">
       <div class="stitle">模型厂商 ②<br>协议统一与架构解耦</div>
       <div class="bars" style="margin-bottom:8px">
-        <div class="bar-row"><span class="bar-label" style="width:68px">Google</span><div class="bar-track"><div class="bar-fill mid" data-w="70">协议驱动 · A2A Agent直接通信</div></div></div>
-        <div class="bar-row"><span class="bar-label" style="width:68px">DeepSeek</span><div class="bar-track"><div class="bar-fill ok" data-w="45">微内核 · MIT开源 · alpha阶段</div></div></div>
+        <div class="bar-row"><span class="bar-label" style="width:68px">Google</span><div class="bar-track"><div class="bar-fill mid" data-w="70">协议驱动 · A2A直接通信</div></div></div>
+        <div class="bar-row"><span class="bar-label" style="width:68px">DeepSeek</span><div class="bar-track"><div class="bar-fill ok" data-w="45">微内核 · MIT · alpha</div></div></div>
       </div>
       <div class="insight" style="border-left:3px solid #e0c97f"><h3>Google ADK v2.0</h3><p>A2A协议让Agent直接通信，不经中心调度<br>五种语言 · v2图工作流 · <span class="accent">如果协议统一，框架选型不再是决定因素</span></p></div>
       <div class="insight" style="border-left:3px solid #7eb8d0"><h3>DeepSeek Harness</h3><p>Cordis微内核 · 模型/工具/沙箱全部可拆卸<br>4种运行模式 · Trajectory轨迹 · <span class="soft">方向比成熟度更值得关注</span></p></div>
@@ -187,8 +187,8 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
     <div class="slide" id="s3">
       <div class="stitle">云平台双层架构</div>
       <div class="bars" style="margin-bottom:8px">
-        <div class="bar-row"><span class="bar-label" style="width:80px">Strands</span><div class="bar-track"><div class="bar-fill mid" data-w="55">开源SDK · 3行代码起步</div></div></div>
-        <div class="bar-row"><span class="bar-label" style="width:80px">AgentCore</span><div class="bar-track"><div class="bar-fill warn" data-w="90">全托管 · microVM · Gateway治理</div></div></div>
+        <div class="bar-row"><span class="bar-label" style="width:80px">Strands</span><div class="bar-track"><div class="bar-fill mid" data-w="55">开源SDK · 3行起步</div></div></div>
+        <div class="bar-row"><span class="bar-label" style="width:80px">AgentCore</span><div class="bar-track"><div class="bar-fill warn" data-w="90">全托管 · microVM · Gateway</div></div></div>
       </div>
       <div class="case-item"><h4>Strands → AgentCore</h4><p>SDK写原型验证 → 验证后上托管 → <span class="metric">核心逻辑不重写</span><br>Gateway层安全策略Agent无法绕过——当前框架中少见的治理设计</p></div>
       <div class="foot-note">渐进路径的价值：降低了"选错框架"的风险——先用SDK验证想法，再决定是否上托管</div>
@@ -198,8 +198,8 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
     <div class="slide" id="s4">
       <div class="stitle">社区开源</div>
       <div class="bars" style="margin-bottom:8px">
-        <div class="bar-row"><span class="bar-label" style="width:80px">LangGraph</span><div class="bar-track"><div class="bar-fill mid" data-w="70">图架构 · 显式状态 · 审计性强</div></div></div>
-        <div class="bar-row"><span class="bar-label" style="width:80px">CrewAI</span><div class="bar-track"><div class="bar-fill mid" data-w="65">角色分工 · 原型最快 · Flows补精控</div></div></div>
+        <div class="bar-row"><span class="bar-label" style="width:80px">LangGraph</span><div class="bar-track"><div class="bar-fill mid" data-w="70">图架构 · 显式状态 · 审计强</div></div></div>
+        <div class="bar-row"><span class="bar-label" style="width:80px">CrewAI</span><div class="bar-track"><div class="bar-fill mid" data-w="65">角色分工 · 原型最快</div></div></div>
       </div>
       <div class="insight"><h3>LangGraph · 图即Agent</h3><p>checkpoint恢复 · LangSmith追踪评估<br>核心假设：<span class="accent">图是Agent的正确抽象</span></p></div>
       <div class="insight"><h3>CrewAI · 角色即Agent</h3><p>按职能委派 · MCP + A2A支持<br>核心假设：<span class="accent">角色是Agent的正确抽象</span></p></div>
