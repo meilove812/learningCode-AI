@@ -7,132 +7,200 @@ body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#0a0e1a;c
 .header{text-align:center;margin-bottom:24px}
 .header h1{font-size:clamp(20px,4.5vw,28px);font-weight:900;color:#e0c97f;line-height:1.4}
 .header p{font-size:12px;color:#5a6278;margin-top:4px}
-.section{margin-bottom:20px}
+.section{margin-bottom:22px}
 .section h2{font-size:14px;color:#7eb8d0;font-weight:700;margin-bottom:10px;padding-left:8px;border-left:3px solid #7eb8d0}
 
-/* 四框架卡片 */
+/* 分类标题 */
+.cat-label{font-size:11px;color:#e0c97f;font-weight:700;margin:12px 0 6px;padding:3px 10px;display:inline-block;background:rgba(224,201,127,.08);border-radius:6px}
+
+/* 卡片网格 */
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.card{padding:14px 12px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
-.card .logo{font-size:24px;margin-bottom:6px}
-.card h3{font-size:14px;font-weight:800;color:#e0c97f;margin-bottom:4px}
-.card .sub{font-size:11px;color:#6a7290;margin-bottom:6px}
-.card .tags{display:flex;flex-wrap:wrap;gap:4px}
-.tag{font-size:10px;padding:2px 7px;border-radius:6px;background:rgba(224,201,127,.08);color:#c0a84e;border:1px solid rgba(224,201,127,.12)}
+.card{padding:12px 10px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06)}
+.card .logo{font-size:22px;margin-bottom:4px}
+.card h3{font-size:13px;font-weight:800;color:#e0c97f;margin-bottom:2px;line-height:1.3}
+.card .sub{font-size:10px;color:#6a7290;margin-bottom:5px}
+.card .desc{font-size:10px;color:#8a92a8;line-height:1.5;margin-bottom:5px}
+.card .tags{display:flex;flex-wrap:wrap;gap:3px}
+.tag{font-size:9px;padding:2px 6px;border-radius:5px;background:rgba(224,201,127,.08);color:#c0a84e;border:1px solid rgba(224,201,127,.12)}
 .tag.blue{background:rgba(126,184,208,.08);color:#7eb8d0;border-color:rgba(126,184,208,.12)}
 .tag.green{background:rgba(46,204,113,.08);color:#2ecc71;border-color:rgba(46,204,113,.12)}
+.tag.red{background:rgba(231,76,60,.08);color:#e74c3c;border-color:rgba(231,76,60,.12)}
+.tag.purple{background:rgba(155,89,182,.08);color:#bb8fce;border-color:rgba(155,89,182,.12)}
 
-/* 对比表 */
-.tbl{width:100%;border-collapse:collapse;font-size:11px;margin-top:8px}
-.tbl th{text-align:left;padding:6px 8px;color:#7eb8d0;font-weight:700;border-bottom:1px solid rgba(255,255,255,.06);font-size:10px}
-.tbl td{padding:6px 8px;border-bottom:1px solid rgba(255,255,255,.03);color:#9aa2b8;vertical-align:top}
+/* 大表 */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:8px}
+.tbl{width:100%;min-width:600px;border-collapse:collapse;font-size:10px}
+.tbl th{text-align:left;padding:5px 6px;color:#7eb8d0;font-weight:700;border-bottom:1px solid rgba(255,255,255,.08);font-size:9px;white-space:nowrap;position:sticky;top:0;background:#0a0e1a}
+.tbl td{padding:5px 6px;border-bottom:1px solid rgba(255,255,255,.03);color:#9aa2b8;vertical-align:top}
 .tbl td:first-child{color:#c0c8e0;font-weight:600;white-space:nowrap}
 .tbl .hl{color:#e0c97f;font-weight:700}
 
 /* 趋势 */
-.trend{padding:14px;border-radius:14px;background:rgba(224,201,127,.04);border:1px solid rgba(224,201,127,.08);margin-bottom:10px}
-.trend h3{font-size:13px;color:#e0c97f;font-weight:800;margin-bottom:4px}
-.trend p{font-size:12px;color:#8a92a8;line-height:1.7}
-.arrow{display:inline-block;color:#e0c97f;font-weight:900;margin:0 4px}
+.trend{padding:12px;border-radius:14px;background:rgba(224,201,127,.04);border:1px solid rgba(224,201,127,.08);margin-bottom:8px}
+.trend h3{font-size:12px;color:#e0c97f;font-weight:800;margin-bottom:3px}
+.trend p{font-size:11px;color:#8a92a8;line-height:1.6}
+.arrow{display:inline-block;color:#e0c97f;font-weight:900;margin:0 3px}
 
 /* 能力指引 */
-.guide{padding:14px;border-radius:14px;background:rgba(126,184,208,.04);border:1px solid rgba(126,184,208,.08);margin-bottom:10px}
-.guide h3{font-size:13px;color:#7eb8d0;font-weight:800;margin-bottom:4px}
-.guide p{font-size:12px;color:#8a92a8;line-height:1.7}
+.guide{padding:12px;border-radius:14px;background:rgba(126,184,208,.04);border:1px solid rgba(126,184,208,.08);margin-bottom:8px}
+.guide h3{font-size:12px;color:#7eb8d0;font-weight:800;margin-bottom:3px}
+.guide p{font-size:11px;color:#8a92a8;line-height:1.6}
 .guide b{color:#e0e4f0}
 
-.footer{text-align:center;margin-top:20px;font-size:10px;color:#3a4058}
+/* 生态图 */
+.eco{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.eco-row{display:flex;align-items:center;gap:8px}
+.eco-label{font-size:10px;color:#5a6278;width:60px;text-align:right;flex-shrink:0}
+.eco-bar{flex:1;height:20px;border-radius:6px;display:flex;align-items:center;overflow:hidden}
+.eco-seg{height:100%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff;white-space:nowrap;padding:0 4px}
+
+.footer{text-align:center;margin-top:20px;font-size:10px;color:#3a4058;line-height:1.6}
 </style></head><body>
 
 <div class="header">
-  <h1>Agent 框架全景图<br>四大平台架构对比</h1>
+  <h1>Agent 框架全景图<br>九大平台架构对比</h1>
   <p>2026年9月 · 中立视角 · 🦎 开心的舵手</p>
 </div>
 
-<!-- 四框架卡片 -->
+<!-- ===== 模型厂商原生 ===== -->
 <div class="section">
-  <h2>四大 Agent 框架</h2>
+  <h2>模型厂商原生框架</h2>
+  <span class="cat-label">模型厂商自建，深度绑定自家模型</span>
   <div class="cards">
     <div class="card">
       <div class="logo">🅾️</div>
       <h3>OpenAI Agents API</h3>
-      <div class="sub">2026.9.10 · 托管服务</div>
-      <div class="tags"><span class="tag">Codex Harness</span><span class="tag blue">上下文压缩</span><span class="tag blue">工具搜索</span><span class="tag">子Agent并行</span></div>
+      <div class="sub">2026.9 · 托管服务</div>
+      <div class="desc">Codex harness 开放为API，自动上下文压缩、工具搜索、子Agent并行</div>
+      <div class="tags"><span class="tag">Harness即服务</span><span class="tag blue">MCP</span><span class="tag blue">压缩</span></div>
     </div>
     <div class="card">
       <div class="logo">🅰️</div>
       <h3>Claude Agent SDK</h3>
       <div class="sub">Anthropic · 开源库</div>
-      <div class="tags"><span class="tag">本地进程</span><span class="tag blue">内置工具箱</span><span class="tag green">Hooks</span><span class="tag">三轨并行</span></div>
+      <div class="desc">Claude Code 演化而来，本地进程运行，内建权限系统和Hooks机制</div>
+      <div class="tags"><span class="tag green">开源</span><span class="tag">本地运行</span><span class="tag blue">Hooks</span></div>
     </div>
     <div class="card">
+      <div class="logo">🟢</div>
+      <h3>Google ADK</h3>
+      <div class="sub">Google · 开源 · v2.0</div>
+      <div class="desc">Agent Development Kit，A2A协议原生支持，v2加入图工作流</div>
+      <div class="tags"><span class="tag green">开源</span><span class="tag purple">A2A</span><span class="tag blue">多语言</span></div>
+    </div>
+    <div class="card">
+      <div class="logo">🔵</div>
+      <h3>OpenAI Agents SDK</h3>
+      <div class="sub">OpenAI · 开源 · v2</div>
+      <div class="desc">轻量Python SDK，本地控制Agent循环，支持handoff和guardrails</div>
+      <div class="tags"><span class="tag green">开源</span><span class="tag">轻量</span><span class="tag">Guardrails</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 云平台基础设施 ===== -->
+<div class="section">
+  <h2>云平台基础设施</h2>
+  <span class="cat-label">云厂商提供，侧重生产部署和企业治理</span>
+  <div class="cards">
+    <div class="card">
       <div class="logo">🔶</div>
-      <h3>Strands Agents SDK</h3>
+      <h3>Strands Agents</h3>
       <div class="sub">AWS 开源 · 模型驱动</div>
-      <div class="tags"><span class="tag green">3行起步</span><span class="tag blue">多模型</span><span class="tag">可观测</span><span class="tag green">开源</span></div>
+      <div class="desc">3行起步，多模型不锁定，AWS内部产品线在用，可上AgentCore</div>
+      <div class="tags"><span class="tag green">开源</span><span class="tag green">3行起步</span><span class="tag blue">多模型</span></div>
     </div>
     <div class="card">
       <div class="logo">☁️</div>
       <h3>AgentCore Harness</h3>
       <div class="sub">AWS 全托管 · 2026.6 GA</div>
-      <div class="tags"><span class="tag">配置即Agent</span><span class="tag blue">microVM隔离</span><span class="tag">版本化</span><span class="tag green">多模型混用</span></div>
+      <div class="desc">配置即Agent，microVM隔离，版本化灰度，多模型混用不丢上下文</div>
+      <div class="tags"><span class="tag">配置即Agent</span><span class="tag blue">microVM</span><span class="tag">版本化</span></div>
     </div>
   </div>
 </div>
 
-<!-- 对比表 -->
+<!-- ===== 社区开源 ===== -->
 <div class="section">
-  <h2>横向对比</h2>
+  <h2>社区开源框架</h2>
+  <span class="cat-label">社区驱动，不绑定模型厂商</span>
+  <div class="cards">
+    <div class="card">
+      <div class="logo">🔗</div>
+      <h3>LangGraph</h3>
+      <div class="sub">LangChain · 24.6k⭐</div>
+      <div class="desc">图架构，显式状态转移，checkpoint恢复，企业级可审计性最强</div>
+      <div class="tags"><span class="tag green">开源</span><span class="tag purple">图架构</span><span class="tag">审计</span></div>
+    </div>
+    <div class="card">
+      <div class="logo">👥</div>
+      <h3>CrewAI</h3>
+      <div class="sub">社区 · 45.9k⭐</div>
+      <div class="desc">角色驱动多Agent，按职能分工，从零到可用最快，Flows API补精控</div>
+      <div class="tags"><span class="tag green">开源</span><span class="tag">角色驱动</span><span class="tag green">最快原型</span></div>
+    </div>
+    <div class="card" style="grid-column:1/3">
+      <div class="logo">🔬</div>
+      <h3>Mastra</h3>
+      <div class="sub">TypeScript · 15万周下载 · $13M融资</div>
+      <div class="desc">TypeScript原生Agent框架，前端/全栈开发者友好，npm生态集成</div>
+      <div class="tags"><span class="tag green">开源</span><span class="tag blue">TypeScript</span><span class="tag">前端友好</span><span class="tag red">⚠ AutoGen/AG2 已退出主流</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 九宫格对比 ===== -->
+<div class="section">
+  <h2>九框架横向对比</h2>
+  <div class="tbl-wrap">
   <table class="tbl">
-    <tr><th>维度</th><th>OpenAI</th><th>Claude</th><th>Strands</th><th>AgentCore</th></tr>
-    <tr><td>运行位置</td><td class="hl">云托管</td><td>本地进程</td><td>本地/云</td><td class="hl">云托管</td></tr>
-    <tr><td>开源</td><td>❌</td><td>✅</td><td>✅</td><td>❌</td></tr>
-    <tr><td>模型锁定</td><td>OpenAI</td><td>Claude</td><td class="hl">多模型</td><td class="hl">多模型</td></tr>
-    <tr><td>安全隔离</td><td>沙箱</td><td>进程级</td><td>自定义</td><td class="hl">microVM</td></tr>
-    <tr><td>核心哲学</td><td>Harness即服务</td><td>开发者控制</td><td>模型驱动</td><td>配置即Agent</td></tr>
-    <tr><td>上手时间</td><td>~15min</td><td>~10min</td><td class="hl">~3min</td><td>~15min</td></tr>
+    <tr><th>维度</th><th>OpenAI API</th><th>Claude SDK</th><th>Google ADK</th><th>Strands</th><th>AgentCore</th><th>LangGraph</th><th>CrewAI</th><th>Mastra</th><th>OAI SDK</th></tr>
+    <tr><td>运行位置</td><td class="hl">云托管</td><td>本地</td><td>本地/云</td><td>本地/云</td><td class="hl">云托管</td><td>本地/云</td><td>本地/云</td><td>本地</td><td>本地</td></tr>
+    <tr><td>开源</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>❌</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+    <tr><td>模型锁定</td><td>OpenAI</td><td>Claude</td><td>Gemini优先</td><td class="hl">多模型</td><td class="hl">多模型</td><td class="hl">多模型</td><td class="hl">多模型</td><td class="hl">多模型</td><td>OpenAI</td></tr>
+    <tr><td>多Agent</td><td>子Agent</td><td>子Agent</td><td class="hl">A2A</td><td>✅</td><td>✅</td><td class="hl">图编排</td><td class="hl">角色分工</td><td>✅</td><td>Handoff</td></tr>
+    <tr><td>MCP支持</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td><td>✅</td></tr>
+    <tr><td>语言</td><td>REST</td><td>Py/TS</td><td>Py/Java/Go</td><td>Python</td><td>配置</td><td>Python</td><td>Python</td><td class="hl">TS</td><td>Python</td></tr>
+    <tr><td>上手时间</td><td>~15m</td><td>~10m</td><td>~15m</td><td class="hl">~3m</td><td>~15m</td><td>~2h</td><td class="hl">~5m</td><td>~10m</td><td>~10m</td></tr>
+    <tr><td>生产难度</td><td>低</td><td>中</td><td>中</td><td>中→低</td><td>低</td><td class="hl">低</td><td>中</td><td>中</td><td>中</td></tr>
+    <tr><td>核心哲学</td><td>Harness<br>即服务</td><td>开发者<br>控制</td><td>协议<br>驱动</td><td>模型<br>驱动</td><td>配置<br>即Agent</td><td>图即<br>Agent</td><td>角色即<br>Agent</td><td>TS<br>原生</td><td>轻量<br>SDK</td></tr>
   </table>
+  </div>
 </div>
 
-<!-- 架构趋同 -->
+<!-- ===== 生态版图 ===== -->
 <div class="section">
-  <h2>四个趋势</h2>
-  <div class="trend">
-    <h3>① 自建 <span class="arrow">→</span> 服务</h3>
-    <p>Agent 运行循环（harness）正在从开发者代码里抽出来，变成平台能力。跟十年前数据库从自建变 RDS 是同一条路。</p>
-  </div>
-  <div class="trend">
-    <h3>② SDK + 托管 = 双轨标配</h3>
-    <p>Strands+AgentCore、Claude SDK+Managed Agents、OpenAI SDK+Agents API——全部是「本地开发，云端运行」的双级火箭。</p>
-  </div>
-  <div class="trend">
-    <h3>③ 工具生态 > 模型能力</h3>
-    <p>模型能力趋同后，谁的工具连接更丰富、MCP 生态更完整、企业集成更顺，谁赢。</p>
-  </div>
-  <div class="trend">
-    <h3>④ 安全治理从可选变必选</h3>
-    <p>AgentCore 把策略放到 Gateway 层，Agent 绕不过。过程审计、权限边界正在从「最佳实践」变成「准入门槛」。</p>
+  <h2>生态版图：谁在哪一层</h2>
+  <div class="eco">
+    <div class="eco-row"><span class="eco-label">托管服务</span><div class="eco-bar"><div class="eco-seg" style="flex:3;background:#c0a84e">OpenAI Agents API</div><div class="eco-seg" style="flex:3;background:#4a90a4">AgentCore Harness</div><div class="eco-seg" style="flex:2;background:#7f6c9e">Claude Managed</div></div></div>
+    <div class="eco-row"><span class="eco-label">SDK/框架</span><div class="eco-bar"><div class="eco-seg" style="flex:2;background:#5a8a5e">Claude SDK</div><div class="eco-seg" style="flex:1.5;background:#6b8a3e">Strands</div><div class="eco-seg" style="flex:1.5;background:#3e7a8a">ADK</div><div class="eco-seg" style="flex:2;background:#8a6a3e">LangGraph</div><div class="eco-seg" style="flex:2;background:#6a3e8a">CrewAI</div><div class="eco-seg" style="flex:1;background:#3e6a8a">Mastra</div></div></div>
+    <div class="eco-row"><span class="eco-label">协议层</span><div class="eco-bar"><div class="eco-seg" style="flex:5;background:#4a6a8a">MCP（工具连接）</div><div class="eco-seg" style="flex:3;background:#6a4a8a">A2A（Agent通信）</div></div></div>
+    <div class="eco-row"><span class="eco-label">模型层</span><div class="eco-bar"><div class="eco-seg" style="flex:2.5;background:#5a5a5a">GPT / Codex</div><div class="eco-seg" style="flex:2.5;background:#6a6a6a">Claude</div><div class="eco-seg" style="flex:2.5;background:#4a4a4a">Gemini</div><div class="eco-seg" style="flex:2.5;background:#7a7a7a">Bedrock多模型</div></div></div>
   </div>
 </div>
 
-<!-- 能力指引 -->
+<!-- ===== 五个趋势 ===== -->
+<div class="section">
+  <h2>五个趋势</h2>
+  <div class="trend"><h3>① 自建 <span class="arrow">→</span> 服务</h3><p>Agent harness 正在从开发者代码里抽出来变成平台能力，跟数据库从自建变RDS一条路</p></div>
+  <div class="trend"><h3>② SDK + 托管 = 双轨标配</h3><p>Strands+AgentCore、Claude SDK+Managed、OpenAI SDK+API——本地开发，云端运行</p></div>
+  <div class="trend"><h3>③ 协议层正在收敛</h3><p>MCP（工具连接）和 A2A（Agent通信）正在成为跨框架的通用语言，选框架的锁定在降低</p></div>
+  <div class="trend"><h3>④ 工具生态 > 模型能力</h3><p>模型能力趋同后，谁的工具连接更丰富、企业系统集成更顺，谁赢</p></div>
+  <div class="trend"><h3>⑤ 安全治理从可选变必选</h3><p>AgentCore Gateway、OpenAI 过程审计——权限边界和行为审计正在变成准入门槛</p></div>
+</div>
+
+<!-- ===== 技术人指引 ===== -->
 <div class="section">
   <h2>技术人向上指引</h2>
-  <div class="guide">
-    <h3>🟢 刚接触</h3>
-    <p>从 Strands 或 Claude Agent SDK 起步，理解 <b>Agent 循环</b>：模型调用→工具选择→执行→回传→循环</p>
-  </div>
-  <div class="guide">
-    <h3>🟡 能跑 Demo，想做生产</h3>
-    <p>学三件事：<b>Session 管理</b>（状态存储与恢复）、<b>权限系统</b>（能做什么不能做什么）、<b>可观测性</b>（出问题怎么排查）</p>
-  </div>
-  <div class="guide">
-    <h3>🔴 建立不可替代性</h3>
-    <p>框架半年一换。留在人这侧的能力：<b>工具设计</b>（业务流程→可调用工具）、<b>验证闭环</b>（产出在业务上可用）、<b>过程审计</b>（中间过程可控）</p>
-  </div>
+  <div class="guide"><h3>🟢 刚接触</h3><p>从 <b>Strands</b>（3行Python）或 <b>CrewAI</b>（角色分工最直观）起步。核心：理解 Agent 循环</p></div>
+  <div class="guide"><h3>🟡 能跑 Demo → 想做生产</h3><p>三件事：<b>Session 管理</b>（状态存储恢复）、<b>权限系统</b>（能做什么不能做什么）、<b>可观测性</b>（出问题怎么排查）</p></div>
+  <div class="guide"><h3>🔴 建立不可替代性</h3><p>框架半年一换，不要学框架本身。三项留在人这侧的能力：<br><b>① 工具设计</b> — 把业务流程拆成可调用的工具<br><b>② 验证闭环</b> — 判断产出在业务上可用<br><b>③ 过程审计</b> — 确保中间过程可控</p></div>
 </div>
 
 <div class="footer">
-  数据截止 2026.9.12 · 基于各平台官方文档整理 · 不构成技术选型建议<br>🦎 开心的舵手 · 深度观察
+  数据截止 2026.9.12 · 基于各平台官方文档整理 · 不构成技术选型建议<br>
+  AutoGen/AG2 已退出生产主流，未列入对比<br>
+  🦎 开心的舵手 · 深度观察
 </div>
 
 </body></html>
