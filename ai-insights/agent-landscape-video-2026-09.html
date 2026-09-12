@@ -137,12 +137,9 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
     <!-- s0 封面 -->
     <div class="slide active" id="s0">
       <div class="kicker">2026年9月 · 深度观察</div>
-      <div class="stitle" style="font-size:clamp(26px,7vw,40px)">当基础设施<br>不再是瓶颈<br>护城河移到了哪里</div>
-      <div class="bars" style="margin-top:16px">
-        <div class="bar-row"><span class="bar-label">工具门槛</span><div class="bar-track"><div class="bar-fill ok" data-w="22">↓ 降低</div></div></div>
-        <div class="bar-row"><span class="bar-label">人的壁垒</span><div class="bar-track"><div class="bar-fill warn" data-w="88">↑ 升高</div></div><span class="bar-alert">⚠️</span></div>
-      </div>
-      <div class="sdesc" style="margin-top:12px"><span class="accent">八大框架全景分析</span><br>工具在下沉，人的能力壁垒在上移</div>
+      <div class="stitle" style="font-size:clamp(26px,7vw,40px)">基础设施已经就位<br>接下来拼什么</div>
+      <div class="insight" style="text-align:center;margin-top:14px;border-left:none"><h3 style="font-size:18px;line-height:1.6">八大Agent框架正在把模型调用、<br>上下文管理、工具路由变成标配</h3><p style="margin-top:10px">当每个人都能用同样的基础设施<br>差异化只能来自基础设施之上</p></div>
+      <div class="sdesc" style="margin-top:14px"><span class="accent">八大框架 · 五个趋势 · 三项能力壁垒</span></div>
     </div>
 
 <!-- s1 模型厂商上 -->
@@ -275,7 +272,7 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
 <script>
 // ===== 讲解文案（每页）=====
 const NARRATION = [
-  "当基础设施不再是瓶颈，护城河移到了哪里。2026年9月，Agent框架的数量还在增加，八个主流框架分属三大阵营。但一个反直觉的现象正在发生：框架越多，框架之间的差异反而越小。基础设施正在变成标配。那真正的护城河在哪一层？",
+  "基础设施已经就位，接下来拼什么。2026年9月，八大Agent框架正在把模型调用、上下文管理、工具路由变成标配。当每个人都能用同样的基础设施，差异化只能来自基础设施之上。这期拆解八大框架的架构，梳理五个正在发生的趋势，最终落到一个问题：接下来的能力壁垒在哪一侧。",
   "先看模型厂商的两种托管哲学。OpenAI把Codex引擎开放为托管API，开发者不用管运行基础设施。自动上下文压缩解决长Session记忆丢失，工具搜索按需加载省token，子Agent并行处理复杂任务。Anthropic走另一条路，Claude Agent SDK让Agent跑在本地进程里，内建权限系统和Hooks机制，开发者掌控全部细节。",
   "另外两家模型厂商各有特色。Google ADK走协议驱动路线，A2A协议让Agent之间直接通信，不经过中心调度，支持Python、Java、Go、TypeScript、Kotlin五种语言。DeepSeek Harness走MIT完全开源路线，用Cordis微内核架构把每个组件都变成可拆卸的插件，模型、工具、沙箱、存储全部解耦。",
   "AWS做了一个双层架构。底层Strands Agents是开源SDK，三行代码就能起步，多模型不锁定，内部产品线已经在用。上层AgentCore Harness是全托管运行环境，配置即Agent，每个Session跑在独立microVM里，Gateway层的安全策略Agent绕不过去。SDK写原型，Harness跑生产，不用重写。",
