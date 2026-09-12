@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8">
 <meta content="width=device-width,initial-scale=1.0" name="viewport">
-<title>Agent框架全景 · 自讲解版</title>
+<title>Agent框架全景 · 八大框架架构分析</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC","Microsoft YaHei",sans-serif; background:#0a0e1a; color:#e8ecf4; }
@@ -139,23 +139,23 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
       <span class="kicker">2026年9月 · 八大框架架构分析</span>
       <h1 class="hero-title">Agent 框架全景</h1>
       <div class="stat-row">
-        <div class="stat-card"><span class="stat-num">8</span><span class="stat-label">主流框架</span></div>
+        <div class="stat-card"><span class="stat-num count-up" data-target="8">0</span><span class="stat-label">个主流框架</span></div>
         <div class="stat-card"><span class="stat-num">3</span><span class="stat-label">大阵营</span></div>
         <div class="stat-card"><span class="stat-num">5</span><span class="stat-label">个趋势</span></div>
       </div>
-      <p class="accent-note">模型厂商 · 云平台 · 社区开源 · 三条路线正在收敛</p>
+      <p class="accent-note">模型厂商 · 云平台 · 社区开源<br>三条路线正在收敛</p>
       <button class="cta only-icon rv d3" data-start aria-label="开始讲解" title="开始讲解">📢</button>
     </div>
 
-    <!-- s1 模型厂商原生 -->
+    <!-- s1 模型厂商 -->
     <div class="slide" data-tts="">
       <span class="kicker">01 · 模型厂商原生</span>
       <h2 class="slide-title">四家厂商 四条路</h2>
       <div class="steps">
-        <div class="step-item"><span class="step-num">🅾️</span><span class="step-text"><b>OpenAI Agents API</b> — Codex 引擎开放为托管服务，自动上下文压缩、工具搜索、子Agent并行</span></div>
-        <div class="step-item"><span class="step-num">🅰️</span><span class="step-text"><b>Claude Agent SDK</b> — 本地进程运行，内建权限系统和Hooks，开发者掌控全部细节</span></div>
-        <div class="step-item"><span class="step-num">🟢</span><span class="step-text"><b>Google ADK</b> — A2A协议原生支持，多语言，v2加入图工作流</span></div>
-        <div class="step-item"><span class="step-num">🐋</span><span class="step-text"><b>DeepSeek Harness</b> — MIT开源，一切皆插件，Cordis微内核架构，完全可自托管</span></div>
+        <div class="step-item"><span class="step-num">O</span><span class="step-text"><b>OpenAI Agents API</b><br>把Codex引擎开放为托管服务。自动上下文压缩、工具搜索、子Agent并行，开发者不用管运行基础设施</span></div>
+        <div class="step-item"><span class="step-num">A</span><span class="step-text"><b>Claude Agent SDK</b><br>Agent跑在本地进程里，开发者掌控全部细节。内建权限系统和Hooks，从Claude Code演化而来</span></div>
+        <div class="step-item"><span class="step-num">G</span><span class="step-text"><b>Google ADK</b><br>A2A协议原生支持，Agent之间可以直接通信。多语言（Python/Java/Go），v2加入图工作流</span></div>
+        <div class="step-item"><span class="step-num">D</span><span class="step-text"><b>DeepSeek Harness</b><br>MIT协议完全开源。一切皆插件的Cordis微内核架构，模型、工具、沙箱全部可拆卸替换</span></div>
       </div>
     </div>
 
@@ -164,10 +164,10 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
       <span class="kicker">02 · 云平台与社区</span>
       <h2 class="slide-title">基础设施层 + 开源生态</h2>
       <div class="steps">
-        <div class="step-item"><span class="step-num">🔶</span><span class="step-text"><b>Strands Agents</b> — AWS开源，3行Python起步，多模型不锁定，可直接部署到AgentCore</span></div>
-        <div class="step-item"><span class="step-num">☁️</span><span class="step-text"><b>AgentCore Harness</b> — AWS全托管，配置即Agent，microVM隔离，版本化灰度发布</span></div>
-        <div class="step-item"><span class="step-num">🔗</span><span class="step-text"><b>LangGraph</b> — 图架构，显式状态转移，checkpoint恢复，审计性最强</span></div>
-        <div class="step-item"><span class="step-num">👥</span><span class="step-text"><b>CrewAI</b> — 角色驱动多Agent，按职能分工，从零到可用最快</span></div>
+        <div class="step-item"><span class="step-num">S</span><span class="step-text"><b>Strands Agents（AWS开源）</b><br>3行Python起步，多模型不锁定。AWS内部多条产品线在用，可直接部署到AgentCore</span></div>
+        <div class="step-item"><span class="step-num">☁</span><span class="step-text"><b>AgentCore Harness（AWS全托管）</b><br>配置即Agent，每个Session跑在独立microVM里。版本化灰度发布，多模型混用不丢上下文</span></div>
+        <div class="step-item"><span class="step-num">L</span><span class="step-text"><b>LangGraph（社区）</b><br>图架构，显式状态转移和checkpoint恢复。审计性最强，Klarna等企业在用</span></div>
+        <div class="step-item"><span class="step-num">C</span><span class="step-text"><b>CrewAI（社区 · 45.9k⭐）</b><br>角色驱动多Agent，按职能分工。从零到可用最快，Flows API补了精细控制</span></div>
       </div>
     </div>
 
@@ -176,9 +176,10 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
       <span class="kicker">03 · 共同规律</span>
       <h2 class="slide-title">八个框架 一个方向</h2>
       <div class="compare-cards">
-        <div class="cmp dim"><h4>过去</h4><p>模型调用循环<br>上下文管理<br>工具路由<br>沙箱隔离<br>全部自己写</p></div>
-        <div class="cmp bright"><h4>现在</h4><p>这些正在变成<br>平台标配能力<br>开发者只管<br>定义Agent做什么</p></div>
+        <div class="cmp dim"><h4>过去：全部自己写</h4><p>模型调用循环<br>上下文管理<br>工具路由<br>沙箱隔离<br>Session持久化</p></div>
+        <div class="cmp bright"><h4>现在：平台标配</h4><p>这些正在变成<br>基础设施能力<br>开发者只需要<br>定义Agent做什么</p></div>
       </div>
+      <p class="body-copy" style="margin-top:10px">跟十年前数据库从自建变成RDS，是同一条路</p>
     </div>
 
     <!-- s4 五个趋势 -->
@@ -186,22 +187,22 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
       <span class="kicker">04 · 五个趋势</span>
       <h2 class="slide-title">正在发生的变化</h2>
       <div class="steps">
-        <div class="step-item"><span class="step-num">1</span><span class="step-text"><b>自建变服务</b> — Agent基础设施从代码变成平台</span></div>
-        <div class="step-item"><span class="step-num">2</span><span class="step-text"><b>SDK+托管双轨</b> — 本地开发，云端运行成为标配</span></div>
+        <div class="step-item"><span class="step-num">1</span><span class="step-text"><b>自建变服务</b> — Agent基础设施从代码变成平台能力</span></div>
+        <div class="step-item"><span class="step-num">2</span><span class="step-text"><b>SDK+托管双轨</b> — 本地开发、云端运行成为标配</span></div>
         <div class="step-item"><span class="step-num">3</span><span class="step-text"><b>协议层收敛</b> — MCP和A2A正在成为跨框架通用语言</span></div>
-        <div class="step-item"><span class="step-num">4</span><span class="step-text"><b>工具生态关键</b> — 模型趋同后，工具连接成为差异点</span></div>
+        <div class="step-item"><span class="step-num">4</span><span class="step-text"><b>工具生态关键</b> — 模型趋同后，工具连接成为关键差异</span></div>
         <div class="step-item"><span class="step-num">5</span><span class="step-text"><b>治理成准入</b> — 过程审计和权限边界变成必选项</span></div>
       </div>
     </div>
 
-    <!-- s5 三阶段指引 -->
+    <!-- s5 向上指引 -->
     <div class="slide" data-tts="">
       <span class="kicker">05 · 向上指引</span>
       <h2 class="slide-title">技术人的三个阶段</h2>
       <div class="steps">
-        <div class="step-item"><span class="step-num" style="background:rgba(46,204,113,.15);color:#2ecc71">①</span><span class="step-text"><b>理解Agent循环</b> — 从Strands或CrewAI起步，跑通一个真实任务</span></div>
-        <div class="step-item"><span class="step-num" style="background:rgba(241,196,15,.15);color:#f1c40f">②</span><span class="step-text"><b>Demo到生产</b> — 学Session管理、权限系统、可观测性</span></div>
-        <div class="step-item"><span class="step-num" style="background:rgba(231,76,60,.15);color:#e74c3c">③</span><span class="step-text"><b>建立壁垒</b> — 工具设计 + 验证闭环 + 过程审计，框架换了经验还在</span></div>
+        <div class="step-item"><span class="step-num" style="background:rgba(46,204,113,.2);color:#2ecc71">①</span><span class="step-text"><b>理解Agent循环（1-2周）</b><br>从Strands或CrewAI起步，跑通一个真实任务，不是跑Demo</span></div>
+        <div class="step-item"><span class="step-num" style="background:rgba(241,196,15,.2);color:#f1c40f">②</span><span class="step-text"><b>Demo到生产（1-3个月）</b><br>Session管理、权限系统、可观测性——这三项是Demo到生产最大的鸿沟</span></div>
+        <div class="step-item"><span class="step-num" style="background:rgba(231,76,60,.2);color:#e74c3c">③</span><span class="step-text"><b>建立壁垒（持续积累）</b><br>工具设计 + 验证闭环 + 过程审计。框架换了，这三项经验还在</span></div>
       </div>
     </div>
 
@@ -211,15 +212,19 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
       <h2 class="slide-title">基础设施下沉<br>竞争层次上移</h2>
       <div class="conclusion-box">
         <p class="conclusion-accent">护城河不在底层管道</p>
-        <p>在于理解业务场景、设计工具接口、验证产出质量、审计执行过程的综合能力</p>
+        <p>在于理解业务场景 · 设计工具接口<br>验证产出质量 · 审计执行过程</p>
       </div>
-      <p class="body-copy" style="margin-top:12px;font-size:clamp(12px,2.5vw,15px)">框架半年一换。能在真实业务环节中完成验证闭环的人，是当前最稀缺的能力。</p>
+      <p class="body-copy" style="margin-top:12px">框架半年一换。能在真实业务环节中<br>完成验证闭环的人，是当前最稀缺的能力</p>
     </div>
 
-    <!-- s7 收尾 -->
+    <!-- s7 收尾 + 预告 -->
     <div class="slide" data-tts="">
       <span class="kicker">深度观察 · 全景分析</span>
-      <h2 class="slide-title" style="font-size:clamp(18px,4vw,28px)">八大框架 一个方向<br>能力壁垒在人这一侧</h2>
+      <h2 class="slide-title" style="font-size:clamp(18px,4.5vw,28px)">八大框架 一个方向<br>能力壁垒在人这一侧</h2>
+      <div class="conclusion-box">
+        <p class="conclusion-accent">模型厂商 · 云平台 · 社区开源</p>
+        <p>路径不同，方向收敛</p>
+      </div>
       <div class="source-box">
         <p>📎 来源：各平台官方文档 · 2026.9</p>
       </div>
@@ -233,14 +238,14 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
 <script>
 // ===== 讲解文案（每页）=====
 const NARRATION = [
-  "2026年9月，Agent框架进入了一个新阶段。八个主流框架，分属三大阵营：模型厂商原生、云平台基础设施、社区开源。它们的路径不同，但正在朝同一个方向收敛。",
-  "模型厂商各走各的路。OpenAI把Codex引擎开放为托管API，Claude选择让开发者在本地进程里掌控全部细节，Google用A2A协议打通Agent之间的通信，DeepSeek用MIT协议完全开源，走了一条微内核插件化的路。",
-  "云平台和社区补上了另外两层。AWS的Strands三行代码起步，AgentCore提供全托管运行环境。社区这边，LangGraph的图架构在审计性上最强，CrewAI的角色分工模式上手最快。",
-  "八个框架背后有一个共同规律。模型调用循环、上下文管理、工具路由、沙箱隔离，这些过去需要自己写的基础设施，正在变成平台标配能力。开发者的工作重心在上移。",
+  "2026年9月，Agent框架进入了一个新阶段。八个主流框架，分属三大阵营：模型厂商原生、云平台基础设施、社区开源。它们走的路不同，但正在朝同一个方向收敛。先看一组数据。",
+  "模型厂商各走各的路。OpenAI把Codex引擎开放为托管API，开发者不用管运行基础设施。Claude选择让Agent跑在本地进程里，开发者掌控全部细节。Google用A2A协议打通Agent之间的通信。DeepSeek走了一条MIT完全开源的路，用微内核架构把每个组件都变成可拆卸的插件。",
+  "云平台和社区补上了另外两层。AWS的Strands三行代码起步，多模型不锁定，内部产品线已经在用。AgentCore提供全托管运行环境，每个Session跑在独立虚拟机里。社区这边，LangGraph的图架构在审计性上最强，CrewAI的角色分工模式上手最快。",
+  "八个框架背后有一个共同规律。模型调用循环、上下文管理、工具路由、沙箱隔离，这些过去需要自己写的基础设施，正在变成平台标配能力。开发者的工作重心在上移。跟十年前数据库从自建变成托管服务，是同一条路。",
   "五个趋势正在发生。第一，自建变服务。第二，SDK加托管成为双轨标配。第三，MCP和A2A协议正在收敛为跨框架的通用语言。第四，模型能力趋同后，工具生态成为关键差异。第五，过程审计和权限边界正在从最佳实践变成准入门槛。",
-  "技术人的向上路径分三个阶段。第一阶段理解Agent循环，跑通一个真实任务。第二阶段从Demo到生产，学Session管理、权限系统、可观测性。第三阶段建立壁垒，靠工具设计、验证闭环、过程审计——框架换了，这些经验还在。",
-  "底层判断是这样的。基础设施正在下沉，竞争层次正在上移。护城河不在底层管道，在于理解业务场景、设计工具接口、验证产出质量、审计执行过程的综合能力。框架半年一换，能在真实业务环节中完成验证闭环的人，才是当前最稀缺的能力。",
-  "八大框架，一个方向。能力壁垒在人这一侧。这是深度观察对当前Agent生态的全景分析。"
+  "技术人的向上路径分三个阶段。第一阶段，花一到两周理解Agent循环，从Strands或CrewAI起步，跑通一个真实任务。第二阶段，花一到三个月从Demo走到生产，核心是学Session管理、权限系统和可观测性。第三阶段，持续积累不可替代的能力：工具设计、验证闭环、过程审计。框架半年一换，这三项经验换了框架还能用。",
+  "底层判断是这样的。基础设施正在下沉，竞争层次正在上移。护城河不在底层管道，在于理解业务场景、设计工具接口、验证产出质量、审计执行过程的综合能力。",
+  "八大框架，一个方向。模型厂商、云平台、社区开源，路径不同，方向收敛。能力壁垒在人这一侧。这是深度观察对当前Agent生态的全景分析。"
 ];
 
 const slides = Array.from(document.querySelectorAll('.slide'));
