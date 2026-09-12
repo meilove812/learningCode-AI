@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>混合运算顺序 · 解题技巧</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#faf6f1;color:#2d2d2d}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 20px 120px;opacity:0;pointer-events:none;transition:opacity .6s;overflow-y:auto}.slide.active{opacity:1;pointer-events:auto}
+.stitle{font-size:clamp(22px,5vw,36px);font-weight:900;text-align:center;margin-bottom:10px;color:#e67e22}
+.sdesc{font-size:clamp(15px,3vw,20px);color:#666;text-align:center;line-height:1.8;max-width:600px}
+.hl{color:#e67e22;font-weight:800}.bl{color:#3498db;font-weight:800}.gn{color:#27ae60;font-weight:800}.rd{color:#e74c3c;font-weight:800}
+
+/* 算式展示 */
+.expr-box{width:100%;max-width:420px;margin:12px auto;padding:20px;border-radius:20px;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.04);text-align:center}
+.expr{font-size:clamp(24px,6vw,36px);font-weight:900;color:#333;letter-spacing:2px;line-height:1.8}
+.expr .first{background:linear-gradient(180deg,transparent 60%,rgba(230,126,34,.25) 60%);border-radius:4px;padding:0 4px}
+.expr .wrong{text-decoration:line-through;color:#ccc}
+.expr .correct{color:#27ae60}
+.expr .step{display:block;font-size:clamp(18px,4vw,24px);color:#888;margin-top:4px}
+.expr .step .hl{font-size:clamp(20px,5vw,28px)}
+
+/* 规则卡 */
+.rule-card{width:100%;max-width:420px;margin:10px auto;padding:18px 22px;border-radius:16px;border-left:4px solid #e67e22;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.rule-card h3{color:#e67e22;font-size:18px;margin-bottom:6px}
+.rule-card p{color:#666;font-size:15px;line-height:1.8}
+.rule-card.blue{border-left-color:#3498db}
+.rule-card.blue h3{color:#3498db}
+.rule-card.green{border-left-color:#27ae60}
+.rule-card.green h3{color:#27ae60}
+.rule-card.red{border-left-color:#e74c3c}
+.rule-card.red h3{color:#e74c3c}
+
+/* 步骤流程 */
+.steps-flow{width:100%;max-width:420px;margin:10px auto;display:flex;flex-direction:column;gap:8px}
+.sf-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:14px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.03);opacity:0;transform:translateX(-20px);transition:all .4s}
+.sf-item.show{opacity:1;transform:translateX(0)}
+.sf-num{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#ff9a76,#e67e22);color:#fff;font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sf-text{font-size:15px;color:#555;line-height:1.6}
+.sf-text b{color:#e67e22}
+.sf-arrow{text-align:center;color:#e67e22;font-size:20px;font-weight:900}
+
+/* 对错标记 */
+.mark{display:inline-block;width:28px;height:28px;border-radius:50%;font-size:16px;font-weight:900;line-height:28px;text-align:center;margin-left:8px}
+.mark.yes{background:rgba(39,174,96,.1);color:#27ae60}
+.mark.no{background:rgba(231,76,60,.1);color:#e74c3c}
+
+/* 总结卡 */
+.sum-card{background:#fff;border-radius:16px;padding:14px 18px;margin:6px 0;width:100%;max-width:420px;border-left:4px solid #e67e22;box-shadow:0 2px 12px rgba(0,0,0,.04);opacity:0;transform:translateX(-30px);transition:all .5s}
+.sum-card.show{opacity:1;transform:translateX(0)}
+.sum-card h3{color:#e67e22;font-size:16px;margin-bottom:3px}
+.sum-card p{color:#888;font-size:14px;line-height:1.6}
+
+.ctrl{position:fixed;bottom:0;left:0;right:0;height:54px;background:linear-gradient(180deg,rgba(250,246,241,.9),rgba(250,246,241,.98));backdrop-filter:blur(12px);border-top:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;gap:8px;padding:0 12px;z-index:100}
+.ctrl button{background:#fff;border:1px solid rgba(0,0,0,.08);color:#666;border-radius:50px;padding:7px 16px;font-size:13px;cursor:pointer;font-family:inherit}
+.ctrl .pri{background:linear-gradient(135deg,#ff9a76,#e67e22);color:#fff;font-weight:700;border:none}
+.ctrl .pg{color:#bbb;font-size:11px;min-width:44px;text-align:center}
+.sub{position:fixed;bottom:58px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-radius:14px;padding:10px 22px;max-width:90%;text-align:center;font-size:clamp(14px,2.8vw,17px);color:#444;line-height:1.6;z-index:99;display:none;box-shadow:0 4px 20px rgba(0,0,0,.08)}.sub.vis{display:block}
+.bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#ff9a76,#27ae60);z-index:101;transition:width .4s}
+</style></head><body>
+<div class="bar" id="bar"></div>
+<div id="slides">
+
+<!-- s0 封面 -->
+<div class="slide active" id="s0">
+  <div class="stitle" style="font-size:clamp(28px,6vw,44px)">🔢 混合运算顺序</div>
+  <div class="expr-box">
+    <div class="expr">2 + 10 ÷ 2 = ?</div>
+  </div>
+  <p class="sdesc">先算哪个？<br>答错的人都栽在<span class="hl">同一个坑</span>里</p>
+</div>
+
+<!-- s1 核心规则 -->
+<div class="slide" id="s1">
+  <div class="stitle">一条铁律</div>
+  <div class="rule-card">
+    <h3>🌟 先乘除，后加减</h3>
+    <p>算式里有 <span class="hl">× ÷</span> 又有 <span class="bl">+ −</span><br>不管谁在前面，<span class="hl">先算 × ÷</span></p>
+  </div>
+  <div class="expr-box" style="margin-top:12px">
+    <div class="expr">2 + <span class="first">10 ÷ 2</span> = ?</div>
+    <div class="expr step">先算划线部分 → 2 + <span class="hl">5</span> = <span class="gn">7</span></div>
+  </div>
+  <p class="sdesc">不是从左到右按顺序算！<br>看到 × ÷ 就先算它</p>
+</div>
+
+<!-- s2 解题三步法 -->
+<div class="slide" id="s2">
+  <div class="stitle">解题三步法</div>
+  <div class="steps-flow" id="sf2">
+    <div class="sf-item"><div class="sf-num">1</div><div class="sf-text"><b>找</b> — 找到算式里的 × 或 ÷</div></div>
+    <div class="sf-arrow">↓</div>
+    <div class="sf-item"><div class="sf-num">2</div><div class="sf-text"><b>画</b> — 在 × ÷ 部分下面画线</div></div>
+    <div class="sf-arrow">↓</div>
+    <div class="sf-item"><div class="sf-num">3</div><div class="sf-text"><b>算</b> — 先算画线部分，再算剩下的</div></div>
+  </div>
+  <p class="sdesc">记住口诀：<span class="hl">找 → 画 → 算</span></p>
+</div>
+
+<!-- s3 例题1 -->
+<div class="slide" id="s3">
+  <div class="stitle">例题 ① 详细演示</div>
+  <div class="expr-box">
+    <div class="expr">29 − <span class="first">10 ÷ 2</span></div>
+    <div class="expr step">第一步：找到 ÷，画线</div>
+    <div class="expr step">第二步：10 ÷ 2 = <span class="hl">5</span></div>
+    <div class="expr step">第三步：29 − 5 = <span class="gn">24</span></div>
+  </div>
+</div>
+
+<!-- s4 例题2 -->
+<div class="slide" id="s4">
+  <div class="stitle">例题 ② 详细演示</div>
+  <div class="expr-box">
+    <div class="expr">36 + <span class="first">49 ÷ 7</span></div>
+    <div class="expr step">第一步：找到 ÷，画线</div>
+    <div class="expr step">第二步：49 ÷ 7 = <span class="hl">7</span></div>
+    <div class="expr step">第三步：36 + 7 = <span class="gn">43</span></div>
+  </div>
+</div>
+
+<!-- s5 易错陷阱 -->
+<div class="slide" id="s5">
+  <div class="stitle">⚠️ 最容易掉的坑</div>
+  <div class="rule-card red">
+    <h3>❌ 错误做法：从左到右算</h3>
+    <p>2 + 10 = 12，再 12 ÷ 2 = <span class="rd">6</span><br>把加法和除法<span class="rd">按顺序算了</span></p>
+  </div>
+  <div class="rule-card green" style="margin-top:10px">
+    <h3>✅ 正确做法：先找 ÷</h3>
+    <p>先算 10 ÷ 2 = 5，再 2 + 5 = <span class="gn">7</span><br>不管 ÷ 在前在后，<span class="gn">都先算它</span></p>
+  </div>
+  <div class="expr-box" style="margin-top:10px">
+    <div class="expr"><span class="wrong">2 + 10 ÷ 2 = 6</span> <span class="mark no">✗</span></div>
+    <div class="expr" style="margin-top:6px">2 + <span class="first">10 ÷ 2</span> = <span class="gn">7</span> <span class="mark yes">✓</span></div>
+  </div>
+</div>
+
+<!-- s6 改错题讲解 -->
+<div class="slide" id="s6">
+  <div class="stitle">改错题怎么做</div>
+  <div class="steps-flow" id="sf6">
+    <div class="sf-item"><div class="sf-num">1</div><div class="sf-text"><b>看</b> — 算式里有没有 × ÷<br>有的话，它是不是<b>先算的</b></div></div>
+    <div class="sf-arrow">↓</div>
+    <div class="sf-item"><div class="sf-num">2</div><div class="sf-text"><b>判</b> — 如果 × ÷ 不是先算的<br>说明<b>算错了</b>，打 ✗</div></div>
+    <div class="sf-arrow">↓</div>
+    <div class="sf-item"><div class="sf-num">3</div><div class="sf-text"><b>改</b> — 重新用"找→画→算"做一遍</div></div>
+  </div>
+</div>
+
+<!-- s7 改错例题 -->
+<div class="slide" id="s7">
+  <div class="stitle">改错演示</div>
+  <div class="expr-box">
+    <div class="expr" style="font-size:clamp(18px,4vw,24px)"><span class="wrong">40 ÷ 8 − 3 = 8</span> <span class="mark no">✗</span></div>
+    <div class="expr step" style="color:#e74c3c">错在哪：把 8−3=5 先算了，再 40÷5=8</div>
+  </div>
+  <div class="expr-box" style="margin-top:8px">
+    <div class="expr" style="font-size:clamp(18px,4vw,24px)">正确：<span class="first">40 ÷ 8</span> − 3</div>
+    <div class="expr step">第一步：40 ÷ 8 = <span class="hl">5</span></div>
+    <div class="expr step">第二步：5 − 3 = <span class="gn">2</span> <span class="mark yes">✓</span></div>
+  </div>
+</div>
+
+<!-- s8 总结 -->
+<div class="slide" id="s8">
+  <div class="stitle">🌟 记住这些</div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;max-width:420px">
+    <div class="sum-card" id="sc1"><h3>1️⃣ 铁律：先乘除 后加减</h3><p>不管谁在前面，× ÷ 永远先算</p></div>
+    <div class="sum-card" id="sc2" style="border-left-color:#3498db"><h3 style="color:#3498db">2️⃣ 口诀：找 → 画 → 算</h3><p>找到× ÷，画线，先算它，再算剩下的</p></div>
+    <div class="sum-card" id="sc3" style="border-left-color:#27ae60"><h3 style="color:#27ae60">3️⃣ 改错：看 → 判 → 改</h3><p>看有没有× ÷，判是不是先算的，不是就重做</p></div>
+    <div class="sum-card" id="sc4" style="border-left-color:#e74c3c"><h3 style="color:#e74c3c">4️⃣ 最大的坑</h3><p>千万别从左到右按顺序算！看到× ÷就先算它</p></div>
+  </div>
+</div>
+
+</div>
+<div class="sub" id="subBar"></div>
+<div class="ctrl"><button onclick="prev()">⏮</button><button class="pri" id="ttsBtn" onclick="toggleTTS()">🔊 开始讲解</button><button onclick="next()">⏭</button><span class="pg" id="pgInfo">1/9</span><button onclick="goFS()">⛶</button></div>
+<script>
+var TOTAL=9,cur=0,speaking=false;
+function showSlide(){
+  var s=document.querySelectorAll('.slide');
+  for(var i=0;i<s.length;i++)s[i].classList.toggle('active',i===cur);
+  document.getElementById('pgInfo').textContent=(cur+1)+'/'+TOTAL;
+  document.getElementById('bar').style.width=((cur+1)/TOTAL*100)+'%';
+  // 步骤动画
+  var items=document.querySelectorAll('.slide.active .sf-item');
+  items.forEach(function(el,i){el.classList.remove('show');setTimeout(function(){el.classList.add('show')},i*300);});
+  // 总结卡动画
+  if(cur===8){['sc1','sc2','sc3','sc4'].forEach(function(id,i){setTimeout(function(){var el=document.getElementById(id);if(el)el.classList.add('show')},i*300);});}
+}
+function next(){if(cur<TOTAL-1){cur++;showSlide();if(speaking)speakCur();}}
+function prev(){if(cur>0){cur--;showSlide();if(speaking)speakCur();}}
+var NAR=[
+'小朋友们好！今天学混合运算顺序。看这道题，2加10除以2，等于几？先别急着算，答错的人都栽在同一个坑里。',
+'记住一条铁律：先乘除，后加减！算式里有乘除又有加减，不管谁在前面，都要先算乘除。看，2加10除以2，先算划线部分10除以2等于5，再算2加5等于7。不是从左到右按顺序算！',
+'解题有三步法：找、画、算。第一步找，找到算式里的乘号或除号。第二步画，在乘除部分下面画线。第三步算，先算画线部分，再算剩下的。记住口诀：找、画、算！',
+'来做第一道例题。29减10除以2。第一步找到除号，画线。第二步先算10除以2等于5。第三步29减5等于24。',
+'再来一道。36加49除以7。第一步找到除号，画线。第二步先算49除以7等于7。第三步36加7等于43。',
+'最容易掉的坑来了！有人算2加10除以2，先算了2加10等于12，再算12除以2等于6。这就是按顺序从左到右算，大错特错！正确做法是先找到除号，先算10除以2等于5，再算2加5等于7。',
+'改错题怎么做？也是三步。第一步看，算式里有没有乘除。第二步判，乘除是不是先算的。如果不是，说明算错了。第三步改，重新用找、画、算做一遍。',
+'来看一道改错题。40除以8减3等于8。错在哪？它先算了8减3等于5，再算40除以5等于8。但正确的做法是先算40除以8等于5，再算5减3等于2。',
+'总结四条！第一，铁律：先乘除后加减，永远的规矩。第二，解题口诀：找、画、算。第三，改错口诀：看、判、改。第四，最大的坑：千万别从左到右按顺序算！看到乘除就先算它。'
+];
+var voice=null;function pickVoice(){var vs=speechSynthesis.getVoices();var names=['Yunxi','Yunyang','Xiaoxiao'];for(var k=0;k<names.length;k++)for(var i=0;i<vs.length;i++)if(vs[i].name.indexOf(names[k])>=0&&vs[i].lang.indexOf('zh')>=0)return vs[i];for(var i=0;i<vs.length;i++)if(vs[i].lang==='zh-CN')return vs[i];return null;}if(window.speechSynthesis){voice=pickVoice();speechSynthesis.onvoiceschanged=function(){voice=pickVoice()};}function speakCur(){speechSynthesis.cancel();var text=NAR[cur];if(!text)return;var utt=new SpeechSynthesisUtterance(text);utt.lang='zh-CN';utt.rate=0.85;utt.pitch=1.0;if(!voice)voice=pickVoice();if(voice)utt.voice=voice;var sub=document.getElementById('subBar');var sents=text.match(/[^。？！；]+[。？！；]?/g)||[text];var si=0;sub.classList.add('vis');sub.textContent=sents[0]||'';utt.onboundary=function(e){if(e.charIndex!==undefined&&sents.length>1){var cc=0;for(var i=0;i<sents.length;i++){cc+=sents[i].length;if(e.charIndex<cc){if(i!==si){si=i;sub.textContent=sents[i].trim();}break;}}}};utt.onend=function(){if(speaking&&cur<TOTAL-1)setTimeout(next,800);else{speaking=false;document.getElementById('ttsBtn').textContent='🔊 开始讲解';sub.classList.remove('vis');}};utt.onerror=function(){if(speaking&&cur<TOTAL-1)setTimeout(next,500);};speechSynthesis.speak(utt);}function toggleTTS(){if(speaking){speaking=false;speechSynthesis.cancel();document.getElementById('ttsBtn').textContent='🔊 开始讲解';document.getElementById('subBar').classList.remove('vis');}else{speaking=true;document.getElementById('ttsBtn').textContent='⏹ 停止';speakCur();}}function goFS(){if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(function(){});else document.exitFullscreen();}var tx=0;document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX});document.addEventListener('touchend',function(e){var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>60){d<0?next():prev();}});document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();next();}else if(e.key==='ArrowLeft'){e.preventDefault();prev();}});showSlide();
+</script></body></html>
