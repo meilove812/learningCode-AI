@@ -137,22 +137,27 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
     <!-- s0 封面 -->
     <div class="slide active" id="s0">
       <div class="kicker">2026年9月 · 深度观察</div>
-      <div class="stitle" style="font-size:clamp(24px,6.5vw,38px)">Agent框架做的越多<br>人的壁垒往哪建</div>
-      <div class="wrap" style="margin-top:16px">
-        <div style="display:flex;align-items:center;gap:12px;padding:8px 0;opacity:.35">
-          <span style="color:#5a7a8a;font-size:26px;font-weight:900;width:28px;text-align:center">↓</span>
-          <span style="color:#5a7a8a;font-size:14px">基础设施 — 正在被八大框架接管</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-left:2px solid rgba(224,201,127,.3);padding-left:10px">
-          <span style="color:#e0c97f;font-size:26px;font-weight:900;width:28px;text-align:center">→</span>
-          <span style="color:#c0c8e0;font-size:14px">业务验证 — 工具设计 · 闭环 · 审计</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:rgba(224,201,127,.06);border:1px solid rgba(224,201,127,.15)">
-          <span style="color:#e0c97f;font-size:26px;font-weight:900;width:28px;text-align:center">↑</span>
-          <span style="color:#e0c97f;font-size:15px;font-weight:700">场景验证经验 — 只有人能积累</span>
-        </div>
+      <div class="stitle" style="font-size:clamp(24px,6.5vw,36px)">Agent框架做的越多<br>人的壁垒往哪建</div>
+      <svg viewBox="0 0 320 180" width="320" height="180" style="display:block;margin:16px auto 0">
+        <!-- 三层横条，从下到上：暗→亮，宽→窄，表达"向上收敛" -->
+        <rect x="20" y="130" width="280" height="36" rx="8" fill="rgba(126,184,208,.08)" stroke="rgba(126,184,208,.1)" stroke-width="1"/>
+        <text x="160" y="153" text-anchor="middle" fill="#5a7a8a" font-size="12" font-weight="700">基础设施 — 八大框架正在接管</text>
+
+        <rect x="50" y="78" width="220" height="36" rx="8" fill="rgba(224,201,127,.08)" stroke="rgba(224,201,127,.15)" stroke-width="1"/>
+        <text x="160" y="101" text-anchor="middle" fill="#c0a84e" font-size="12" font-weight="700">业务验证 — 工具设计 · 闭环 · 审计</text>
+
+        <rect x="80" y="26" width="160" height="36" rx="8" fill="rgba(224,201,127,.15)" stroke="rgba(224,201,127,.3)" stroke-width="1.5"/>
+        <text x="160" y="49" text-anchor="middle" fill="#e0c97f" font-size="13" font-weight="900">场景经验 — 只有人能积累</text>
+
+        <!-- 向上箭头 -->
+        <path d="M160,170 L160,20" stroke="rgba(224,201,127,.2)" stroke-width="1.5" stroke-dasharray="4 3" fill="none"/>
+        <polygon points="155,24 160,12 165,24" fill="rgba(224,201,127,.4)"/>
+      </svg>
+      <div class="stat-row" style="margin-top:14px">
+        <div class="stat-card"><div class="stat-num">8</div><div class="stat-label">个框架拆解</div></div>
+        <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">个趋势</div></div>
+        <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">项壁垒能力</div></div>
       </div>
-      <div class="sdesc" style="margin-top:14px;font-size:13px">八大框架架构拆解 · 五个演进趋势 · 三项能力壁垒</div>
     </div>
 
 <!-- s1 模型厂商上 -->
@@ -285,7 +290,7 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
 <script>
 // ===== 讲解文案（每页）=====
 const NARRATION = [
-  "Agent框架做的越多，人的壁垒往哪建。2026年9月，八大Agent框架正在把模型调用、上下文管理、工具路由这些基础设施变成标配。底层在下沉，中间是业务验证，最上面是场景验证经验——这一层，只有人能积累。这期做一次全景拆解。",
+  "Agent框架做的越多，人的壁垒往哪建。看这张图：底层是基础设施，八大框架正在接管；中间是业务验证，工具设计、闭环、审计；最上面是场景经验——越往上，框架越替代不了，只有人能积累。这期从底层拆到顶层，八个框架、五个趋势、三项能力壁垒。",
   "先看两家头部厂商的路径分化。OpenAI选择托管路线，把Codex引擎开放为API，基础设施完全由平台承担。自动上下文压缩、工具按需搜索、子Agent并行，都是平台侧能力。Anthropic选择相反的方向，Claude Agent SDK让Agent在本地进程运行，权限系统、Hooks机制、Session持久化全部留在开发者手里。一个往平台收，一个往开发者放。",
   "另外两家走了更独特的路线。Google ADK的核心是A2A协议，让Agent之间直接通信，不经中心调度，目前支持五种语言。DeepSeek Harness在8月开源，MIT协议，用Cordis微内核架构把每个组件都做成可拆卸的插件。值得注意的是，它目前仍在alpha阶段。",
   "AWS的设计值得单独看。它做了一个双层架构：底层Strands Agents是开源SDK，三行代码起步，不锁定模型。上层AgentCore Harness是全托管运行环境，每个Session跑在独立microVM里。有意思的是，Gateway层的安全策略Agent绕不过去——这在当前的框架里是比较少见的设计。",
