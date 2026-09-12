@@ -139,109 +139,66 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
       <div class="kicker">2026年9月 · 深度观察</div>
       <div class="stitle" style="font-size:clamp(24px,6.5vw,36px)">Agent框架做的越多<br>人的壁垒往哪建</div>
       <svg viewBox="0 0 320 180" width="320" height="180" style="display:block;margin:16px auto 0">
-        <!-- 三层横条，从下到上：暗→亮，宽→窄，表达"向上收敛" -->
         <rect x="20" y="130" width="280" height="36" rx="8" fill="rgba(126,184,208,.08)" stroke="rgba(126,184,208,.1)" stroke-width="1"/>
         <text x="160" y="153" text-anchor="middle" fill="#5a7a8a" font-size="12" font-weight="700">基础设施 — 八大框架正在接管</text>
-
         <rect x="50" y="78" width="220" height="36" rx="8" fill="rgba(224,201,127,.08)" stroke="rgba(224,201,127,.15)" stroke-width="1"/>
         <text x="160" y="101" text-anchor="middle" fill="#c0a84e" font-size="12" font-weight="700">业务验证 — 工具设计 · 闭环 · 审计</text>
-
         <rect x="80" y="26" width="160" height="36" rx="8" fill="rgba(224,201,127,.15)" stroke="rgba(224,201,127,.3)" stroke-width="1.5"/>
         <text x="160" y="49" text-anchor="middle" fill="#e0c97f" font-size="13" font-weight="900">场景经验 — 只有人能积累</text>
-
-        <!-- 向上箭头 -->
         <path d="M160,170 L160,20" stroke="rgba(224,201,127,.2)" stroke-width="1.5" stroke-dasharray="4 3" fill="none"/>
         <polygon points="155,24 160,12 165,24" fill="rgba(224,201,127,.4)"/>
       </svg>
       <div class="stat-row" style="margin-top:14px">
-        <div class="stat-card"><div class="stat-num">8</div><div class="stat-label">个框架拆解</div></div>
+        <div class="stat-card"><div class="stat-num">8</div><div class="stat-label">个框架</div></div>
         <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">个趋势</div></div>
         <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">项壁垒能力</div></div>
       </div>
     </div>
 
-<!-- s1 模型厂商① -->
+    <!-- s1 八大框架概览 -->
     <div class="slide" id="s1">
-      <div class="stitle">模型厂商 ①<br>托管路径与本地路径</div>
-      <div class="bars" style="margin-bottom:8px">
-        <div class="bar-row"><span class="bar-label" style="width:68px">OpenAI</span><div class="bar-track"><div class="bar-fill warn" data-w="92">全托管 · 平台承担基础设施</div></div></div>
-        <div class="bar-row"><span class="bar-label" style="width:68px">Claude</span><div class="bar-track"><div class="bar-fill mid" data-w="35">本地进程 · 控制权在开发侧</div></div></div>
+      <div class="stitle">八大框架 各走什么路</div>
+      <div class="bars">
+        <div class="bar-row"><span class="bar-label" style="width:80px">OpenAI</span><div class="bar-track"><div class="bar-fill warn" data-w="90">全托管 · Codex引擎开放为API</div></div></div>
+        <div class="bar-row"><span class="bar-label" style="width:80px">Claude</span><div class="bar-track"><div class="bar-fill mid" data-w="75">本地控制 · 权限+Hooks全在开发侧</div></div></div>
+        <div class="bar-row"><span class="bar-label" style="width:80px">Google</span><div class="bar-track"><div class="bar-fill mid" data-w="68">协议驱动 · A2A让Agent直接通信</div></div></div>
+        <div class="bar-row"><span class="bar-label" style="width:80px">DeepSeek</span><div class="bar-track"><div class="bar-fill ok" data-w="45">微内核 · MIT开源 · 一切皆插件 · alpha</div></div></div>
       </div>
-      <div class="insight" style="border-left:3px solid #e0c97f"><h3>OpenAI Agents API</h3><p>自动上下文压缩 · 工具按需搜索 · 子Agent并行<br>MCP原生支持 · <span class="accent">开发者专注定义Agent做什么</span></p></div>
-      <div class="insight" style="border-left:3px solid #7eb8d0"><h3>Claude Agent SDK</h3><p>权限系统permission_mode · Hooks插入审计<br>Session持久化JSONL · <span class="soft">开发者掌控全部细节</span></p></div>
-      <div class="foot-note">标准化场景倾向托管，深度定制倾向本地。决定因素是业务复杂度</div>
-    </div>
-
-<!-- s2 模型厂商② -->
-    <div class="slide" id="s2">
-      <div class="stitle">模型厂商 ②<br>协议统一与架构解耦</div>
-      <div class="bars" style="margin-bottom:8px">
-        <div class="bar-row"><span class="bar-label" style="width:68px">Google</span><div class="bar-track"><div class="bar-fill mid" data-w="70">协议驱动 · A2A Agent直接通信</div></div></div>
-        <div class="bar-row"><span class="bar-label" style="width:68px">DeepSeek</span><div class="bar-track"><div class="bar-fill ok" data-w="45">微内核 · MIT开源 · alpha阶段</div></div></div>
-      </div>
-      <div class="insight" style="border-left:3px solid #e0c97f"><h3>Google ADK v2.0</h3><p>A2A协议让Agent直接通信，不经中心调度<br>五种语言 · v2图工作流 · <span class="accent">如果协议统一，框架选型不再是决定因素</span></p></div>
-      <div class="insight" style="border-left:3px solid #7eb8d0"><h3>DeepSeek Harness</h3><p>Cordis微内核 · 模型/工具/沙箱全部可拆卸<br>4种运行模式 · Trajectory轨迹 · <span class="soft">方向比成熟度更值得关注</span></p></div>
-    </div>
-
-<!-- s3 云平台 -->
-    <div class="slide" id="s3">
-      <div class="stitle">云平台双层架构</div>
-      <div class="bars" style="margin-bottom:8px">
-        <div class="bar-row"><span class="bar-label" style="width:80px">Strands</span><div class="bar-track"><div class="bar-fill mid" data-w="55">开源SDK · 3行代码起步</div></div></div>
-        <div class="bar-row"><span class="bar-label" style="width:80px">AgentCore</span><div class="bar-track"><div class="bar-fill warn" data-w="90">全托管 · microVM · Gateway治理</div></div></div>
-      </div>
-      <div class="case-item"><h4>Strands → AgentCore</h4><p>SDK写原型验证 → 验证后上托管 → <span class="metric">核心逻辑不重写</span><br>Gateway层安全策略Agent无法绕过——当前框架中少见的治理设计</p></div>
-      <div class="foot-note">Strands是引擎，AgentCore是跑道。渐进路径的典型实现</div>
-    </div>
-
-<!-- s4 社区开源 -->
-    <div class="slide" id="s4">
-      <div class="stitle">社区开源</div>
-      <div class="bars" style="margin-bottom:8px">
+      <div class="bars" style="margin-top:6px">
+        <div class="bar-row"><span class="bar-label" style="width:80px">Strands</span><div class="bar-track"><div class="bar-fill mid" data-w="60">AWS开源SDK · 3行代码起步</div></div></div>
+        <div class="bar-row"><span class="bar-label" style="width:80px">AgentCore</span><div class="bar-track"><div class="bar-fill warn" data-w="85">AWS全托管 · microVM · Gateway治理</div></div></div>
         <div class="bar-row"><span class="bar-label" style="width:80px">LangGraph</span><div class="bar-track"><div class="bar-fill mid" data-w="70">图架构 · 显式状态 · 审计性强</div></div></div>
         <div class="bar-row"><span class="bar-label" style="width:80px">CrewAI</span><div class="bar-track"><div class="bar-fill mid" data-w="65">角色分工 · 原型最快 · Flows补精控</div></div></div>
       </div>
-      <div class="insight"><h3>LangGraph · 图即Agent</h3><p>checkpoint恢复 · LangSmith追踪评估<br>核心假设：<span class="accent">图是Agent的正确抽象</span></p></div>
-      <div class="insight"><h3>CrewAI · 角色即Agent</h3><p>按职能委派 · MCP + A2A支持<br>核心假设：<span class="accent">角色是Agent的正确抽象</span></p></div>
-      <div class="foot-note">哪种抽象更接近本质，可能取决于任务类型</div>
+      <div class="foot-note">柱长表示托管程度，非优劣排名</div>
     </div>
 
-<!-- s5 生态四层 -->
-    <div class="slide" id="s5">
-      <div class="stitle">四层生态版图</div>
-      <div class="flow">
-        <div class="flow-item"><div class="flow-num">①</div><div class="flow-text"><b>托管服务层</b><br>OpenAI Agents API · AgentCore Harness · Claude Managed</div></div>
-        <div class="flow-item"><div class="flow-num">②</div><div class="flow-text"><b>SDK / 框架层</b><br>Claude SDK · Strands · ADK · LangGraph · CrewAI · DSH</div></div>
-        <div class="flow-item"><div class="flow-num">③</div><div class="flow-text"><b>协议层</b><br>MCP（工具连接）· A2A（Agent通信）→ 跨框架通用语言</div></div>
-        <div class="flow-item"><div class="flow-num">④</div><div class="flow-text"><b>模型层</b><br>GPT/Codex · Claude · Gemini · Bedrock多模型 · DeepSeek</div></div>
-      </div>
-    </div>
-
-    <!-- s6 共同规律 -->
-    <div class="slide" id="s6">
-      <div class="stitle">八个框架 一个方向</div>
+    <!-- s2 一个共同方向 -->
+    <div class="slide" id="s2">
+      <div class="stitle">八条路 正在变成一条</div>
       <svg width="300" height="300" viewBox="0 0 300 300">
         <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L6,3 L0,6 Z" fill="#e0c97f"></path></marker></defs>
         <circle cx="150" cy="150" r="98" fill="none" stroke="rgba(224,201,127,.5)" stroke-width="2" stroke-dasharray="8 6" marker-end="url(#arrow)" transform="rotate(-88 150 150)"></circle>
         <g text-anchor="middle">
           <circle cx="150" cy="52" r="34" fill="rgba(224,201,127,.12)" stroke="#e0c97f" stroke-width="1.5"></circle>
           <text x="150" y="49" fill="#e0c97f" font-size="13" font-weight="900">自建</text>
-          <text x="150" y="66" fill="#8a92a8" font-size="9">过去的路</text>
+          <text x="150" y="66" fill="#8a92a8" font-size="9">每个团队自己搭</text>
           <circle cx="235" cy="200" r="34" fill="rgba(126,184,208,.12)" stroke="#7eb8d0" stroke-width="1.5"></circle>
           <text x="235" y="197" fill="#7eb8d0" font-size="13" font-weight="900">平台化</text>
-          <text x="235" y="214" fill="#8a92a8" font-size="9">基础设施下沉</text>
+          <text x="235" y="214" fill="#8a92a8" font-size="9">框架接管基础设施</text>
           <circle cx="65" cy="200" r="34" fill="rgba(224,201,127,.12)" stroke="#e0c97f" stroke-width="1.5"></circle>
-          <text x="65" y="197" fill="#e0c97f" font-size="13" font-weight="900">服务</text>
-          <text x="65" y="214" fill="#8a92a8" font-size="9">开发者上移</text>
+          <text x="65" y="197" fill="#e0c97f" font-size="13" font-weight="900">标配</text>
+          <text x="65" y="214" fill="#8a92a8" font-size="9">差异化上移</text>
           <text x="150" y="150" fill="#e0c97f" font-size="11" font-weight="800">跟数据库从自建</text>
           <text x="150" y="167" fill="#8a92a8" font-size="10">变托管服务一条路</text>
         </g>
       </svg>
+      <div class="sdesc" style="margin-top:8px">模型调用 · 上下文管理 · 工具路由 · 沙箱隔离<br>过去自己写，现在<span class="accent">框架替代了</span></div>
     </div>
 
-    <!-- s7 五趋势 -->
-    <div class="slide" id="s7">
-      <div class="stitle">五个趋势</div>
+    <!-- s3 五个趋势 -->
+    <div class="slide" id="s3">
+      <div class="stitle">五个正在发生的趋势</div>
       <div class="bars">
         <div class="bar-row"><span class="bar-label">自建→服务</span><div class="bar-track"><div class="bar-fill warn" data-w="95">已发生</div></div><span class="bar-alert">🔥</span></div>
         <div class="bar-row"><span class="bar-label">SDK+托管</span><div class="bar-track"><div class="bar-fill warn" data-w="88">双轨标配</div></div><span class="bar-alert">🔥</span></div>
@@ -249,56 +206,56 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
         <div class="bar-row"><span class="bar-label">工具生态</span><div class="bar-track"><div class="bar-fill mid" data-w="65">关键差异</div></div></div>
         <div class="bar-row"><span class="bar-label">治理准入</span><div class="bar-track"><div class="bar-fill ok" data-w="55">正在形成</div></div></div>
       </div>
-      <div class="foot-note">柱长表示趋势成熟度，非精确数值</div>
+      <div class="insight" style="margin-top:8px"><p>协议层（MCP · A2A）正在成为跨框架通用语言<br>框架选型的<span class="accent">锁定成本持续降低</span></p></div>
     </div>
 
-    <!-- s8 能力建设① -->
-    <div class="slide" id="s8">
-      <div class="stitle">能力建设 ①<br>通用能力 vs 框架依赖</div>
-      <div class="insight" style="border-left:3px solid #e0c97f"><h3>一个判断方法</h3><p>能否脱离特定框架，用通用语言描述Agent架构<br><br><span class="accent">能</span> → 在积累可迁移的通用能力<br><span style="color:#5a7a8a">不能</span> → 在学框架API，框架一换就归零</p></div>
-      <div class="insight" style="border-left:3px solid #7eb8d0"><h3>生产化三项基本功</h3><p>· <b>Session管理</b> — 状态存储与恢复<br>· <b>权限控制</b> — 行为边界的设计与执行<br>· <b>可观测性</b> — 出问题能在Tracing中定位到具体步骤<br><br>这三项是原型到生产之间最大的鸿沟</p></div>
+    <!-- s4 四条架构路径 -->
+    <div class="slide" id="s4">
+      <div class="stitle">四条路径 选哪条</div>
+      <div class="flow">
+        <div class="flow-item"><div class="flow-num">①</div><div class="flow-text"><b>全托管</b>（OpenAI · AgentCore）<br>标准化场景，快速上线，基础设施交给平台</div></div>
+        <div class="flow-item"><div class="flow-num">②</div><div class="flow-text"><b>本地控制</b>（Claude SDK · DeepSeek Harness）<br>深度定制，安全审计，控制权在开发侧</div></div>
+        <div class="flow-item"><div class="flow-num">③</div><div class="flow-text"><b>渐进式</b>（Strands → AgentCore）<br>SDK验证原型，验证后上托管，不重写</div></div>
+        <div class="flow-item"><div class="flow-num">④</div><div class="flow-text"><b>协议优先</b>（ADK · MCP/A2A生态）<br>不绑框架，通过协议兼容保持可移植性</div></div>
+      </div>
+      <div class="foot-note">选择取决于业务复杂度和对控制权的需求</div>
     </div>
 
-<!-- s9 能力建设② -->
-    <div class="slide" id="s9">
-      <div class="stitle">能力建设 ②<br>三项壁垒怎么建</div>
+    <!-- s5 怎么评估能力 -->
+    <div class="slide" id="s5">
+      <div class="stitle">一个判断方法</div>
+      <div class="insight" style="border-left:3px solid #e0c97f"><h3>通用能力 还是 框架依赖</h3><p>能否脱离特定框架，用通用语言描述Agent架构<br><br><span class="accent">能</span> → 在积累可迁移的能力<br><span style="color:#5a7a8a">不能</span> → 在学框架API，换了就归零</p></div>
+      <div class="insight" style="border-left:3px solid #7eb8d0"><h3>生产化三项基本功</h3><p>· <b>Session管理</b> — 状态存储与恢复<br>· <b>权限控制</b> — 行为边界设计与执行<br>· <b>可观测性</b> — 在Tracing中定位到具体步骤</p></div>
+    </div>
+
+    <!-- s6 三项壁垒怎么建 -->
+    <div class="slide" id="s6">
+      <div class="stitle">三项壁垒 怎么建</div>
       <div class="case-item"><h4>① 工具设计</h4><p>选一个高频业务流程 → 列出每个判断步骤<br>找有<span class="metric">明确输入输出和成功标准</span>的环节 → 做成接口<br>让Agent跑一次，对照人工结果 → 失败模式改接口</p></div>
       <div class="case-item"><h4>② 验证闭环</h4><p>Agent跑之前先定义<span class="metric">业务指标</span>（非技术指标）<br>跑真实数据打分 → 记录成功条件和失败样例<br>让另一个人照文档独立复现 → <span class="metric">能复现才叫闭环</span></p></div>
       <div class="case-item"><h4>③ 过程审计</h4><p>每个Agent工作流加一条规则：<br><span class="metric">每步做了什么、访问了什么，执行完出报告</span><br>定义资源边界 → 定期回看日志 → 每轮收紧规则</p></div>
       <div class="foot-note">换一个框架，这三项积累的经验依然成立</div>
     </div>
 
-<!-- s10 架构路径分析 -->
-    <div class="slide" id="s12">
-      <div class="stitle">四条架构路径</div>
-      <div class="flow">
-        <div class="flow-item"><div class="flow-num">①</div><div class="flow-text"><b>全托管路径</b>（OpenAI · AgentCore）<br>适合标准化场景，快速上线，基础设施完全交给平台</div></div>
-        <div class="flow-item"><div class="flow-num">②</div><div class="flow-text"><b>本地控制路径</b>（Claude SDK · DeepSeek Harness）<br>适合需要深度定制、安全审计的场景，控制权在开发侧</div></div>
-        <div class="flow-item"><div class="flow-num">③</div><div class="flow-text"><b>渐进路径</b>（Strands → AgentCore）<br>SDK原型验证，验证后上托管，不重写核心逻辑</div></div>
-        <div class="flow-item"><div class="flow-num">④</div><div class="flow-text"><b>协议优先路径</b>（ADK · MCP/A2A生态）<br>不绑框架，通过协议兼容保持可移植性</div></div>
-      </div>
-      <div class="foot-note">选择取决于业务复杂度和团队对控制权的需求，不是框架本身的优劣</div>
-    </div>
-
-    <!-- s11 12个月展望 -->
-    <div class="slide" id="s13">
-      <div class="stitle">12个月展望</div>
+    <!-- s7 12个月展望 -->
+    <div class="slide" id="s7">
+      <div class="stitle">12个月后的格局</div>
       <div class="todo">
-        <div class="todo-item"><div class="todo-check">→</div><div class="todo-text"><b>框架层继续收敛</b><br>选型的锁定成本持续降低，迁移成本趋近于零</div></div>
-        <div class="todo-item"><div class="todo-check">→</div><div class="todo-text"><b>MCP / A2A 成为事实标准</b><br>跨框架互操作变成默认能力，不再是差异化特性</div></div>
-        <div class="todo-item"><div class="todo-check">→</div><div class="todo-text"><b>差异化彻底上移</b><br>基础设施趋同后，业务验证能力决定实际产出差距</div></div>
-        <div class="todo-item"><div class="todo-check">⚠</div><div class="todo-text"><b>过程治理成为硬性要求</b><br>随着Agent自主性增强，步骤留痕和行为边界从建议变成合规条件</div></div>
+        <div class="todo-item"><div class="todo-check">→</div><div class="todo-text"><b>框架层继续收敛</b><br>选型锁定成本趋近于零，迁移变成常规操作</div></div>
+        <div class="todo-item"><div class="todo-check">→</div><div class="todo-text"><b>MCP / A2A 成为事实标准</b><br>跨框架互操作变成默认能力</div></div>
+        <div class="todo-item"><div class="todo-check">→</div><div class="todo-text"><b>差异化彻底上移</b><br>基础设施趋同后，业务验证能力决定实际差距</div></div>
+        <div class="todo-item"><div class="todo-check">⚠</div><div class="todo-text"><b>过程治理成硬性要求</b><br>Agent自主性增强，步骤留痕从建议变成合规条件</div></div>
       </div>
     </div>
 
-<!-- s12 底层判断 -->
-    <div class="slide" id="s10">
+    <!-- s8 底层判断 -->
+    <div class="slide" id="s8">
       <div class="stitle">底层判断</div>
       <div class="insight" style="border-left:3px solid #e0c97f;text-align:center"><h3 style="font-size:20px">基础设施下沉<br>竞争层次上移</h3><p style="margin-top:10px">护城河不在管道层<br><br><span class="accent">理解场景 · 设计接口<br>验证产出 · 审计过程</span><br><br>这四项组合在一起<br>就是「能完成验证闭环」的能力</p></div>
     </div>
 
-    <!-- s13 收尾 -->
-    <div class="slide" id="s11">
+    <!-- s9 收尾 -->
+    <div class="slide" id="s9">
       <div class="closing">
         <h3>八大框架 一个方向<br>能力壁垒在人这一侧</h3>
         <p style="color:#e0c97f;font-size:15px;margin:10px 0">模型厂商 · 云平台 · 社区开源<br>路径不同 方向收敛</p>
@@ -313,7 +270,7 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
     <button id="prevBtn">⏮</button>
     <button class="pri" id="ttsBtn">🔊 开始讲解</button>
     <button id="nextBtn">⏭</button>
-    <span class="pg" id="pgInfo">1/14</span>
+    <span class="pg" id="pgInfo">1/10</span>
     <button id="fsBtn">⛶</button>
   </div>
 </div>
@@ -321,19 +278,15 @@ html,body { width:100%; height:100%; overflow:hidden; font-family:"PingFang SC",
 <script>
 // ===== 讲解文案（每页）=====
 const NARRATION = [
-  "Agent框架做的越多，人的壁垒往哪建。2026年9月，八大Agent框架正在把模型调用、上下文管理、工具路由这些基础设施变成标配。底层在下沉，中间是业务验证，最上面是场景验证经验——这一层，只有人能积累。这期做一次全景拆解。",
-  "先看两家头部厂商的路径分化。OpenAI选择托管路径，把Codex引擎开放为API，基础设施完全由平台承担。Anthropic选择本地路径，Claude Agent SDK让Agent在开发者进程中运行，控制权留在开发侧。两条路径对应不同的场景假设：标准化场景倾向托管，深度定制场景倾向本地控制。决定因素是业务复杂度，而非框架本身。",
-  "另外两家走了不同的开放路径。Google ADK的核心是协议统一，A2A让Agent之间直接通信，不经中心调度。如果协议层统一成为趋势，框架选型本身就不再是决定性因素。DeepSeek Harness走架构解耦路径，MIT开源，Cordis微内核，每个组件可替换。目前仍在alpha阶段，但方向值得关注：一个在推动标准化，一个在推动可拆卸性。",
-  "AWS的双层架构设计值得单独分析。底层Strands Agents是开源SDK，三行代码起步，不锁定模型。上层AgentCore Harness是全托管运行环境，每个Session在独立microVM中运行。值得注意的是Gateway层安全策略的设计——Agent无法绕过，这在当前框架中是比较少见的治理架构。",
-  "社区开源有两个代表性项目，背后是两种不同的抽象假设。LangGraph的核心假设是图是Agent的正确抽象，显式状态转移和checkpoint恢复让审计合规性很强。CrewAI的核心假设是角色是Agent的正确抽象，按职能分工委派任务，原型搭建速度快。哪种抽象更接近本质，可能取决于任务类型。",
-  "把八个框架放到一张图里，生态分四层。顶层是托管服务，中间是SDK和框架，下面是协议层——MCP管工具连接，A2A管Agent通信，正在成为跨框架的通用接口。最底层是模型。整个生态的分层正在清晰化。",
-  "八个框架路径不同，但有一个共同方向：基础设施正在变成平台标配。模型调用、上下文管理、工具路由、沙箱隔离——过去每个团队自己搭建的部分，现在框架替代了。这跟数据库从自建变成托管服务是同一个演进逻辑。",
-  "五个趋势按成熟度排列。基础设施服务化和SDK加托管双轨已经是现实。MCP和A2A协议正在收敛，框架选型的锁定成本在降低。工具生态的丰富度正在成为关键差异。过程治理正在从推荐实践变成准入条件。",
-  "对从业者来说，有一个简单的判断方法：能否脱离特定框架，用通用语言描述Agent架构。能，说明在积累可迁移的通用能力；不能，说明在学框架API，框架一换就归零。生产化的三项基本功是Session管理、权限控制和可观测性。这三项是原型到生产之间最大的鸿沟。",
-  "三项壁垒具体怎么建。工具设计：选一个高频业务流程，列出每个判断步骤，找到有明确输入输出和成功标准的环节，这些就是工具接口。让Agent跑一次，对照人工结果，失败模式就是下一版的改进方向。验证闭环：Agent跑之前先定义业务指标，跑真实数据打分，记录成功条件和失败样例，让另一个人照着文档独立复现——能复现才叫闭环。过程审计：给每个Agent工作流加一条规则，每一步做了什么、访问了什么，执行完出报告。定义资源边界，定期回看日志收紧规则。三项能力的共同特点：换一个框架，积累的经验依然成立。",
-  "从架构选型角度看，当前有四条路径。全托管路径适合标准化场景。本地控制路径适合深度定制和安全审计场景。渐进路径从SDK原型到托管生产，不重写核心逻辑。协议优先路径不绑框架，通过MCP和A2A保持可移植性。选择取决于业务复杂度和团队对控制权的需求。",
-  "展望12个月。框架层会继续收敛，选型锁定成本持续降低。MCP和A2A有望成为事实标准，跨框架互操作变成默认能力。差异化会彻底上移到业务验证层。同时，随着Agent自主性增强，过程治理会从建议变成合规条件。",
-  "一个底层判断。基础设施在下沉，竞争层次在上移。护城河不在管道层，在于理解特定业务场景、设计对应工具接口、验证产出质量、审计执行过程。这四项组合在一起，就是当前所说的能在真实业务环节中完成验证闭环的能力。",
+  "Agent框架做的越多，人的壁垒往哪建。2026年9月，基础设施层正在被八大框架接管，中间是业务验证，最上面是场景经验。越往上，框架越替代不了。这期用十页讲清楚：全景、趋势、路径、和能力壁垒怎么建。",
+  "八大框架各走什么路。OpenAI全托管，Codex引擎开放为API。Claude本地控制，权限和Hooks留在开发侧。Google走协议驱动，A2A让Agent直接通信。DeepSeek MIT开源微内核，仍在alpha阶段。AWS做了双层：Strands开源SDK三行起步，AgentCore全托管加microVM隔离。LangGraph图架构审计性强，CrewAI角色分工原型最快。八条路，一个共同趋势：基础设施正在变成标配。",
+  "这个趋势在历史上有先例。模型调用、上下文管理、工具路由、沙箱隔离——过去每个团队自己搭的基础设施，现在框架替代了。跟数据库从自建变成托管服务是同一个演进逻辑。差异化的位置在上移。",
+  "五个趋势按成熟度排列。基础设施服务化和SDK加托管双轨已经是现实。MCP和A2A协议正在收敛为跨框架通用语言，框架选型的锁定成本在降低。工具生态的丰富度正在成为关键差异。过程治理正在从推荐实践变成准入条件。",
+  "对于架构选型，当前有四条可行路径。全托管路径适合标准化场景，快速上线。本地控制路径适合深度定制和安全审计。渐进路径从SDK原型到托管生产，不用重写。协议优先路径不绑框架，通过MCP和A2A保持可移植性。选择取决于业务复杂度和对控制权的需求，不是框架本身的优劣。",
+  "评估能力积累有一个简单的判断方法。能否脱离特定框架，用通用语言描述Agent架构。能，说明在积累可迁移的能力；不能，说明在学框架API，换了就归零。生产化有三项基本功：Session管理、权限控制、可观测性。这三项是原型到生产之间最大的鸿沟。",
+  "三项壁垒具体怎么建。工具设计：选一个高频业务流程，找有明确输入输出的环节做成接口，让Agent跑一次对照人工结果，失败模式就是改进方向。验证闭环：先定义业务指标，跑真实数据打分，记录成功和失败，让另一个人照文档独立复现，能复现才叫闭环。过程审计：每步做了什么出报告，定义资源边界，定期回看日志收紧规则。三项能力的共同特点：换一个框架，积累的经验依然成立。",
+  "展望12个月。框架层继续收敛，选型锁定成本趋近于零。MCP和A2A有望成为事实标准。差异化彻底上移到业务验证层。同时，过程治理会从建议变成合规条件。",
+  "一个底层判断。基础设施在下沉，竞争层次在上移。护城河不在管道层，在于理解场景、设计接口、验证产出、审计过程。这四项组合在一起，就是能在真实业务环节中完成验证闭环的能力。",
   "八大框架，路径不同，方向收敛。基础设施层正在被平台接管。能力壁垒，在人这一侧。"
 ];
 
