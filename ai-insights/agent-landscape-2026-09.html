@@ -186,9 +186,49 @@ body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#0a0e1a;c
 <!-- ===== 技术人指引 ===== -->
 <div class="section">
   <h2>技术人向上指引</h2>
-  <div class="guide"><h3>🟢 刚接触</h3><p>从 <b>Strands</b>（3行Python）或 <b>CrewAI</b>（角色分工最直观）起步。核心：理解 Agent 循环</p></div>
-  <div class="guide"><h3>🟡 能跑 Demo → 想做生产</h3><p>三件事：<b>Session 管理</b>（状态存储恢复）、<b>权限系统</b>（能做什么不能做什么）、<b>可观测性</b>（出问题怎么排查）</p></div>
-  <div class="guide"><h3>🔴 建立不可替代性</h3><p>框架半年一换，不要学框架本身。三项留在人这侧的能力：<br><b>① 工具设计</b> — 把业务流程拆成可调用的工具<br><b>② 验证闭环</b> — 判断产出在业务上可用<br><b>③ 过程审计</b> — 确保中间过程可控</p></div>
+
+  <div class="guide" style="border-color:rgba(46,204,113,.15);background:rgba(46,204,113,.03)">
+    <h3 style="color:#2ecc71">🟢 第一阶段：理解 Agent 循环（1-2周）</h3>
+    <p>
+      <b>目标：</b>能跑通一个 Agent，理解它在干什么<br><br>
+      <b>从哪开始：</b>Strands（3行Python）或 CrewAI（角色分工最直观），不要一上来啃 LangGraph<br><br>
+      <b>必须理解的一件事：</b>Agent 循环 — 模型推理 → 选工具 → 执行 → 结果回传 → 再推理。所有框架都是这个循环的不同包装<br><br>
+      <b>动手练：</b>让 Agent 完成一个真实小任务（整理一个文件夹、总结一批邮件、查一组数据），不是跑 Demo
+    </p>
+  </div>
+
+  <div class="guide" style="border-color:rgba(241,196,15,.15);background:rgba(241,196,15,.03)">
+    <h3 style="color:#f1c40f">🟡 第二阶段：从 Demo 到生产（1-3个月）</h3>
+    <p>
+      <b>目标：</b>Agent 能稳定服务真实用户，出了问题能排查<br><br>
+      <b>必学三件事：</b><br>
+      ① <b>Session 管理</b> — 状态怎么存、怎么恢复、多轮对话中间断了怎么办。这是 Demo 和生产之间最大的鸿沟<br>
+      ② <b>权限与安全</b> — Agent 能访问什么、不能访问什么、怎么防止越权。看 AgentCore Gateway 和 Claude 的 permission_mode 怎么设计的<br>
+      ③ <b>可观测性</b> — 出问题时能看到 Agent 每一步做了什么。Tracing 不是锦上添花，是生产必需<br><br>
+      <b>动手练：</b>把第一阶段的 Agent 接入一个真实系统（内部工具、客服、数据流水线），跑一周不崩
+    </p>
+  </div>
+
+  <div class="guide" style="border-color:rgba(231,76,60,.15);background:rgba(231,76,60,.03)">
+    <h3 style="color:#e74c3c">🔴 第三阶段：建立不可替代性（持续积累）</h3>
+    <p>
+      <b>核心认知：</b>框架半年一换，学框架本身不构成壁垒。留在人这一侧的能力有三项：<br><br>
+      ① <b>工具设计能力</b> — 把业务流程拆成 Agent 可调用的工具。这需要同时懂业务和懂 Agent，纯技术或纯业务都做不到。问自己：这个流程里哪些判断动作可以变成工具接口？输入输出是什么？失败了怎么降级？<br><br>
+      ② <b>验证闭环能力</b> — 怎么判断 Agent 的产出在业务上可用。不是看技术指标（延迟、token数），是看业务指标（准确率、客户满意度、流程完成率）。跑通 → 验证 → 交接，三步缺一不可<br><br>
+      ③ <b>过程审计能力</b> — 结果对不等于过程对。能设计「步骤留痕 + 资源边界 + 异常报告」的审计机制，确保 Agent 中间过程可控。这项能力随着 Agent 自主性增强会越来越稀缺<br><br>
+      <b>判断标准：</b>如果明天所有框架都换了，手上的经验还能用，那就是不可替代的。如果只会用某个框架的API，那就是可替代的
+    </p>
+  </div>
+
+  <div class="guide" style="border-color:rgba(155,89,182,.15);background:rgba(155,89,182,.03)">
+    <h3 style="color:#bb8fce">💡 一个底层判断</h3>
+    <p>
+      Agent 框架的演进方向是<b>「基础设施下沉」</b>：模型调用、上下文管理、工具路由、沙箱隔离、Session 持久化——这些正在变成平台标配，不再需要开发者自己搭。<br><br>
+      这意味着<b>竞争的层次在上移</b>：从「能不能让 Agent 跑起来」上移到「能不能让 Agent 在真实业务中产出可验证的价值」。<br><br>
+      技术人的护城河不在底层管道，在于<b>理解业务场景 + 设计工具接口 + 验证产出质量 + 审计执行过程</b>的综合能力。这四项加在一起，才是「能在真实业务环节中完成验证闭环的人」。
+    </p>
+  </div>
+
 </div>
 
 <div class="footer">
