@@ -231,7 +231,7 @@ html, body {
 
 <div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
 <div class="start-btn" id="startBtn" onclick="startShow(event)">▶ 点这里开始讲解</div>
-<div class="page-num" id="pageNum">1 / 10</div>
+<div class="page-num" id="pageNum">1 / 11</div>
 <div class="nav-dots" id="navDots"></div>
 <div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
 
@@ -758,6 +758,63 @@ html, body {
       <span class="dark">用三条线就能代表万物，<br>
       这就是古人的智慧。</span>
     </div>
+
+  </div>
+
+  <!-- Page 11: Use bagua to read the world -->
+  <div class="page bg-nature" data-page="10">
+    <div class="page-title ani">怎么用八卦读世界</div>
+    <div class="page-text ani">
+      八卦不只是分类表，<br>
+      更是古人<span class="em">读世界的思维工具</span>。
+    </div>
+    <div class="ani" style="width:100%;max-width:300px;margin:8px 0;">
+      <svg viewBox="0 0 340 254" role="img" aria-label="山下有水，上艮下坎组成蒙卦，启发启蒙教育；天上有火，上离下乾组成大有卦，象征收获丰盛" style="display:block;width:100%;height:auto;">
+        <rect x="1" y="1" width="338" height="120" rx="12" fill="#101e28" stroke="#30434e"/>
+        <path d="M16 62 L46 18 L77 62 L96 39 L115 62 Z" fill="#53664a" stroke="#91a57b" stroke-width="2"/>
+        <g fill="none" stroke="#67b8eb" stroke-width="3" stroke-linecap="round">
+          <path d="M19 74 Q31 66 43 74 T67 74 T91 74 T115 74"/>
+          <path d="M19 86 Q31 78 43 86 T67 86 T91 86 T115 86"/>
+        </g>
+        <text x="67" y="109" text-anchor="middle" fill="#c8d9e1" font-size="13">山下有水</text>
+        <path d="M127 61 H155 M148 54 L155 61 L148 68" fill="none" stroke="#ffd700" stroke-width="2"/>
+        <!-- 蒙：上艮下坎；六爻从上至下绘制 -->
+        <g stroke="#b7c79b" stroke-width="4">
+          <path d="M171 29 H211 M171 39 H186 M196 39 H211 M171 49 H186 M196 49 H211"/>
+        </g>
+        <g stroke="#67b8eb" stroke-width="4">
+          <path d="M171 66 H186 M196 66 H211 M171 76 H211 M171 86 H186 M196 86 H211"/>
+        </g>
+        <text x="267" y="40" text-anchor="middle" fill="#ffd700" font-size="22" font-weight="bold">蒙卦</text>
+        <text x="267" y="65" text-anchor="middle" fill="#c8bca0" font-size="13">上艮山 · 下坎水</text>
+        <text x="267" y="92" text-anchor="middle" fill="#e8e0d0" font-size="16">启蒙教育</text>
+        <rect x="1" y="133" width="338" height="120" rx="12" fill="#211b19" stroke="#514036"/>
+        <path d="M64 147 C72 162 92 167 85 184 C80 195 57 196 49 185 C41 172 60 164 64 147 Z" fill="#ee894e"/>
+        <path d="M67 168 C78 180 76 190 65 190 C54 188 61 177 67 168 Z" fill="#ffd37c"/>
+        <path d="M20 203 H113 M26 215 H107" fill="none" stroke="#8aadd9" stroke-width="3" stroke-linecap="round"/>
+        <text x="67" y="241" text-anchor="middle" fill="#c8d9e1" font-size="13">天上有火</text>
+        <path d="M127 193 H155 M148 186 L155 193 L148 200" fill="none" stroke="#ffd700" stroke-width="2"/>
+        <!-- 大有：上离下乾；火在天上，不是上乾下离 -->
+        <g stroke="#ee894e" stroke-width="4">
+          <path d="M171 161 H211 M171 171 H186 M196 171 H211 M171 181 H211"/>
+        </g>
+        <g stroke="#8aadd9" stroke-width="4">
+          <path d="M171 198 H211 M171 208 H211 M171 218 H211"/>
+        </g>
+        <text x="267" y="172" text-anchor="middle" fill="#ffd700" font-size="22" font-weight="bold">大有卦</text>
+        <text x="267" y="197" text-anchor="middle" fill="#c8bca0" font-size="13">上离火 · 下乾天</text>
+        <text x="267" y="224" text-anchor="middle" fill="#e8e0d0" font-size="16">收获丰盛</text>
+      </svg>
+    </div>
+    <div class="page-text ani">
+      一组<span class="em">自然意象</span>，就是一个<span class="em">人生场景</span>。<br>
+      <span class="dark" style="font-size:0.82em;">这是借象说理，不是用自然景象预测未来。</span>
+    </div>
+    <div class="fact-card ani" style="margin-top:12px;">
+      <div class="label">读法：取象、看关系、联想处境</div>
+      蒙：从蒙昧走向明白，重在循序启发。<br>
+      大有：拥有丰盛，也要思考如何善用。
+    </div>
     <div class="ani" style="margin-top:20px;padding:12px 20px;border:1px solid rgba(255,215,0,0.15);border-radius:10px;text-align:center;">
       <div style="color:#ffd700;font-size:1em;font-weight:bold;">下一期预告</div>
       <div style="color:#6a5a4a;margin-top:5px;">第五期 · 六十四卦的诞生 — 八卦重叠的奥秘</div>
@@ -857,7 +914,8 @@ const narrations = [
   "离卦，中间一条阴线是空心，上下两条阳线是外壳。就像火苗，外面明亮，中间空虚。火必须附着在别的东西上才能燃烧。在家庭中，离是中女，就是二女儿。离的动物是雉，就是野鸡，因为野鸡有漂亮的羽毛，就像火焰一样美丽。方位在南，五行属火。",
   "艮卦，最上面一条阳线像山顶，下面两条阴线是空的山体。山不动不摇，稳如磐石。艮代表停止、安静、稳定。在家庭中，艮是少男，就是小儿子。艮的动物是狗，因为狗忠诚守护，蹲在门口一动不动。方位在东北，五行属土。",
   "兑卦，最上面一条阴线是缺口，下面两条阳线是坚实的底。就像湖泊，上面开口纳水，带给人喜悦和愉快。在家庭中，兑是少女，就是小女儿。兑的动物是羊，性格温和。兑和悦同源，湖水清澈，人们在水边嬉戏，心情愉悦。方位在西，五行属金。",
-  "本期从传统文化角度讲解，不用于预测或替代现实决策。小结。八卦就是古人的万物分类系统！乾代表天，坤代表地，震代表雷，巽代表风，坎代表水，离代表火，艮代表山，兑代表泽。每一卦都有自然象征、家庭角色、性格特点。用三条线就能代表万物，这就是古人的智慧。下一期，我们来讲六十四卦是怎么诞生的。"
+  "本期从传统文化角度讲解，不用于预测或替代现实决策。小结。八卦就是古人的万物分类系统！乾代表天，坤代表地，震代表雷，巽代表风，坎代表水，离代表火，艮代表山，兑代表泽。每一卦都有自然象征、家庭角色、性格特点。用三条线就能代表万物，这就是古人的智慧。",
+  "八卦不只是一张分类表，它是古人读懂世界的思维工具。比如看到山下有水，上面是艮卦山，下面是坎卦水，组合起来就是蒙卦，讲的是启蒙教育的道理，从蒙昧走向明白，需要循序启发。再比如天上有火，上面是离卦火，下面是乾卦天，就是大有卦，象征着收获丰盛，也提醒人思考如何善用所拥有的资源。一组自然意象，就对应一个人生场景。先取象，再看关系，最后联想人的处境。这是借象说理，不是用自然景象预测未来。下一期，我们来讲六十四卦是怎么诞生的。"
 ];
 
 let voices = [];

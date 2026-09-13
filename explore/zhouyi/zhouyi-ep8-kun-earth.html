@@ -174,13 +174,27 @@ html, body {
   50% { filter: drop-shadow(0 0 10px rgba(160,128,64,0.5)); }
 }
 .kun-svg { animation: earthPulse 4s ease-in-out infinite; }
+/* Steady drops illustrate persistence; the rock stays fixed. */
+.steady-drop { animation: steadyDrop 2.5s linear infinite; }
+.steady-drop-delayed { animation-delay: -1.25s; }
+.steady-ripple { transform-origin: 100px 105px; animation: steadyRipple 1.25s ease-out infinite; }
+@keyframes steadyDrop {
+  0% { transform: translateY(0); opacity: 0; }
+  12% { opacity: 0.85; }
+  88% { transform: translateY(65px); opacity: 0.85; }
+  100% { transform: translateY(65px); opacity: 0; }
+}
+@keyframes steadyRipple {
+  0% { transform: scale(0.4); opacity: 0.7; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
 </style>
 </head>
 <body><nav class="site-links" aria-label="全站导航"><a href="../../index.html">首页</a><a href="../../grade1-down/index.html">一年级</a><a href="../../grade2-up/index.html">二年级</a><a href="../../explore/science/index.html">科普</a><a href="../../explore/zhouyi/index.html">传统文化</a></nav><div role="navigation" aria-label="栏目导航" style="position:relative;z-index:9999;padding:10px 14px;background:#172033;color:white;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft YaHei',sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap"><a href="../../index.html" style="color:white;text-decoration:none;font-weight:800">← 首页</a><span aria-hidden="true">›</span><a href="index.html" style="color:#dce7ff">返回栏目目录</a></div>
 
 <div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
 <div class="start-btn" id="startBtn" onclick="startShow(event)">▶ 点这里开始讲解</div>
-<div class="page-num" id="pageNum">1 / 10</div>
+<div class="page-num" id="pageNum">1 / 11</div>
 <div class="nav-dots" id="navDots"></div>
 <div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
 
@@ -634,8 +648,43 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 9: Life Wisdom -->
-  <div class="page bg-dual" data-page="8">
+  <!-- Page 9: 用六·利永贞 -->
+  <div class="page bg-deep" data-page="8">
+    <div class="ani">
+      <svg width="200" height="140" viewBox="0 0 200 140" role="img" aria-label="水滴持续落在岩石上，象征持之以恒、恒久正固">
+        <defs>
+          <linearGradient id="gSteady" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#9ec9ed"/>
+            <stop offset="100%" stop-color="#648db4"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="100" cy="110" rx="50" ry="20" fill="rgba(120,100,80,0.3)" stroke="#88745d" stroke-width="1"/>
+        <ellipse cx="100" cy="105" rx="8" ry="3" fill="rgba(100,150,200,0.4)"/>
+        <ellipse class="steady-ripple" cx="100" cy="105" rx="8" ry="3" fill="none" stroke="#9ec9ed"/>
+        <circle class="steady-drop" cx="100" cy="35" r="4" fill="url(#gSteady)"/>
+        <circle class="steady-drop steady-drop-delayed" cx="100" cy="35" r="3" fill="url(#gSteady)"/>
+        <path d="M100,18 C88,4 78,8 78,17 C78,27 88,29 100,18 C112,4 122,8 122,17 C122,27 112,29 100,18" fill="none" stroke="#a08040" stroke-width="1.5"/>
+        <text x="100" y="138" text-anchor="middle" font-size="10" fill="#c8bca0">水滴石穿 · 恒久正固</text>
+      </svg>
+    </div>
+    <div class="page-title ani">用六 · 利永贞</div>
+    <div class="page-text ani">
+      坤卦独有的一条<span class="em">总辞</span><br>
+      <span class="em">「利永贞」</span>：永远保持柔顺正固<br><br>
+      水滴石穿，靠的是<span class="em">持之以恒</span>。<br>
+      保持柔顺而不失原则，才有持久的力量。<br>
+      <span class="dark">柔顺不是软弱，守正不是一时。</span>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">与乾卦「用九」相对称</div>
+      用九：见群龙无首，吉 → 不争首<br>
+      用六：利永贞 → 恒守正<br>
+      一刚一柔，一动一静，合为天地之道。
+    </div>
+  </div>
+
+  <!-- Page 10: Life Wisdom -->
+  <div class="page bg-dual" data-page="9">
     <div class="particles" id="p8"></div>
     <div class="ani">
       <svg width="240" height="100" viewBox="0 0 240 100">
@@ -681,8 +730,8 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 10: Summary -->
-  <div class="page bg-final" data-page="9">
+  <!-- Page 11: Summary -->
+  <div class="page bg-final" data-page="10">
     <div class="particles" id="p9"></div>
     <p class="culture-notice" style="position:relative;z-index:1;color:#d8c9aa;font-size:0.78em;line-height:1.5;max-width:32em;margin:0.5em auto;">本期从传统文化角度讲解，不用于预测或替代现实决策。</p>
     <div class="ani">
@@ -820,6 +869,7 @@ const narrations = [
   "六四，括囊无咎。括囊就是扎紧口袋，无咎就是不会犯错。有时候少说话是最聪明的。把嘴巴管好，不乱发言，谨慎低调，就不会惹祸。就像乌龟把头缩进壳里，外面再危险，它都安然无恙。",
   "六五，黄裳元吉。黄是五色中居中的颜色，裳是下身的衣裳代表谦卑，元吉就是大吉大利。穿黄色下裳的意思是，居中不偏加上谦逊低调，等于最好的状态。不争第一不做最后，恰好在中间，温和而有力。",
   "上六，龙战于野。阴走到了最极端的位置，就会和阳发生冲突。太过柔顺、太过退让，反而会引发激烈的反弹。忍耐有度，退让有底线。过度压抑，终究会爆发。有话好好说，不要积累到极点。",
+  "用六，利永贞。这是坤卦独有的一条总辞，和乾卦的用九对称。永贞就是永远坚守正固。坤卦告诉我们，柔顺不是软弱，而是一种持久的力量。水滴石穿靠的就是这份恒心。乾卦的用九教我们不争首，坤卦的用六教我们恒守正。一刚一柔，一动一静，合在一起就是天地之道。",
   "坤卦的人生智慧。坤卦教会我们三件事：承载，包容别人，托起团队。包容，心胸宽广，不斤斤计较。厚积薄发，默默积累，等待时机。乾是创造的力量，坤是承载的力量。乾坤配合，就是天地之道。",
   "本期从传统文化角度讲解，不用于预测或替代现实决策。小结。坤卦代表纯阴、地、柔顺。核心精神是地势坤，君子以厚德载物。大地的六个教诲：见微知著、正直宽大、含蓄内敛、谨慎守口、中正谦逊、刚柔有度。乾为父，坤为母。有天的刚健，有地的包容，才是完整的天地之道。下一期，我们来讲变卦与动爻。"
 ];

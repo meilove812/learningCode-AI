@@ -171,7 +171,7 @@ html, body {
 
 <div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
 <div class="start-btn" id="startBtn" onclick="startShow(event)">▶ 点这里开始讲解</div>
-<div class="page-num" id="pageNum">1 / 10</div>
+<div class="page-num" id="pageNum">1 / 11</div>
 <div class="nav-dots" id="navDots"></div>
 <div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
 
@@ -321,14 +321,15 @@ html, body {
     <div class="page-title ani">位：六个位置</div>
     <div class="page-text ani">
       一个卦有<span class="em">六条爻</span>，<br>
-      从<span class="em">下往上</span>数：<br><br>
+      从<span class="em">下往上</span>数：<br>
       第一条叫 <span class="em">初</span>（最底下）<br>
       第二条叫 <span class="em">二</span><br>
       第三条叫 <span class="em">三</span><br>
       第四条叫 <span class="em">四</span><br>
       第五条叫 <span class="em">五</span><br>
-      第六条叫 <span class="em">上</span>（最顶上）<br><br>
-      <span class="dark">注意：是从下面开始数哦！</span>
+      第六条叫 <span class="em">上</span>（最顶上）<br>
+      下面三爻叫<span class="em">下卦</span>也叫<span class="em">内卦</span>，<br>
+      上面三爻叫<span class="em">上卦</span>也叫<span class="em">外卦</span>。
     </div>
   </div>
 
@@ -606,8 +607,56 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 10: Summary -->
-  <div class="page bg-final" data-page="9">
+  <!-- Page 10: Worked Example - Water over Thunder -->
+  <div class="page bg-nature" data-page="9">
+    <div class="page-title ani">读卦实例：水雷屯</div>
+    <div class="ani">
+      <svg width="300" height="210" viewBox="0 0 300 210" role="img" aria-label="水雷屯卦：上坎水，下震雷。六爻自下而上为阳、阴、阴、阴、阳、阴；右侧为雷雨与初生幼苗。">
+        <!-- Top trigram: Kan (yin, yang, yin from top to bottom) -->
+        <g fill="#7bb7ec">
+          <rect x="16" y="24" width="32" height="8" rx="2"/><rect x="64" y="24" width="32" height="8" rx="2"/>
+          <rect x="16" y="48" width="80" height="8" rx="2"/>
+          <rect x="16" y="72" width="32" height="8" rx="2"/><rect x="64" y="72" width="32" height="8" rx="2"/>
+        </g>
+        <path d="M104 24 H110 V80 H104" fill="none" stroke="#7bb7ec"/>
+        <text x="119" y="49" font-size="12" fill="#7bb7ec">上坎</text>
+        <text x="119" y="67" font-size="11" fill="#a8bfd0">水</text>
+        <!-- Bottom trigram: Zhen (yin, yin, yang from top to bottom) -->
+        <g fill="#ffd700">
+          <rect x="16" y="104" width="32" height="8" rx="2"/><rect x="64" y="104" width="32" height="8" rx="2"/>
+          <rect x="16" y="128" width="32" height="8" rx="2"/><rect x="64" y="128" width="32" height="8" rx="2"/>
+          <rect x="16" y="152" width="80" height="8" rx="2"/>
+        </g>
+        <path d="M104 104 H110 V160 H104" fill="none" stroke="#ffd700"/>
+        <text x="119" y="129" font-size="12" fill="#ffd700">下震</text>
+        <text x="119" y="147" font-size="11" fill="#c8bca0">雷</text>
+        <!-- Rain and thunder: symbolic imagery, not a weather prediction -->
+        <path d="M186 60 C172 58 174 38 187 36 C186 17 216 15 224 32 C240 19 260 32 259 45 C278 45 277 65 263 66 H186 Z" fill="#344d68" stroke="#7bb7ec"/>
+        <path d="M225 70 L210 101 H224 L211 128 L247 91 H230 L244 70 Z" fill="#ffd700"/>
+        <path d="M190 78 L182 94 M202 107 L194 123 M267 79 L259 95 M264 112 L256 128 M186 129 L178 145" stroke="#7bb7ec" stroke-width="3" stroke-linecap="round"/>
+        <path d="M176 174 Q226 162 276 174" fill="none" stroke="#9b8353" stroke-width="2"/>
+        <path d="M226 169 V144 M226 158 Q205 159 205 143 Q225 139 226 158 M226 151 Q228 132 247 137 Q246 153 226 151" fill="#4e9c72" stroke="#87cca2" stroke-width="2"/>
+        <text x="56" y="195" text-anchor="middle" font-size="12" fill="#ffd700">屯（zhūn）</text>
+        <text x="225" y="195" text-anchor="middle" font-size="12" fill="#c8bca0">雷雨中，万物初生</text>
+      </svg>
+    </div>
+    <div class="page-text ani">
+      <span class="em">上坎水，下震雷</span><br>
+      雷雨交加，万物初生。<br>
+      屯卦讲的是<span class="em">创业初期的艰难</span>。<br>
+      <span class="dark">这里的“创业”，泛指开创一番事业。</span>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">四步读懂这个卦</div>
+      1. 卦名：屯（zhūn），艰难萌生<br>
+      2. 上下卦：坎水在上，震雷在下<br>
+      3. 卦象：雷雨交加，生机初萌<br>
+      4. 卦义：初创之难，宜稳步积累
+    </div>
+  </div>
+
+  <!-- Page 11: Summary -->
+  <div class="page bg-final" data-page="10">
     <div class="particles" id="p9"></div>
     <p class="culture-notice" style="position:relative;z-index:1;color:#d8c9aa;font-size:0.78em;line-height:1.5;max-width:32em;margin:0.5em auto;">本期从传统文化角度讲解，不用于预测或替代现实决策。</p>
     <div class="ani">
@@ -726,13 +775,14 @@ document.addEventListener('keydown', e => {
 const narrations = [
   "卦的结构。第六期，爻、位、象。",
   "爻，读作yáo，是卦最小的组成单位。只有两种：阳爻，一整条横线。阴爻，中间断开的两段。就像电脑只用0和1，周易只用这两种线条就能表达万物！",
-  "一个卦有六条爻，从下往上数：第一条叫初，第二条叫二，第三条叫三，第四条叫四，第五条叫五，第六条叫上。注意，是从下面开始数哦！",
+  "一个卦有六条爻，从下往上数：第一条叫初，第二条叫二，第三条叫三，第四条叫四，第五条叫五，第六条叫上。下面三爻叫下卦也叫内卦，上面三爻叫上卦也叫外卦。注意，爻位是从下面开始数的。",
   "每个位置都有它的含义。初代表起步阶段，是普通百姓。二是臣子之位，能干有为。三是危险位，上不上下不下。四靠近君王，要小心谨慎。五是君位，最尊贵的位置。上代表过了头，物极必反。就像爬楼梯，每层风景不同。",
   "每个卦有两层文字。卦辞是对整个卦的判断，由周文王所写。爻辞是对每一爻的判断，由周公所写，每卦有6条。卦辞告诉你大方向，爻辞告诉你每一步该怎么走。",
   "象就是卦给你画的一幅画。看到卦的上下两部分，想象它们在自然中的画面。天在水上，各走各的，代表争论。水在山下，泉水初涌，代表蒙昧。火在天上，光照万物，代表大有。读卦就是看画、讲故事！",
   "周文王写了卦辞，周公写了爻辞。后来孔子又加了注解：彖辞解释整个卦为什么这样，象辞解释画面代表什么。这些注解叫做十翼，像给周易装上了翅膀，帮助后人更好地理解。",
   "怎么读一个卦呢？第一步，看卦名，了解这是什么场景。第二步，读卦辞，掌握整体趋势。第三步，看各爻，从初到上逐步分析。第四步，找动爻，正在变化的那一爻，就是此刻最关键的信息。",
   "读卦就像看天气预报。卦辞相当于今天整体天气，比如今天晴转多云。爻辞相当于各时段预报，比如上午晴下午有阵雨。动爻就是此刻正在变的天气，比如现在云在聚集，快下雨了。看懂卦，就能提前准备！",
+  "让我们用一个完整的例子来练习读卦。水雷屯卦，屯读作zhūn。上面是坎卦，代表水；下面是震卦，代表雷。上坎水，下震雷，联想到雷雨交加、万物在艰难中萌生的画面。屯卦讲的是创业初期的艰难，这里的创业泛指开创一番事业。我们先用四步理解这个卦的结构和象义。第一，看卦名，屯有艰难萌生的意思。第二，看上下卦，坎水在上，震雷在下。第三，想象卦象，雷雨交加，生机初萌。第四，体会卦义，万事开头难，需要稳步积累、寻求支持，而不是急于求成。理解了这层意思，再结合卦辞和爻辞细读。",
   "本期从传统文化角度讲解，不用于预测或替代现实决策。小结。爻是卦的最小单位，分阳爻和阴爻。位是六个位置，从初到上。象是卦画出的自然画面。卦辞看整体，爻辞看细节，动爻是关键的变化点。掌握了这些，你就能开始读懂任何一个卦了！下一期，我们来讲乾卦，天行健，君子以自强不息。"
 ];
 

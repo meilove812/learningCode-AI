@@ -84,6 +84,17 @@ html, body {
 .page.active .ani:nth-child(5) { transition-delay: 0.6s; }
 .page.active .ani:nth-child(6) { transition-delay: 0.75s; }
 
+/* 文王演易：牢室不动，研习的光与卦象渐次显现。 */
+.wenwang-trigram { opacity: 0; }
+.page.active .wenwang-trigram { animation: wenwangReveal 1.2s ease forwards; animation-delay: var(--delay); }
+@keyframes wenwangReveal { from { opacity: 0; } to { opacity: 0.85; } }
+.wenwang-glow { opacity: 0.35; }
+.page.active .wenwang-glow { animation: wenwangWisdom 3s ease forwards; }
+@keyframes wenwangWisdom { from { opacity: 0.35; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .page.active .wenwang-trigram, .page.active .wenwang-glow { animation: none; opacity: 1; }
+}
+
 /* Particles */
 .particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .particle {
@@ -171,7 +182,7 @@ html, body {
 
 <div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
 <div class="start-btn" id="startBtn" onclick="startShow(event)">▶ 点这里开始讲解</div>
-<div class="page-num" id="pageNum">1 / 10</div>
+<div class="page-num" id="pageNum">1 / 11</div>
 <div class="nav-dots" id="navDots"></div>
 <div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
 
@@ -645,8 +656,53 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 10: Summary -->
-  <div class="page bg-final" data-page="9">
+  <!-- Page 10: Wenwang studies the Yi in confinement (traditional account) -->
+  <div class="page bg-dawn" data-page="9">
+    <div class="ani" style="margin-bottom:12px;">
+      <svg width="280" height="185" viewBox="0 0 280 185" role="img" aria-label="文王身处羑里牢室，借微光研习，八个卦象在身旁渐次显现；传统故事示意">
+        <defs>
+          <radialGradient id="wenwangLight">
+            <stop offset="0%" stop-color="#ffe6a0" stop-opacity="0.65"/>
+            <stop offset="100%" stop-color="#ffd700" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <rect x="84" y="40" width="112" height="109" rx="5" fill="#10121d" stroke="#6a7a8a" stroke-width="2"/>
+        <path d="M84 62 H196 M98 41 V94 M119 41 V77 M140 41 V71 M161 41 V77 M182 41 V94" fill="none" stroke="#6a7a8a" stroke-width="3" opacity="0.6"/>
+        <ellipse class="wenwang-glow" cx="140" cy="108" rx="59" ry="59" fill="url(#wenwangLight)"/>
+        <circle cx="140" cy="89" r="12" fill="#d9b987"/>
+        <path d="M129 84 Q129 72 141 73 Q151 76 151 84 M135 75 Q130 66 140 66 Q149 67 144 75" fill="#42372e"/>
+        <path d="M131 102 Q140 109 149 102 L169 139 Q140 148 111 139 Z" fill="#8b754b" stroke="#e0c58b" stroke-width="1.5"/>
+        <path d="M131 106 L119 122 L136 129 M149 106 L159 122 L143 129" fill="none" stroke="#e0c58b" stroke-width="3"/>
+        <path d="M116 125 L137 122 L140 125 L143 122 L164 125 L160 140 L141 137 L122 140 Z" fill="#dcc697" stroke="#91754c"/>
+        <path d="M140 125 V137 M124 129 L135 127 M125 133 L134 131 M147 127 L157 129 M147 131 L155 133" fill="none" stroke="#775e37"/>
+        <g class="wenwang-trigram" style="--delay:0.35s" transform="translate(65 24)"><title>乾卦</title><path d="M0 14 H26 M0 7 H26 M0 0 H26" fill="none" stroke="#ffd700" stroke-width="3"/></g>
+        <g class="wenwang-trigram" style="--delay:0.57s" transform="translate(127 14)"><title>兑卦</title><path d="M0 14 H26 M0 7 H26 M0 0 H10 M16 0 H26" fill="none" stroke="#ffd700" stroke-width="3"/></g>
+        <g class="wenwang-trigram" style="--delay:0.79s" transform="translate(190 24)"><title>离卦</title><path d="M0 14 H26 M0 7 H10 M16 7 H26 M0 0 H26" fill="none" stroke="#ffd700" stroke-width="3"/></g>
+        <g class="wenwang-trigram" style="--delay:1.01s" transform="translate(223 76)"><title>震卦</title><path d="M0 14 H26 M0 7 H10 M16 7 H26 M0 0 H10 M16 0 H26" fill="none" stroke="#ffd700" stroke-width="3"/></g>
+        <g class="wenwang-trigram" style="--delay:1.23s" transform="translate(190 141)"><title>巽卦</title><path d="M0 14 H10 M16 14 H26 M0 7 H26 M0 0 H26" fill="none" stroke="#ffd700" stroke-width="3"/></g>
+        <g class="wenwang-trigram" style="--delay:1.45s" transform="translate(127 151)"><title>坎卦</title><path d="M0 14 H10 M16 14 H26 M0 7 H26 M0 0 H10 M16 0 H26" fill="none" stroke="#ffd700" stroke-width="3"/></g>
+        <g class="wenwang-trigram" style="--delay:1.67s" transform="translate(65 141)"><title>艮卦</title><path d="M0 14 H10 M16 14 H26 M0 7 H10 M16 7 H26 M0 0 H26" fill="none" stroke="#ffd700" stroke-width="3"/></g>
+        <g class="wenwang-trigram" style="--delay:1.89s" transform="translate(29 76)"><title>坤卦</title><path d="M0 14 H10 M16 14 H26 M0 7 H10 M16 7 H26 M0 0 H10 M16 0 H26" fill="none" stroke="#ffd700" stroke-width="3"/></g>
+      </svg>
+    </div>
+    <div class="page-title ani">文王演易：蛰伏也是准备</div>
+    <div class="page-text ani">
+      <span class="dark">传统说法中，周文王被囚羑里，</span><br>
+      在困境中<span class="em">沉心演易，积蓄智慧</span>。<br><br>
+      呼应第七期乾卦：<span class="em">「潜龙勿用」</span><br>
+      时机未到，先积累；条件成熟，再行动。<br>
+      <span class="em">蛰伏不是空等，而是准备。</span>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">传统叙事与现实启发</div>
+      《史记》有“文王拘而演《周易》”之说。<br>
+      演八卦为六十四卦是传统归属说法，非确证史实。<br>
+      逆境不保证成功，但可以成为学习与准备的时间。
+    </div>
+  </div>
+
+  <!-- Page 11: Summary -->
+  <div class="page bg-final" data-page="10">
     <div class="particles" id="p9"></div>
     <p class="culture-notice" style="position:relative;z-index:1;color:#d8c9aa;font-size:0.78em;line-height:1.5;max-width:32em;margin:0.5em auto;">本期从传统文化角度讲解，不用于预测或替代现实决策。</p>
     <div class="ani" style="margin-bottom:10px;">
@@ -768,6 +824,7 @@ const narrations = [
   "与时偕行，就是跟着时代一起走。时代在变化，我们也要跟着变。不能因为过去的方法好用，就一直不肯改变。就像划船，顺流而下，轻松前进；逆流而上，又累又慢。跟着时代走，不固执过去。",
   "时有四种状态。时来，机会来了，要赶快抓住。时中，恰到好处，这是最佳状态。时往，机会过了，要学会放下。时穷，走到尽头，但黎明前最黑暗，太阳一定会再升起。",
   "在现代生活中也是一样。考试前就是潜龙阶段，要安静准备，积蓄力量。机会来了就是跃龙，要全力以赴，把握当下。成功的时候要想到亢龙有悔，保持谦逊，不要骄傲，因为飞得太高会摔下来。",
+  "传统说法中，周文王被商纣王囚禁在羑里，在困境中推演周易。史记留下了文王拘而演周易的记述。后世常把从八卦推演六十四卦归于文王，这是传统归属说法，并非已经确证的史实。这个故事可以帮助我们理解第七期乾卦所讲的潜龙勿用：时机不对，不等于什么都做不了，还可以沉下心来学习、积累、完善准备。等条件成熟，再采取行动。逆境本身不保证成功，但蛰伏不必只是空等，也可以是准备。",
   "本期从传统文化角度讲解，不用于预测或替代现实决策。小结。时等于时机加时势加时位。顺时而动，跟着节奏走。待时而动，耐心等时机。与时偕行，跟上时代变化。时来要抓住，时往要放下。懂得时，就是最大的智慧。下一期，我们来讲周易与生活。"
 ];
 

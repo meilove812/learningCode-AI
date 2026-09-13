@@ -192,6 +192,24 @@ html, body {
 .attitude-item .att-label { color: #ffd700; font-weight: bold; font-size: 0.85em; }
 .attitude-item .att-desc { color: #8a7a6a; font-size: 0.7em; margin-top: 4px; }
 
+/* Knowledge graph: ordered derivation, with decorative arrow flow */
+.knowledge-page .knowledge-graph { width: 100%; max-width: 760px; height: auto; display: block; }
+.knowledge-page .page-title { margin-bottom: 12px; }
+.knowledge-page .knowledge-caption { color: #c0c0c0; font-size: 0.85em; margin-bottom: 20px; }
+.knowledge-page .kg-node { fill: #100d1c; stroke: #ffd700; stroke-width: 1.5; }
+.knowledge-page .kg-flow { stroke: #ffd700; stroke-width: 2; stroke-dasharray: 4 6; }
+.page.active .kg-flow { animation: kgFlow 2s linear infinite; }
+.page.active .kg-node { animation: kgGlow 4s ease-in-out infinite; animation-delay: var(--kg-delay, 0s); }
+@keyframes kgFlow { to { stroke-dashoffset: -20; } }
+@keyframes kgGlow { 0%,100% { stroke-opacity: 0.55; filter: drop-shadow(0 0 1px #ffd700); } 50% { stroke-opacity: 1; filter: drop-shadow(0 0 5px #ffd70066); } }
+.knowledge-page .kg-reading { width: 100%; max-width: 600px; padding: 18px 8px; margin-top: 16px; border-block: 1px solid #ffd70033; }
+.knowledge-page .kg-formula { white-space: nowrap; font-size: clamp(13px, 3.6vw, 22px); color: #c0c0c0; }
+.knowledge-page .kg-meanings { font-size: clamp(12px, 3.2vw, 17px); margin-top: 8px; color: #c0c0c0; }
+.knowledge-page .kg-core { margin-top: 28px; font-size: clamp(22px, 6vw, 34px); letter-spacing: 0.08em; color: #ffd700; font-weight: 800; }
+.knowledge-page .kg-principles { font-size: 0.8em; margin-top: 8px; }
+.knowledge-page .dark { color: #c0c0c0; }
+@media (prefers-reduced-motion: reduce) { .page.active .kg-flow, .page.active .kg-node { animation: none; } }
+
 /* Navigation */
 .nav-hint {
   position: fixed; bottom: 18px; left: 0; right: 0;
@@ -257,7 +275,7 @@ html, body {
 
 <div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
 <div class="start-btn" id="startBtn" onclick="startShow(event)">▶ 点这里开始讲解</div>
-<div class="page-num" id="pageNum">1 / 10</div>
+<div class="page-num" id="pageNum">1 / 11</div>
 <div class="nav-dots" id="navDots"></div>
 <div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
 
@@ -593,8 +611,145 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 10: Celebration - Series Complete -->
-  <div class="page bg-celebrate" data-page="9">
+  <!-- Page 10: Complete knowledge graph -->
+  <div class="page bg-cosmos knowledge-page" data-page="9">
+    <div class="page-title ani">一张图，贯通周易体系</div>
+    <div class="page-text knowledge-caption ani">从符号生成，到阅读方法，再到核心观念</div>
+    <svg class="knowledge-graph ani" viewBox="0 0 680 225" role="img" aria-labelledby="kg-title kg-desc">
+      <title id="kg-title">周易知识图谱</title>
+      <desc id="kg-desc">太极一，生阴阳二；阴阳生四象四；四象生八卦八；八卦两两相重，组成六十四卦。</desc>
+      <defs><marker id="kg-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#ffd700" stroke-width="1.5"/></marker></defs>
+      <circle class="kg-node" cx="60" cy="70" r="43" style="--kg-delay:0.0s"/>
+      <text x="60" y="143" text-anchor="middle" fill="#ffd700" font-size="26">太极</text><text x="60" y="173" text-anchor="middle" fill="#c0c0c0" font-size="22">(1)</text>
+      <path d="M107 70 H149" stroke="#c0c0c0" stroke-opacity="0.3" fill="none" marker-end="url(#kg-arrow)"/><path class="kg-flow" d="M107 70 H149" fill="none"/>
+      <circle class="kg-node" cx="200" cy="70" r="43" style="--kg-delay:0.35s"/>
+      <text x="200" y="143" text-anchor="middle" fill="#ffd700" font-size="26">阴阳</text><text x="200" y="173" text-anchor="middle" fill="#c0c0c0" font-size="22">(2)</text>
+      <path d="M247 70 H289" stroke="#c0c0c0" stroke-opacity="0.3" fill="none" marker-end="url(#kg-arrow)"/><path class="kg-flow" d="M247 70 H289" fill="none"/>
+      <circle class="kg-node" cx="340" cy="70" r="43" style="--kg-delay:0.7s"/>
+      <text x="340" y="143" text-anchor="middle" fill="#ffd700" font-size="26">四象</text><text x="340" y="173" text-anchor="middle" fill="#c0c0c0" font-size="22">(4)</text>
+      <path d="M387 70 H429" stroke="#c0c0c0" stroke-opacity="0.3" fill="none" marker-end="url(#kg-arrow)"/><path class="kg-flow" d="M387 70 H429" fill="none"/>
+      <circle class="kg-node" cx="480" cy="70" r="43" style="--kg-delay:1.0499999999999998s"/>
+      <text x="480" y="143" text-anchor="middle" fill="#ffd700" font-size="26">八卦</text><text x="480" y="173" text-anchor="middle" fill="#c0c0c0" font-size="22">(8)</text>
+      <path d="M527 70 H569" stroke="#c0c0c0" stroke-opacity="0.3" fill="none" marker-end="url(#kg-arrow)"/><path class="kg-flow" d="M527 70 H569" fill="none"/>
+      <circle class="kg-node" cx="620" cy="70" r="43" style="--kg-delay:1.4s"/>
+      <text x="620" y="143" text-anchor="middle" fill="#ffd700" font-size="26">六十四卦</text><text x="620" y="173" text-anchor="middle" fill="#c0c0c0" font-size="22">(64)</text>
+      <circle cx="60" cy="70" r="27" fill="#c0c0c0"/>
+<path d="M60 43 A27 27 0 0 1 60 97 A13.5 13.5 0 0 1 60 70 A13.5 13.5 0 0 0 60 43Z" fill="#15121f"/>
+<circle cx="60" cy="56.5" r="4" fill="#15121f"/><circle cx="60" cy="83.5" r="4" fill="#ffd700"/>
+<path d="M178 58 H222 M178 82 H195 M205 82 H222" stroke="#ffd700" stroke-width="6"/>
+      <path d="M314.5 59 H322.5 M326.5 59 H334.5" stroke="#c0c0c0" stroke-width="2.5"/>
+      <path d="M314.5 54 H322.5 M326.5 54 H334.5" stroke="#c0c0c0" stroke-width="2.5"/>
+      <path d="M345.5 59 H365.5" stroke="#c0c0c0" stroke-width="2.5"/>
+      <path d="M345.5 54 H353.5 M357.5 54 H365.5" stroke="#c0c0c0" stroke-width="2.5"/>
+      <path d="M314.5 90 H322.5 M326.5 90 H334.5" stroke="#c0c0c0" stroke-width="2.5"/>
+      <path d="M314.5 85 H334.5" stroke="#c0c0c0" stroke-width="2.5"/>
+      <path d="M345.5 90 H365.5" stroke="#c0c0c0" stroke-width="2.5"/>
+      <path d="M345.5 85 H365.5" stroke="#c0c0c0" stroke-width="2.5"/>
+      <path d="M448.5 64 H452.5 M456.5 64 H460.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M448.5 59 H452.5 M456.5 59 H460.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M448.5 54 H452.5 M456.5 54 H460.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M465.5 64 H477.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M465.5 59 H469.5 M473.5 59 H477.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M465.5 54 H469.5 M473.5 54 H477.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M482.5 64 H486.5 M490.5 64 H494.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M482.5 59 H494.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M482.5 54 H486.5 M490.5 54 H494.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M499.5 64 H511.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M499.5 59 H511.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M499.5 54 H503.5 M507.5 54 H511.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M448.5 95 H452.5 M456.5 95 H460.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M448.5 90 H452.5 M456.5 90 H460.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M448.5 85 H460.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M465.5 95 H477.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M465.5 90 H469.5 M473.5 90 H477.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M465.5 85 H477.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M482.5 95 H486.5 M490.5 95 H494.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M482.5 90 H494.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M482.5 85 H494.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M499.5 95 H511.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M499.5 90 H511.5" stroke="#ffd700" stroke-width="2.5"/>
+      <path d="M499.5 85 H511.5" stroke="#ffd700" stroke-width="2.5"/>
+      <rect x="594.0" y="44.0" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="600.5" y="44.0" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="607.0" y="44.0" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="613.5" y="44.0" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="620.0" y="44.0" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="626.5" y="44.0" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="633.0" y="44.0" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="639.5" y="44.0" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="594.0" y="50.5" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="600.5" y="50.5" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="607.0" y="50.5" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="613.5" y="50.5" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="620.0" y="50.5" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="626.5" y="50.5" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="633.0" y="50.5" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="639.5" y="50.5" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="594.0" y="57.0" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="600.5" y="57.0" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="607.0" y="57.0" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="613.5" y="57.0" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="620.0" y="57.0" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="626.5" y="57.0" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="633.0" y="57.0" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="639.5" y="57.0" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="594.0" y="63.5" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="600.5" y="63.5" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="607.0" y="63.5" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="613.5" y="63.5" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="620.0" y="63.5" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="626.5" y="63.5" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="633.0" y="63.5" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="639.5" y="63.5" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="594.0" y="70.0" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="600.5" y="70.0" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="607.0" y="70.0" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="613.5" y="70.0" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="620.0" y="70.0" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="626.5" y="70.0" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="633.0" y="70.0" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="639.5" y="70.0" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="594.0" y="76.5" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="600.5" y="76.5" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="607.0" y="76.5" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="613.5" y="76.5" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="620.0" y="76.5" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="626.5" y="76.5" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="633.0" y="76.5" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="639.5" y="76.5" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="594.0" y="83.0" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="600.5" y="83.0" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="607.0" y="83.0" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="613.5" y="83.0" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="620.0" y="83.0" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="626.5" y="83.0" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="633.0" y="83.0" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="639.5" y="83.0" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="594.0" y="89.5" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="600.5" y="89.5" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="607.0" y="89.5" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="613.5" y="89.5" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="620.0" y="89.5" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="626.5" y="89.5" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <rect x="633.0" y="89.5" width="4.5" height="4.5" rx="0.7" fill="#c0c0c0"/>
+      <rect x="639.5" y="89.5" width="4.5" height="4.5" rx="0.7" fill="#ffd700"/>
+      <text x="130" y="208" text-anchor="middle" fill="#c0c0c0" font-size="19">一生二</text>
+      <text x="270" y="208" text-anchor="middle" fill="#c0c0c0" font-size="19">二生四</text>
+      <text x="410" y="208" text-anchor="middle" fill="#c0c0c0" font-size="19">四生八</text>
+      <text x="550" y="208" text-anchor="middle" fill="#c0c0c0" font-size="19">两两相重 · 8×8</text>
+    </svg>
+    <div class="page-text kg-reading ani">
+      <div class="kg-formula"><span class="em">读卦</span> = 卦名 + 卦辞 + 爻辞 + 动爻</div>
+      <div class="kg-meanings">主题 · 整体判断 · 各爻细节 · 变化位置</div>
+    </div>
+    <div class="page-text ani">
+      <div class="kg-core">变易 · 不易 · 简易</div>
+      <div class="kg-principles dark">万物在变 · 规律有常 · 以简驭繁</div>
+    </div>
+  </div>
+
+  <!-- Page 11: Celebration - Series Complete -->
+  <div class="page bg-celebrate" data-page="10">
     <div class="particles" id="p9"></div>
     <p class="culture-notice" style="position:relative;z-index:1;color:#d8c9aa;font-size:0.78em;line-height:1.5;max-width:32em;margin:0.5em auto;">本期从传统文化角度讲解，不用于预测或替代现实决策。</p>
     <div class="stars" id="s9"></div>
@@ -748,6 +903,7 @@ const narrations = [
   "周易教我们三种人生态度。第一，积极进取，天行健，君子以自强不息。第二，包容谦逊，地势坤，君子以厚德载物。第三，审时度势，观察变化，因时而动。像天一样努力奋斗，像地一样包容万物，像水一样随势而行。",
   "入门之后可以读什么呢？第一，等长大一些，尝试读周易原文，感受古人智慧。第二，南怀瑾的《易经杂说》，像聊天一样讲周易，通俗有趣。第三，曾仕强的《易经的奥秘》，视频讲座，边看边学。不着急，慢慢来。",
   "最后的话。周易是一生的学问。7岁读，学到变化。17岁读，学到选择。27岁读，学到平衡。47岁读，学到从容。每个年龄读，都有不同的领悟。这颗种子已经种下，让它慢慢生长吧。",
+  "让我们用一张知识图谱来回顾整个体系。从太极开始，一生二，太极生阴阳。二生四，阴阳生四象。四生八，四象生八卦。八卦两两相重，也就是八乘八，就有了六十四卦。读一个卦可以抓住四个要素：卦名提示主题，卦辞给出整体判断，爻辞展开各爻的细节；涉及变卦时，动爻标出发生变化的位置。这是传统文本的阅读框架，不是预测现实的工具。最后记住三个核心词：变易，万物在变。不易，变化中有相对稳定的规律。简易，以简明原则理解复杂事物。",
   "本期从传统文化角度讲解，不用于预测或替代现实决策。恭喜你！你已经完成了周易讲解全十二期的学习！从太极阴阳到六十四卦，从乾坤之道到生活应用，你比很多大人都懂得多了！带着这些智慧，勇敢地去探索世界吧！周易讲解，全十二期，完。学无止境，周易相伴一生。"
 ];
 

@@ -198,7 +198,7 @@ html, body {
 
 <div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
 <div class="start-btn" id="startBtn" onclick="startShow(event)">▶ 点这里开始讲解</div>
-<div class="page-num" id="pageNum">1 / 10</div>
+<div class="page-num" id="pageNum">1 / 11</div>
 <div class="nav-dots" id="navDots"></div>
 <div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
 
@@ -296,8 +296,62 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 3: Structure of Chonggua -->
+  <!-- Page 3: Classic Hexagrams - Tai and Pi -->
   <div class="page bg-dual" data-page="2">
+    <div class="page-title ani">泰与否：交融才通泰</div>
+    <div class="ani" style="width:100%;max-width:380px">
+      <svg width="100%" viewBox="0 0 360 260" role="img" aria-labelledby="taiPiTitle taiPiDesc">
+        <title id="taiPiTitle">泰卦与否卦的上下卦及气的方向</title>
+        <desc id="taiPiDesc">左为地天泰，上三爻为阴，下三爻为阳，箭头向中间交汇；右为天地否，上三爻为阳，下三爻为阴，箭头向外分离。这是传统卦象的象征性解释。</desc>
+        <defs>
+          <marker id="taiPiGoldArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#ffd700"/></marker>
+          <marker id="taiPiBlueArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#8ab9dc"/></marker>
+        </defs>
+        <rect x="2" y="2" width="170" height="256" rx="12" fill="#ffd700" fill-opacity=".04" stroke="#ffd700" stroke-opacity=".2"/>
+        <rect x="188" y="2" width="170" height="256" rx="12" fill="#8ab9dc" fill-opacity=".04" stroke="#8ab9dc" stroke-opacity=".2"/>
+        <g text-anchor="middle" font-size="16" font-weight="bold" fill="#ffd700">
+          <text x="87" y="27">地天泰</text><text x="273" y="27">天地否</text>
+        </g>
+        <!-- Tai: Kun above, Qian below; Pi: Qian above, Kun below. -->
+        <g stroke="#8ab9dc" stroke-width="6">
+          <path d="M56 58 H80 M94 58 H118 M56 74 H80 M94 74 H118 M56 90 H80 M94 90 H118"/>
+          <path d="M242 165 H266 M280 165 H304 M242 181 H266 M280 181 H304 M242 197 H266 M280 197 H304"/>
+        </g>
+        <g stroke="#ffd700" stroke-width="6">
+          <path d="M56 165 H118 M56 181 H118 M56 197 H118"/>
+          <path d="M242 58 H304 M242 74 H304 M242 90 H304"/>
+        </g>
+        <g font-size="12" text-anchor="middle" fill="#c8bca0">
+          <text x="87" y="46">上卦：地</text><text x="87" y="221">下卦：天</text>
+          <text x="273" y="46">上卦：天</text><text x="273" y="221">下卦：地</text>
+        </g>
+        <g fill="none" stroke-width="2.5">
+          <path d="M34 72 V125" stroke="#8ab9dc" marker-end="url(#taiPiBlueArrow)"/>
+          <path d="M140 184 V133" stroke="#ffd700" marker-end="url(#taiPiGoldArrow)"/>
+          <path d="M326 93 V54" stroke="#ffd700" marker-end="url(#taiPiGoldArrow)"/>
+          <path d="M220 165 V205" stroke="#8ab9dc" marker-end="url(#taiPiBlueArrow)"/>
+        </g>
+        <ellipse cx="87" cy="128" rx="37" ry="16" fill="#ffd700" fill-opacity=".1"/>
+        <g text-anchor="middle" font-size="13">
+          <text x="87" y="133" fill="#ffd700">阴阳交融</text><text x="273" y="133" fill="#8ab9dc">各走各的</text>
+          <text x="87" y="246" fill="#ffd700">相交 · 通泰</text><text x="273" y="246" fill="#8ab9dc">不交 · 闭塞</text>
+        </g>
+      </svg>
+    </div>
+    <div class="page-text ani" style="margin-top:12px">
+      <span class="em">泰</span>：天在下，地在上，一升一降而交融。<br>
+      <span class="em">否</span>：天在上，地在下，各行其道而闭塞。
+    </div>
+    <div class="fact-card ani">
+      <div class="label">看似顺理成章，未必彼此相通</div>
+      “天在上”看起来更自然；但这组卦象看重的，<br>
+      不是位置是否合常识，而是能否交流、相互作用。
+    </div>
+    <div class="page-text ani" style="font-size:.72em;margin-top:12px"><span class="dark">传统卦象的象征性解读，并非自然科学解释。</span></div>
+  </div>
+
+  <!-- Page 4: Structure of Chonggua -->
+  <div class="page bg-dual" data-page="3">
     <div class="ani">
       <svg width="200" height="220" viewBox="0 0 200 220">
         <defs>
@@ -346,8 +400,8 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 4: Example - Song & Xu -->
-  <div class="page bg-flow" data-page="3">
+  <!-- Page 5: Example - Song & Xu -->
+  <div class="page bg-flow" data-page="4">
     <div class="particles" id="p3"></div>
     <div class="ani">
       <svg width="280" height="180" viewBox="0 0 280 180">
@@ -396,8 +450,8 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 5: Naming the 64 Hexagrams -->
-  <div class="page bg-light" data-page="4">
+  <!-- Page 6: Naming the 64 Hexagrams -->
+  <div class="page bg-light" data-page="5">
     <div class="stars" id="s4"></div>
     <div class="page-title ani">六十四卦怎么取名？</div>
     <div class="page-text ani">
@@ -417,8 +471,8 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 6: King Wen and 64 Hexagrams -->
-  <div class="page bg-balance" data-page="5">
+  <!-- Page 7: King Wen and 64 Hexagrams -->
+  <div class="page bg-balance" data-page="6">
     <div class="particles" id="p5"></div>
     <div class="ani">
       <svg width="200" height="150" viewBox="0 0 200 150">
@@ -460,8 +514,8 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 7: Sequence of 64 Hexagrams -->
-  <div class="page bg-nature" data-page="6">
+  <!-- Page 8: Sequence of 64 Hexagrams -->
+  <div class="page bg-nature" data-page="7">
     <div class="stars" id="s6"></div>
     <div class="ani">
       <svg width="260" height="100" viewBox="0 0 260 100">
@@ -505,8 +559,8 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 8: 64 = Life Map -->
-  <div class="page bg-cosmos" data-page="7">
+  <!-- Page 9: 64 = Life Map -->
+  <div class="page bg-cosmos" data-page="8">
     <div class="particles" id="p7"></div>
     <div class="page-title ani">人生地图</div>
     <div class="page-text ani">
@@ -522,8 +576,8 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 9: Analogy - Encyclopedia -->
-  <div class="page bg-flow" data-page="8">
+  <!-- Page 10: Analogy - Encyclopedia -->
+  <div class="page bg-flow" data-page="9">
     <div class="stars" id="s8"></div>
     <div class="ani">
       <svg width="180" height="160" viewBox="0 0 180 160">
@@ -566,8 +620,8 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 10: Summary -->
-  <div class="page bg-final" data-page="9">
+  <!-- Page 11: Summary -->
+  <div class="page bg-final" data-page="10">
     <div class="particles" id="p9"></div>
     <p class="culture-notice" style="position:relative;z-index:1;color:#d8c9aa;font-size:0.78em;line-height:1.5;max-width:32em;margin:0.5em auto;">本期从传统文化角度讲解，不用于预测或替代现实决策。</p>
     <div class="ani">
@@ -687,6 +741,7 @@ document.addEventListener('keydown', e => {
 const narrations = [
   "六十四卦的诞生。第五期，八卦重叠的奥秘。",
   "上一期我们学了八卦，它们是自然界的8种基本符号。但8个还不够！古人想：如果把两个卦叠起来呢？8乘以8，等于64种组合！就像8种颜色两两配对，能配出64种新花样。",
+  "来看两个经典的卦。泰卦，地在上天在下。这不是反了吗？在传统卦象的解释里，天的阳气向上升，地的阴气向下降，一升一降在中间交融，所以叫通泰。否卦的否读匹，意思是闭塞。它正好反过来，天在上地在下，看起来很自然，但天气往上走，地气往下沉，各走各的互不交流，反而闭塞不通。这里用的是象征性的解释，并不是自然科学。这个对比的深意在于：位置看似顺理成章，并不等于关系畅通。能够交流、相互作用，才是这组卦象所强调的通泰。",
   "两个三爻卦叠在一起，就变成了一个六爻卦。上面三条叫上卦，也叫外卦。下面三条叫下卦，也叫内卦。就像搭积木，两块积木叠成更高的塔。",
   "同样是乾和坎两个卦，谁在上、谁在下，含义完全不同！乾上坎下，叫天水讼，意思是争论。因为天往上走，水往下流，方向相反，所以起冲突。坎上乾下，叫水天需，意思是等待。因为乌云在天上，要下雨了，所以要耐心等。",
   "每个卦的名字，都藏着它的画面和含义。乾卦是天叠天，代表刚健不息。坤卦是地叠地，代表厚德载物。屯卦是水上雷下，代表草木初生。蒙卦是山上水下，代表蒙昧待启。名字本身就是一幅画！",

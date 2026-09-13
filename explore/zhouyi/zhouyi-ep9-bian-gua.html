@@ -171,7 +171,7 @@ html, body {
 
 <div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
 <div class="start-btn" id="startBtn" onclick="startShow(event)">▶ 点这里开始讲解</div>
-<div class="page-num" id="pageNum">1 / 10</div>
+<div class="page-num" id="pageNum">1 / 11</div>
 <div class="nav-dots" id="navDots"></div>
 <div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
 
@@ -280,8 +280,45 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 3: Concept of Bian Gua -->
-  <div class="page bg-cosmos" data-page="2">
+  <!-- Page 3: Why old yang and old yin change -->
+  <div class="page bg-light" data-page="2">
+    <div class="page-title ani">老阳老阴：为什么会变？</div>
+    <div class="ani" style="margin-bottom:15px;">
+      <svg width="300" height="170" viewBox="0 0 300 170" role="img" aria-label="老阳九由实线变为阴爻断线，老阴六由断线变为阳爻实线；变化示意循环回放">
+        <text x="57" y="18" text-anchor="middle" font-size="13" fill="#ffd700">老阳（9）</text>
+        <path d="M15 39 H99" fill="none" stroke="#ffd700" stroke-width="10" stroke-linecap="round"/>
+        <path d="M119 39 H166 M158 33 L166 39 L158 45" fill="none" stroke="#ff6b35" stroke-width="2"/>
+        <text x="240" y="18" text-anchor="middle" font-size="13" fill="#c0c0c0">变阴</text>
+        <path d="M198 39 H240 M240 39 H282" fill="none" stroke="#c0c0c0" stroke-width="10" stroke-linecap="round">
+          <animate attributeName="d" values="M198 39 H240 M240 39 H282;M198 39 H240 M240 39 H282;M198 39 H228 M252 39 H282;M198 39 H228 M252 39 H282" keyTimes="0;0.2;0.55;1" dur="5s" repeatCount="indefinite"/>
+        </path>
+        <text x="57" y="91" text-anchor="middle" font-size="13" fill="#c0c0c0">老阴（6）</text>
+        <path d="M15 112 H45 M69 112 H99" fill="none" stroke="#c0c0c0" stroke-width="10" stroke-linecap="round"/>
+        <path d="M119 112 H166 M158 106 L166 112 L158 118" fill="none" stroke="#ff6b35" stroke-width="2"/>
+        <text x="240" y="91" text-anchor="middle" font-size="13" fill="#ffd700">变阳</text>
+        <path d="M198 112 H228 M252 112 H282" fill="none" stroke="#ffd700" stroke-width="10" stroke-linecap="round">
+          <animate attributeName="d" values="M198 112 H228 M252 112 H282;M198 112 H228 M252 112 H282;M198 112 H240 M240 112 H282;M198 112 H240 M240 112 H282" keyTimes="0;0.2;0.55;1" dur="5s" repeatCount="indefinite"/>
+        </path>
+        <text x="150" y="155" text-anchor="middle" font-size="11" fill="#a89878">变化示意 · 循环回放</text>
+      </svg>
+    </div>
+    <div class="page-text ani">
+      占卦所得的爻，分为四种：<br>
+      <span class="em">老阳（9）</span>、少阳（7）<br>
+      <span class="em">老阴（6）</span>、少阴（8）<br><br>
+      少阳少阴，安静不变；<br>
+      老阳老阴，<span class="em">到了极点就要变</span>。<br>
+      <span class="dark">这就是传统所说的「物极必反」。</span>
+    </div>
+    <div class="fact-card ani">
+      <div class="label">动爻的来源</div>
+      老阳变阴，老阴变阳：六、九为动爻。<br>
+      蓍草占卦，是古人起卦的一种方法。
+    </div>
+  </div>
+
+  <!-- Page 4: Concept of Bian Gua -->
+  <div class="page bg-cosmos" data-page="3">
     <div class="particles" id="p2"></div>
     <div class="ani" style="margin-bottom:15px;">
       <svg width="280" height="130" viewBox="0 0 280 130">
@@ -336,8 +373,8 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 4: Example - Qian to Gou -->
-  <div class="page bg-dawn" data-page="3">
+  <!-- Page 5: Example - Qian to Gou -->
+  <div class="page bg-dawn" data-page="4">
     <div class="stars" id="s3"></div>
     <div class="ani" style="margin-bottom:15px;">
       <svg width="280" height="150" viewBox="0 0 280 150">
@@ -401,8 +438,8 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 5: Why look at Bian Gua -->
-  <div class="page bg-dual" data-page="4">
+  <!-- Page 6: Why look at Bian Gua -->
+  <div class="page bg-dual" data-page="5">
     <div class="ani" style="margin-bottom:15px;">
       <svg width="260" height="100" viewBox="0 0 260 100">
         <!-- Ben Gua box -->
@@ -432,8 +469,8 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 6: Number of Dong Yao -->
-  <div class="page bg-flow" data-page="5">
+  <!-- Page 7: Number of Dong Yao -->
+  <div class="page bg-flow" data-page="6">
     <div class="ani" style="margin-bottom:15px;">
       <svg width="240" height="130" viewBox="0 0 240 130">
         <defs>
@@ -508,8 +545,8 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 7: Core of Yi - Change -->
-  <div class="page bg-nature" data-page="6">
+  <!-- Page 8: Core of Yi - Change -->
+  <div class="page bg-nature" data-page="7">
     <div class="stars" id="s6"></div>
     <div class="ani" style="margin-bottom:15px;">
       <svg width="200" height="120" viewBox="0 0 200 120">
@@ -546,8 +583,8 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 8: Life Metaphor - Weather -->
-  <div class="page bg-balance" data-page="7">
+  <!-- Page 9: Life Metaphor - Weather -->
+  <div class="page bg-balance" data-page="8">
     <div class="ani" style="margin-bottom:15px;">
       <svg width="280" height="110" viewBox="0 0 280 110">
         <!-- Sunny -->
@@ -616,8 +653,8 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 9: Three Yi - Change, Unchanging, Simple -->
-  <div class="page bg-change" data-page="8">
+  <!-- Page 10: Three Yi - Change, Unchanging, Simple -->
+  <div class="page bg-change" data-page="9">
     <div class="particles" id="p8"></div>
     <div class="ani" style="margin-bottom:15px;">
       <svg width="240" height="120" viewBox="0 0 240 120">
@@ -662,8 +699,8 @@ html, body {
     </div>
   </div>
 
-  <!-- Page 10: Summary -->
-  <div class="page bg-final" data-page="9">
+  <!-- Page 11: Summary -->
+  <div class="page bg-final" data-page="10">
     <div class="particles" id="p9"></div>
     <p class="culture-notice" style="position:relative;z-index:1;color:#d8c9aa;font-size:0.78em;line-height:1.5;max-width:32em;margin:0.5em auto;">本期从传统文化角度讲解，不用于预测或替代现实决策。</p>
     <div class="ani" style="margin-bottom:10px;">
@@ -785,6 +822,7 @@ document.addEventListener('keydown', e => {
 const narrations = [
   "变卦与动爻。第九期，唯一不变的是变化。",
   "一个卦有六条爻，其中正在变化的那一条，就叫动爻。动爻有两种变化：阳爻变成阴爻，或者阴爻变成阳爻。它正在动，所以叫动爻。",
+  "为什么有些爻会变，有些不会呢？蓍草占卦，是古人起卦的一种方法。按这种传统方法，每条爻会得到一个数字。七是少阳，九是老阳，八是少阴，六是老阴。少阳少阴安安静静不动，但老阳老阴到了极点，就要变化了。老阳变成阴，老阴变成阳，这就是传统所说的物极必反。所以，得到六或九的爻，就是动爻。这讲的是传统占筮的规则，不是对现实变化的科学证明。",
   "当动爻发生变化后，原来的卦就变成了另一个卦。变化前的卦叫本卦，也叫原卦。变化后的卦叫变卦，也叫之卦。就像毛毛虫变蝴蝶，还是同一个生命，但形态变了。",
   "举个例子。乾卦，六条全是阳爻。如果初爻，也就是最下面一条动了，阳爻变成阴爻，乾卦就变成了天风姤卦！只变了一条爻，整个卦的含义就不同了。姤是相遇的意思，一阴初生于下，像风从地面吹起，天与风相遇。",
   "为什么要看变卦呢？本卦代表你现在的处境，变卦代表事情的发展趋势。就像看地图：本卦是你在哪里，变卦是你要去哪里。两个卦合在一起看，才能看清事情的全貌。",
