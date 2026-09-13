@@ -1,0 +1,263 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>乘法概念入门 · 二年级数学</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#faf6f1;color:#2d2d2d}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 20px 120px;opacity:0;pointer-events:none;transition:opacity .6s;overflow-y:auto}.slide.active{opacity:1;pointer-events:auto}
+.stitle{font-size:clamp(22px,5vw,36px);font-weight:900;text-align:center;margin-bottom:10px;color:#e67e22}
+.sdesc{font-size:clamp(15px,3vw,20px);color:#666;text-align:center;line-height:1.8;max-width:600px}
+.hl{color:#e67e22;font-weight:800}.bl{color:#3498db;font-weight:800}.gn{color:#27ae60;font-weight:800}.rd{color:#e74c3c;font-weight:800}
+
+.expr-box{width:100%;max-width:420px;margin:12px auto;padding:20px;border-radius:20px;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.04);text-align:center}
+.expr{font-size:clamp(22px,5.5vw,34px);font-weight:900;color:#333;letter-spacing:2px;line-height:1.8}
+.expr .first{background:linear-gradient(180deg,transparent 60%,rgba(230,126,34,.25) 60%);border-radius:4px;padding:0 4px}
+.expr .wrong{text-decoration:line-through;color:#ccc}
+.expr .correct{color:#27ae60}
+.expr .step{display:block;font-size:clamp(16px,3.5vw,22px);color:#888;margin-top:4px}
+.expr .step .hl{font-size:clamp(18px,4.5vw,26px)}
+
+.rule-card{width:100%;max-width:420px;margin:10px auto;padding:18px 22px;border-radius:16px;border-left:4px solid #e67e22;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.rule-card h3{color:#e67e22;font-size:18px;margin-bottom:6px}
+.rule-card p{color:#666;font-size:15px;line-height:1.8}
+.rule-card.blue{border-left-color:#3498db}.rule-card.blue h3{color:#3498db}
+.rule-card.green{border-left-color:#27ae60}.rule-card.green h3{color:#27ae60}
+.rule-card.red{border-left-color:#e74c3c}.rule-card.red h3{color:#e74c3c}
+
+.steps-flow{width:100%;max-width:420px;margin:10px auto;display:flex;flex-direction:column;gap:8px}
+.sf-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:14px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.03);opacity:0;transform:translateX(-20px);transition:all .4s}
+.sf-item.show{opacity:1;transform:translateX(0)}
+.sf-num{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#ff9a76,#e67e22);color:#fff;font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sf-text{font-size:15px;color:#555;line-height:1.6}
+.sf-text b{color:#e67e22}
+.sf-arrow{text-align:center;color:#e67e22;font-size:20px;font-weight:900}
+
+.mark{display:inline-block;width:28px;height:28px;border-radius:50%;font-size:16px;font-weight:900;line-height:28px;text-align:center;margin-left:8px}
+.mark.yes{background:rgba(39,174,96,.1);color:#27ae60}
+.mark.no{background:rgba(231,76,60,.1);color:#e74c3c}
+
+.sum-card{background:#fff;border-radius:16px;padding:14px 18px;margin:6px 0;width:100%;max-width:420px;border-left:4px solid #e67e22;box-shadow:0 2px 12px rgba(0,0,0,.04);opacity:0;transform:translateX(-30px);transition:all .5s}
+.sum-card.show{opacity:1;transform:translateX(0)}
+.sum-card h3{color:#e67e22;font-size:16px;margin-bottom:3px}
+.sum-card p{color:#888;font-size:14px;line-height:1.6}
+
+/* 阵列网格 */
+.grid-box{width:100%;max-width:420px;margin:12px auto;padding:16px;border-radius:16px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.04);text-align:center}
+.grid-row{display:flex;justify-content:center;gap:8px;margin:4px 0}
+.grid-dot{width:clamp(22px,5vw,32px);height:clamp(22px,5vw,32px);border-radius:50%;display:inline-block}
+.dot-orange{background:linear-gradient(135deg,#ff9a76,#e67e22)}
+.dot-blue{background:linear-gradient(135deg,#74b9ff,#3498db)}
+
+.ctrl{position:fixed;bottom:0;left:0;right:0;height:54px;background:linear-gradient(180deg,rgba(250,246,241,.9),rgba(250,246,241,.98));backdrop-filter:blur(12px);border-top:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;gap:8px;padding:0 12px;z-index:100}
+.ctrl button{background:#fff;border:1px solid rgba(0,0,0,.08);color:#666;border-radius:50px;padding:7px 16px;font-size:13px;cursor:pointer;font-family:inherit}
+.ctrl .pri{background:linear-gradient(135deg,#ff9a76,#e67e22);color:#fff;font-weight:700;border:none}
+.ctrl .pg{color:#bbb;font-size:11px;min-width:44px;text-align:center}
+.sub{position:fixed;bottom:58px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-radius:14px;padding:10px 22px;max-width:90%;text-align:center;font-size:clamp(14px,2.8vw,17px);color:#444;line-height:1.6;z-index:99;display:none;box-shadow:0 4px 20px rgba(0,0,0,.08)}.sub.vis{display:block}
+.bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#ff9a76,#27ae60);z-index:101;transition:width .4s}
+</style></head><body>
+<div class="bar" id="bar"></div>
+<div id="slides">
+
+<!-- s0 封面 -->
+<div class="slide active" id="s0">
+  <div class="stitle" style="font-size:clamp(26px,5.5vw,42px)">✏️ 乘法概念入门</div>
+  <div class="expr-box">
+    <div class="expr">3 + 3 + 3 + 3 + 3 = ?</div>
+  </div>
+  <p class="sdesc">写好长呀！<br>有没有<span class="hl">简便写法</span>？</p>
+</div>
+
+<!-- s1 相同加数连加 -->
+<div class="slide" id="s1">
+  <div class="stitle">相同加数连加</div>
+  <p class="sdesc" style="margin-bottom:8px">5架飞机，每架坐 <span class="hl">3</span> 人，一共多少人？</p>
+  <div class="expr-box">
+    <div class="expr">✈️ ✈️ ✈️ ✈️ ✈️</div>
+    <div class="expr" style="font-size:clamp(18px,4vw,26px);margin-top:8px;color:#888">每架 3 人</div>
+    <div class="expr step">3 + 3 + 3 + 3 + 3 = <span class="hl">15</span></div>
+  </div>
+  <div class="rule-card">
+    <h3>🔍 发现规律</h3>
+    <p>加数都是 <span class="hl">3</span>，都一样！<br>这叫做"<span class="hl">相同加数连加</span>"</p>
+  </div>
+</div>
+
+<!-- s2 乘法登场 -->
+<div class="slide" id="s2">
+  <div class="stitle">✨ 乘法登场！</div>
+  <div class="expr-box">
+    <div class="expr" style="font-size:clamp(16px,3.5vw,22px);color:#888">5 个 3 连加</div>
+    <div class="expr">3 × 5 = <span class="gn">15</span></div>
+    <div class="expr step">读作：<span class="hl">3 乘 5 等于 15</span></div>
+  </div>
+  <div class="rule-card blue">
+    <h3>📖 认识各部分</h3>
+    <p><span class="bl">3</span> → 乘数（每份多少）<br>
+    <span class="bl">5</span> → 乘数（有几份）<br>
+    <span class="gn">15</span> → 积（一共多少）<br><br>
+    <span class="bl">乘数 × 乘数 = 积</span></p>
+  </div>
+  <p class="sdesc" style="margin-top:8px">中间的 <span class="hl">×</span> 叫乘号<br>比写一串加号<span class="hl">简便多了</span>！</p>
+</div>
+
+<!-- s3 练习：连加改乘法 -->
+<div class="slide" id="s3">
+  <div class="stitle">✏️ 连加改成乘法</div>
+  <div class="expr-box">
+    <div class="expr" style="font-size:clamp(16px,3.5vw,22px)">4 个 2 连加</div>
+    <div class="expr">2 + 2 + 2 + 2</div>
+    <div class="expr step">→ <span class="hl">2 × 4 = 8</span></div>
+  </div>
+  <div class="expr-box">
+    <div class="expr" style="font-size:clamp(16px,3.5vw,22px)">3 个 4 连加</div>
+    <div class="expr">4 + 4 + 4</div>
+    <div class="expr step">→ <span class="hl">4 × 3 = 12</span></div>
+  </div>
+  <div class="rule-card green">
+    <h3>💡 窍门</h3>
+    <p>先看<span class="gn">加数是几</span>，再数<span class="gn">有几个</span><br>加数 × 个数 = 结果</p>
+  </div>
+</div>
+
+<!-- s4 横看竖看 -->
+<div class="slide" id="s4">
+  <div class="stitle">横看竖看</div>
+  <p class="sdesc" style="margin-bottom:8px">4 行 6 列的圆点阵</p>
+  <div class="grid-box">
+    <div class="grid-row"><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span></div>
+    <div class="grid-row"><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span></div>
+    <div class="grid-row"><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span></div>
+    <div class="grid-row"><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span><span class="grid-dot dot-orange"></span></div>
+  </div>
+  <div class="expr-box">
+    <div class="expr step">横看：每行 6 个，4 行</div>
+    <div class="expr"><span class="hl">6 × 4</span> = 24</div>
+    <div class="expr step">竖看：每列 4 个，6 列</div>
+    <div class="expr"><span class="bl">4 × 6</span> = 24</div>
+  </div>
+  <div class="rule-card green">
+    <h3>🌟 重要发现</h3>
+    <p>6 × 4 = 4 × 6 = <span class="gn">24</span><br><span class="gn">交换两个乘数，积不变！</span></p>
+  </div>
+</div>
+
+<!-- s5 易错提醒 -->
+<div class="slide" id="s5">
+  <div class="stitle">⚠️ 小心别写错</div>
+  <div class="rule-card red">
+    <h3>❌ 常见错误</h3>
+    <p>题目说"<span class="rd">2 个 6</span>"<br>
+    有人写成 <span class="rd">6 × 6 = 36</span><br>
+    这是错的！6×6 是"<span class="rd">6个6</span>"</p>
+  </div>
+  <div class="rule-card green" style="margin-top:10px">
+    <h3>✅ 正确写法</h3>
+    <p>"2 个 6"就是 6 + 6<br>
+    写成 <span class="gn">6 × 2 = 12</span><br>
+    或者 <span class="gn">2 × 6 = 12</span></p>
+  </div>
+  <div class="expr-box">
+    <div class="expr"><span class="wrong">6 × 6 = 36</span> <span class="mark no">✗</span></div>
+    <div class="expr" style="margin-top:6px"><span class="gn">6 × 2 = 12</span> <span class="mark yes">✓</span></div>
+  </div>
+</div>
+
+<!-- s6 一句口诀两道题 -->
+<div class="slide" id="s6">
+  <div class="stitle">一句口诀 → 两个算式</div>
+  <div class="expr-box">
+    <div class="expr" style="font-size:clamp(26px,6vw,40px);color:#e67e22">三六十八</div>
+    <div class="expr step" style="margin-top:12px">6 × 3 = <span class="hl">18</span></div>
+    <div class="expr step">3 × 6 = <span class="hl">18</span></div>
+  </div>
+  <div class="rule-card blue">
+    <h3>📖 规律</h3>
+    <p>一句口诀，交换乘数就能写出<span class="bl">两个算式</span>！<br>因为交换乘数，积不变嘛！</p>
+  </div>
+</div>
+
+<!-- s7 口诀记忆窍门 -->
+<div class="slide" id="s7">
+  <div class="stitle">🧠 记不住口诀怎么办？</div>
+  <p class="sdesc" style="margin-bottom:8px">忘了"三六十八"？试试这两招！</p>
+  <div class="rule-card">
+    <h3>招数一：从会的口诀推</h3>
+    <p>知道 <span class="hl">二六十二</span>（6×2=12）<br>
+    再加一个 6 → 12 + 6 = <span class="gn">18</span><br>
+    所以 6×3 = 18 ✓</p>
+  </div>
+  <div class="rule-card blue" style="margin-top:10px">
+    <h3>招数二：换一句口诀推</h3>
+    <p>知道 <span class="bl">三五十五</span>（3×5=15）<br>
+    再加一个 3 → 15 + 3 = <span class="gn">18</span><br>
+    所以 3×6 = 18 ✓</p>
+  </div>
+  <p class="sdesc" style="margin-top:8px">不用死记！<span class="hl">从会的推不会的</span></p>
+</div>
+
+<!-- s8 乘法比连加简便 -->
+<div class="slide" id="s8">
+  <div class="stitle">乘法有多方便？</div>
+  <p class="sdesc" style="margin-bottom:8px">20 个 2 相加，写出来有多长？</p>
+  <div class="expr-box">
+    <div class="expr" style="font-size:clamp(12px,2.5vw,16px);color:#888;word-break:break-all">2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2+2</div>
+    <div class="expr step" style="font-size:clamp(14px,3vw,18px);color:#e74c3c">😱 写了整整一行！</div>
+  </div>
+  <div class="expr-box">
+    <div class="expr" style="font-size:clamp(14px,3vw,18px);color:#888">用乘法呢？</div>
+    <div class="expr" style="font-size:clamp(28px,6vw,42px)">2 × 20 = <span class="gn">40</span></div>
+    <div class="expr step">简简单单！🎉</div>
+  </div>
+  <div class="rule-card green">
+    <h3>💡 乘法的意义</h3>
+    <p>相同加数连加太长？<br><span class="gn">用乘法，又短又准！</span></p>
+  </div>
+</div>
+
+<!-- s9 总结 -->
+<div class="slide" id="s9">
+  <div class="stitle">🌟 今天学了什么？</div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;max-width:420px">
+    <div class="sum-card" id="sc1"><h3>1️⃣ 连加 → 乘法</h3><p>加数相同时，用乘法更简便</p></div>
+    <div class="sum-card" id="sc2" style="border-left-color:#3498db"><h3 style="color:#3498db">2️⃣ 认识乘法算式</h3><p>乘数 × 乘数 = 积，× 是乘号</p></div>
+    <div class="sum-card" id="sc3" style="border-left-color:#27ae60"><h3 style="color:#27ae60">3️⃣ 交换乘数积不变</h3><p>6×4 = 4×6，一句口诀两个算式</p></div>
+    <div class="sum-card" id="sc4" style="border-left-color:#e74c3c"><h3 style="color:#e74c3c">4️⃣ 别掉坑</h3><p>"2个6"是 6×2=12，不是 6×6！</p></div>
+  </div>
+</div>
+
+</div>
+<div class="sub" id="subBar"></div>
+<div class="ctrl"><button onclick="prev()">⏮</button><button class="pri" id="ttsBtn" onclick="toggleTTS()">🔊 开始讲解</button><button onclick="next()">⏭</button><span class="pg" id="pgInfo">1/10</span><button onclick="goFS()">⛶</button></div>
+<script>
+var TOTAL=10,cur=0,speaking=false;
+function showSlide(){
+  var s=document.querySelectorAll('.slide');
+  for(var i=0;i<s.length;i++)s[i].classList.toggle('active',i===cur);
+  document.getElementById('pgInfo').textContent=(cur+1)+'/'+TOTAL;
+  document.getElementById('bar').style.width=((cur+1)/TOTAL*100)+'%';
+  var items=document.querySelectorAll('.slide.active .sf-item');
+  items.forEach(function(el,i){el.classList.remove('show');setTimeout(function(){el.classList.add('show')},i*300);});
+  if(cur===9){['sc1','sc2','sc3','sc4'].forEach(function(id,i){setTimeout(function(){var el=document.getElementById(id);if(el)el.classList.add('show')},i*300);});}
+}
+function next(){if(cur<TOTAL-1){cur++;showSlide();if(speaking)speakCur();}}
+function prev(){if(cur>0){cur--;showSlide();if(speaking)speakCur();}}
+var NAR=[
+"小朋友们好！今天我们来学乘法！先看这道题，3加3加3加3加3，等于多少？你算出来了吗？等于15！但是写了好长一串加号呀，有没有更简便的写法呢？",
+"来看这个场景。5架飞机，每架飞机坐3个人，一共多少人？我们一个一个加：3加3加3加3加3，等于15。你发现了吗？加号前面的数全都一样，都是3！这就叫做"相同加数连加"。",
+"有了乘法就方便啦！5个3连加，可以写成3乘5等于15，读作"3乘5等于15"。中间这个叉叉符号叫乘号。3和5叫乘数，15叫做积。乘数乘乘数等于积。比写一串加号简便多了！",
+"现在来练习，把连加改成乘法。4个2连加，2加2加2加2，加数是2，有4个，所以写成2乘4等于8。再看，3个4连加，4加4加4，加数是4，有3个，写成4乘3等于12。窍门就是：先看加数是几，再数有几个。",
+"看这个4行6列的圆点阵。横着看，每行6个，一共4行，6乘4等于24。竖着看呢，每列4个，一共6列，4乘6也等于24。哇！6乘4和4乘6的结果一样，都是24！这就是交换两个乘数，积不变！",
+"注意啦，这里有个容易出错的地方！题目说"2个6"，有人写成6乘6等于36，这是错的！6乘6是6个6，不是2个6！2个6就是6加6，应该写成6乘2等于12。记住，几个几，后面那个"几"才是乘数！",
+"学了口诀就更方便了！比如"三六十八"这一句口诀，可以写出两个算式：6乘3等于18，3乘6也等于18。因为交换乘数积不变嘛！一句口诀记两道题，多划算！",
+"如果忘了"三六十八"怎么办？别怕，有两个招数！招数一：你知道"二六十二"，就是6乘2等于12，再加一个6，12加6等于18，所以6乘3等于18！招数二：你知道"三五十五"，就是3乘5等于15，再加一个3，15加3也等于18！不用死记，从会的推不会的！",
+"乘法到底有多方便？想想20个2相加，要写2加2加2加2……写了整整一大行！用乘法呢？2乘20等于40，简简单单就搞定了！相同加数连加太长，用乘法又短又准！",
+"总结一下！第一，加数相同时用乘法，比连加简便多了。第二，认识乘法算式，乘数乘乘数等于积。第三，交换乘数积不变，一句口诀两个算式。第四，别掉坑！"2个6"是6乘2等于12，不是6乘6！小朋友们都记住了吗？太棒了！"
+];
+var voice=null;function pickVoice(){var vs=speechSynthesis.getVoices();var names=['Xiaoxiao','Yunxi','Yunyang'];for(var k=0;k<names.length;k++)for(var i=0;i<vs.length;i++)if(vs[i].name.indexOf(names[k])>=0&&vs[i].lang.indexOf('zh')>=0)return vs[i];for(var i=0;i<vs.length;i++)if(vs[i].lang==='zh-CN')return vs[i];return null;}if(window.speechSynthesis){voice=pickVoice();speechSynthesis.onvoiceschanged=function(){voice=pickVoice()};}
+function speakCur(){speechSynthesis.cancel();var text=NAR[cur];if(!text)return;var utt=new SpeechSynthesisUtterance(text);utt.lang='zh-CN';utt.rate=0.85;utt.pitch=1.05;if(!voice)voice=pickVoice();if(voice)utt.voice=voice;var sub=document.getElementById('subBar');var sents=text.match(/[^。？！；]+[。？！；]?/g)||[text];var si=0;sub.classList.add('vis');sub.textContent=sents[0]||'';utt.onboundary=function(e){if(e.charIndex!==undefined&&sents.length>1){var cc=0;for(var i=0;i<sents.length;i++){cc+=sents[i].length;if(e.charIndex<cc){if(i!==si){si=i;sub.textContent=sents[i].trim();}break;}}}};utt.onend=function(){if(speaking&&cur<TOTAL-1)setTimeout(next,800);else{speaking=false;document.getElementById('ttsBtn').textContent='🔊 开始讲解';sub.classList.remove('vis');}};utt.onerror=function(){if(speaking&&cur<TOTAL-1)setTimeout(next,500);};speechSynthesis.speak(utt);}
+function toggleTTS(){if(speaking){speaking=false;speechSynthesis.cancel();document.getElementById('ttsBtn').textContent='🔊 开始讲解';document.getElementById('subBar').classList.remove('vis');}else{speaking=true;document.getElementById('ttsBtn').textContent='⏹ 停止';speakCur();}}
+function goFS(){if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(function(){});else document.exitFullscreen();}
+var tx=0;document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX});document.addEventListener('touchend',function(e){var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>60){d<0?next():prev();}});document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();next();}else if(e.key==='ArrowLeft'){e.preventDefault();prev();}});showSlide();
+</script>
+<footer style="position:fixed;bottom:54px;left:0;right:0;text-align:center;font-size:10px;color:#ccc;pointer-events:none">本页为家庭自用学习辅助 · 人教版二年级上册第二单元</footer>
+</body></html>

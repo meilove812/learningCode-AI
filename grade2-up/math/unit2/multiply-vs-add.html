@@ -1,0 +1,187 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>乘法还是加法 · 辨析技巧</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}html,body{width:100%;height:100%;overflow:hidden;font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#faf6f1;color:#2d2d2d}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 20px 120px;opacity:0;pointer-events:none;transition:opacity .6s;overflow-y:auto}.slide.active{opacity:1;pointer-events:auto}
+.stitle{font-size:clamp(22px,5vw,36px);font-weight:900;text-align:center;margin-bottom:10px;color:#e67e22}
+.sdesc{font-size:clamp(15px,3vw,20px);color:#666;text-align:center;line-height:1.8;max-width:600px}
+.hl{color:#e67e22;font-weight:800}.bl{color:#3498db;font-weight:800}.gn{color:#27ae60;font-weight:800}.rd{color:#e74c3c;font-weight:800}
+.compare-box{width:100%;max-width:420px;margin:10px auto;display:flex;gap:10px}
+.cmp-card{flex:1;padding:14px 12px;border-radius:16px;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.04);text-align:center}
+.cmp-card h4{font-size:15px;margin-bottom:8px}
+.cmp-card p{font-size:13px;color:#666;line-height:1.7}
+.cmp-card.orange{border:2px solid #e67e22}.cmp-card.orange h4{color:#e67e22}
+.cmp-card.blue{border:2px solid #3498db}.cmp-card.blue h4{color:#3498db}
+.expr-box{width:100%;max-width:420px;margin:10px auto;padding:18px;border-radius:20px;background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.04);text-align:center}
+.expr{font-size:clamp(20px,5vw,28px);font-weight:900;color:#333;line-height:1.8}
+.expr .step{display:block;font-size:clamp(15px,3.5vw,18px);color:#888;margin-top:4px}
+.grid-demo{display:inline-grid;gap:4px;margin:10px auto}
+.grid-demo .dot{width:20px;height:20px;border-radius:50%;background:#e67e22}
+.grid-demo.add .dot.b{background:#3498db}
+.rule-card{width:100%;max-width:420px;margin:8px auto;padding:16px 20px;border-radius:16px;border-left:4px solid #e67e22;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.rule-card h3{color:#e67e22;font-size:17px;margin-bottom:5px}
+.rule-card p{color:#666;font-size:14px;line-height:1.8}
+.rule-card.blue{border-left-color:#3498db}.rule-card.blue h3{color:#3498db}
+.rule-card.green{border-left-color:#27ae60}.rule-card.green h3{color:#27ae60}
+.rule-card.red{border-left-color:#e74c3c}.rule-card.red h3{color:#e74c3c}
+.case-item{width:100%;max-width:420px;margin:8px auto;padding:14px 18px;border-radius:14px;background:#fff;border-left:3px solid #7eb8d0;box-shadow:0 2px 8px rgba(0,0,0,.03)}
+.case-item h4{color:#3498db;font-size:14px;margin-bottom:4px}
+.case-item p{color:#555;font-size:14px;line-height:1.7}
+.case-item .ans{color:#27ae60;font-weight:800}
+.case-item .method{display:inline-block;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:700}
+.case-item .method.mul{background:rgba(230,126,34,.1);color:#e67e22}
+.case-item .method.add{background:rgba(52,152,219,.1);color:#3498db}
+.mark{display:inline-block;width:24px;height:24px;border-radius:50%;font-size:14px;font-weight:900;line-height:24px;text-align:center;margin-left:6px}
+.mark.yes{background:rgba(39,174,96,.1);color:#27ae60}
+.mark.no{background:rgba(231,76,60,.1);color:#e74c3c}
+.sum-card{background:#fff;border-radius:16px;padding:14px 18px;margin:6px 0;width:100%;max-width:420px;border-left:4px solid #e67e22;box-shadow:0 2px 12px rgba(0,0,0,.04);opacity:0;transform:translateX(-30px);transition:all .5s}
+.sum-card.show{opacity:1;transform:translateX(0)}
+.sum-card h3{color:#e67e22;font-size:16px;margin-bottom:3px}
+.sum-card p{color:#888;font-size:14px;line-height:1.6}
+.ctrl{position:fixed;bottom:0;left:0;right:0;height:54px;background:linear-gradient(180deg,rgba(250,246,241,.9),rgba(250,246,241,.98));backdrop-filter:blur(12px);border-top:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;gap:8px;padding:0 12px;z-index:100}
+.ctrl button{background:#fff;border:1px solid rgba(0,0,0,.08);color:#666;border-radius:50px;padding:7px 16px;font-size:13px;cursor:pointer;font-family:inherit}
+.ctrl .pri{background:linear-gradient(135deg,#ff9a76,#e67e22);color:#fff;font-weight:700;border:none}
+.ctrl .pg{color:#bbb;font-size:11px;min-width:44px;text-align:center}
+.sub{position:fixed;bottom:58px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-radius:14px;padding:10px 22px;max-width:90%;text-align:center;font-size:clamp(14px,2.8vw,17px);color:#444;line-height:1.6;z-index:99;display:none;box-shadow:0 4px 20px rgba(0,0,0,.08)}.sub.vis{display:block}
+.bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#ff9a76,#27ae60);z-index:101;transition:width .4s}
+</style></head><body>
+<div class="bar" id="bar"></div>
+<div id="slides">
+
+<div class="slide active" id="s0">
+  <div class="stitle" style="font-size:clamp(26px,6vw,40px)">🤔 乘法还是加法？</div>
+  <div class="compare-box">
+    <div class="cmp-card orange"><h4>4排桌子<br>每排5张</h4><p>一共多少张？</p></div>
+    <div class="cmp-card blue"><h4>两排桌子<br>一排4张 一排5张</h4><p>一共多少张？</p></div>
+  </div>
+  <p class="sdesc">都有4和5，为什么<span class="hl">方法不同</span>？</p>
+</div>
+
+<div class="slide" id="s1">
+  <div class="stitle">看这两道题</div>
+  <div class="compare-box">
+    <div class="cmp-card orange">
+      <h4>题①</h4>
+      <p>4排桌子，<span class="hl">每排5张</span><br>4个5相加<br><span class="hl">5×4=20</span><br><br>
+      <div class="grid-demo" style="grid-template-columns:repeat(5,20px);grid-template-rows:repeat(4,20px)"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      </p>
+    </div>
+    <div class="cmp-card blue">
+      <h4>题②</h4>
+      <p>两排桌子<br>一排<span class="bl">4</span>张 一排<span class="bl">5</span>张<br><span class="bl">4+5=9</span><br><br>
+      <div class="grid-demo add" style="grid-template-columns:repeat(5,20px)"><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot" style="visibility:hidden"></div><div class="dot b"></div><div class="dot b"></div><div class="dot b"></div><div class="dot b"></div><div class="dot b"></div></div>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="slide" id="s2">
+  <div class="stitle">判断口诀</div>
+  <div class="rule-card">
+    <h3>🟠 用乘法的信号</h3>
+    <p>每排<span class="hl">一样多</span>（每排5张）<br>→ 相同的数<span class="hl">重复出现</span><br>→ <span class="hl">乘法</span></p>
+  </div>
+  <div class="rule-card blue">
+    <h3>🔵 用加法的信号</h3>
+    <p>每排<span class="bl">不一样多</span>（4张和5张）<br>→ 不同的数<span class="bl">合在一起</span><br>→ <span class="bl">加法</span></p>
+  </div>
+  <p class="sdesc"><span class="hl">相同数重复 → 乘法</span><br><span class="bl">不同数合并 → 加法</span></p>
+</div>
+
+<div class="slide" id="s3">
+  <div class="stitle">画图一看就明白</div>
+  <div class="compare-box">
+    <div class="cmp-card orange">
+      <h4>乘法的图</h4>
+      <p style="font-size:12px">整齐的阵列<br>每排一样多</p>
+      <div class="grid-demo" style="grid-template-columns:repeat(5,16px);grid-template-rows:repeat(4,16px)"><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div></div>
+    </div>
+    <div class="cmp-card blue">
+      <h4>加法的图</h4>
+      <p style="font-size:12px">不等长的两排<br>每排不一样</p>
+      <div class="grid-demo add" style="grid-template-columns:repeat(5,16px)"><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px"></div><div class="dot" style="width:14px;height:14px;visibility:hidden"></div><div class="dot b" style="width:14px;height:14px"></div><div class="dot b" style="width:14px;height:14px"></div><div class="dot b" style="width:14px;height:14px"></div><div class="dot b" style="width:14px;height:14px"></div><div class="dot b" style="width:14px;height:14px"></div></div>
+    </div>
+  </div>
+  <p class="sdesc">不确定用哪个？<span class="hl">画个图就清楚了</span></p>
+</div>
+
+<div class="slide" id="s4">
+  <div class="stitle">真题演练 · 电池</div>
+  <p class="sdesc" style="margin-bottom:8px">七号电池有一板装4节的，也有一板装6节的</p>
+  <div class="case-item"><h4>(1) 两种各买1板，一共多少节？</h4><p>4节和6节<span class="bl">合在一起</span><br>4+6=<span class="ans">10</span>（节）<span class="method add">加法</span></p></div>
+  <div class="case-item" style="border-left-color:#e67e22"><h4>(2) 买4板6节装的，一共多少节？</h4><p>4个<span class="hl">相同的</span>6<br>6×4=<span class="ans">24</span>（节）<span class="method mul">乘法</span></p></div>
+  <p class="sdesc" style="margin-top:8px;font-size:14px">同样的数字，<span class="hl">关系不同 → 方法不同</span></p>
+</div>
+
+<div class="slide" id="s5">
+  <div class="stitle">真题演练 · 插花</div>
+  <p class="sdesc" style="margin-bottom:8px">3束玫瑰和4束百合，每束百合6朵</p>
+  <div class="case-item"><h4>一共几束花？</h4><p>3束和4束<span class="bl">合在一起</span><br>3+4=<span class="ans">7</span>（束）<span class="method add">加法</span></p></div>
+  <div class="case-item" style="border-left-color:#e67e22"><h4>用了多少朵百合花？</h4><p>4个<span class="hl">相同的</span>6<br>6×4=<span class="ans">24</span>（朵）<span class="method mul">乘法</span></p></div>
+  <div class="rule-card green" style="margin-top:6px">
+    <h3>💡 同一题里两种都有！</h3>
+    <p>问"几束"→合并→<span class="bl">加法</span><br>问"几朵"→重复→<span class="hl">乘法</span><br><span class="gn">看问什么，决定用什么</span></p>
+  </div>
+</div>
+
+<div class="slide" id="s6">
+  <div class="stitle">真题演练 · 选条件</div>
+  <p class="sdesc" style="margin-bottom:8px">货架上：铅笔3元 笔袋6元 橡皮2元 日记本5元<br>买3个笔袋，一共多少钱？</p>
+  <div class="rule-card red">
+    <h3>⚠️ 不是所有条件都要用！</h3>
+    <p>只跟笔袋有关 → 选<span class="hl">笔袋6元</span><br>铅笔、橡皮、日记本的价格<span class="rd">不用管</span></p>
+  </div>
+  <div class="expr-box">
+    <div class="expr">6 × 3 = <span class="gn">18</span>（元）</div>
+    <div class="expr step">3个相同的6 → 乘法</div>
+  </div>
+</div>
+
+<div class="slide" id="s7">
+  <div class="stitle">⚠️ 三个大坑</div>
+  <div class="rule-card red">
+    <h3>❌ 坑1：看到两个数就用乘</h3>
+    <p>4张和5张合在一起 → 4+5=9 不是 4×5<br><span class="gn">先看关系再选方法</span></p>
+  </div>
+  <div class="rule-card red">
+    <h3>❌ 坑2：2个6写成6×6</h3>
+    <p>2个6 → 6×<span class="hl">2</span>=12<br>6×6=36 是<span class="rd">6个6</span>，完全不同！</p>
+  </div>
+  <div class="rule-card red">
+    <h3>❌ 坑3：条件全用上</h3>
+    <p>题目给了4个价格，只需要用1个<br><span class="gn">跟问题无关的条件不要管</span></p>
+  </div>
+</div>
+
+<div class="slide" id="s8">
+  <div class="stitle">🌟 记住这些</div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;max-width:420px">
+    <div class="sum-card" id="sc1"><h3>1️⃣ 判断口诀</h3><p>相同数重复 → 乘法<br>不同数合并 → 加法</p></div>
+    <div class="sum-card" id="sc2" style="border-left-color:#3498db"><h3 style="color:#3498db">2️⃣ 不确定就画图</h3><p>整齐阵列 → 乘法<br>不等长合并 → 加法</p></div>
+    <div class="sum-card" id="sc3" style="border-left-color:#27ae60"><h3 style="color:#27ae60">3️⃣ 看问什么决定方法</h3><p>同一题可能既用乘法又用加法</p></div>
+    <div class="sum-card" id="sc4" style="border-left-color:#e74c3c"><h3 style="color:#e74c3c">4️⃣ 选条件</h3><p>跟问题无关的条件不要用</p></div>
+  </div>
+</div>
+
+</div>
+<div class="sub" id="subBar"></div>
+<div class="ctrl"><button onclick="prev()">⏮</button><button class="pri" id="ttsBtn" onclick="toggleTTS()">🔊 开始讲解</button><button onclick="next()">⏭</button><span class="pg" id="pgInfo">1/9</span><button onclick="goFS()">⛶</button></div>
+<script>
+var TOTAL=9,cur=0,speaking=false;
+function showSlide(){var s=document.querySelectorAll('.slide');for(var i=0;i<s.length;i++)s[i].classList.toggle('active',i===cur);document.getElementById('pgInfo').textContent=(cur+1)+'/'+TOTAL;document.getElementById('bar').style.width=((cur+1)/TOTAL*100)+'%';if(cur===8){['sc1','sc2','sc3','sc4'].forEach(function(id,i){setTimeout(function(){var el=document.getElementById(id);if(el)el.classList.add('show')},i*300);});}}
+function next(){if(cur<TOTAL-1){cur++;showSlide();if(speaking)speakCur();}}
+function prev(){if(cur>0){cur--;showSlide();if(speaking)speakCur();}}
+var NAR=[
+'小朋友们好！今天来分辨什么时候用乘法，什么时候用加法。看这两道题，都有4和5，为什么一个用乘法一个用加法呢？',
+'第一题，4排桌子每排5张。每排一样多，都是5张，是4个5相加，5乘4等于20。第二题，两排桌子，一排4张另一排5张。每排不一样多，4和5合在一起，4加5等于9。',
+'记住判断口诀。看到相同的数重复出现，用乘法。看到不同的数合在一起，用加法。关键不是看数字是几，是看数字之间的关系！',
+'不确定的时候画个图就清楚了。乘法的图是整齐的阵列，每排一样多。加法的图是不等长的两排，每排不一样。画出来一看就知道用哪个了。',
+'来做真题。七号电池有一板装4节的，也有一板装6节的。第一小题，两种各买1板，一共多少节？4节和6节合在一起，4加6等于10节，用加法。第二小题，买4板6节装的，一共多少节？4个相同的6，6乘4等于24节，用乘法。同样的数字，关系不同方法就不同。',
+'再来一道。3束玫瑰和4束百合，每束百合6朵。问一共几束花？3束和4束合在一起，3加4等于7束，用加法。问用了多少朵百合？4个相同的6，6乘4等于24朵，用乘法。同一道题里两种方法都用到了！看问什么决定用什么。',
+'还有一种题，给了好多条件让选。货架上铅笔3元、笔袋6元、橡皮2元、日记本5元，买3个笔袋一共多少钱？只跟笔袋有关，选笔袋6元就够了，其他条件不用管。6乘3等于18元。',
+'三个最容易犯的错。第一，看到两个数就用乘法。4张和5张合在一起是4加5等于9，不是4乘5。第二，2个6写成6乘6。2个6是6乘2等于12，6乘6等于36是6个6，完全不同！第三，给的条件全用上。题目给了4个价格但可能只需要用1个，跟问题无关的不要管。',
+'总结四条！第一，判断口诀：相同数重复用乘法，不同数合并用加法。第二，不确定就画图，整齐阵列是乘法，不等长合并是加法。第三，看问什么决定方法，同一题可能两种都用。第四，选条件，跟问题无关的不要用。'
+];
+var voice=null;function pickVoice(){var vs=speechSynthesis.getVoices();var names=['Yunxi','Yunyang','Xiaoxiao'];for(var k=0;k<names.length;k++)for(var i=0;i<vs.length;i++)if(vs[i].name.indexOf(names[k])>=0&&vs[i].lang.indexOf('zh')>=0)return vs[i];for(var i=0;i<vs.length;i++)if(vs[i].lang==='zh-CN')return vs[i];return null;}if(window.speechSynthesis){voice=pickVoice();speechSynthesis.onvoiceschanged=function(){voice=pickVoice()};}function speakCur(){speechSynthesis.cancel();var text=NAR[cur];if(!text)return;var utt=new SpeechSynthesisUtterance(text);utt.lang='zh-CN';utt.rate=0.85;utt.pitch=1.0;if(!voice)voice=pickVoice();if(voice)utt.voice=voice;var sub=document.getElementById('subBar');var sents=text.match(/[^。？！；]+[。？！；]?/g)||[text];var si=0;sub.classList.add('vis');sub.textContent=sents[0]||'';utt.onboundary=function(e){if(e.charIndex!==undefined&&sents.length>1){var cc=0;for(var i=0;i<sents.length;i++){cc+=sents[i].length;if(e.charIndex<cc){if(i!==si){si=i;sub.textContent=sents[i].trim();}break;}}}};utt.onend=function(){if(speaking&&cur<TOTAL-1)setTimeout(next,800);else{speaking=false;document.getElementById('ttsBtn').textContent='🔊 开始讲解';sub.classList.remove('vis');}};utt.onerror=function(){if(speaking&&cur<TOTAL-1)setTimeout(next,500);};speechSynthesis.speak(utt);}function toggleTTS(){if(speaking){speaking=false;speechSynthesis.cancel();document.getElementById('ttsBtn').textContent='🔊 开始讲解';document.getElementById('subBar').classList.remove('vis');}else{speaking=true;document.getElementById('ttsBtn').textContent='⏹ 停止';speakCur();}}function goFS(){if(!document.fullscreenElement)document.documentElement.requestFullscreen().catch(function(){});else document.exitFullscreen();}var tx=0;document.addEventListener('touchstart',function(e){tx=e.touches[0].clientX});document.addEventListener('touchend',function(e){var d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>60){d<0?next():prev();}});document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();next();}else if(e.key==='ArrowLeft'){e.preventDefault();prev();}});showSlide();
+</script></body></html>
