@@ -1,0 +1,171 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GPT-5.6 Luna vs GPT-6 Astra 代码审查实测 · 2026.9</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#0a0e1a;color:#e8ecf4;padding:20px;max-width:480px;margin:0 auto;line-height:1.7}
+.header{text-align:center;padding:30px 0 20px;border-bottom:1px solid rgba(224,201,127,.15)}
+.header .badge{display:inline-block;padding:5px 14px;border-radius:50px;background:rgba(224,201,127,.08);border:1px solid rgba(224,201,127,.2);color:#e0c97f;font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:12px}
+.header h1{font-size:clamp(20px,5vw,28px);font-weight:900;background:linear-gradient(92deg,#c9a94f,#f3e0a3,#e0c97f);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1.4;margin-bottom:8px}
+.header .sub{color:#6a7290;font-size:13px}
+.section{margin:24px 0;padding:20px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)}
+.section h2{color:#e0c97f;font-size:17px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.section h2 .icon{font-size:20px}
+.section p{color:#9aa2b8;font-size:14px;line-height:1.8}
+.hl{color:#e0c97f;font-weight:700}
+.bl{color:#7eb8d0;font-weight:700}
+.gn{color:#2ecc71;font-weight:700}
+.rd{color:#e74c3c;font-weight:700}
+/* 对比表 */
+.cmp-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+.cmp-table th{text-align:left;padding:8px 10px;color:#6a7290;font-weight:600;border-bottom:1px solid rgba(255,255,255,.08);font-size:12px}
+.cmp-table td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.04)}
+.cmp-table .label{color:#9aa2b8;font-weight:600}
+.cmp-table .luna{color:#7eb8d0;font-weight:700}
+.cmp-table .astra{color:#e0c97f;font-weight:700}
+.cmp-table .win{background:rgba(46,204,113,.06)}
+/* 柱状图 */
+.bar-chart{margin:14px 0}
+.bar-row{display:flex;align-items:center;gap:8px;margin:8px 0}
+.bar-label{width:80px;font-size:12px;color:#9aa2b8;text-align:right;flex-shrink:0}
+.bar-track{flex:1;height:24px;background:rgba(255,255,255,.04);border-radius:6px;overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding:0 8px;font-size:11px;font-weight:700;color:#fff;transition:width 1.2s ease-out;position:relative;overflow:hidden}
+.bar-fill::after{content:"";position:absolute;top:0;left:0;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transform:translateX(-120%);animation:barSheen 2.6s ease-in-out infinite}
+@keyframes barSheen{0%{transform:translateX(-120%)}60%,100%{transform:translateX(320%)}}
+.bar-fill.luna-bar{background:linear-gradient(90deg,rgba(126,184,208,.3),rgba(126,184,208,.65))}
+.bar-fill.astra-bar{background:linear-gradient(90deg,rgba(224,201,127,.3),rgba(224,201,127,.65))}
+.bar-fill.danger{background:linear-gradient(90deg,rgba(231,76,60,.3),rgba(231,76,60,.6))}
+.bar-fill.safe{background:linear-gradient(90deg,rgba(46,204,113,.3),rgba(46,204,113,.6))}
+/* 洞察卡 */
+.insight{padding:14px 16px;border-radius:12px;background:rgba(224,201,127,.05);border:1px solid rgba(224,201,127,.12);margin:12px 0}
+.insight h3{color:#e0c97f;font-size:14px;margin-bottom:6px}
+.insight p{color:#9aa2b8;font-size:13px;line-height:1.7}
+.insight.blue{background:rgba(126,184,208,.05);border-color:rgba(126,184,208,.12)}
+.insight.blue h3{color:#7eb8d0}
+.insight.green{background:rgba(46,204,113,.05);border-color:rgba(46,204,113,.12)}
+.insight.green h3{color:#2ecc71}
+.insight.red{background:rgba(231,76,60,.05);border-color:rgba(231,76,60,.12)}
+.insight.red h3{color:#e74c3c}
+/* 来源框 */
+.source{margin:12px 0;padding:12px 14px;border-radius:10px;background:rgba(255,255,255,.02);border:1px dashed rgba(255,255,255,.08);font-size:12px;color:#5a6278}
+.source a{color:#7eb8d0;text-decoration:none}
+/* AWS推荐 */
+.aws-card{margin:16px 0;padding:18px;border-radius:16px;background:linear-gradient(135deg,rgba(255,153,0,.06),rgba(255,153,0,.02));border:1px solid rgba(255,153,0,.2);position:relative;overflow:hidden}
+.aws-card::before{content:"";position:absolute;top:-20%;right:-10%;width:120px;height:120px;background:radial-gradient(circle,rgba(255,153,0,.08),transparent 70%);pointer-events:none}
+.aws-card h3{color:#ff9900;font-size:15px;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.aws-card p{color:#b0a890;font-size:13px;line-height:1.8}
+.aws-card .tag{display:inline-block;padding:3px 10px;border-radius:20px;background:rgba(255,153,0,.1);color:#ff9900;font-size:11px;font-weight:700;margin:4px 4px 0 0}
+/* 结论 */
+.conclusion{text-align:center;padding:24px 16px;margin:20px 0;border-radius:16px;background:rgba(224,201,127,.04);border:1px solid rgba(224,201,127,.1)}
+.conclusion h2{color:#e0c97f;font-size:20px;margin-bottom:10px}
+.conclusion p{color:#9aa2b8;font-size:14px;line-height:1.8}
+.footer{text-align:center;padding:20px 0;color:#3a4058;font-size:11px}
+/* 动画 */
+.fade-in{opacity:0;transform:translateY(16px);animation:fadeUp .6s ease-out forwards}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+.fade-in:nth-child(2){animation-delay:.1s}.fade-in:nth-child(3){animation-delay:.2s}.fade-in:nth-child(4){animation-delay:.3s}
+</style></head><body>
+
+<div class="header fade-in">
+  <div class="badge">深度观察 · 实测数据</div>
+  <h1>GPT-5.6 Luna vs GPT-6 Astra<br>代码审查实测</h1>
+  <div class="sub">2026年9月14日 · 基于Entelligence AI公开测试数据</div>
+</div>
+
+<div class="section fade-in">
+  <h2><span class="icon">🧪</span>测试方法</h2>
+  <p>50个公开PR，来自5个真实开源项目<br>
+  <span class="hl">Cal.com · Sentry · Discourse · Keycloak · Grafana</span><br>
+  每个项目10个PR，同样的prompt、同样的diff<br>
+  两个模型独立评审交叉验证，共确认<span class="hl">143个真实bug</span></p>
+  <div class="source">📎 数据集开源：github.com/AI-Code-Review-Evals<br>📎 原文：<a href="https://entelligence.ai/blogs/gpt-5.6-luna-vs-gpt-6-astra-is-a-1.20-model-good-enough-for-code-review">entelligence.ai</a>（2026.9.14）</div>
+</div>
+
+<div class="section fade-in">
+  <h2><span class="icon">📊</span>核心对比</h2>
+  <table class="cmp-table">
+    <tr><th></th><th>GPT-5.6 Luna</th><th>GPT-6 Astra</th></tr>
+    <tr><td class="label">API定价（入/出）</td><td class="luna">$0.20 / $1.20</td><td class="astra">$10 / $50</td></tr>
+    <tr><td class="label">找到的真bug</td><td class="luna">69</td><td class="astra">92</td></tr>
+    <tr><td class="label">精确率</td><td class="luna">74%</td><td class="astra win">96%</td></tr>
+    <tr><td class="label">50个PR总成本</td><td class="luna win">$0.20</td><td class="astra">$5.66</td></tr>
+    <tr><td class="label">单bug成本</td><td class="luna win">$0.003</td><td class="astra">$0.061</td></tr>
+    <tr><td class="label">平均审查时间</td><td class="luna win">23秒</td><td class="astra">36秒</td></tr>
+  </table>
+  <p style="font-size:12px;color:#5a6278;margin-top:8px">Luna找到Astra 75%的bug，成本仅3.6%</p>
+</div>
+
+<div class="section fade-in">
+  <h2><span class="icon">🔍</span>bug检出率</h2>
+  <div class="bar-chart">
+    <div class="bar-row"><span class="bar-label">常规bug</span><div class="bar-track"><div class="bar-fill luna-bar" style="width:83%">Luna 39</div></div></div>
+    <div class="bar-row"><span class="bar-label"></span><div class="bar-track"><div class="bar-fill astra-bar" style="width:100%">Astra 47</div></div></div>
+  </div>
+  <div class="bar-chart">
+    <div class="bar-row"><span class="bar-label">并发bug</span><div class="bar-track"><div class="bar-fill luna-bar" style="width:77%">Luna 10</div></div></div>
+    <div class="bar-row"><span class="bar-label"></span><div class="bar-track"><div class="bar-fill astra-bar" style="width:100%">Astra 13</div></div></div>
+  </div>
+  <div class="bar-chart">
+    <div class="bar-row"><span class="bar-label">⚠️ 安全bug</span><div class="bar-track"><div class="bar-fill danger" style="width:38%">Luna 9/24</div></div></div>
+    <div class="bar-row"><span class="bar-label"></span><div class="bar-track"><div class="bar-fill safe" style="width:79%">Astra 19/24</div></div></div>
+  </div>
+  <div class="insight red">
+    <h3>⚠️ 安全bug差距最大</h3>
+    <p>Luna只找到38%的安全bug，Astra找到79%<br>Keycloak（认证权限）项目里Luna精确率跌到50%</p>
+  </div>
+</div>
+
+<div class="section fade-in">
+  <h2><span class="icon">💡</span>关键发现</h2>
+  <div class="insight">
+    <h3>Luna独有发现：25个bug Astra没找到</h3>
+    <p>Discourse里重复取消订阅会持续降低通知级别<br>Sentry里并发bug替换了不健康线程但没停旧的</p>
+  </div>
+  <div class="insight blue">
+    <h3>两个模型一起跑：82%检出率</h3>
+    <p>双模型总成本$5.86（Luna $0.20 + Astra $5.66）<br>比单跑Astra多找25个bug，多花$0.20</p>
+  </div>
+  <div class="insight">
+    <h3>误报率差异影响开发者体验</h3>
+    <p>Luna每4条评论有1条是误报 → 开发者会跳过不看<br>Astra 96条只错4条 → 开发者信任度高</p>
+  </div>
+</div>
+
+<div class="section fade-in">
+  <h2><span class="icon">🎯</span>实用策略：分层审查</h2>
+  <div class="bar-chart">
+    <div class="bar-row"><span class="bar-label" style="width:100px">日常代码PR</span><div class="bar-track"><div class="bar-fill luna-bar" style="width:75%">Luna · $0.003/bug</div></div></div>
+    <div class="bar-row"><span class="bar-label" style="width:100px">权限/安全PR</span><div class="bar-track"><div class="bar-fill astra-bar" style="width:95%">Astra · 79%安全检出</div></div></div>
+    <div class="bar-row"><span class="bar-label" style="width:100px">关键发布前</span><div class="bar-track"><div class="bar-fill safe" style="width:85%">双模型 · 82%总检出</div></div></div>
+  </div>
+  <p style="font-size:13px;color:#9aa2b8;margin-top:10px">不是选一个，是<span class="hl">按风险等级分层用</span><br>日常走轻模型省成本，关键环节走重模型保安全</p>
+</div>
+
+<div class="aws-card fade-in">
+  <h3>☁️ Amazon Bedrock 已支持 GPT-5.6 系列</h3>
+  <p>OpenAI GPT-5.5、GPT-5.6 Sol/Luna、Codex 系列已通过 Bedrock 跨区域推理（Cross-Region Inference）提供服务。<br><br>
+  在 Bedrock 上实现分层审查策略：</p>
+  <p style="margin-top:10px">
+    <span class="tag">GPT-5.6 Luna</span> 日常代码审查 · 低成本高吞吐<br>
+    <span class="tag">GPT-6 Astra</span> 安全关键审查 · 高精度<br>
+    <span class="tag">Bedrock Guardrails</span> 防止模型输出不安全建议<br>
+    <span class="tag">多模型路由</span> 按PR标签自动选模型
+  </p>
+  <p style="margin-top:10px;font-size:12px;color:#8a7a60">企业级合规：CloudTrail审计日志 · IAM权限控制 · VPC网络隔离<br>不需要单独管OpenAI API密钥，统一走Bedrock计费和治理</p>
+</div>
+
+<div class="conclusion fade-in">
+  <h2>结论</h2>
+  <p><span class="hl">模型不是越贵越好，也不是越便宜越省</span><br><br>
+  日常bug → Luna够用（$0.003/bug）<br>
+  安全bug → 必须Astra（79% vs 38%）<br>
+  关键发布 → 双模型跑一遍（$5.86找82%）<br><br>
+  <span class="bl">在Bedrock上按风险等级路由模型<br>是当前最务实的工程决策</span></p>
+</div>
+
+<div class="footer">
+  🦎 开心的舵手 · 基于Entelligence AI公开测试数据 · 2026.9.14<br>
+  ⚠️ Entelligence为AI代码审查工具公司，测试数据公开可验证但带商业立场
+</div>
+
+</body></html>

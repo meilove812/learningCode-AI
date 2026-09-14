@@ -231,7 +231,7 @@ html, body {
 
 <div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
 <div class="start-btn" id="startBtn" onclick="startShow(event)">▶ 点这里开始讲解</div>
-<div class="page-num" id="pageNum">1 / 11</div>
+<div class="page-num" id="pageNum">1 / 12</div>
 <div class="nav-dots" id="navDots"></div>
 <div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
 
@@ -728,8 +728,17 @@ html, body {
     </div>
   </div>
 
+  <!-- 处世启示 -->
+  <div class="page bg-cosmos" data-page="9">
+    <div class="page-title ani">处世启示 · 八种力量都要有</div>
+    <div class="page-text ani">
+      乾的<span class="em">刚健</span>，坤的<span class="em">包容</span><br>震的<span class="em">行动力</span>，巽的<span class="em">渗透力</span><br>坎的<span class="em">坚韧</span>，离的<span class="em">洞察</span><br>艮的<span class="em">定力</span>，兑的<span class="em">沟通</span><br><br>一个人不可能只靠一种力量。
+    </div>
+    <div class="fact-card ani">该刚则刚，该柔则柔，该动则动，该停则停。</div>
+  </div>
+
   <!-- Page 10: Summary -->
-  <div class="page bg-final" data-page="9">
+  <div class="page bg-final" data-page="10">
     <div class="particles" id="p9"></div>
     <p class="culture-notice" style="position:relative;z-index:1;color:#d8c9aa;font-size:0.78em;line-height:1.5;max-width:32em;margin:0.5em auto;">本期从传统文化角度讲解，不用于预测或替代现实决策。</p>
     <div class="ani">
@@ -763,13 +772,8 @@ html, body {
 
   <!-- Page 11: Use bagua to read the world -->
   
-    <div class="page bg-light" data-page="10">
-      <div class="particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div></div>
-      <div class="page-title ani">处世启示 · 八种力量都要有</div>
-      <div class="page-text ani"><span class="em">乾</span>的刚健 · <span class="em">坤</span>的包容<br><span class="em">震</span>的行动力 · <span class="em">巽</span>的渗透力<br><span class="em">坎</span>的坚韧 · <span class="em">离</span>的洞察<br><span class="em">艮</span>的定力 · <span class="em">兑</span>的沟通<br><br>一个人不可能只靠一种力量。<br>该刚则刚，该柔则柔，<br>该动则动，该停则停。</div>
-    </div>
 
-    <div class="page bg-nature" data-page="11">
+  <div class="page bg-nature" data-page="11">
     <div class="page-title ani">怎么用八卦读世界</div>
     <div class="page-text ani">
       八卦不只是分类表，<br>
@@ -921,8 +925,8 @@ const narrations = [
   "离卦，中间一条阴线是空心，上下两条阳线是外壳。就像火苗，外面明亮，中间空虚。火必须附着在别的东西上才能燃烧。在家庭中，离是中女，就是二女儿。离的动物是雉，就是野鸡，因为野鸡有漂亮的羽毛，就像火焰一样美丽。方位在南，五行属火。",
   "艮卦，最上面一条阳线像山顶，下面两条阴线是空的山体。山不动不摇，稳如磐石。艮代表停止、安静、稳定。在家庭中，艮是少男，就是小儿子。艮的动物是狗，因为狗忠诚守护，蹲在门口一动不动。方位在东北，五行属土。",
   "兑卦，最上面一条阴线是缺口，下面两条阳线是坚实的底。就像湖泊，上面开口纳水，带给人喜悦和愉快。在家庭中，兑是少女，就是小女儿。兑的动物是羊，性格温和。兑和悦同源，湖水清澈，人们在水边嬉戏，心情愉悦。方位在西，五行属金。",
-  "本期从传统文化角度讲解，不用于预测或替代现实决策。小结。八卦就是古人的万物分类系统！乾代表天，坤代表地，震代表雷，巽代表风，坎代表水，离代表火，艮代表山，兑代表泽。每一卦都有自然象征、家庭角色、性格特点。用三条线就能代表万物，这就是古人的智慧。",
   "八卦代表八种力量。乾的刚健不是蛮干，坤的柔顺不是软弱。震是果断行动，巽是润物细无声。坎是越挫越勇，离是看清本质。艮是知道什么时候停，兑是会沟通会交流。一个人不可能只靠一种力量走到底。该刚则刚，该柔则柔，该动则动，该停则停。八种力量都备着，遇到什么局面就用什么力量。",
+  "本期从传统文化角度讲解，不用于预测或替代现实决策。小结。八卦就是古人的万物分类系统！乾代表天，坤代表地，震代表雷，巽代表风，坎代表水，离代表火，艮代表山，兑代表泽。每一卦都有自然象征、家庭角色、性格特点。用三条线就能代表万物，这就是古人的智慧。",
   "八卦不只是一张分类表，它是古人读懂世界的思维工具。比如看到山下有水，上面是艮卦山，下面是坎卦水，组合起来就是蒙卦，讲的是启蒙教育的道理，从蒙昧走向明白，需要循序启发。再比如天上有火，上面是离卦火，下面是乾卦天，就是大有卦，象征着收获丰盛，也提醒人思考如何善用所拥有的资源。一组自然意象，就对应一个人生场景。先取象，再看关系，最后联想人的处境。这是借象说理，帮助理解变化趋势，不替代现实判断。下一期，我们来讲六十四卦是怎么诞生的。"
 ];
 

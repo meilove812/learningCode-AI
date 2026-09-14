@@ -171,7 +171,7 @@ html, body {
 
 <div class="audio-btn" id="audioBtn" onclick="toggleAudio()">🔊</div>
 <div class="start-btn" id="startBtn" onclick="startShow(event)">▶ 点这里开始讲解</div>
-<div class="page-num" id="pageNum">1 / 11</div>
+<div class="page-num" id="pageNum">1 / 12</div>
 <div class="nav-dots" id="navDots"></div>
 <div class="nav-hint" id="navHint">← 左点回退 · 右点翻页 →</div>
 
@@ -657,13 +657,17 @@ html, body {
 
   <!-- Page 11: Summary -->
   
-    <div class="page bg-light" data-page="10">
-      <div class="particles"><div class="particle"></div><div class="particle"></div><div class="particle"></div></div>
-      <div class="page-title ani">处世启示 · 先看自己在什么位置</div>
-      <div class="page-text ani">六爻六个位置，每个位置该做的事不同：<br><br><span class="em">初位</span> → 老实学习，别急着表现<br><span class="em">中位</span> → 做事的主力，勤勉踏实<br><span class="em">五位</span> → 果断决策，别犹豫不决<br><span class="em">上位</span> → 适可而止，别贪恋不放<br><br>很多人的困境不是能力不够，<br>是<span class="em">在错误的位置做了错误的事</span>。</div>
-    </div>
 
-    <div class="page bg-final" data-page="11">
+      <!-- 处世启示 -->
+  <div class="page bg-cosmos" data-page="10">
+    <div class="page-title ani">处世启示 · 先看自己在什么位置</div>
+    <div class="page-text ani">
+      六爻六个位置，<br><span class="em">每个位置该做的事不同</span>。<br><br>在初位就老实学习，别急着表现。<br>在五位就果断决策，别犹豫不决。<br>在上位就知道适可而止，别贪恋不放。
+    </div>
+    <div class="fact-card ani">很多人的问题不是能力不够，是在错误的位置做了错误的事。</div>
+  </div>
+
+<div class="page bg-final" data-page="11">
     <div class="particles" id="p9"></div>
     <p class="culture-notice" style="position:relative;z-index:1;color:#d8c9aa;font-size:0.78em;line-height:1.5;max-width:32em;margin:0.5em auto;">本期从传统文化角度讲解，不用于预测或替代现实决策。</p>
     <div class="ani">
@@ -790,7 +794,7 @@ const narrations = [
   "怎么读一个卦呢？第一步，看卦名，了解这是什么场景。第二步，读卦辞，掌握整体趋势。第三步，看各爻，从初到上逐步分析。第四步，找动爻，正在变化的那一爻，就是此刻最关键的信息。",
   "读卦就像看天气预报。卦辞相当于今天整体天气，比如今天晴转多云。爻辞相当于各时段预报，比如上午晴下午有阵雨。动爻就是此刻正在变的天气，比如现在云在聚集，快下雨了。看懂卦，就能提前准备！",
   "让我们用一个完整的例子来练习读卦。水雷屯卦，屯读作zhūn。上面是坎卦，代表水；下面是震卦，代表雷。上坎水，下震雷，联想到雷雨交加、万物在艰难中萌生的画面。屯卦讲的是创业初期的艰难，这里的创业泛指开创一番事业。我们先用四步理解这个卦的结构和象义。第一，看卦名，屯有艰难萌生的意思。第二，看上下卦，坎水在上，震雷在下。第三，想象卦象，雷雨交加，生机初萌。第四，体会卦义，万事开头难，需要稳步积累、寻求支持，而不是急于求成。理解了这层意思，再结合卦辞和爻辞细读。",
-  "六爻六个位置，每个位置该做的事不同。在初位就老实学习，别急着表现。在中位就勤勉踏实做事。在五位就果断决策，别犹豫不决。在上位就知道适可而止，别贪恋不放。很多人的困境不是能力不够，是在错误的位置做了错误的事。看清自己在哪个位置，做那个位置该做的事，这就是位的智慧。",
+  "六爻六个位置，每个位置该做的事不同。在初位就老实学习，别急着表现。在五位就果断决策，别犹豫不决。在上位就知道适可而止，别贪恋不放。很多人的困境不是能力不够，是在错误的位置做了错误的事。看清自己在哪个位置，做那个位置该做的事，这就是位的智慧。",
   "本期从传统文化角度讲解，不用于预测或替代现实决策。小结。爻是卦的最小单位，分阳爻和阴爻。位是六个位置，从初到上。象是卦画出的自然画面。卦辞看整体，爻辞看细节，动爻是关键的变化点。掌握了这些，你就能开始读懂任何一个卦了！下一期，我们来讲乾卦，天行健，君子以自强不息。"
 ];
 
