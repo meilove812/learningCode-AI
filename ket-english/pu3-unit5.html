@@ -1,125 +1,43 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="robots" content="noindex,nofollow,noarchive">
-<title>Power Up 3 · Unit 5 · Behind the scenes</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;background:#faf6f1;color:#333;line-height:1.6;padding-bottom:28px}.topbar{background:#fff;border-bottom:1px solid #eee;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:10}.topbar a,a{color:#e67e22;text-decoration:none;font-weight:700}.topbar span{font-size:15px;font-weight:700}main{max-width:800px;margin:auto;padding:0 16px}h1{text-align:center;color:#e67e22;font-size:28px;margin:24px 0 6px}h2{text-align:center;color:#e67e22;font-size:22px;margin:24px 0 8px}.tip{text-align:center;font-size:14px;color:#777;margin:6px 0 16px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:0 16px}
-.card{width:100%;max-width:360px;height:200px;perspective:800px;margin:12px auto;cursor:pointer}
-.card-inner{width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;position:relative}
-.card.flipped .card-inner{transform:rotateY(180deg)}
-.card-front,.card-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:6px}
-.card-front{background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.04)}
-.card-back{background:linear-gradient(135deg,#fff9f0,#fff);transform:rotateY(180deg);box-shadow:0 4px 20px rgba(0,0,0,.04)}
-.word{font-size:34px;font-weight:800}.cn{font-size:23px;font-weight:800;color:#e67e22}.ipa{font-size:15px;color:#666}.pos{font-weight:700;color:#e67e22}.example{font-size:13px;line-height:1.45;text-align:center}.speak-btn{border:0;border-radius:50%;min-width:44px;min-height:44px;background:#fff0de;color:#a54d00;font-size:20px;cursor:pointer;flex-shrink:0}.sent-card{background:#fff;padding:16px;margin:12px auto;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.04);display:flex;gap:12px;align-items:center;cursor:pointer}.sent-copy{flex:1}.sent-en{font-size:18px;line-height:1.7;font-weight:700}.sent-cn{font-size:15px;color:#777;margin-top:6px}mark{background:#fff0d8;color:#b45509;border-radius:4px;padding:0 2px}.controls{padding:14px;background:#fff;border-radius:16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin:20px auto;font-size:14px}select{max-width:240px;padding:8px;border:1px solid #ddd;border-radius:8px;background:#fff}input{vertical-align:middle;max-width:100px}.playback{text-align:center;margin:24px auto}.action{font:inherit;font-weight:700;border:0;border-radius:24px;min-height:44px;padding:10px 20px;background:#e67e22;color:white;cursor:pointer;margin:4px}.stop{background:#fff;color:#a54d00;border:1px solid #e67e22}#status{min-height:26px;font-size:14px;color:#777;margin-top:8px}.nav-bottom{display:flex;justify-content:space-between;gap:12px;max-width:440px;margin:24px auto}.nav-bottom a{padding:10px 16px;background:white;border-radius:24px;font-size:15px}footer{text-align:center;font-size:13px;color:#777;margin:24px auto 0;max-width:700px;padding:0 16px}.notice{font-size:11px;line-height:1.7;margin-top:10px}button,a,.card{touch-action:manipulation}button:focus-visible,a:focus-visible,.card:focus-visible{outline:3px solid #e67e22;outline-offset:4px}.reading{outline:3px solid #e67e22;outline-offset:2px}@media(prefers-reduced-motion:reduce){.card-inner{transition:none}}@media(max-width:380px){h1{font-size:25px}.sent-en{font-size:16px}.controls select{max-width:190px}}
-</style>
-</head>
-<body>
-<header class="topbar"><a href="index.html">← 返回</a><span>Power Up 3 · Unit 5</span></header>
-<main>
-<h1 lang="en">Behind the scenes</h1>
-<p class="tip">Coco，点一点卡片，探索舞台背后的秘密！</p>
-<div class="controls" aria-label="朗读设置"><label for="voice">英语声音</label><select id="voice"><option value="">浏览器默认英语声音</option></select><label for="rate">语速 <output id="rateValue" for="rate">0.8</output> <input id="rate" type="range" min="0.5" max="1.2" step="0.1" value="0.8"></label></div>
-<section aria-labelledby="wordsTitle"><h2 id="wordsTitle">📝 词汇卡片</h2><p class="tip">点击卡片翻面 · 🔊 听单词或例句 · 共 14 个词</p><div class="cards" id="cards"></div></section>
-<section aria-labelledby="sentencesTitle"><h2 id="sentencesTitle">💬 重点句子</h2><p class="tip">点击句子或 🔊 听英文，橙色标记是重点表达</p><div id="sentences"></div></section>
-<div class="playback"><button type="button" class="action" id="playAll">▶ 连续播放</button><button type="button" class="action stop" id="stop">■ 停止</button><p class="tip">从头朗读单词、例句，再读重点句子</p><p id="status" role="status" aria-live="polite"></p></div>
-<nav class="nav-bottom" aria-label="单元导航"><a href="pu3-unit4.html" title="Unit 4: Fun in the jungle">← 上一单元</a><a href="pu3-unit6.html" title="Unit 6: Classroom stars">下一单元 →</a></nav>
-<noscript><p class="tip">请启用 JavaScript 来查看词卡和使用朗读功能。</p></noscript>
-</main>
-<footer>🦎 Coco Learning · Power Up 3<p class="notice">家庭自用学习辅助 · 非商业。本页文字按提供的 Unit 5 词表与句子整理，未逐页核对教材原图，未收录教材插图或扫描件。教材内容著作权归原出版社及作者；中文释义为辅助释义，非出版社官方翻译。权利人告知即刻下线。公开使用许可须另行核实。朗读使用设备语音服务，可用性取决于浏览器与已安装语音。</p></footer>
-<script>
-'use strict';
-const vocabulary = [
-['decorate','装饰','/ˈdekəreɪt/','v.','Shall we design some props?'],
-['material','材料','/məˈtɪəriəl/','n.',"Plastic is a good material for this because it's light and rigid."],
-['prop','道具','/prɒp/','n.','Shall we design some props?'],
-['design','设计','/dɪˈzaɪn/','v.','Shall we design some props?'],
-['crown','皇冠','/kraʊn/','n.','The crown is made of brown card.'],
-['scarf','围巾','/skɑːf/','n.','The scarf is made of wool.'],
-['wool','羊毛','/wʊl/','n.','The scarf is made of wool.'],
-['card','卡纸','/kɑːd/','n.','The crown is made of brown card.'],
-['plastic','塑料','/ˈplæstɪk/','n.',"Plastic is a good material for this because it's light and rigid."],
-['light','轻的','/laɪt/','adj.',"Plastic is a good material for this because it's light and rigid."],
-['rigid','坚硬的','/ˈrɪdʒɪd/','adj.',"Plastic is a good material for this because it's light and rigid."],
-['safe','安全的','/seɪf/','adj.',"It's important to use materials that are safe."],
-['ring','戒指','/rɪŋ/','n.','Shall we design some props?'],
-['silver','银色的','/ˈsɪlvə/','adj.','The crown is made of brown card.']
-];
-const sentences = [
-['Shall we design some props?','我们来设计一些道具好吗？'],
-["Let's design the sea.",'让我们来设计大海。'],
-['The crown is made of brown card.','皇冠是用棕色卡纸做的。'],
-['The scarf is made of wool.','围巾是用羊毛做的。'],
-["Plastic is a good material for this because it's light and rigid.",'塑料是一种好材料，因为它轻而硬。'],
-["It's important to use materials that are safe.",'使用安全的材料很重要。']
-];
-const escapeHTML = text => text.replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-const highlight = text => escapeHTML(text).replace(/\b(made of|materials?|design|props|light|rigid|safe|wool|card|plastic)\b/gi,'<mark>$1</mark>');
-const queueItems = [];
-const cards = document.getElementById('cards');
-vocabulary.forEach(([word,cn,ipa,pos,example]) => {
-  const card = document.createElement('article');
-  card.className = 'card'; card.tabIndex = 0;
-  card.setAttribute('aria-label',word+'：按回车翻面');
-  card.innerHTML = `<div class="card-inner"><div class="card-front"><div class="word" lang="en">${escapeHTML(word)}</div><button type="button" class="speak-btn word-audio" aria-label="朗读 ${escapeHTML(word)}">🔊</button></div><div class="card-back" inert><div class="cn">${escapeHTML(cn)}</div><div class="ipa">${escapeHTML(ipa)} <span class="pos">${escapeHTML(pos)}</span></div><div class="example" lang="en">${escapeHTML(example)}</div><button type="button" class="speak-btn example-audio" aria-label="朗读例句">🔊</button></div></div>`;
-  function flip(){const flipped=card.classList.toggle('flipped');card.querySelector('.card-front').inert=flipped;card.querySelector('.card-back').inert=!flipped;card.setAttribute('aria-label',word+'：'+(flipped?'显示释义，按回车返回':'按回车翻面'));}
-  card.addEventListener('click',flip);
-  card.addEventListener('keydown',event=>{if(event.target===card&&(event.key==='Enter'||event.key===' ')){event.preventDefault();flip();}});
-  card.querySelector('.word-audio').addEventListener('click',event=>{event.stopPropagation();speak(word,card);});
-  card.querySelector('.example-audio').addEventListener('click',event=>{event.stopPropagation();speak(example,card);});
-  cards.appendChild(card);queueItems.push({text:word,element:card},{text:example,element:card});
-});
-sentences.forEach(([en,cn])=>{
-  const card=document.createElement('article');card.className='sent-card';
-  card.innerHTML=`<div class="sent-copy"><p class="sent-en" lang="en">${highlight(en)}</p><p class="sent-cn">${escapeHTML(cn)}</p></div><button type="button" class="speak-btn" aria-label="朗读句子：${escapeHTML(en)}">🔊</button>`;
-  card.addEventListener('click',()=>speak(en,card));
-  card.querySelector('button').addEventListener('click',event=>{event.stopPropagation();speak(en,card);});
-  document.getElementById('sentences').appendChild(card);queueItems.push({text:en,element:card});
-});
-const voiceSelect=document.getElementById('voice');
-const status=document.getElementById('status');
-const rate=document.getElementById('rate');
-const supported='speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
-let voices=[],run=0,currentUtterance=null;
-function loadVoices(){
-  const previous=voiceSelect.value;
-  voices=window.speechSynthesis.getVoices().filter(voice=>/^en[-_]/i.test(voice.lang));
-  voiceSelect.replaceChildren(new Option('浏览器默认英语声音',''));
-  voices.forEach((voice,index)=>voiceSelect.add(new Option(voice.name+' · '+voice.lang,String(index))));
-  const preferred=voices.findIndex(voice=>/Microsoft.*Ava.*Online.*Natural/i.test(voice.name));
-  const natural=voices.findIndex(voice=>/Online.*Natural/i.test(voice.name));
-  if(previous!==''&&voices[Number(previous)])voiceSelect.value=previous;
-  else if(preferred>=0||natural>=0)voiceSelect.value=String(preferred>=0?preferred:natural);
-}
-function clearReading(){document.querySelectorAll('.reading').forEach(element=>element.classList.remove('reading'));}
-function stopSpeech(){run++;if(supported)window.speechSynthesis.cancel();currentUtterance=null;clearReading();}
-function playItems(items,continuous){
-  stopSpeech();if(!supported){status.textContent='这个浏览器暂不支持朗读，请用支持语音的 Edge 或 Chrome 打开。';return;}
-  const ticket=run;let index=0;
-  function next(){
-    if(ticket!==run)return;
-    clearReading();
-    if(index>=items.length){status.textContent='朗读完成！';currentUtterance=null;return;}
-    const item=items[index++];item.element.classList.add('reading');
-    if(continuous)item.element.scrollIntoView({behavior:'auto',block:'center'});
-    const utterance=new SpeechSynthesisUtterance(item.text);currentUtterance=utterance;
-    utterance.lang='en-US';utterance.rate=Number(rate.value)||0.8;
-    if(voiceSelect.value!==''&&voices[Number(voiceSelect.value)])utterance.voice=voices[Number(voiceSelect.value)];
-    status.textContent=(continuous?index+'/'+items.length+' · ':'')+'正在朗读：'+item.text;
-    utterance.onend=next;
-    utterance.onerror=()=>{if(ticket!==run)return;clearReading();currentUtterance=null;status.textContent='朗读未完成，请选择英语声音后重试。';};
-    window.speechSynthesis.speak(utterance);
-  }
-  next();
-}
-var _voice={};function _pickVoice(lang){if(_voice[lang])return _voice[lang];var vs=speechSynthesis.getVoices();var prefs=lang.indexOf('zh')>=0?['Xiaoxiao','Yunxi','Yunyang']:['Ava','Andrew','Emma','Jenny'];for(var k=0;k<prefs.length;k++)for(var i=0;i<vs.length;i++)if(vs[i].name.indexOf(prefs[k])>=0&&vs[i].name.indexOf('Online')>=0&&vs[i].lang.indexOf(lang.substring(0,2))>=0){_voice[lang]=vs[i];return vs[i];}for(var k=0;k<prefs.length;k++)for(var i=0;i<vs.length;i++)if(vs[i].name.indexOf(prefs[k])>=0&&vs[i].lang.indexOf(lang.substring(0,2))>=0){_voice[lang]=vs[i];return vs[i];}for(var i=0;i<vs.length;i++)if(vs[i].lang===lang||vs[i].lang.indexOf(lang.substring(0,2))>=0){_voice[lang]=vs[i];return vs[i];}return null;}if(window.speechSynthesis)speechSynthesis.onvoiceschanged=function(){_voice={};};function speak(t,l){speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang=l||"en-US";u.rate=l&&l.indexOf("zh")>=0?0.85:0.75;var v=_pickVoice(l||"en-US");if(v)u.voice=v;speechSynthesis.speak(u);}],false);}
-rate.addEventListener('input',()=>{document.getElementById('rateValue').value=Number(rate.value).toFixed(1);});
-document.getElementById('playAll').addEventListener('click',()=>playItems(queueItems,true));
-document.getElementById('stop').addEventListener('click',()=>{stopSpeech();status.textContent='已停止朗读';});
-window.addEventListener('pagehide',stopSpeech);
-if(supported){loadVoices();window.speechSynthesis.addEventListener('voiceschanged',loadVoices);}else{status.textContent='这个浏览器暂不支持语音朗读，仍可点击翻卡学习。';}
-</script>
-</body>
-</html>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>PU3 Unit 5 · Behind the scenes</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#faf6f1;color:#2d2d2d;padding:0 0 80px}.topbar{background:#fff;border-bottom:1px solid rgba(0,0,0,.06);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}.topbar a{color:#e67e22;text-decoration:none;font-weight:700;font-size:14px}.topbar h1{font-size:16px;color:#333;font-weight:800}.st{font-size:20px;font-weight:900;color:#e67e22;text-align:center;margin:20px 0 8px}.ss{font-size:13px;color:#999;text-align:center;margin-bottom:16px}.cards{padding:0 16px}.card{width:100%;max-width:400px;height:180px;perspective:800px;margin:12px auto;cursor:pointer}.ci{width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;position:relative}.card.flipped .ci{transform:rotateY(180deg)}.cf,.cb{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:6px}.cf{background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.04)}.cb{background:linear-gradient(135deg,#fff9f0,#fff);transform:rotateY(180deg);box-shadow:0 4px 20px rgba(0,0,0,.04)}.w{font-size:clamp(22px,5.5vw,32px);font-weight:900;color:#333}.ipa{font-size:13px;color:#888}.pos{color:#e67e22;font-weight:700}.cn{font-size:18px;font-weight:800;color:#e67e22}.ex{font-size:11px;color:#999;text-align:center;line-height:1.5}.sb{background:linear-gradient(135deg,#ff9a76,#e67e22);color:#fff;border:none;border-radius:50%;width:34px;height:34px;font-size:15px;cursor:pointer;touch-action:manipulation}.sents{padding:0 16px}.sc{background:#fff;border-radius:14px;padding:14px 16px;margin:8px auto;max-width:400px;box-shadow:0 2px 12px rgba(0,0,0,.03);cursor:pointer;touch-action:manipulation}.se{font-size:15px;font-weight:700;color:#333;line-height:1.7}.scn{font-size:13px;color:#888;margin-top:4px}.nb{display:flex;justify-content:space-between;padding:16px;max-width:400px;margin:20px auto}.nb a{color:#e67e22;text-decoration:none;font-weight:700;font-size:14px;padding:10px 18px;border-radius:50px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.04)}.tip{text-align:center;color:#bbb;font-size:11px;margin:16px 0}</style></head><body>
+<div class="topbar"><a href="index.html">← 返回</a><h1>Unit 5 · Behind the scenes</h1></div>
+<div class="st">📇 词汇卡片（28个）</div><div class="ss">点击翻转 · 🔊听发音</div>
+<div class="cards"><div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">bright</div><button class="sb" onclick="event.stopPropagation();speak('bright','en-US')">🔊</button></div><div class="cb"><div class="ipa">/braɪt/ <span class="pos">adj.</span></div><div class="cn">明亮的</div><button class="sb" onclick="event.stopPropagation();speak('bright','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">dark</div><button class="sb" onclick="event.stopPropagation();speak('dark','en-US')">🔊</button></div><div class="cb"><div class="ipa">/dɑːk/ <span class="pos">adj.</span></div><div class="cn">暗的</div><button class="sb" onclick="event.stopPropagation();speak('dark','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">gold</div><button class="sb" onclick="event.stopPropagation();speak('gold','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ɡəʊld/ <span class="pos">n./adj.</span></div><div class="cn">金/金色的</div><button class="sb" onclick="event.stopPropagation();speak('gold','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">light</div><button class="sb" onclick="event.stopPropagation();speak('light','en-US')">🔊</button></div><div class="cb"><div class="ipa">/laɪt/ <span class="pos">adj./n.</span></div><div class="cn">轻的/光</div><button class="sb" onclick="event.stopPropagation();speak('light','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">silver</div><button class="sb" onclick="event.stopPropagation();speak('silver','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈsɪlvə/ <span class="pos">n./adj.</span></div><div class="cn">银/银色的</div><button class="sb" onclick="event.stopPropagation();speak('silver','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">spots</div><button class="sb" onclick="event.stopPropagation();speak('spots','en-US')">🔊</button></div><div class="cb"><div class="ipa">/spɒts/ <span class="pos">n.</span></div><div class="cn">斑点</div><button class="sb" onclick="event.stopPropagation();speak('spots','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">spotted</div><button class="sb" onclick="event.stopPropagation();speak('spotted','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈspɒtɪd/ <span class="pos">adj.</span></div><div class="cn">有斑点的</div><button class="sb" onclick="event.stopPropagation();speak('spotted','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">stripes</div><button class="sb" onclick="event.stopPropagation();speak('stripes','en-US')">🔊</button></div><div class="cb"><div class="ipa">/straɪps/ <span class="pos">n.</span></div><div class="cn">条纹</div><button class="sb" onclick="event.stopPropagation();speak('stripes','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">striped</div><button class="sb" onclick="event.stopPropagation();speak('striped','en-US')">🔊</button></div><div class="cb"><div class="ipa">/straɪpt/ <span class="pos">adj.</span></div><div class="cn">有条纹的</div><button class="sb" onclick="event.stopPropagation();speak('striped','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">wing</div><button class="sb" onclick="event.stopPropagation();speak('wing','en-US')">🔊</button></div><div class="cb"><div class="ipa">/wɪŋ/ <span class="pos">n.</span></div><div class="cn">翅膀</div><button class="sb" onclick="event.stopPropagation();speak('wing','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">recycle</div><button class="sb" onclick="event.stopPropagation();speak('recycle','en-US')">🔊</button></div><div class="cb"><div class="ipa">/riːˈsaɪkl/ <span class="pos">v.</span></div><div class="cn">回收</div><button class="sb" onclick="event.stopPropagation();speak('recycle','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">material</div><button class="sb" onclick="event.stopPropagation();speak('material','en-US')">🔊</button></div><div class="cb"><div class="ipa">/məˈtɪəriəl/ <span class="pos">n.</span></div><div class="cn">材料</div><button class="sb" onclick="event.stopPropagation();speak('material','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">card</div><button class="sb" onclick="event.stopPropagation();speak('card','en-US')">🔊</button></div><div class="cb"><div class="ipa">/kɑːd/ <span class="pos">n.</span></div><div class="cn">卡纸</div><button class="sb" onclick="event.stopPropagation();speak('card','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">metal</div><button class="sb" onclick="event.stopPropagation();speak('metal','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈmetl/ <span class="pos">n.</span></div><div class="cn">金属</div><button class="sb" onclick="event.stopPropagation();speak('metal','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">paper</div><button class="sb" onclick="event.stopPropagation();speak('paper','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈpeɪpə/ <span class="pos">n.</span></div><div class="cn">纸</div><button class="sb" onclick="event.stopPropagation();speak('paper','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">plastic</div><button class="sb" onclick="event.stopPropagation();speak('plastic','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈplæstɪk/ <span class="pos">n.</span></div><div class="cn">塑料</div><button class="sb" onclick="event.stopPropagation();speak('plastic','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">rubber</div><button class="sb" onclick="event.stopPropagation();speak('rubber','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈrʌbə/ <span class="pos">n.</span></div><div class="cn">橡胶</div><button class="sb" onclick="event.stopPropagation();speak('rubber','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">wood</div><button class="sb" onclick="event.stopPropagation();speak('wood','en-US')">🔊</button></div><div class="cb"><div class="ipa">/wʊd/ <span class="pos">n.</span></div><div class="cn">木头</div><button class="sb" onclick="event.stopPropagation();speak('wood','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">wool</div><button class="sb" onclick="event.stopPropagation();speak('wool','en-US')">🔊</button></div><div class="cb"><div class="ipa">/wʊl/ <span class="pos">n.</span></div><div class="cn">羊毛</div><button class="sb" onclick="event.stopPropagation();speak('wool','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">decorate</div><button class="sb" onclick="event.stopPropagation();speak('decorate','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈdekəreɪt/ <span class="pos">v.</span></div><div class="cn">装饰</div><button class="sb" onclick="event.stopPropagation();speak('decorate','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">design</div><button class="sb" onclick="event.stopPropagation();speak('design','en-US')">🔊</button></div><div class="cb"><div class="ipa">/dɪˈzaɪn/ <span class="pos">v./n.</span></div><div class="cn">设计</div><button class="sb" onclick="event.stopPropagation();speak('design','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">prop</div><button class="sb" onclick="event.stopPropagation();speak('prop','en-US')">🔊</button></div><div class="cb"><div class="ipa">/prɒp/ <span class="pos">n.</span></div><div class="cn">道具</div><button class="sb" onclick="event.stopPropagation();speak('prop','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">crown</div><button class="sb" onclick="event.stopPropagation();speak('crown','en-US')">🔊</button></div><div class="cb"><div class="ipa">/kraʊn/ <span class="pos">n.</span></div><div class="cn">王冠</div><button class="sb" onclick="event.stopPropagation();speak('crown','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">scarf</div><button class="sb" onclick="event.stopPropagation();speak('scarf','en-US')">🔊</button></div><div class="cb"><div class="ipa">/skɑːf/ <span class="pos">n.</span></div><div class="cn">围巾</div><button class="sb" onclick="event.stopPropagation();speak('scarf','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">costume</div><button class="sb" onclick="event.stopPropagation();speak('costume','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈkɒstjuːm/ <span class="pos">n.</span></div><div class="cn">服装</div><button class="sb" onclick="event.stopPropagation();speak('costume','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">ring</div><button class="sb" onclick="event.stopPropagation();speak('ring','en-US')">🔊</button></div><div class="cb"><div class="ipa">/rɪŋ/ <span class="pos">n.</span></div><div class="cn">戒指</div><button class="sb" onclick="event.stopPropagation();speak('ring','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">safe</div><button class="sb" onclick="event.stopPropagation();speak('safe','en-US')">🔊</button></div><div class="cb"><div class="ipa">/seɪf/ <span class="pos">adj.</span></div><div class="cn">安全的</div><button class="sb" onclick="event.stopPropagation();speak('safe','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">rigid</div><button class="sb" onclick="event.stopPropagation();speak('rigid','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈrɪdʒɪd/ <span class="pos">adj.</span></div><div class="cn">坚硬的</div><button class="sb" onclick="event.stopPropagation();speak('rigid','en-US')">🔊</button></div></div></div>
+</div>
+<div class="st">📖 重点句子（6句）</div><div class="ss">点击听英文朗读</div>
+<div class="sents"><div class="sc" onclick="speak('Shall we design some props?','en-US')"><div class="se">🔊 Shall we design some props?</div><div class="scn">我们来设计一些道具好吗？</div></div>
+<div class="sc" onclick="speak('The crown is made of brown card.','en-US')"><div class="se">🔊 The crown is made of brown card.</div><div class="scn">王冠是用棕色卡纸做的。</div></div>
+<div class="sc" onclick="speak('The scarf is made of wool.','en-US')"><div class="se">🔊 The scarf is made of wool.</div><div class="scn">围巾是羊毛做的。</div></div>
+<div class="sc" onclick="speak('Plastic is a good material because it is light and rigid.','en-US')"><div class="se">🔊 Plastic is a good material because it is light and rigid.</div><div class="scn">塑料是好材料因为它轻又硬。</div></div>
+<div class="sc" onclick="speak('It is important to use materials that are safe.','en-US')"><div class="se">🔊 It is important to use materials that are safe.</div><div class="scn">使用安全的材料很重要。</div></div>
+<div class="sc" onclick="speak('I have got silver rings.','en-US')"><div class="se">🔊 I have got silver rings.</div><div class="scn">我有银戒指。</div></div>
+</div>
+<div class="nb"><a href="pu3-unit4.html">← Unit 4</a><a href="pu3-unit6.html">Unit 6 →</a></div>
+<div class="tip">Power Up 3 · KET英语 · 🦎 Coco Learning</div>
+<script>var _voice={};function _pickVoice(lang){if(_voice[lang])return _voice[lang];var vs=speechSynthesis.getVoices();var prefs=lang.indexOf("zh")>=0?["Xiaoxiao","Yunxi","Yunyang"]:["Ava","Andrew","Emma","Jenny"];for(var k=0;k<prefs.length;k++)for(var i=0;i<vs.length;i++)if(vs[i].name.indexOf(prefs[k])>=0&&vs[i].name.indexOf("Online")>=0&&vs[i].lang.indexOf(lang.substring(0,2))>=0){_voice[lang]=vs[i];return vs[i];}for(var k=0;k<prefs.length;k++)for(var i=0;i<vs.length;i++)if(vs[i].name.indexOf(prefs[k])>=0&&vs[i].lang.indexOf(lang.substring(0,2))>=0){_voice[lang]=vs[i];return vs[i];}for(var i=0;i<vs.length;i++)if(vs[i].lang===lang||vs[i].lang.indexOf(lang.substring(0,2))>=0){_voice[lang]=vs[i];return vs[i];}return null;}if(window.speechSynthesis)speechSynthesis.onvoiceschanged=function(){_voice={};};function speak(t,l){speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang=l||"en-US";u.rate=l&&l.indexOf("zh")>=0?0.85:0.75;var v=_pickVoice(l||"en-US");if(v)u.voice=v;speechSynthesis.speak(u);}</script></body></html>

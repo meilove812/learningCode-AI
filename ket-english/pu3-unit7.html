@@ -1,121 +1,41 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="robots" content="noindex,nofollow,noarchive">
-<title>PU3 Unit 7 · When I grow up</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}body{font-family:'PingFang SC','Microsoft YaHei',system-ui,sans-serif;background:#faf6f1;color:#2d2d2d;line-height:1.6;padding-bottom:32px}.topbar{background:#fff;border-bottom:1px solid rgba(0,0,0,.06);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:10}.topbar a{color:#e67e22;text-decoration:none;font-weight:700;white-space:nowrap}.topbar span{font-size:16px;font-weight:800}main{max-width:760px;margin:auto}h1{text-align:center;font-size:28px;color:#e67e22;margin:24px 16px 4px}.stitle{font-size:22px;font-weight:900;color:#e67e22;text-align:center;margin:24px 0 8px}.ssub{font-size:14px;color:#666;text-align:center;margin:0 16px 16px}.cards,.sents{padding:0 16px}
-.card{width:100%;max-width:360px;height:200px;perspective:800px;margin:12px auto;cursor:pointer}
-.card-inner{width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;position:relative}
-.card.flipped .card-inner{transform:rotateY(180deg)}
-.card-front,.card-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:8px}
-.card-front{background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.04)}
-.card-back{background:linear-gradient(135deg,#fff9f0,#fff);transform:rotateY(180deg);box-shadow:0 4px 20px rgba(0,0,0,.04)}
-.word{font-size:clamp(25px,7vw,34px);font-weight:900}.cn{font-size:23px;font-weight:800;color:#a94f0b}.ipa{font-size:16px;color:#666}.pos{color:#a94f0b;font-weight:700}.example{font-size:14px;text-align:center;line-height:1.5;color:#555}.speak-btn{background:#e67e22;color:#fff;border:0;border-radius:50%;width:44px;height:44px;flex-shrink:0;font-size:20px;cursor:pointer;touch-action:manipulation}.sent-card{max-width:360px;margin:12px auto;background:#fff;border-radius:16px;padding:18px;box-shadow:0 2px 12px rgba(0,0,0,.03)}.sent-en{font-size:19px;font-weight:700;line-height:1.7}.sent-cn{font-size:15px;color:#666;margin:8px 0 12px}mark{background:#fff0d7;color:#a94f0b;border-radius:4px;padding:0 2px}.controls{max-width:360px;margin:20px auto;padding:16px;display:flex;flex-wrap:wrap;justify-content:center;gap:12px;background:#fff;border-radius:16px}.controls label{font-size:14px;width:100%}.controls select{max-width:100%;font:inherit;padding:7px;border:1px solid #ddd;border-radius:8px}.controls button{font:inherit;border:0;background:#e67e22;color:#fff;border-radius:24px;padding:10px 18px;cursor:pointer}.controls .stop{background:#666}#speech-status{width:100%;font-size:13px;color:#666;text-align:center}.nav-bottom{display:flex;justify-content:space-between;gap:12px;padding:16px;max-width:400px;margin:20px auto}.nav-bottom a{color:#a94f0b;text-decoration:none;font-weight:700;font-size:15px;padding:10px 14px;border-radius:50px;background:#fff}footer{text-align:center;padding:0 20px;color:#777;font-size:13px}.source-note{max-width:600px;margin:14px auto;font-size:11px;line-height:1.7}button:focus-visible,a:focus-visible,.card:focus-visible{outline:3px solid #9a4809;outline-offset:4px}.reading{outline:3px solid #e67e22;outline-offset:3px}@media(prefers-reduced-motion:reduce){.card-inner{transition:none}}
-</style>
-</head>
-<body>
-<header class="topbar"><a href="index.html">← 返回</a><span>Power Up 3 · Unit 7</span></header>
-<main>
-<h1 lang="en">When I grow up</h1>
-<p class="ssub">Coco，点一点词卡，听一听，再跟着读！</p>
-<section aria-labelledby="vocab-title">
-<h2 class="stitle" id="vocab-title">📝 词汇卡片</h2>
-<p class="ssub">点击卡片翻面 · 点击 🔊 听单词 · 背面例句也能点读</p>
-<div class="cards">
-<div class="card" tabindex="0" aria-label="archaeologist，点击翻面"><div class="card-inner"><div class="card-front"><div class="word" lang="en">archaeologist</div><button class="speak-btn" type="button" data-speech="archaeologist" aria-label="朗读 archaeologist">🔊</button></div><div class="card-back" inert><div class="cn">考古学家</div><div class="ipa">/ˌɑːkiˈɒlədʒɪst/ <span class="pos">n.</span></div><div class="example" lang="en">He's friendly and clever.</div><button class="speak-btn" type="button" data-speech="He's friendly and clever." aria-label="朗读例句">🔊</button></div></div></div>
-<div class="card" tabindex="0" aria-label="detective，点击翻面"><div class="card-inner"><div class="card-front"><div class="word" lang="en">detective</div><button class="speak-btn" type="button" data-speech="detective" aria-label="朗读 detective">🔊</button></div><div class="card-back" inert><div class="cn">侦探</div><div class="ipa">/dɪˈtektɪv/ <span class="pos">n.</span></div><div class="example" lang="en">He's friendly and clever.</div><button class="speak-btn" type="button" data-speech="He's friendly and clever." aria-label="朗读例句">🔊</button></div></div></div>
-<div class="card" tabindex="0" aria-label="boat，点击翻面"><div class="card-inner"><div class="card-front"><div class="word" lang="en">boat</div><button class="speak-btn" type="button" data-speech="boat" aria-label="朗读 boat">🔊</button></div><div class="card-back" inert><div class="cn">船</div><div class="ipa">/bəʊt/ <span class="pos">n.</span></div><div class="example" lang="en">He's friendly and clever.</div><button class="speak-btn" type="button" data-speech="He's friendly and clever." aria-label="朗读例句">🔊</button></div></div></div>
-<div class="card" tabindex="0" aria-label="rides，点击翻面"><div class="card-inner"><div class="card-front"><div class="word" lang="en">rides</div><button class="speak-btn" type="button" data-speech="rides" aria-label="朗读 rides">🔊</button></div><div class="card-back" inert><div class="cn">游乐设施</div><div class="ipa">/raɪdz/ <span class="pos">n.</span></div><div class="example" lang="en">He's friendly and clever.</div><button class="speak-btn" type="button" data-speech="He's friendly and clever." aria-label="朗读例句">🔊</button></div></div></div>
-<div class="card" tabindex="0" aria-label="camera，点击翻面"><div class="card-inner"><div class="card-front"><div class="word" lang="en">camera</div><button class="speak-btn" type="button" data-speech="camera" aria-label="朗读 camera">🔊</button></div><div class="card-back" inert><div class="cn">相机</div><div class="ipa">/ˈkæmərə/ <span class="pos">n.</span></div><div class="example" lang="en">If William wins, he wants to buy a fantastic new camera.</div><button class="speak-btn" type="button" data-speech="If William wins, he wants to buy a fantastic new camera." aria-label="朗读例句">🔊</button></div></div></div>
-<div class="card" tabindex="0" aria-label="mirror，点击翻面"><div class="card-inner"><div class="card-front"><div class="word" lang="en">mirror</div><button class="speak-btn" type="button" data-speech="mirror" aria-label="朗读 mirror">🔊</button></div><div class="card-back" inert><div class="cn">镜子</div><div class="ipa">/ˈmɪrə/ <span class="pos">n.</span></div><div class="example" lang="en">It helps you to dance better if you look in the mirror.</div><button class="speak-btn" type="button" data-speech="It helps you to dance better if you look in the mirror." aria-label="朗读例句">🔊</button></div></div></div>
-<div class="card" tabindex="0" aria-label="prize，点击翻面"><div class="card-inner"><div class="card-front"><div class="word" lang="en">prize</div><button class="speak-btn" type="button" data-speech="prize" aria-label="朗读 prize">🔊</button></div><div class="card-back" inert><div class="cn">奖品</div><div class="ipa">/praɪz/ <span class="pos">n.</span></div><div class="example" lang="en">If you win, you get a big prize.</div><button class="speak-btn" type="button" data-speech="If you win, you get a big prize." aria-label="朗读例句">🔊</button></div></div></div>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>PU3 Unit 7 · When I grow up</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#faf6f1;color:#2d2d2d;padding:0 0 80px}.topbar{background:#fff;border-bottom:1px solid rgba(0,0,0,.06);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}.topbar a{color:#e67e22;text-decoration:none;font-weight:700;font-size:14px}.topbar h1{font-size:16px;color:#333;font-weight:800}.st{font-size:20px;font-weight:900;color:#e67e22;text-align:center;margin:20px 0 8px}.ss{font-size:13px;color:#999;text-align:center;margin-bottom:16px}.cards{padding:0 16px}.card{width:100%;max-width:400px;height:180px;perspective:800px;margin:12px auto;cursor:pointer}.ci{width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;position:relative}.card.flipped .ci{transform:rotateY(180deg)}.cf,.cb{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:6px}.cf{background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.04)}.cb{background:linear-gradient(135deg,#fff9f0,#fff);transform:rotateY(180deg);box-shadow:0 4px 20px rgba(0,0,0,.04)}.w{font-size:clamp(22px,5.5vw,32px);font-weight:900;color:#333}.ipa{font-size:13px;color:#888}.pos{color:#e67e22;font-weight:700}.cn{font-size:18px;font-weight:800;color:#e67e22}.ex{font-size:11px;color:#999;text-align:center;line-height:1.5}.sb{background:linear-gradient(135deg,#ff9a76,#e67e22);color:#fff;border:none;border-radius:50%;width:34px;height:34px;font-size:15px;cursor:pointer;touch-action:manipulation}.sents{padding:0 16px}.sc{background:#fff;border-radius:14px;padding:14px 16px;margin:8px auto;max-width:400px;box-shadow:0 2px 12px rgba(0,0,0,.03);cursor:pointer;touch-action:manipulation}.se{font-size:15px;font-weight:700;color:#333;line-height:1.7}.scn{font-size:13px;color:#888;margin-top:4px}.nb{display:flex;justify-content:space-between;padding:16px;max-width:400px;margin:20px auto}.nb a{color:#e67e22;text-decoration:none;font-weight:700;font-size:14px;padding:10px 18px;border-radius:50px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.04)}.tip{text-align:center;color:#bbb;font-size:11px;margin:16px 0}</style></head><body>
+<div class="topbar"><a href="index.html">← 返回</a><h1>Unit 7 · When I grow up</h1></div>
+<div class="st">📇 词汇卡片（27个）</div><div class="ss">点击翻转 · 🔊听发音</div>
+<div class="cards"><div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">actor</div><button class="sb" onclick="event.stopPropagation();speak('actor','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈæktə/ <span class="pos">n.</span></div><div class="cn">演员</div><button class="sb" onclick="event.stopPropagation();speak('actor','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">artist</div><button class="sb" onclick="event.stopPropagation();speak('artist','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈɑːtɪst/ <span class="pos">n.</span></div><div class="cn">艺术家</div><button class="sb" onclick="event.stopPropagation();speak('artist','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">cook</div><button class="sb" onclick="event.stopPropagation();speak('cook','en-US')">🔊</button></div><div class="cb"><div class="ipa">/kʊk/ <span class="pos">n./v.</span></div><div class="cn">厨师/做饭</div><button class="sb" onclick="event.stopPropagation();speak('cook','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">designer</div><button class="sb" onclick="event.stopPropagation();speak('designer','en-US')">🔊</button></div><div class="cb"><div class="ipa">/dɪˈzaɪnə/ <span class="pos">n.</span></div><div class="cn">设计师</div><button class="sb" onclick="event.stopPropagation();speak('designer','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">driver</div><button class="sb" onclick="event.stopPropagation();speak('driver','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈdraɪvə/ <span class="pos">n.</span></div><div class="cn">司机</div><button class="sb" onclick="event.stopPropagation();speak('driver','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">journalist</div><button class="sb" onclick="event.stopPropagation();speak('journalist','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈdʒɜːnəlɪst/ <span class="pos">n.</span></div><div class="cn">记者</div><button class="sb" onclick="event.stopPropagation();speak('journalist','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">photographer</div><button class="sb" onclick="event.stopPropagation();speak('photographer','en-US')">🔊</button></div><div class="cb"><div class="ipa">/fəˈtɒɡrəfə/ <span class="pos">n.</span></div><div class="cn">摄影师</div><button class="sb" onclick="event.stopPropagation();speak('photographer','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">singer</div><button class="sb" onclick="event.stopPropagation();speak('singer','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈsɪŋə/ <span class="pos">n.</span></div><div class="cn">歌手</div><button class="sb" onclick="event.stopPropagation();speak('singer','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">waiter</div><button class="sb" onclick="event.stopPropagation();speak('waiter','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈweɪtə/ <span class="pos">n.</span></div><div class="cn">服务员</div><button class="sb" onclick="event.stopPropagation();speak('waiter','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">brave</div><button class="sb" onclick="event.stopPropagation();speak('brave','en-US')">🔊</button></div><div class="cb"><div class="ipa">/breɪv/ <span class="pos">adj.</span></div><div class="cn">勇敢的</div><button class="sb" onclick="event.stopPropagation();speak('brave','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">clever</div><button class="sb" onclick="event.stopPropagation();speak('clever','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈklevə/ <span class="pos">adj.</span></div><div class="cn">聪明的</div><button class="sb" onclick="event.stopPropagation();speak('clever','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">smart</div><button class="sb" onclick="event.stopPropagation();speak('smart','en-US')">🔊</button></div><div class="cb"><div class="ipa">/smɑːt/ <span class="pos">adj.</span></div><div class="cn">机灵的</div><button class="sb" onclick="event.stopPropagation();speak('smart','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">friendly</div><button class="sb" onclick="event.stopPropagation();speak('friendly','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈfrendli/ <span class="pos">adj.</span></div><div class="cn">友好的</div><button class="sb" onclick="event.stopPropagation();speak('friendly','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">interesting</div><button class="sb" onclick="event.stopPropagation();speak('interesting','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈɪntrəstɪŋ/ <span class="pos">adj.</span></div><div class="cn">有趣的</div><button class="sb" onclick="event.stopPropagation();speak('interesting','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">kind</div><button class="sb" onclick="event.stopPropagation();speak('kind','en-US')">🔊</button></div><div class="cb"><div class="ipa">/kaɪnd/ <span class="pos">adj.</span></div><div class="cn">善良的</div><button class="sb" onclick="event.stopPropagation();speak('kind','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">lazy</div><button class="sb" onclick="event.stopPropagation();speak('lazy','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈleɪzi/ <span class="pos">adj.</span></div><div class="cn">懒惰的</div><button class="sb" onclick="event.stopPropagation();speak('lazy','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">rude</div><button class="sb" onclick="event.stopPropagation();speak('rude','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ruːd/ <span class="pos">adj.</span></div><div class="cn">粗鲁的</div><button class="sb" onclick="event.stopPropagation();speak('rude','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">shy</div><button class="sb" onclick="event.stopPropagation();speak('shy','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ʃaɪ/ <span class="pos">adj.</span></div><div class="cn">害羞的</div><button class="sb" onclick="event.stopPropagation();speak('shy','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">archaeologist</div><button class="sb" onclick="event.stopPropagation();speak('archaeologist','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˌɑːkiˈɒlədʒɪst/ <span class="pos">n.</span></div><div class="cn">考古学家</div><button class="sb" onclick="event.stopPropagation();speak('archaeologist','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">detective</div><button class="sb" onclick="event.stopPropagation();speak('detective','en-US')">🔊</button></div><div class="cb"><div class="ipa">/dɪˈtektɪv/ <span class="pos">n.</span></div><div class="cn">侦探</div><button class="sb" onclick="event.stopPropagation();speak('detective','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">camera</div><button class="sb" onclick="event.stopPropagation();speak('camera','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈkæmərə/ <span class="pos">n.</span></div><div class="cn">相机</div><button class="sb" onclick="event.stopPropagation();speak('camera','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">mirror</div><button class="sb" onclick="event.stopPropagation();speak('mirror','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈmɪrə/ <span class="pos">n.</span></div><div class="cn">镜子</div><button class="sb" onclick="event.stopPropagation();speak('mirror','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">prize</div><button class="sb" onclick="event.stopPropagation();speak('prize','en-US')">🔊</button></div><div class="cb"><div class="ipa">/praɪz/ <span class="pos">n.</span></div><div class="cn">奖品</div><button class="sb" onclick="event.stopPropagation();speak('prize','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">ticket</div><button class="sb" onclick="event.stopPropagation();speak('ticket','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈtɪkɪt/ <span class="pos">n.</span></div><div class="cn">票</div><button class="sb" onclick="event.stopPropagation();speak('ticket','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">address</div><button class="sb" onclick="event.stopPropagation();speak('address','en-US')">🔊</button></div><div class="cb"><div class="ipa">/əˈdres/ <span class="pos">n.</span></div><div class="cn">地址</div><button class="sb" onclick="event.stopPropagation();speak('address','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">boat</div><button class="sb" onclick="event.stopPropagation();speak('boat','en-US')">🔊</button></div><div class="cb"><div class="ipa">/bəʊt/ <span class="pos">n.</span></div><div class="cn">船</div><button class="sb" onclick="event.stopPropagation();speak('boat','en-US')">🔊</button></div></div></div>
+<div class="card" onclick="this.classList.toggle('flipped')"><div class="ci"><div class="cf"><div class="w">beautiful</div><button class="sb" onclick="event.stopPropagation();speak('beautiful','en-US')">🔊</button></div><div class="cb"><div class="ipa">/ˈbjuːtɪfl/ <span class="pos">adj.</span></div><div class="cn">美丽的</div><button class="sb" onclick="event.stopPropagation();speak('beautiful','en-US')">🔊</button></div></div></div>
 </div>
-</section>
-<section aria-labelledby="sentence-title">
-<h2 class="stitle" id="sentence-title">💬 重点句子</h2>
-<div class="sents">
-<article class="sent-card"><p class="sent-en" lang="en">He's <mark>friendly</mark> and <mark>clever</mark>.</p><p class="sent-cn">他友好又聪明。</p><button class="speak-btn" type="button" data-speech="He's friendly and clever." aria-label="朗读第1句">🔊</button></article>
-<article class="sent-card"><p class="sent-en" lang="en"><mark>If</mark> William <mark>wins</mark>, he wants to buy a <mark>fantastic</mark> new <mark>camera</mark>.</p><p class="sent-cn">如果William赢了，他想买一台很棒的新相机。</p><button class="speak-btn" type="button" data-speech="If William wins, he wants to buy a fantastic new camera." aria-label="朗读第2句">🔊</button></article>
-<article class="sent-card"><p class="sent-en" lang="en"><mark>If</mark> you win, you get a big <mark>prize</mark>.</p><p class="sent-cn">如果你赢了，你会得到一个大奖。</p><button class="speak-btn" type="button" data-speech="If you win, you get a big prize." aria-label="朗读第3句">🔊</button></article>
-<article class="sent-card"><p class="sent-en" lang="en">It helps you to dance <mark>better</mark> if you look in the <mark>mirror</mark>.</p><p class="sent-cn">如果你照着镜子，跳舞会更好。</p><button class="speak-btn" type="button" data-speech="It helps you to dance better if you look in the mirror." aria-label="朗读第4句">🔊</button></article>
+<div class="st">📖 重点句子（5句）</div><div class="ss">点击听英文朗读</div>
+<div class="sents"><div class="sc" onclick="speak('He is friendly and clever.','en-US')"><div class="se">🔊 He is friendly and clever.</div><div class="scn">他友好又聪明。</div></div>
+<div class="sc" onclick="speak('If William wins, he wants to buy a fantastic new camera.','en-US')"><div class="se">🔊 If William wins, he wants to buy a fantastic new camera.</div><div class="scn">如果William赢了他想买一个新相机。</div></div>
+<div class="sc" onclick="speak('If you win, you get a big prize.','en-US')"><div class="se">🔊 If you win, you get a big prize.</div><div class="scn">如果你赢了你会得到大奖品。</div></div>
+<div class="sc" onclick="speak('It helps you to dance better if you look in the mirror.','en-US')"><div class="se">🔊 It helps you to dance better if you look in the mirror.</div><div class="scn">看着镜子会帮你跳得更好。</div></div>
+<div class="sc" onclick="speak('It was a perfect day.','en-US')"><div class="se">🔊 It was a perfect day.</div><div class="scn">那是完美的一天。</div></div>
 </div>
-</section>
-<div class="controls" aria-label="朗读设置">
-<label for="voice">声音 <select id="voice"><option value="">自动选择英语声音</option></select></label>
-<label for="rate">语速 <select id="rate"><option value="0.6">慢慢读</option><option value="0.8" selected>标准慢速</option><option value="1">正常速度</option></select></label>
-<button type="button" id="play-all">▶ 连续播放</button><button type="button" id="stop" class="stop">■ 停止</button>
-<p id="speech-status" role="status" aria-live="polite">连续播放：依次朗读单词、例句和重点句子。</p>
-</div>
-<nav class="nav-bottom" aria-label="单元导航"><a href="pu3-unit6.html" title="Unit 6: Classroom stars">← 上一单元</a><a href="pu3-unit8.html" title="Unit 8: City break">下一单元 →</a></nav>
-</main>
-<footer>🦎 Coco Learning · Power Up 3
-<p class="source-note">家庭自用学习辅助，非商业用途。词汇、例句和中文释义按本次提供的清单整理，未核对教材照片或页码；中文操作提示为自行编写。Power Up 3 教材著作权归原出版社及作者所有。本页不含教材插图与扫描件；权利人告知即刻下线。</p>
-</footer>
-<script>
-'use strict';
-const synth=window.speechSynthesis;
-const statusText=document.getElementById('speech-status');
-const voiceSelect=document.getElementById('voice');
-let voices=[],generation=0,currentUtterance=null;
-function loadVoices(){
-  if(!synth)return;
-  const previous=voiceSelect.value;
-  voices=synth.getVoices().filter(v=>/^en(?:-|_)/i.test(v.lang));
-  voiceSelect.replaceChildren(new Option('自动选择英语声音',''));
-  voices.forEach(v=>voiceSelect.add(new Option(v.name+' ('+v.lang+')',v.voiceURI)));
-  if(voices.some(v=>v.voiceURI===previous))voiceSelect.value=previous;
-}
-function stopReading(){
-  generation++;
-  if(synth)synth.cancel();
-  currentUtterance=null;
-  document.querySelectorAll('.reading').forEach(el=>el.classList.remove('reading'));
-}
-function readItems(items){
-  stopReading();
-  if(!synth||!window.SpeechSynthesisUtterance){statusText.textContent='当前浏览器不支持朗读，请尝试 Edge 或其他支持语音的浏览器。';return;}
-  const token=generation;
-  let index=0;
-  function next(){
-    if(token!==generation)return;
-    document.querySelectorAll('.reading').forEach(el=>el.classList.remove('reading'));
-    if(index>=items.length){statusText.textContent='朗读完成！';currentUtterance=null;return;}
-    const item=items[index++];
-    const u=new SpeechSynthesisUtterance(item.text);
-    currentUtterance=u;
-    u.lang='en-US';u.rate=Number(document.getElementById('rate').value)||0.8;
-    const selected=voices.find(v=>v.voiceURI===voiceSelect.value)||voices.find(v=>/Microsoft.*Ava.*Online.*Natural/i.test(v.name))||voices.find(v=>/Online.*Natural/i.test(v.name))||voices.find(v=>v.lang==='en-US')||voices[0];
-    if(selected)u.voice=selected;
-    if(item.element)item.element.classList.add('reading');
-    statusText.textContent='正在朗读 '+index+' / '+items.length;
-    u.onend=next;
-    u.onerror=()=>{if(token!==generation)return;stopReading();statusText.textContent='朗读未能完成，请检查设备声音，或换一个语音后重试。';};
-    try{synth.speak(u);}catch(error){stopReading();statusText.textContent='朗读启动失败，请换一个浏览器重试。';}
-  }
-  next();
-}
-var _voice={};function _pickVoice(lang){if(_voice[lang])return _voice[lang];var vs=speechSynthesis.getVoices();var prefs=lang.indexOf('zh')>=0?['Xiaoxiao','Yunxi','Yunyang']:['Ava','Andrew','Emma','Jenny'];for(var k=0;k<prefs.length;k++)for(var i=0;i<vs.length;i++)if(vs[i].name.indexOf(prefs[k])>=0&&vs[i].name.indexOf('Online')>=0&&vs[i].lang.indexOf(lang.substring(0,2))>=0){_voice[lang]=vs[i];return vs[i];}for(var k=0;k<prefs.length;k++)for(var i=0;i<vs.length;i++)if(vs[i].name.indexOf(prefs[k])>=0&&vs[i].lang.indexOf(lang.substring(0,2))>=0){_voice[lang]=vs[i];return vs[i];}for(var i=0;i<vs.length;i++)if(vs[i].lang===lang||vs[i].lang.indexOf(lang.substring(0,2))>=0){_voice[lang]=vs[i];return vs[i];}return null;}if(window.speechSynthesis)speechSynthesis.onvoiceschanged=function(){_voice={};};function speak(t,l){speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang=l||"en-US";u.rate=l&&l.indexOf("zh")>=0?0.85:0.75;var v=_pickVoice(l||"en-US");if(v)u.voice=v;speechSynthesis.speak(u);}]);}
-document.querySelectorAll('.card').forEach(card=>{
-  function flip(){const flipped=card.classList.toggle('flipped');card.querySelector('.card-front').inert=flipped;card.querySelector('.card-back').inert=!flipped;}
-  card.addEventListener('click',flip);
-  card.addEventListener('keydown',event=>{if(event.target===card&&(event.key==='Enter'||event.key===' ')){event.preventDefault();flip();}});
-});
-document.querySelectorAll('[data-speech]').forEach(button=>button.addEventListener('click',event=>{
-  event.stopPropagation();
-  speak(button.dataset.speech,button.closest('.card,.sent-card'));
-}));
-document.getElementById('play-all').addEventListener('click',()=>{
-  const items=[];
-  document.querySelectorAll('.card').forEach(card=>{items.push({text:card.querySelector('.word').textContent,element:card},{text:card.querySelector('.example').textContent,element:card});});
-  document.querySelectorAll('.sent-card').forEach(card=>items.push({text:card.querySelector('.sent-en').textContent,element:card}));
-  readItems(items);
-});
-document.getElementById('stop').addEventListener('click',()=>{stopReading();statusText.textContent='已停止朗读。';});
-window.addEventListener('pagehide',stopReading);
-if(synth){loadVoices();synth.addEventListener('voiceschanged',loadVoices);}else{statusText.textContent='当前浏览器不支持朗读，请尝试 Edge 或其他支持语音的浏览器。';}
-</script>
-</body>
-</html>
+<div class="nb"><a href="pu3-unit6.html">← Unit 6</a><a href="pu3-unit8.html">Unit 8 →</a></div>
+<div class="tip">Power Up 3 · KET英语 · 🦎 Coco Learning</div>
+<script>var _voice={};function _pickVoice(lang){if(_voice[lang])return _voice[lang];var vs=speechSynthesis.getVoices();var prefs=lang.indexOf("zh")>=0?["Xiaoxiao","Yunxi","Yunyang"]:["Ava","Andrew","Emma","Jenny"];for(var k=0;k<prefs.length;k++)for(var i=0;i<vs.length;i++)if(vs[i].name.indexOf(prefs[k])>=0&&vs[i].name.indexOf("Online")>=0&&vs[i].lang.indexOf(lang.substring(0,2))>=0){_voice[lang]=vs[i];return vs[i];}for(var k=0;k<prefs.length;k++)for(var i=0;i<vs.length;i++)if(vs[i].name.indexOf(prefs[k])>=0&&vs[i].lang.indexOf(lang.substring(0,2))>=0){_voice[lang]=vs[i];return vs[i];}for(var i=0;i<vs.length;i++)if(vs[i].lang===lang||vs[i].lang.indexOf(lang.substring(0,2))>=0){_voice[lang]=vs[i];return vs[i];}return null;}if(window.speechSynthesis)speechSynthesis.onvoiceschanged=function(){_voice={};};function speak(t,l){speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang=l||"en-US";u.rate=l&&l.indexOf("zh")>=0?0.85:0.75;var v=_pickVoice(l||"en-US");if(v)u.voice=v;speechSynthesis.speak(u);}</script></body></html>
