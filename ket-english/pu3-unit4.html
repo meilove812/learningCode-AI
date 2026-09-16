@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Power Up 3 · Unit 4 · Fun in the jungle</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#faf6f1;color:#333;font-family:'PingFang SC','Microsoft YaHei',system-ui,sans-serif;line-height:1.6}.topbar{background:#fff;border-bottom:1px solid #eee;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}.topbar a,a{color:#e67e22;text-decoration:none;font-weight:700}.topbar span{font-size:14px;font-weight:700}main{max-width:820px;margin:auto;padding:0 16px}h1{font-size:clamp(25px,6vw,36px);text-align:center;color:#e67e22;margin:24px 0 6px}h2{text-align:center;font-size:22px;color:#e67e22;margin:28px 0 6px}.hint{text-align:center;color:#70655d;font-size:14px;margin:6px 0 16px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:0 20px}.card{width:100%;max-width:360px;height:200px;perspective:800px;margin:12px auto;cursor:pointer}.card-inner{width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;position:relative}.card.flipped .card-inner{transform:rotateY(180deg)}.card-front,.card-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:8px}.card-front{background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.04)}.card-back{background:linear-gradient(135deg,#fff9f0,#fff);transform:rotateY(180deg);box-shadow:0 4px 20px rgba(0,0,0,.04)}.word{font-size:clamp(25px,6vw,34px);font-weight:800}.cn{font-size:22px;font-weight:800;color:#e67e22}.ipa{font-size:15px;color:#68615a}.pos{color:#a74e06;font-weight:700}.example{font-size:14px;text-align:center;line-height:1.5;margin:0}.speak-btn{border:0;border-radius:50%;background:#fff1df;color:#8c4307;width:44px;height:44px;font-size:21px;cursor:pointer;flex-shrink:0;touch-action:manipulation}button:focus-visible,a:focus-visible,.card:focus-visible{outline:3px solid #ac5008;outline-offset:4px}.sent-card{max-width:740px;margin:12px auto;background:#fff;border-radius:16px;padding:18px;box-shadow:0 4px 20px rgba(0,0,0,.04);display:flex;gap:12px;align-items:center}.sent-text{flex:1}.sent-en{font-size:18px;font-weight:650;margin:0;line-height:1.75}.sent-cn{font-size:15px;color:#71665d;margin:6px 0 0}mark{background:#fff0d8;color:#b45208;border-radius:4px;padding:0 3px}.controls{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap;padding:12px;background:#fff;border-radius:16px;margin:20px auto;max-width:740px;font-size:14px}.controls select{max-width:230px;padding:8px;border:1px solid #d5c5b6;border-radius:8px;background:#fff}.controls input{max-width:120px;accent-color:#e67e22}.playback{text-align:center;margin-top:24px}.action{border:0;border-radius:24px;padding:12px 20px;background:#e67e22;color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin:5px}.action.secondary{background:#fff;color:#a94e06}#status{font-size:14px;color:#71665d;min-height:24px;text-align:center}.nav-bottom{display:flex;justify-content:space-between;gap:12px;max-width:740px;margin:24px auto;padding:12px 0}.nav-bottom a{padding:10px 15px;background:#fff;border-radius:24px}footer{text-align:center;color:#746b63;padding:0 18px 28px;font-size:14px}.source-note{max-width:740px;margin:12px auto;font-size:12px;line-height:1.7}@media(max-width:340px){.cards{grid-template-columns:1fr}.topbar{padding:12px 10px}.topbar span{font-size:12px}.sent-card{padding:12px;gap:6px}}@media(prefers-reduced-motion:reduce){.card-inner{transition:none}}
+</style>
+</head>
+<body>
+<header class="topbar"><a href="index.html">← 返回</a><span>Power Up 3 · Unit 4</span></header>
+<main>
+<h1>Fun in the <mark>jungle</mark></h1>
+<p class="hint">Coco，点击卡片翻面，点击 🔊 听英文。</p>
+<div class="controls"><label for="voice">朗读声音</label><select id="voice"><option value="">浏览器默认英语声音</option></select><label for="rate">语速 <output id="rate-value" for="rate">0.8</output></label><input id="rate" type="range" min="0.5" max="1.2" step="0.1" value="0.8"></div>
+<section aria-labelledby="vocab-heading">
+<h2 id="vocab-heading">📝 词汇卡片</h2>
+<p class="hint">6 张词卡 · 背面有释义和例句</p>
+<div class="cards">
+<article class="card" tabindex="0" aria-label="jungle，点击翻面"><div class="card-inner"><div class="card-front"><div class="word" lang="en"><mark>jungle</mark></div><button class="speak-btn" type="button" data-speech="jungle" aria-label="朗读 jungle">🔊</button></div><div class="card-back" inert><div class="cn">丛林</div><div class="ipa">/ˈdʒʌŋɡl/ <span class="pos">n.</span></div><p class="example" lang="en">Bears can run <mark>more quickly</mark> than monkeys.</p><button class="speak-btn" type="button" data-example aria-label="朗读例句">🔊</button></div></div></article>
+<article class="card" tabindex="0" aria-label="waterfall，点击翻面"><div class="card-inner"><div class="card-front"><div class="word" lang="en">waterfall</div><button class="speak-btn" type="button" data-speech="waterfall" aria-label="朗读 waterfall">🔊</button></div><div class="card-back" inert><div class="cn">瀑布</div><div class="ipa">/ˈwɔːtəfɔːl/ <span class="pos">n.</span></div><p class="example" lang="en">Bears can run <mark>more quickly</mark> than monkeys.</p><button class="speak-btn" type="button" data-example aria-label="朗读例句">🔊</button></div></div></article>
+<article class="card" tabindex="0" aria-label="exciting，点击翻面"><div class="card-inner"><div class="card-front"><div class="word" lang="en">exciting</div><button class="speak-btn" type="button" data-speech="exciting" aria-label="朗读 exciting">🔊</button></div><div class="card-back" inert><div class="cn">令人兴奋的</div><div class="ipa">/ɪkˈsaɪtɪŋ/ <span class="pos">adj.</span></div><p class="example" lang="en">Bears can run <mark>more quickly</mark> than monkeys.</p><button class="speak-btn" type="button" data-example aria-label="朗读例句">🔊</button></div></div></article>
+<article class="card" tabindex="0" aria-label="plant，点击翻面"><div class="card-inner"><div class="card-front"><div class="word" lang="en">plant</div><button class="speak-btn" type="button" data-speech="plant" aria-label="朗读 plant">🔊</button></div><div class="card-back" inert><div class="cn">植物</div><div class="ipa">/plɑːnt/ <span class="pos">n.</span></div><p class="example" lang="en">Look carefully at the <mark>plants</mark> and draw them, please.</p><button class="speak-btn" type="button" data-example aria-label="朗读例句">🔊</button></div></div></article>
+<article class="card" tabindex="0" aria-label="carnivorous，点击翻面"><div class="card-inner"><div class="card-front"><div class="word" lang="en"><mark>carnivorous</mark></div><button class="speak-btn" type="button" data-speech="carnivorous" aria-label="朗读 carnivorous">🔊</button></div><div class="card-back" inert><div class="cn">食肉的</div><div class="ipa">/kɑːˈnɪvərəs/ <span class="pos">adj.</span></div><p class="example" lang="en">But they also get extra <mark>nutrients</mark> by eating small animals!</p><button class="speak-btn" type="button" data-example aria-label="朗读例句">🔊</button></div></div></article>
+<article class="card" tabindex="0" aria-label="learn-learnt，点击翻面"><div class="card-inner"><div class="card-front"><div class="word" lang="en">learn-learnt</div><button class="speak-btn" type="button" data-speech="learn, learnt" aria-label="朗读 learn 和 learnt">🔊</button></div><div class="card-back" inert><div class="cn">学习</div><div class="ipa">/lɜːn/-/lɜːnt/ <span class="pos">v.</span></div><p class="example" lang="en">Look carefully at the <mark>plants</mark> and draw them, please.</p><button class="speak-btn" type="button" data-example aria-label="朗读例句">🔊</button></div></div></article>
+</div></section>
+<section aria-labelledby="sentences-heading">
+<h2 id="sentences-heading">💬 重点句子</h2>
+<p class="hint">橙色标出重点词；more quickly、faster、better 表示比较。</p>
+<div class="sent-card"><div class="sent-text"><p class="sent-en" lang="en">Bears can run <mark>more quickly</mark> than monkeys.</p><p class="sent-cn">熊能比猴子跑得更快。</p></div><button class="speak-btn" type="button" data-sentence aria-label="朗读第1句">🔊</button></div>
+<div class="sent-card"><div class="sent-text"><p class="sent-en" lang="en">Elephants can move <mark>faster</mark> than snakes.</p><p class="sent-cn">大象能比蛇移动得更快。</p></div><button class="speak-btn" type="button" data-sentence aria-label="朗读第2句">🔊</button></div>
+<div class="sent-card"><div class="sent-text"><p class="sent-en" lang="en">Monkeys can climb <mark>better</mark> than tigers.</p><p class="sent-cn">猴子能比老虎爬得更好。</p></div><button class="speak-btn" type="button" data-sentence aria-label="朗读第3句">🔊</button></div>
+<div class="sent-card"><div class="sent-text"><p class="sent-en" lang="en">Look carefully at the <mark>plants</mark> and draw them, please.</p><p class="sent-cn">请仔细观察这些植物并画下来。</p></div><button class="speak-btn" type="button" data-sentence aria-label="朗读第4句">🔊</button></div>
+<div class="sent-card"><div class="sent-text"><p class="sent-en" lang="en">But they also get extra <mark>nutrients</mark> by eating small animals!</p><p class="sent-cn">但它们也通过吃小动物获取额外的营养！</p></div><button class="speak-btn" type="button" data-sentence aria-label="朗读第5句">🔊</button></div>
+</section>
+<div class="playback"><button type="button" class="action" id="play-all">▶ 连续播放</button><button type="button" class="action secondary" id="stop">■ 停止</button></div>
+<p id="status" role="status" aria-live="polite">连续播放：单词 → 例句 → 重点句子</p>
+<nav class="nav-bottom" aria-label="单元导航"><a href="pu3-unit3.html" title="Unit 3: Body">← 上一单元</a><a href="pu3-unit5.html" title="Unit 5: Behind the scenes">下一单元 →</a></nav>
+</main>
+<footer>🦎 Coco Learning · Power Up 3
+<p class="source-note">本页按用户提供的 Unit 4 词句清单整理，未核对教材照片与页码；中文释义由用户提供，操作提示为自行编写。仅作家庭自用学习辅助，非商业，不含教材插图或扫描件。教材相关内容著作权归原出版社及作者；权利人告知即刻下线。公开使用许可尚待确认。</p>
+</footer>
+<script>
+'use strict';
+const synth=window.speechSynthesis;
+const voiceSelect=document.getElementById('voice');
+const rate=document.getElementById('rate');
+const statusText=document.getElementById('status');
+let voices=[],generation=0,currentUtterance=null;
+function loadVoices(){
+ if(!synth)return;
+ const previous=voiceSelect.value;
+ voices=synth.getVoices().filter(v=>/^en(?:-|_)/i.test(v.lang));
+ voiceSelect.replaceChildren(new Option('浏览器默认英语声音',''));
+ voices.forEach(v=>voiceSelect.add(new Option(v.name+' ('+v.lang+')',v.voiceURI)));
+ const preferred=voices.find(v=>/Microsoft Ava.*Online.*Natural/i.test(v.name))||voices.find(v=>/Online.*Natural/i.test(v.name))||voices.find(v=>v.lang==='en-US');
+ voiceSelect.value=voices.some(v=>v.voiceURI===previous)?previous:(preferred?preferred.voiceURI:'');
+}
+function stopSpeech(){generation++;if(synth)synth.cancel();currentUtterance=null;}
+function playTexts(texts){
+ stopSpeech();
+ if(!synth||!('SpeechSynthesisUtterance' in window)){statusText.textContent='此浏览器不支持朗读，请尝试 Edge 或其他支持语音的浏览器。';return;}
+ const token=generation;let index=0;
+ function next(){
+  if(token!==generation)return;
+  if(index>=texts.length){statusText.textContent='朗读完成';currentUtterance=null;return;}
+  const text=texts[index++];
+  const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=Number(rate.value)||0.8;
+  const selected=voices.find(v=>v.voiceURI===voiceSelect.value);if(selected)u.voice=selected;
+  currentUtterance=u;statusText.textContent='朗读 '+index+'/'+texts.length+'：'+text;
+  u.onend=next;
+  u.onerror=()=>{if(token!==generation)return;generation++;currentUtterance=null;statusText.textContent='朗读未能完成，请检查设备声音或切换英语声音后重试。';};
+  synth.speak(u);
+ }
+ next();
+}
+function speak(text){playTexts([text]);}
+document.querySelectorAll('.card').forEach(card=>{
+ function flip(){const flipped=card.classList.toggle('flipped');card.querySelector('.card-front').inert=flipped;card.querySelector('.card-back').inert=!flipped;}
+ card.addEventListener('click',flip);
+ card.addEventListener('keydown',event=>{if(event.target===card&&(event.key==='Enter'||event.key===' ')){event.preventDefault();flip();}});
+});
+document.querySelectorAll('.speak-btn').forEach(button=>button.addEventListener('click',event=>{
+ event.stopPropagation();
+ const text=button.hasAttribute('data-example')?button.closest('.card-back').querySelector('.example').textContent:button.hasAttribute('data-sentence')?button.closest('.sent-card').querySelector('.sent-en').textContent:button.dataset.speech;
+ speak(text);
+}));
+rate.addEventListener('input',()=>{document.getElementById('rate-value').value=Number(rate.value).toFixed(1);});
+document.getElementById('play-all').addEventListener('click',()=>{
+ const texts=[];
+ document.querySelectorAll('.card').forEach(card=>texts.push(card.querySelector('[data-speech]').dataset.speech,card.querySelector('.example').textContent));
+ document.querySelectorAll('.sent-en').forEach(sentence=>texts.push(sentence.textContent));
+ playTexts(texts);
+});
+document.getElementById('stop').addEventListener('click',()=>{stopSpeech();statusText.textContent='已停止';});
+window.addEventListener('pagehide',stopSpeech);
+if(synth){loadVoices();synth.addEventListener('voiceschanged',loadVoices);}else{statusText.textContent='此浏览器不支持朗读，请尝试 Edge 或其他支持语音的浏览器。';}
+</script>
+</body>
+</html>

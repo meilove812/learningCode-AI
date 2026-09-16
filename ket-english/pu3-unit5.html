@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Power Up 3 · Unit 5 · Behind the scenes</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;background:#faf6f1;color:#333;line-height:1.6;padding-bottom:28px}.topbar{background:#fff;border-bottom:1px solid #eee;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:10}.topbar a,a{color:#e67e22;text-decoration:none;font-weight:700}.topbar span{font-size:15px;font-weight:700}main{max-width:800px;margin:auto;padding:0 16px}h1{text-align:center;color:#e67e22;font-size:28px;margin:24px 0 6px}h2{text-align:center;color:#e67e22;font-size:22px;margin:24px 0 8px}.tip{text-align:center;font-size:14px;color:#777;margin:6px 0 16px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:0 16px}
+.card{width:100%;max-width:360px;height:200px;perspective:800px;margin:12px auto;cursor:pointer}
+.card-inner{width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;position:relative}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.card-front,.card-back{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:6px}
+.card-front{background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.04)}
+.card-back{background:linear-gradient(135deg,#fff9f0,#fff);transform:rotateY(180deg);box-shadow:0 4px 20px rgba(0,0,0,.04)}
+.word{font-size:34px;font-weight:800}.cn{font-size:23px;font-weight:800;color:#e67e22}.ipa{font-size:15px;color:#666}.pos{font-weight:700;color:#e67e22}.example{font-size:13px;line-height:1.45;text-align:center}.speak-btn{border:0;border-radius:50%;min-width:44px;min-height:44px;background:#fff0de;color:#a54d00;font-size:20px;cursor:pointer;flex-shrink:0}.sent-card{background:#fff;padding:16px;margin:12px auto;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.04);display:flex;gap:12px;align-items:center;cursor:pointer}.sent-copy{flex:1}.sent-en{font-size:18px;line-height:1.7;font-weight:700}.sent-cn{font-size:15px;color:#777;margin-top:6px}mark{background:#fff0d8;color:#b45509;border-radius:4px;padding:0 2px}.controls{padding:14px;background:#fff;border-radius:16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin:20px auto;font-size:14px}select{max-width:240px;padding:8px;border:1px solid #ddd;border-radius:8px;background:#fff}input{vertical-align:middle;max-width:100px}.playback{text-align:center;margin:24px auto}.action{font:inherit;font-weight:700;border:0;border-radius:24px;min-height:44px;padding:10px 20px;background:#e67e22;color:white;cursor:pointer;margin:4px}.stop{background:#fff;color:#a54d00;border:1px solid #e67e22}#status{min-height:26px;font-size:14px;color:#777;margin-top:8px}.nav-bottom{display:flex;justify-content:space-between;gap:12px;max-width:440px;margin:24px auto}.nav-bottom a{padding:10px 16px;background:white;border-radius:24px;font-size:15px}footer{text-align:center;font-size:13px;color:#777;margin:24px auto 0;max-width:700px;padding:0 16px}.notice{font-size:11px;line-height:1.7;margin-top:10px}button,a,.card{touch-action:manipulation}button:focus-visible,a:focus-visible,.card:focus-visible{outline:3px solid #e67e22;outline-offset:4px}.reading{outline:3px solid #e67e22;outline-offset:2px}@media(prefers-reduced-motion:reduce){.card-inner{transition:none}}@media(max-width:380px){h1{font-size:25px}.sent-en{font-size:16px}.controls select{max-width:190px}}
+</style>
+</head>
+<body>
+<header class="topbar"><a href="index.html">← 返回</a><span>Power Up 3 · Unit 5</span></header>
+<main>
+<h1 lang="en">Behind the scenes</h1>
+<p class="tip">Coco，点一点卡片，探索舞台背后的秘密！</p>
+<div class="controls" aria-label="朗读设置"><label for="voice">英语声音</label><select id="voice"><option value="">浏览器默认英语声音</option></select><label for="rate">语速 <output id="rateValue" for="rate">0.8</output> <input id="rate" type="range" min="0.5" max="1.2" step="0.1" value="0.8"></label></div>
+<section aria-labelledby="wordsTitle"><h2 id="wordsTitle">📝 词汇卡片</h2><p class="tip">点击卡片翻面 · 🔊 听单词或例句 · 共 14 个词</p><div class="cards" id="cards"></div></section>
+<section aria-labelledby="sentencesTitle"><h2 id="sentencesTitle">💬 重点句子</h2><p class="tip">点击句子或 🔊 听英文，橙色标记是重点表达</p><div id="sentences"></div></section>
+<div class="playback"><button type="button" class="action" id="playAll">▶ 连续播放</button><button type="button" class="action stop" id="stop">■ 停止</button><p class="tip">从头朗读单词、例句，再读重点句子</p><p id="status" role="status" aria-live="polite"></p></div>
+<nav class="nav-bottom" aria-label="单元导航"><a href="pu3-unit4.html" title="Unit 4: Fun in the jungle">← 上一单元</a><a href="pu3-unit6.html" title="Unit 6: Classroom stars">下一单元 →</a></nav>
+<noscript><p class="tip">请启用 JavaScript 来查看词卡和使用朗读功能。</p></noscript>
+</main>
+<footer>🦎 Coco Learning · Power Up 3<p class="notice">家庭自用学习辅助 · 非商业。本页文字按提供的 Unit 5 词表与句子整理，未逐页核对教材原图，未收录教材插图或扫描件。教材内容著作权归原出版社及作者；中文释义为辅助释义，非出版社官方翻译。权利人告知即刻下线。公开使用许可须另行核实。朗读使用设备语音服务，可用性取决于浏览器与已安装语音。</p></footer>
+<script>
+'use strict';
+const vocabulary = [
+['decorate','装饰','/ˈdekəreɪt/','v.','Shall we design some props?'],
+['material','材料','/məˈtɪəriəl/','n.',"Plastic is a good material for this because it's light and rigid."],
+['prop','道具','/prɒp/','n.','Shall we design some props?'],
+['design','设计','/dɪˈzaɪn/','v.','Shall we design some props?'],
+['crown','皇冠','/kraʊn/','n.','The crown is made of brown card.'],
+['scarf','围巾','/skɑːf/','n.','The scarf is made of wool.'],
+['wool','羊毛','/wʊl/','n.','The scarf is made of wool.'],
+['card','卡纸','/kɑːd/','n.','The crown is made of brown card.'],
+['plastic','塑料','/ˈplæstɪk/','n.',"Plastic is a good material for this because it's light and rigid."],
+['light','轻的','/laɪt/','adj.',"Plastic is a good material for this because it's light and rigid."],
+['rigid','坚硬的','/ˈrɪdʒɪd/','adj.',"Plastic is a good material for this because it's light and rigid."],
+['safe','安全的','/seɪf/','adj.',"It's important to use materials that are safe."],
+['ring','戒指','/rɪŋ/','n.','Shall we design some props?'],
+['silver','银色的','/ˈsɪlvə/','adj.','The crown is made of brown card.']
+];
+const sentences = [
+['Shall we design some props?','我们来设计一些道具好吗？'],
+["Let's design the sea.",'让我们来设计大海。'],
+['The crown is made of brown card.','皇冠是用棕色卡纸做的。'],
+['The scarf is made of wool.','围巾是用羊毛做的。'],
+["Plastic is a good material for this because it's light and rigid.",'塑料是一种好材料，因为它轻而硬。'],
+["It's important to use materials that are safe.",'使用安全的材料很重要。']
+];
+const escapeHTML = text => text.replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const highlight = text => escapeHTML(text).replace(/\b(made of|materials?|design|props|light|rigid|safe|wool|card|plastic)\b/gi,'<mark>$1</mark>');
+const queueItems = [];
+const cards = document.getElementById('cards');
+vocabulary.forEach(([word,cn,ipa,pos,example]) => {
+  const card = document.createElement('article');
+  card.className = 'card'; card.tabIndex = 0;
+  card.setAttribute('aria-label',word+'：按回车翻面');
+  card.innerHTML = `<div class="card-inner"><div class="card-front"><div class="word" lang="en">${escapeHTML(word)}</div><button type="button" class="speak-btn word-audio" aria-label="朗读 ${escapeHTML(word)}">🔊</button></div><div class="card-back" inert><div class="cn">${escapeHTML(cn)}</div><div class="ipa">${escapeHTML(ipa)} <span class="pos">${escapeHTML(pos)}</span></div><div class="example" lang="en">${escapeHTML(example)}</div><button type="button" class="speak-btn example-audio" aria-label="朗读例句">🔊</button></div></div>`;
+  function flip(){const flipped=card.classList.toggle('flipped');card.querySelector('.card-front').inert=flipped;card.querySelector('.card-back').inert=!flipped;card.setAttribute('aria-label',word+'：'+(flipped?'显示释义，按回车返回':'按回车翻面'));}
+  card.addEventListener('click',flip);
+  card.addEventListener('keydown',event=>{if(event.target===card&&(event.key==='Enter'||event.key===' ')){event.preventDefault();flip();}});
+  card.querySelector('.word-audio').addEventListener('click',event=>{event.stopPropagation();speak(word,card);});
+  card.querySelector('.example-audio').addEventListener('click',event=>{event.stopPropagation();speak(example,card);});
+  cards.appendChild(card);queueItems.push({text:word,element:card},{text:example,element:card});
+});
+sentences.forEach(([en,cn])=>{
+  const card=document.createElement('article');card.className='sent-card';
+  card.innerHTML=`<div class="sent-copy"><p class="sent-en" lang="en">${highlight(en)}</p><p class="sent-cn">${escapeHTML(cn)}</p></div><button type="button" class="speak-btn" aria-label="朗读句子：${escapeHTML(en)}">🔊</button>`;
+  card.addEventListener('click',()=>speak(en,card));
+  card.querySelector('button').addEventListener('click',event=>{event.stopPropagation();speak(en,card);});
+  document.getElementById('sentences').appendChild(card);queueItems.push({text:en,element:card});
+});
+const voiceSelect=document.getElementById('voice');
+const status=document.getElementById('status');
+const rate=document.getElementById('rate');
+const supported='speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+let voices=[],run=0,currentUtterance=null;
+function loadVoices(){
+  const previous=voiceSelect.value;
+  voices=window.speechSynthesis.getVoices().filter(voice=>/^en[-_]/i.test(voice.lang));
+  voiceSelect.replaceChildren(new Option('浏览器默认英语声音',''));
+  voices.forEach((voice,index)=>voiceSelect.add(new Option(voice.name+' · '+voice.lang,String(index))));
+  const preferred=voices.findIndex(voice=>/Microsoft.*Ava.*Online.*Natural/i.test(voice.name));
+  const natural=voices.findIndex(voice=>/Online.*Natural/i.test(voice.name));
+  if(previous!==''&&voices[Number(previous)])voiceSelect.value=previous;
+  else if(preferred>=0||natural>=0)voiceSelect.value=String(preferred>=0?preferred:natural);
+}
+function clearReading(){document.querySelectorAll('.reading').forEach(element=>element.classList.remove('reading'));}
+function stopSpeech(){run++;if(supported)window.speechSynthesis.cancel();currentUtterance=null;clearReading();}
+function playItems(items,continuous){
+  stopSpeech();if(!supported){status.textContent='这个浏览器暂不支持朗读，请用支持语音的 Edge 或 Chrome 打开。';return;}
+  const ticket=run;let index=0;
+  function next(){
+    if(ticket!==run)return;
+    clearReading();
+    if(index>=items.length){status.textContent='朗读完成！';currentUtterance=null;return;}
+    const item=items[index++];item.element.classList.add('reading');
+    if(continuous)item.element.scrollIntoView({behavior:'auto',block:'center'});
+    const utterance=new SpeechSynthesisUtterance(item.text);currentUtterance=utterance;
+    utterance.lang='en-US';utterance.rate=Number(rate.value)||0.8;
+    if(voiceSelect.value!==''&&voices[Number(voiceSelect.value)])utterance.voice=voices[Number(voiceSelect.value)];
+    status.textContent=(continuous?index+'/'+items.length+' · ':'')+'正在朗读：'+item.text;
+    utterance.onend=next;
+    utterance.onerror=()=>{if(ticket!==run)return;clearReading();currentUtterance=null;status.textContent='朗读未完成，请选择英语声音后重试。';};
+    window.speechSynthesis.speak(utterance);
+  }
+  next();
+}
+function speak(text,element){playItems([{text,element}],false);}
+rate.addEventListener('input',()=>{document.getElementById('rateValue').value=Number(rate.value).toFixed(1);});
+document.getElementById('playAll').addEventListener('click',()=>playItems(queueItems,true));
+document.getElementById('stop').addEventListener('click',()=>{stopSpeech();status.textContent='已停止朗读';});
+window.addEventListener('pagehide',stopSpeech);
+if(supported){loadVoices();window.speechSynthesis.addEventListener('voiceschanged',loadVoices);}else{status.textContent='这个浏览器暂不支持语音朗读，仍可点击翻卡学习。';}
+</script>
+</body>
+</html>

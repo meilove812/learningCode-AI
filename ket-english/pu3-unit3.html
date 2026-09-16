@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Power Up 3 · Unit 3 · Body</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#faf6f1;color:#333;line-height:1.6}button,select,input{font:inherit}button,a,select{touch-action:manipulation}button{cursor:pointer}a{color:#a94d0b;text-decoration:none;font-weight:700}.topbar{background:#fff;padding:14px 16px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:20px}.topbar h1{font-size:clamp(17px,4vw,22px);margin:0}.subtitle{text-align:center;color:#e67e22;font-size:24px;font-weight:800;margin:20px 0 0}.ssub{text-align:center;font-size:14px;color:#666;margin:4px 0 16px}main{max-width:840px;margin:auto;padding:0 16px}h2{text-align:center;color:#b7550f;font-size:22px;margin:26px 0 8px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:0 16px}.card{width:100%;max-width:360px;height:200px;perspective:800px;margin:12px auto;cursor:pointer}.card-inner{width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d;position:relative}.card.flipped .card-inner{transform:rotateY(180deg)}.card-front,.card-back{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;gap:5px}.card-front{background:#fff;box-shadow:0 4px 20px rgba(0,0,0,.04)}.card-back{background:linear-gradient(135deg,#fff9f0,#fff);transform:rotateY(180deg);box-shadow:0 4px 20px rgba(0,0,0,.04)}.word{font-size:clamp(25px,6vw,34px);font-weight:800}.cn{font-size:22px;font-weight:800;color:#b7550f}.ipa,.example{font-size:14px;color:#555;text-align:center}.pos{color:#a94d0b;font-weight:700}.speak-btn{border:0;background:#e67e22;color:#fff;border-radius:50%;width:44px;height:44px;flex-shrink:0;font-size:20px}.hint{font-size:12px;color:#777}.sent-card{background:#fff;border-radius:14px;padding:16px;margin:12px auto;max-width:736px;box-shadow:0 2px 12px rgba(0,0,0,.03)}.sent-row{display:flex;align-items:center;gap:12px}.sent-en{font-size:18px;font-weight:700;flex:1;line-height:1.7}.sent-cn{font-size:15px;color:#666;margin:6px 0 0}mark{background:#fff0cf;color:#a94d0b;border-radius:4px;padding:0 2px}.controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:center;background:#fff;border-radius:14px;padding:14px;max-width:736px;margin:18px auto}.controls select{max-width:240px;width:100%}.controls label{font-size:14px}.action{background:#e67e22;color:#fff;border:0;border-radius:22px;padding:10px 18px;min-height:44px}.action.secondary{background:#fff;color:#a94d0b;border:1px solid #e67e22}#status{min-height:24px;text-align:center;color:#666;font-size:14px}.notice{font-size:13px;background:#fff4df;border-left:4px solid #e67e22;padding:12px 14px;max-width:736px;margin:16px auto;color:#65492c}.nav-bottom{display:flex;justify-content:space-between;gap:12px;max-width:736px;margin:24px auto}.nav-bottom a{background:#fff;border-radius:24px;padding:10px 16px}footer{text-align:center;padding:10px 16px 30px;color:#777;font-size:13px}footer p{max-width:736px;margin:10px auto}.card:focus-visible,button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #b7550f;outline-offset:4px}@media(prefers-reduced-motion:reduce){.card-inner{transition:none}}
+</style>
+</head>
+<body>
+<header class="topbar"><a href="index.html">← 返回</a><h1>Power Up 3 · Unit 3</h1></header>
+<main>
+<p class="subtitle" lang="en">Body</p><p class="ssub">跨学科学习 · Coco，点击卡片翻面，点击 🔊 听英文</p>
+<div class="controls"><label>朗读声音 <select id="voice" aria-label="选择英语声音"><option value="">系统默认英语声音</option></select></label><label>语速 <input id="rate" type="range" min="0.5" max="1.2" value="0.8" step="0.1"> <output id="rate-value" for="rate">0.8</output></label></div>
+<section aria-labelledby="words-heading"><h2 id="words-heading">📝 词汇卡片</h2><p class="ssub">点击或按回车翻面 · 背面的 🔊 朗读例句</p><div class="cards" id="cards"></div></section>
+<section aria-labelledby="sentences-heading"><h2 id="sentences-heading">💬 重点句子</h2><p class="ssub">橙色部分是关键词</p><aside class="notice"><strong>知识核对：</strong>提供的句子中“超过2000块骨头”不准确；成人通常有206块骨头，儿童的骨头数量会随生长、融合而变化。下方保留所提供句子用于原文核对，请勿把2000当作正确知识记忆。</aside><div id="sentences"></div></section>
+<div class="controls"><button type="button" class="action" id="play-all">▶ 连续播放</button><button type="button" class="action secondary" id="stop">■ 停止</button></div><p id="status" role="status" aria-live="polite">连续播放：单词 → 例句 → 重点句子</p>
+<nav class="nav-bottom" aria-label="单元导航"><a href="pu3-unit2.html" title="Unit 2: What's for breakfast">← 上一单元</a><a href="pu3-unit4.html" title="Unit 4: Fun in the jungle">下一单元 →</a></nav>
+<noscript><p class="notice">请启用 JavaScript 以显示词卡并使用朗读功能。</p></noscript>
+</main>
+<footer><p>🦎 Coco Learning · Power Up 3</p><p>内容按本次提供的词汇与句子整理，教材照片及页码尚未核验；中文释义按提供内容呈现，操作提示为自行编写。本页为家庭自用学习辅助，非商业，不含教材插图或扫描件。《Power Up 3》相关著作权归原出版社及作者；权利人告知即刻下线。朗读依赖浏览器与设备可用语音。</p></footer>
+<script>
+'use strict';
+const words = [
+['exercise','锻炼','/ˈeksəsaɪz/','n./v.','Hold the position for ten seconds and breathe.'],
+['muscles','肌肉','/ˈmʌslz/','n.','Bones shape our body and hold us together.'],
+['sore','酸痛的','/sɔː/','adj.','Hold the position for ten seconds and breathe.'],
+['stomach-ache','胃痛','/ˈstʌmək eɪk/','n.',"I don't want to drink."],
+['throat','喉咙','/θrəʊt/','n.',"I don't want to drink."],
+['bones','骨骼','/bəʊnz/','n.','Did you know there are over 2000 bones in our bodies?'],
+['strong','强壮的','/strɒŋ/','adj.','Bones shape our body and hold us together.'],
+['hurts','疼痛','/hɜːts/','v.',"I don't want to drink."],
+['back','背部','/bæk/','n.','Hold the position for ten seconds and breathe.']
+];
+const sentences = [
+['Did you know there are over 2000 bones in our bodies?','你知道我们身体里有超过2000块骨头吗？'],
+['Bones shape our body and hold us together.','骨骼塑造我们的身体并把我们支撑在一起。'],
+['Hold the position for ten seconds and breathe.','保持这个姿势十秒钟并呼吸。'],
+['Amazon carries more water.','亚马逊河承载更多的水。'],
+['Everest is the highest mountain in the world.','珠穆朗玛峰是世界上最高的山。'],
+["I don't want to drink.",'我不想喝。']
+];
+const escapeHTML = text => text.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const highlight = text => escapeHTML(text).replace(/\b(bones|body|hold|position|breathe|highest|mountain|water)\b/gi,'<mark>$1</mark>');
+words.forEach(([word,cn,ipa,pos,example]) => {
+ const card = document.createElement('div'); card.className='card'; card.tabIndex=0; card.setAttribute('role','group'); card.setAttribute('aria-label',word+'，点击翻面');
+ card.innerHTML='<div class="card-inner"><div class="card-front"><div class="word" lang="en">'+escapeHTML(word)+'</div><button type="button" class="speak-btn" aria-label="朗读单词 '+escapeHTML(word)+'">🔊</button><span class="hint">点击翻面</span></div><div class="card-back" aria-hidden="true" inert><div class="cn">'+cn+'</div><div class="ipa">'+ipa+' <span class="pos">'+pos+'</span></div><div class="example" lang="en">'+highlight(example)+'</div><button type="button" class="speak-btn" aria-label="朗读例句">🔊</button></div></div>';
+ const front=card.querySelector('.card-front'),back=card.querySelector('.card-back');
+ function flip(){const flipped=card.classList.toggle('flipped');front.inert=flipped;back.inert=!flipped;front.setAttribute('aria-hidden',String(flipped));back.setAttribute('aria-hidden',String(!flipped));}
+ card.addEventListener('click',flip);card.addEventListener('keydown',event=>{if(event.target===card&&(event.key==='Enter'||event.key===' ')){event.preventDefault();flip();}});
+ card.querySelectorAll('.speak-btn').forEach((button,index)=>button.addEventListener('click',event=>{event.stopPropagation();speak(index===0?word:example);}));document.getElementById('cards').appendChild(card);
+});
+sentences.forEach(([en,cn],index)=>{const card=document.createElement('article');card.className='sent-card';card.innerHTML='<div class="sent-row"><div class="sent-en" lang="en">'+highlight(en)+'</div><button type="button" class="speak-btn" aria-label="朗读第'+(index+1)+'句">🔊</button></div><p class="sent-cn">'+cn+'</p>'+(index===0?'<p class="hint">⚠ 此句数字有误，见上方知识核对。</p>':'');card.querySelector('button').addEventListener('click',event=>{event.stopPropagation();speak(en);});document.getElementById('sentences').appendChild(card);});
+const synth=window.speechSynthesis,voiceSelect=document.getElementById('voice'),status=document.getElementById('status');let voices=[],generation=0,activeUtterance=null;
+function loadVoices(){if(!synth)return;const selected=voiceSelect.value;voices=synth.getVoices().filter(voice=>/^en[-_]/i.test(voice.lang));voiceSelect.replaceChildren(new Option('系统默认英语声音',''));voices.forEach(voice=>voiceSelect.add(new Option(voice.name+' · '+voice.lang,voice.voiceURI)));const preferred=voices.find(voice=>/Microsoft Ava.*Online \(Natural\)/i.test(voice.name))||voices.find(voice=>/Online \(Natural\)/i.test(voice.name));voiceSelect.value=voices.some(voice=>voice.voiceURI===selected)?selected:(preferred?preferred.voiceURI:'');}
+function stop(){generation++;if(synth)synth.cancel();activeUtterance=null;}
+function play(text,token,done){if(token!==generation)return;if(!synth||!window.SpeechSynthesisUtterance){status.textContent='当前浏览器不支持语音朗读，请使用支持朗读的浏览器。';return;}const utterance=new SpeechSynthesisUtterance(text);activeUtterance=utterance;utterance.lang='en-US';utterance.rate=Number(document.getElementById('rate').value);const voice=voices.find(item=>item.voiceURI===voiceSelect.value);if(voice)utterance.voice=voice;utterance.onstart=()=>{if(token===generation)status.textContent='正在朗读：'+text;};utterance.onend=()=>{if(token!==generation)return;activeUtterance=null;if(done)done();else status.textContent='朗读完成';};utterance.onerror=event=>{if(token===generation){activeUtterance=null;status.textContent='朗读未完成，请检查设备声音或更换语音（'+event.error+'）。';}};synth.speak(utterance);}
+function speak(text){stop();play(text,generation);}
+document.getElementById('play-all').addEventListener('click',()=>{stop();const token=generation,queue=words.flatMap(word=>[word[0],word[4]]).concat(sentences.map(sentence=>sentence[0]));let index=0;function next(){if(token!==generation)return;if(index>=queue.length){status.textContent='全部朗读完成！';return;}play(queue[index++],token,next);}next();});
+document.getElementById('stop').addEventListener('click',()=>{stop();status.textContent='已停止朗读';});document.getElementById('rate').addEventListener('input',event=>{document.getElementById('rate-value').value=event.target.value;});
+if(synth){loadVoices();synth.addEventListener('voiceschanged',loadVoices);}else{status.textContent='当前浏览器不支持语音朗读，请使用支持朗读的浏览器。';}window.addEventListener('pagehide',stop);
+</script>
+</body>
+</html>
