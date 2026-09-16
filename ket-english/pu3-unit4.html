@@ -76,7 +76,7 @@ function playTexts(texts){
  }
  next();
 }
-function speak(text){playTexts([text]);}
+var _voice={};function _pickVoice(lang){if(_voice[lang])return _voice[lang];var vs=speechSynthesis.getVoices();var prefs=lang.indexOf('zh')>=0?['Xiaoxiao','Yunxi','Yunyang']:['Ava','Andrew','Emma','Jenny'];for(var k=0;k<prefs.length;k++)for(var i=0;i<vs.length;i++)if(vs[i].name.indexOf(prefs[k])>=0&&vs[i].name.indexOf('Online')>=0&&vs[i].lang.indexOf(lang.substring(0,2))>=0){_voice[lang]=vs[i];return vs[i];}for(var k=0;k<prefs.length;k++)for(var i=0;i<vs.length;i++)if(vs[i].name.indexOf(prefs[k])>=0&&vs[i].lang.indexOf(lang.substring(0,2))>=0){_voice[lang]=vs[i];return vs[i];}for(var i=0;i<vs.length;i++)if(vs[i].lang===lang||vs[i].lang.indexOf(lang.substring(0,2))>=0){_voice[lang]=vs[i];return vs[i];}return null;}if(window.speechSynthesis)speechSynthesis.onvoiceschanged=function(){_voice={};};function speak(t,l){speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang=l||"en-US";u.rate=l&&l.indexOf("zh")>=0?0.85:0.75;var v=_pickVoice(l||"en-US");if(v)u.voice=v;speechSynthesis.speak(u);}
 document.querySelectorAll('.card').forEach(card=>{
  function flip(){const flipped=card.classList.toggle('flipped');card.querySelector('.card-front').inert=flipped;card.querySelector('.card-back').inert=!flipped;}
  card.addEventListener('click',flip);
