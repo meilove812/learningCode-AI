@@ -1,0 +1,138 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>PU3 · The Road to Hope 诗歌点读</title><style>*{box-sizing:border-box}body{margin:0;background:#faf6f1;color:#332c26;font-family:system-ui,'PingFang SC','Microsoft YaHei',sans-serif;line-height:1.6}.topbar{position:sticky;top:0;z-index:10;background:#fffaf3f5;border-bottom:1px solid #ecdcca;padding:12px 16px;display:flex;gap:14px;align-items:center}.topbar a{white-space:nowrap}a{color:#b8550d;text-decoration:none;font-weight:700}h1{font-size:clamp(16px,3.8vw,23px);margin:0}main{max-width:1000px;margin:auto;padding:16px}h2{color:#b8550d;margin:28px 0 10px}h3{color:#b8550d;margin:18px 0 8px;font-size:17px}.intro,.note{color:#66574b;font-size:14px}.toolbar{border-radius:16px;background:#fff;padding:14px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}.toolbar label{font-size:14px}select{max-width:240px;width:100%;padding:7px;border:1px solid #bd976e;border-radius:8px;background:white}button.action{border:0;background:#e67e22;color:white;padding:10px 14px;border-radius:12px;font-size:15px;cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #804317;outline-offset:4px}#status{min-height:26px;font-size:14px;color:#805125}footer{font-size:12px;color:#746457;max-width:1000px;margin:0 auto;padding:0 20px 35px}.is-reading{outline:3px solid #e67e22}.section-nav{display:flex;flex-wrap:wrap;gap:12px}section{scroll-margin-top:80px}
+.stanza{background:#fff;border:1px solid #ead6be;border-radius:16px;padding:8px 14px;margin:14px 0}.stanza-no{font-size:11px;color:#a09080}.line{width:100%;display:block;text-align:left;border:0;border-bottom:1px dashed #f0e2cf;background:none;padding:11px 4px;cursor:pointer;color:inherit;font:inherit}.stanza .line:last-child{border-bottom:0}.line-en{font-size:18px;font-weight:650;line-height:1.5}.line-cn{font-size:14px;color:#68584a;margin-top:4px}.ln{font-size:11px;color:#a09080;font-weight:400;margin-right:6px}
+.rh{color:#c0392b;font-weight:800;border-bottom:2px solid #f0b27a}
+.rhyme-box{background:#fff;border:1px solid #ead6be;border-radius:16px;padding:14px;margin:12px 0}.rhyme-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:8px}.fam{font-family:'DejaVu Sans',Arial,sans-serif;font-size:15px;color:#7b6859}.rw{display:inline-block;background:#fff3e1;border:1px solid #ecd0a8;border-radius:12px;padding:6px 12px;margin:4px 6px 0 0;font-size:17px;font-weight:700}.rw.extra{background:#f2f0ee;border-color:#ddd6cd;color:#7d756c;font-weight:600}.rw .tagx{font-size:10px;vertical-align:super;color:#96765a;margin-left:3px}.rw.nearx{background:#eef4f7;border-color:#c9dbe4}
+.phrase{background:#fff;border:1px solid #ead6be;border-radius:16px;padding:14px;margin:12px 0;cursor:pointer}.phrase-en{font-size:19px;font-weight:700}.phrase-cn{font-size:14px;color:#68584a;margin-top:5px}
+.pair{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}.pairbox{background:#fff;border:1px solid #ead6be;border-radius:16px;padding:14px;cursor:pointer}.pairlabel{font-size:12px;color:#a09080}
+.qa{background:#fff;border:1px solid #ead6be;border-radius:16px;padding:14px;margin:12px 0}.qa-q{font-size:18px;font-weight:650;cursor:pointer}.qa-hint{font-size:14px;color:#68584a;margin-top:8px;display:none}.qa-hint.open{display:block}.tinybtn{background:none;border:1px solid #ba631e;color:#92430c;border-radius:14px;padding:3px 11px;cursor:pointer;font-size:13px;margin-top:8px}
+.selfnote{background:#fff7ea;border:1px solid #ecd0a8;border-radius:14px;padding:12px;font-size:13px;color:#6b5a49;margin:14px 0}</style></head><body>
+<header class="topbar"><a href="index.html">← 返回</a><h1>The Road to Hope · 诗歌点读</h1></header>
+<main>
+<p class="intro">Power Up 3 · 音频 3.27 · Text type: A poem<br>全诗 7 节 28 行逐句点读 · 11 组韵脚连听 · 指路短语 · be good at doing · 问答搭子<br>点任意一行听英文；<span class="rh">红色</span>是押韵处。</p>
+
+<div class="toolbar"><label>英文语音<select id="voice"><option value="">自动优先 Edge 自然语音</option></select></label><label>语速<select id="rate"><option value="0.6">慢速 0.6</option><option value="0.75" selected>标准 0.75</option><option value="1">正常 1.0</option></select></label><button class="action" id="all">▶ 朗读全诗</button><button class="action" id="stop">■ 停止</button></div>
+<p id="status" role="status" aria-live="polite">点句子听英文；优先 Edge Online (Natural)，实际音色由设备提供。</p>
+
+<nav class="section-nav" aria-label="分区"><a href="#poem">全诗点读</a><a href="#rhyme">韵脚连听</a><a href="#directions">指路短语</a><a href="#goodat">be good at doing</a><a href="#qa">问答搭子</a></nav>
+
+<section id="poem"><h2>一、全诗逐句点读</h2>
+<div class="stanza"><span class="stanza-no">Stanza 1</span>
+<button class="line" data-speak="I'm Kay and he's Jay, and we're both here today,"><span class="line-en"><span class="ln">1</span>I'm Kay and he's Jay, and we're both here to<span class="rh">day</span>,</span><span class="line-cn">我叫 Kay，他叫 Jay，今天我们都在这儿，</span></button>
+<button class="line" data-speak="To talk about our life in the USA."><span class="line-en"><span class="ln">2</span>To talk about our life in the US<span class="rh">A</span>.</span><span class="line-cn">来讲讲我们在美国的生活。</span></button>
+<button class="line" data-speak="Our country is big and our country is wide,"><span class="line-en"><span class="ln">3</span>Our country is big and our country is w<span class="rh">ide</span>,</span><span class="line-cn">我们的国家很大，我们的国家很宽，</span></button>
+<button class="line" data-speak="Over two thousand miles from side to side."><span class="line-en"><span class="ln">4</span>Over two thousand miles from s<span class="rh">ide</span> to s<span class="rh">ide</span>.</span><span class="line-cn">从一边到另一边有两千多英里。</span></button></div>
+
+<div class="stanza"><span class="stanza-no">Stanza 2</span>
+<button class="line" data-speak="Last year we went on a trip in the car."><span class="line-en"><span class="ln">5</span>Last year we went on a trip in the c<span class="rh">ar</span>.</span><span class="line-cn">去年我们开车出去旅行。</span></button>
+<button class="line" data-speak="'Don't worry,' said Mum, 'we aren't going to go far.'"><span class="line-en"><span class="ln">6</span>'Don't worry,' said Mum, 'we aren't going to go f<span class="rh">ar</span>.'</span><span class="line-cn">"别担心，"妈妈说，"我们不会走远。"</span></button>
+<button class="line" data-speak="We wanted to visit this small town called Hope,"><span class="line-en"><span class="ln">7</span>We wanted to visit this small town called H<span class="rh">ope</span>,</span><span class="line-cn">我们想去一个叫 Hope 的小镇，</span></button>
+<button class="line" data-speak="Where Grandma was born, she's called Sue-Ella Cope."><span class="line-en"><span class="ln">8</span>Where Grandma was born, she's called Sue-Ella C<span class="rh">ope</span>.</span><span class="line-cn">奶奶就出生在那里，她叫 Sue-Ella Cope。</span></button></div>
+
+<div class="stanza"><span class="stanza-no">Stanza 3</span>
+<button class="line" data-speak="But the road was so long and it went on and on,"><span class="line-en"><span class="ln">9</span>But the road was so long and it went <span class="rh">on</span> and <span class="rh">on</span>,</span><span class="line-cn">可是路好长好长，一直走一直走，</span></button>
+<button class="line" data-speak="Over bridge after bridge until Dad said, 'We're wrong.'"><span class="line-en"><span class="ln">10</span>Over bridge after bridge until Dad said, 'We're wr<span class="rh">ong</span>.</span><span class="line-cn">过了一座又一座桥，直到爸爸说："我们走错了。</span></button>
+<button class="line" data-speak="This isn't the way to Hope town, do you know,"><span class="line-en"><span class="ln">11</span>This isn't the way to Hope town, do you kn<span class="rh">ow</span>,</span><span class="line-cn">这不是去 Hope 镇的路，你们知道吗，</span></button>
+<button class="line" data-speak="We shouldn't be going this way, no, no, no.'"><span class="line-en"><span class="ln">12</span>We shouldn't be going this way, n<span class="rh">o</span>, n<span class="rh">o</span>, n<span class="rh">o</span>.'</span><span class="line-cn">我们不该走这条路，不不不。"</span></button></div>
+
+<div class="stanza"><span class="stanza-no">Stanza 4</span>
+<button class="line" data-speak="Dad shouted, 'We should go west.'"><span class="line-en"><span class="ln">13</span>Dad shouted, 'We should go w<span class="rh">est</span>.'</span><span class="line-cn">爸爸大声说："我们该往西走。"</span></button>
+<button class="line" data-speak="But Mum said, 'No, east is best.'"><span class="line-en"><span class="ln">14</span>But Mum said, 'No, east is b<span class="rh">est</span>.'</span><span class="line-cn">可妈妈说："不，往东最好。"</span></button>
+<button class="line" data-speak="We sat in silence, and looked at Yvonne,"><span class="line-en"><span class="ln">15</span>We sat in silence, and looked at Yv<span class="rh">onne</span>,</span><span class="line-cn">我们默默坐着，看向 Yvonne，</span></button>
+<button class="line" data-speak="Who picked up the laptop and turned it on."><span class="line-en"><span class="ln">16</span>Who picked up the laptop and turned it <span class="rh">on</span>.</span><span class="line-cn">她拿起笔记本电脑，把它打开了。</span></button></div>
+
+<div class="stanza"><span class="stanza-no">Stanza 5</span>
+<button class="line" data-speak="Our sister so small, so clever, so kind,"><span class="line-en"><span class="ln">17</span>Our sister so small, so clever, so k<span class="rh">ind</span>,</span><span class="line-cn">我们的妹妹那么小、那么聪明、那么好，</span></button>
+<button class="line" data-speak="Searched her laptop and tried hard to find,"><span class="line-en"><span class="ln">18</span>Searched her laptop and tried hard to f<span class="rh">ind</span>,</span><span class="line-cn">她在电脑上搜索，努力去找，</span></button>
+<button class="line" data-speak="An app that would help us all get to the town."><span class="line-en"><span class="ln">19</span>An app that would help us all get to the t<span class="rh">own</span>.</span><span class="line-cn">一个能帮我们所有人到镇上的应用。</span></button>
+<button class="line" data-speak="'Go left,' she said now, 'and go up please, not down.'"><span class="line-en"><span class="ln">20</span>'Go left,' she said now, 'and go up please, not d<span class="rh">own</span>.'</span><span class="line-cn">"往左走，"她这时说，"然后请往上，不是往下。"</span></button></div>
+
+<div class="stanza"><span class="stanza-no">Stanza 6</span>
+<button class="line" data-speak="We went left at the shops and straight on at the light."><span class="line-en"><span class="ln">21</span>We went left at the shops and straight on at the l<span class="rh">ight</span>.</span><span class="line-cn">我们在商店那儿左转，在红绿灯那儿直走。</span></button>
+<button class="line" data-speak="The day was so warm and the sun was so bright."><span class="line-en"><span class="ln">22</span>The day was so warm and the sun was so br<span class="rh">ight</span>.</span><span class="line-cn">那天很暖，太阳很亮。</span></button>
+<button class="line" data-speak="'Look!' said Yvonne. 'Can you all see the sign?"><span class="line-en"><span class="ln">23</span>'Look!' said Yvonne. 'Can you all see the s<span class="rh">ign</span>?</span><span class="line-cn">"看！"Yvonne 说，"你们都看到那块牌子了吗？</span></button>
+<button class="line" data-speak="I'm quite good at finding directions online.'"><span class="line-en"><span class="ln">24</span>I'm quite good at finding directions onl<span class="rh">ine</span>.'</span><span class="line-cn">我很擅长在网上找路线。"</span></button></div>
+
+<div class="stanza"><span class="stanza-no">Stanza 7</span>
+<button class="line" data-speak="We laughed and we laughed and said, 'Well done, Yvonne,"><span class="line-en"><span class="ln">25</span>We laughed and we laughed and said, 'Well done, Yv<span class="rh">onne</span>,</span><span class="line-cn">我们笑了又笑，说："做得好，Yvonne，</span></button>
+<button class="line" data-speak="We're here in the town, and we didn't go wrong."><span class="line-en"><span class="ln">26</span>We're here in the town, and we didn't go wr<span class="rh">ong</span>.</span><span class="line-cn">我们到镇上了，而且没走错。</span></button>
+<button class="line" data-speak="From now on it's your job to show us the way."><span class="line-en"><span class="ln">27</span>From now on it's your job to show us the w<span class="rh">ay</span>.</span><span class="line-cn">从现在起，指路就是你的活儿了。</span></button>
+<button class="line" data-speak="Thank you for helping us get here today.'"><span class="line-en"><span class="ln">28</span>Thank you for helping us get here to<span class="rh">day</span>.'</span><span class="line-cn">谢谢你帮我们今天到了这里。"</span></button></div>
+</section>
+
+<section id="rhyme"><h2>二、韵脚连听（11 组）</h2>
+<p class="note">点「🔗 连着听」会依次朗读这一组的同韵词，最后再读一遍<b>该韵脚所在的课文原句</b>。<br><span class="rw extra">灰色<span class="tagx">课外</span></span> 的词<b>不在本诗内</b>，是同韵族扩展，用来听清同一个韵可以有不同拼法。<span class="rw nearx">浅蓝</span>表示近韵。</p>
+<div id="rhymeList"></div>
+</section>
+
+<section id="directions"><h2>三、指路短语</h2>
+<p class="note">本课真正的语言目标。注意 <b>at + 参照物</b>：英语指路靠"以什么为参照"，中文习惯说"到商店那儿"，结构不同。</p>
+<div class="phrase" data-speak="Go left"><div class="phrase-en">🔊 Go left</div><div class="phrase-cn">往左走　· 第 20 行</div></div>
+<div class="phrase" data-speak="and go up please, not down"><div class="phrase-en">🔊 and go up please, not down</div><div class="phrase-cn">然后请往上，不是往下　· 第 20 行</div></div>
+<div class="phrase" data-speak="We went left at the shops"><div class="phrase-en">🔊 We went left <b>at the shops</b></div><div class="phrase-cn">我们在<b>商店那儿</b>左转　· 第 21 行</div></div>
+<div class="phrase" data-speak="and straight on at the light"><div class="phrase-en">🔊 and straight on <b>at the light</b></div><div class="phrase-cn">在<b>红绿灯那儿</b>直走　· 第 21 行</div></div>
+<h3>爸妈用 should 争论方向（对比看）</h3>
+<div class="phrase" data-speak="We should go west."><div class="phrase-en">🔊 We <b>should</b> go west.</div><div class="phrase-cn">我们该往西走。　· 第 13 行</div></div>
+<div class="phrase" data-speak="We shouldn't be going this way."><div class="phrase-en">🔊 We <b>shouldn't</b> be going this way.</div><div class="phrase-cn">我们不该走这条路。　· 第 12 行</div></div>
+<div class="selfnote">大人停在「应该往哪走」的争论上，妹妹给出的是<b>具体方向</b>（left / up / straight on）——最后指路的活儿就交给她了（第 27 行）。</div>
+</section>
+
+<section id="goodat"><h2>四、be good at + doing（首尾呼应）</h2>
+<p class="note">课本页首先问，课文里 Yvonne 正好回答，用的是同一个句型。</p>
+<div class="pair">
+<div class="pairbox" data-speak="Are you good at giving directions?"><span class="pairlabel">课本页首 · 第 3 问</span><div class="phrase-en">🔊 Are you <b>good at giving</b> directions?</div><div class="phrase-cn">你擅长指路吗？</div></div>
+<div class="pairbox" data-speak="I'm quite good at finding directions online."><span class="pairlabel">课文 · 第 24 行</span><div class="phrase-en">🔊 I'm quite <b>good at finding</b> directions online.</div><div class="phrase-cn">我很擅长在网上找路线。</div></div>
+</div>
+<div class="selfnote"><b>be good at</b> 后面跟 <b>动词 -ing</b>：giving / finding。不是 <span style="text-decoration:line-through">good at give</span>。</div>
+</section>
+
+<section id="qa"><h2>五、问答搭子（页面只提问，不判分）</h2>
+<p class="note">点问题听英文，自己出声回答。想不出来再点「给我提示」。答案没有对错，页面不打分。</p>
+<div class="qa"><div class="qa-q" data-speak="Where do you think the family are?">🔊 1. Where do you think the family are?</div><button class="tinybtn" data-hint="1">给我提示</button><div class="qa-hint" id="h1">中文：你觉得这一家人在哪里？<br>可以用诗里的说法：<i>in the car</i>（第 5 行）／<i>in the USA</i>（第 2 行）。</div></div>
+<div class="qa"><div class="qa-q" data-speak="What do you think they're doing?">🔊 2. What do you think they're doing?</div><button class="tinybtn" data-hint="2">给我提示</button><div class="qa-hint" id="h2">中文：你觉得他们在做什么？<br>可以用诗里的说法：<i>on a trip in the car</i>（第 5 行）／<i>looking for Hope town</i>（据第 7 行改写）。</div></div>
+<div class="qa"><div class="qa-q" data-speak="Are you good at giving directions?">🔊 3. Are you good at giving directions?</div><button class="tinybtn" data-hint="3">给我提示</button><div class="qa-hint" id="h3">中文：你擅长指路吗？<br>句型照 Yvonne 的说法用：<i>I'm quite good at ...</i>（第 24 行）。后面接 -ing。</div></div>
+</section>
+
+<div class="toolbar"><button class="action" id="all-bottom">▶ 朗读全诗</button><button class="action" id="stop-bottom">■ 停止</button></div>
+<p><a href="index.html">返回单元目录</a></p>
+</main>
+<footer><p>Power Up 3 · KET英语 · Coco Learning</p>
+<p>来源：家长提供的 Power Up 3 课本内页照片两张（本诗跨两页，音频编号 3.27，Text type: A poem）。照片未拍到页码，故<b>页码未登记、不补造</b>。英文全部逐字取自该两页原文，未改动、未增补；<b>中文释义、提示语、学习说明均为自行编写</b>，并非官方译文。韵脚分组中标注「课外」的灰色单词<b>不在本诗内</b>，为同韵族扩展词。</p>
+<p>Power Up 著作权归 Cambridge University Press 及原作者。家庭自用学习辅助，非商业，<b>不含教材插图或扫描件</b>；权利人告知即刻下线。noindex 不等于访问控制或版权授权。</p></footer>
+<script>
+var RHYMES=[
+ {fam:"-ay / -A  /eɪ/",words:[["today",0],["USA",0],["day",0],["way",0]],line:"I'm Kay and he's Jay, and we're both here today,",ln:1},
+ {fam:"-ide  /aɪd/",words:[["wide",0],["side",0],["tried",0]],line:"Our country is big and our country is wide,",ln:3},
+ {fam:"-ar  /ɑː/",words:[["car",0],["far",0],["star",1]],line:"Last year we went on a trip in the car.",ln:5},
+ {fam:"-ope  /əʊp/",words:[["Hope",0],["Cope",0],["rope",1]],line:"We wanted to visit this small town called Hope,",ln:7},
+ {fam:"-on / -onne  /ɒn/（wrong 为近韵）",words:[["Yvonne",0],["on",0],["wrong",2]],line:"We sat in silence, and looked at Yvonne,",ln:15},
+ {fam:"-ow / -o  /əʊ/",words:[["know",0],["no",0],["go",0]],line:"This isn't the way to Hope town, do you know,",ln:11},
+ {fam:"-est  /est/",words:[["west",0],["best",0],["rest",1]],line:"Dad shouted, 'We should go west.'",ln:13},
+ {fam:"-ind  /aɪnd/",words:[["kind",0],["find",0],["mind",1]],line:"Our sister so small, so clever, so kind,",ln:17},
+ {fam:"-own  /aʊn/",words:[["town",0],["down",0],["brown",1]],line:"'Go left,' she said now, 'and go up please, not down.'",ln:20},
+ {fam:"-ight  /aɪt/",words:[["light",0],["bright",0],["quite",0]],line:"The day was so warm and the sun was so bright.",ln:22},
+ {fam:"-ign / -ine  /aɪn/",words:[["sign",0],["online",0],["nine",1]],line:"I'm quite good at finding directions online.'",ln:24}
+];
+(function(){var host=document.getElementById('rhymeList');RHYMES.forEach(function(g,i){var box=document.createElement('div');box.className='rhyme-box';var head=document.createElement('div');head.className='rhyme-head';var fam=document.createElement('span');fam.className='fam';fam.textContent=g.fam;var btn=document.createElement('button');btn.className='action';btn.type='button';btn.dataset.rhyme=String(i);btn.textContent='🔗 连着听';head.appendChild(fam);head.appendChild(btn);box.appendChild(head);var row=document.createElement('div');g.words.forEach(function(w){var s=document.createElement('span');s.className='rw'+(w[1]===1?' extra':'')+(w[1]===2?' nearx':'');s.textContent=w[0];if(w[1]===1){var t=document.createElement('span');t.className='tagx';t.textContent='课外';s.appendChild(t)}if(w[1]===2){var t2=document.createElement('span');t2.className='tagx';t2.textContent='近韵';s.appendChild(t2)}row.appendChild(s)});box.appendChild(row);var src=document.createElement('div');src.className='note';src.style.marginTop='6px';src.textContent='原句（第 '+g.ln+' 行）：'+g.line;box.appendChild(src);host.appendChild(box)})})();
+
+function _pickVoice(lang){var vs=speechSynthesis.getVoices().filter(function(v){return v.lang.toLowerCase().indexOf(lang.slice(0,2).toLowerCase())===0});return vs.filter(function(v){return /Online.*Natural/i.test(v.name)&&/Ava/i.test(v.name)})[0]||vs.filter(function(v){return /Online.*Natural/i.test(v.name)})[0]||vs.filter(function(v){return v.lang===lang})[0]||vs[0]||null}
+var serial=0,active=null;var status=document.getElementById('status'),selector=document.getElementById('voice'),rate=document.getElementById('rate');
+function available(){return !!(window.speechSynthesis&&window.SpeechSynthesisUtterance)}
+function clearHighlight(){if(active)active.classList.remove('is-reading');active=null}
+function stop(){serial++;if(available())speechSynthesis.cancel();clearHighlight();status.textContent='已停止'}
+function voices(){if(!available())return;var value=selector.value;selector.replaceChildren(new Option('自动优先 Edge 自然语音',''));speechSynthesis.getVoices().filter(function(v){return v.lang.indexOf('en')===0}).forEach(function(v){selector.add(new Option(v.name,v.voiceURI))});selector.value=value}
+function configure(u){var v=speechSynthesis.getVoices().filter(function(x){return x.voiceURI===selector.value})[0];if(v)u.voice=v;u.rate=Number(rate.value)}
+function ready(){if(!available()){status.textContent='此浏览器不支持朗读，请使用 Edge 等支持系统语音的浏览器。';return false}return true}
+function mk(text){var u=new SpeechSynthesisUtterance(text);u.lang='en-US';var v=_pickVoice('en-US');if(v)u.voice=v;configure(u);return u}
+function play(text,node){stop();if(!ready())return;var id=serial,u=mk(text);active=node;if(node)node.classList.add('is-reading');status.textContent='朗读：'+text;u.onend=function(){if(id===serial){clearHighlight();status.textContent='朗读完成'}};u.onerror=function(e){if(id===serial){clearHighlight();status.textContent='语音未完成：'+e.error+'；请检查设备声音或切换语音。'}};speechSynthesis.speak(u)}
+function playQueue(items,label){stop();if(!ready())return;var id=serial,i=0;(function next(){if(id!==serial)return;clearHighlight();if(i===items.length){status.textContent=label+'完成';return}var it=items[i++];if(it.node){active=it.node;active.classList.add('is-reading');active.scrollIntoView({block:'center',behavior:'auto'})}var u=mk(it.text);status.textContent=label+' '+i+' / '+items.length;u.onend=next;u.onerror=function(e){if(id===serial){clearHighlight();serial++;status.textContent='播放停止：'+e.error}};speechSynthesis.speak(u)})()}
+document.addEventListener('click',function(e){var hb=e.target.closest('[data-hint]');if(hb){var h=document.getElementById('h'+hb.dataset.hint);if(h){h.classList.toggle('open');hb.textContent=h.classList.contains('open')?'收起提示':'给我提示'}return}
+var rb=e.target.closest('[data-rhyme]');if(rb){var g=RHYMES[Number(rb.dataset.rhyme)];var q=g.words.map(function(w){return{text:w[0],node:null}});q.push({text:g.line,node:null});playQueue(q,'韵脚连听');return}
+var sp=e.target.closest('[data-speak]');if(sp){play(sp.dataset.speak,sp)}});
+document.getElementById('stop').addEventListener('click',stop);
+document.getElementById('stop-bottom').addEventListener('click',stop);
+function playAll(){var list=[].slice.call(document.querySelectorAll('#poem .line')).map(function(el){return{text:el.dataset.speak,node:el}});playQueue(list,'全诗朗读')}
+document.getElementById('all').addEventListener('click',playAll);
+document.getElementById('all-bottom').addEventListener('click',playAll);
+if(available()){speechSynthesis.addEventListener('voiceschanged',voices);voices()}else ready();
+window.addEventListener('pagehide',stop);
+</script></body></html>
