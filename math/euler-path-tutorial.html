@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>一笔画问题 · 解题技巧动画讲解</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#fdf6ec;color:#2d2620;font-family:system-ui,'PingFang SC','Microsoft YaHei',sans-serif;line-height:1.55;overflow:hidden}
+.top{position:fixed;top:0;left:0;right:0;height:48px;background:#fff;border-bottom:1px solid #eadcc8;display:flex;align-items:center;gap:8px;padding:0 10px;z-index:5}
+.top a{color:#b8550d;font-weight:700;text-decoration:none;white-space:nowrap;font-size:14px}
+.top select{min-width:0;flex:1;max-width:190px;padding:5px;border:1px solid #cfb08a;border-radius:8px;background:#fff;font-size:12px}
+.top .rate{flex:0 0 auto;max-width:86px}
+#counter{margin-left:auto;font-size:13px;color:#8a7560;font-weight:700;white-space:nowrap}
+.stage{position:fixed;top:48px;bottom:62px;left:0;right:0;overflow:hidden}
+.page{position:absolute;inset:0;display:none;flex-direction:column;gap:10px;padding:14px 16px 10px;overflow-y:auto;max-width:640px;margin:0 auto}
+.page.active{display:flex}
+.chip{align-self:flex-start;font-size:13px;font-weight:800;color:#fff;background:#e67e22;border-radius:14px;padding:3px 12px}
+h2{font-size:24px;color:#7a4410;line-height:1.3}
+.note{font-size:15px;color:#6a5a4b}
+.graph svg{width:100%;max-width:380px;display:block;margin:0 auto}
+.cap{margin-top:auto;background:#fff;border:1px solid #ead6be;border-left:5px solid #e67e22;border-radius:12px;padding:10px 12px;font-size:16px;color:#4a3d31;min-height:52px}
+.bar{position:fixed;bottom:0;left:0;right:0;height:62px;background:#fff;border-top:1px solid #eadcc8;display:flex;gap:6px;align-items:center;justify-content:center;padding:0 6px;z-index:5}
+.bar button{flex:1;max-width:120px;border:0;border-radius:12px;padding:11px 4px;font-size:14px;font-weight:700;cursor:pointer;background:#f3e6d4;color:#7a4410}
+.bar button.main{background:#e67e22;color:#fff}
+button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid #804317;outline-offset:3px}
+#status{position:fixed;bottom:62px;left:0;right:0;text-align:center;font-size:12px;color:#8a7560;pointer-events:none;padding:2px}
+/* 封面 */
+.cover{justify-content:center;align-items:center;text-align:center;gap:18px}
+.cover h1{font-size:34px;color:#7a4410;line-height:1.25}
+.cover .sub{font-size:18px;color:#6a5a4b}
+.start{border:0;border-radius:40px;background:#e67e22;color:#fff;font-size:24px;font-weight:800;padding:18px 44px;cursor:pointer;animation:glow 1.6s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 #e67e2266}50%{box-shadow:0 0 0 16px #e67e2200}}
+.cover .tip{font-size:13px;color:#9a8672}
+/* 规则卡 */
+.rule{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid #ead6be;border-radius:14px;padding:10px 12px}
+.rule svg{flex:0 0 74px;width:74px;height:74px}
+.rule b{font-size:18px;display:block}
+.rule span{font-size:14px;color:#6a5a4b}
+.ok b{color:#1f8a4c}.no b{color:#c0392b}
+.box{background:#fff;border:1px solid #ead6be;border-radius:14px;padding:12px 14px;font-size:17px}
+.big{font-size:30px;font-weight:800;color:#c0392b;text-align:center}
+.stamp{align-self:center;border:3px solid #c0392b;color:#c0392b;font-size:20px;font-weight:800;border-radius:10px;padding:6px 16px;background:#fff5f3}
+.row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dashed #ecdcc6}
+.row:last-child{border-bottom:0}
+.row em{font-style:normal;font-weight:800;color:#c0392b}
+.verse{font-size:21px;font-weight:800;color:#7a4410;background:#fff;border-radius:12px;padding:10px 14px;border:1px solid #ead6be}
+.fine{font-size:12px;color:#8a7a68;line-height:1.6}
+/* 分步显隐：页面挂 s1…s9，元素挂 k1…k5 */
+.k1,.k2,.k3,.k4,.k5{opacity:0}
+.page.s1 .k1,.page.s2 .k2,.page.s3 .k3,.page.s4 .k4,.page.s5 .k5{animation:fade .6s ease forwards;animation-delay:var(--d,0s)}
+.page.s1 .out1,.page.s2 .out2,.page.s3 .out3,.page.s4 .out4,.page.s5 .out5{animation:fadeout .5s ease forwards}
+.draw1,.draw2,.draw3,.draw4,.draw5{stroke-dasharray:100;stroke-dashoffset:100}
+.page.s1 .draw1,.page.s2 .draw2,.page.s3 .draw3,.page.s4 .draw4,.page.s5 .draw5{animation:draw .9s ease forwards;animation-delay:var(--d,0s)}
+.page.s2 .pulse2,.page.s5 .pulse5{animation:fade .5s ease forwards,ring 1.3s ease-in-out .5s infinite}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes fadeout{from{opacity:1}to{opacity:0}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes ring{0%,100%{stroke-width:3}50%{stroke-width:8}}
+</style></head><body>
+<header class="top"><a href="index.html">返回</a><select id="voice" aria-label="普通话语音"><option value="">自动：优先晓晓 Edge 自然语音</option></select><select id="rate" class="rate" aria-label="语速"><option value="0.85">慢速</option><option value="1" selected>标准</option><option value="1.15">稍快</option></select><span id="counter">1 / 9</span></header>
+<main class="stage">
+<section class="page cover" data-p="0">
+  <h1>一笔画问题<br>解题技巧</h1>
+  <div class="sub">从欧拉的七桥问题，学会三步判断</div>
+  <button class="start" id="startBtn" type="button">开始讲解</button>
+  <div class="tip">默认使用 Edge 普通话自然语音（晓晓）<br>请用 Edge 浏览器打开，并打开声音</div>
+  <div class="cap"></div>
+</section>
+
+<section class="page" data-p="1">
+  <span class="chip k1">第一步</span>
+  <h2 class="k1">把图变成「点」和「线」</h2>
+  <div class="graph" data-mode="draw"></div>
+  <p class="note k4">形状、长短都不用管，只看谁和谁连着。</p>
+  <div class="cap"></div>
+</section>
+
+<section class="page" data-p="2">
+  <span class="chip k1">第二步</span>
+  <h2 class="k1">数一数：每个点连着几条线</h2>
+  <div class="graph" data-mode="deg"></div>
+  <div class="box k4"><div class="row"><span>5 + 3 + 3 + 3</span><em>= 14</em></div><div class="row"><span>7 座桥 × 2</span><em>= 14</em></div><div class="row"><span>两边相等</span><em>数对了</em></div></div>
+  <div class="cap"></div>
+</section>
+
+<section class="page" data-p="3">
+  <span class="chip k1">第三步</span>
+  <h2 class="k1">看「奇点」有几个</h2>
+  <p class="note k1">连着<b>单数</b>条线的点，叫奇点（下图橙色圆点）。</p>
+  <div class="rule ok k2"><svg viewBox="0 0 80 80" aria-hidden="true"><rect x="12" y="12" width="56" height="56" fill="none" stroke="#8a6a4a" stroke-width="4"/></svg><div><b>0 个奇点：能</b><span>还能回到起点（如「口」字）</span></div></div>
+  <div class="rule ok k3"><svg viewBox="0 0 80 80" aria-hidden="true"><rect x="20" y="8" width="40" height="64" fill="none" stroke="#8a6a4a" stroke-width="4"/><line x1="20" y1="40" x2="60" y2="40" stroke="#8a6a4a" stroke-width="4"/><circle cx="20" cy="40" r="6" fill="#f39c12"/><circle cx="60" cy="40" r="6" fill="#f39c12"/></svg><div><b>2 个奇点：能</b><span>从一个奇点出发，到另一个奇点结束（如「日」字）</span></div></div>
+  <div class="rule no k4"><svg viewBox="0 0 80 80" aria-hidden="true"><rect x="10" y="10" width="60" height="60" fill="none" stroke="#8a6a4a" stroke-width="4"/><line x1="40" y1="10" x2="40" y2="70" stroke="#8a6a4a" stroke-width="4"/><line x1="10" y1="40" x2="70" y2="40" stroke="#8a6a4a" stroke-width="4"/><circle cx="40" cy="10" r="6" fill="#f39c12"/><circle cx="40" cy="70" r="6" fill="#f39c12"/><circle cx="10" cy="40" r="6" fill="#f39c12"/><circle cx="70" cy="40" r="6" fill="#f39c12"/></svg><div><b>4 个或更多：不能</b><span>怎么画都要抬笔（如「田」字）</span></div></div>
+  <div class="cap"></div>
+</section>
+<section class="page" data-p="4">
+  <span class="chip k1">回到七桥</span>
+  <h2 class="k1">四块陆地，全是奇点</h2>
+  <div class="graph" data-mode="odd"></div>
+  <div class="stamp k3">4 个奇点 · 不能一笔画</div>
+  <p class="note k3">1736 年，欧拉就是这样数出来、证明了不可能。</p>
+  <div class="cap"></div>
+</section>
+
+<section class="page" data-p="5">
+  <span class="chip k1">一定要走完？</span>
+  <h2 class="k1">补走一座桥：两头都是奇点、又最短</h2>
+  <div class="graph" data-mode="fix"></div>
+  <p class="note k2">重复走一座桥，它两头的点，都会从<b>单数</b>变成<b>双数</b>。</p>
+  <div class="box k5">只剩 <b>B、D</b> 是奇点：从 <b>D 岛</b>出发，到 <b>B</b> 结束。</div>
+  <div class="cap"></div>
+</section>
+
+<section class="page" data-p="6">
+  <span class="chip k1">算路程</span>
+  <h2 class="k1">一共至少走多少米？</h2>
+  <div class="box k2"><div class="row"><span>七座桥全长</span></div><div class="row"><span>10+12+14+16+18+20+22</span><em>= 112</em></div></div>
+  <div class="box k3"><div class="row"><span>再加重复的那座</span><em>+ 10</em></div><div class="big">122 米</div></div>
+  <div class="box k4"><div class="row"><span>问「至少<b>重复</b>多少米」</span><em>答 10</em></div><div class="row"><span>问「至少<b>一共</b>走多少米」</span><em>答 122</em></div></div>
+  <div class="cap"></div>
+</section>
+
+<section class="page" data-p="7">
+  <span class="chip k1">口诀</span>
+  <h2 class="k1">记住这四句</h2>
+  <div class="verse k2">化点线，数奇点</div>
+  <div class="verse k3">零个能回来，两个能走通，四个走不通</div>
+  <div class="verse k4">走不通，补最短的桥，两头必须是奇点</div>
+  <div class="verse k5">交卷前问一句：要重复的，还是一共的？</div>
+  <div class="cap"></div>
+</section>
+
+<section class="page cover" data-p="8">
+  <h1 class="k1">先数奇点<br>再动笔</h1>
+  <div class="sub k1">一笔画问题 · 解题技巧</div>
+  <p class="fine k1">Coco Learning · 数学思维<br>七桥长度取自练习题；图形为自绘示意，讲解文字自行编写。</p>
+  <div class="cap"></div>
+</section>
+</main>
+<div id="status" role="status" aria-live="polite"></div>
+<nav class="bar"><button type="button" id="prev">上一页</button><button type="button" id="thisPage">讲这页</button><button type="button" class="main" id="playAll">从头连播</button><button type="button" id="stop">停止</button><button type="button" id="next">下一页</button></nav>
+<script>
+var NARR=[
+ ["今天我们来学一笔画问题的解题技巧。","学会以后，不用一条一条去试，数一数就知道能不能走完。"],
+ ["第一步，把图变成点和线。","每一块陆地，变成一个点。","每一座桥，变成一条线。","形状和长短都不用管，只看谁和谁连着。"],
+ ["第二步，数一数每个点连着几条线。","A 连着五条线。","B、C、D，各连着三条线。","检查一下：五加三加三加三，等于十四，正好是七座桥乘以二。数对了，才能往下做。"],
+ ["第三步，看奇点有几个。连着单数条线的点，叫做奇点。","奇点有零个，能一笔画完，还能回到起点。","奇点有两个，也能画完，但要从一个奇点出发，到另一个奇点结束。","奇点有四个或更多，就不能一笔画。"],
+ ["回到七桥问题。","A、B、C、D 四个点，全是奇点。","四个奇点，所以不能一笔画。一七三六年，欧拉就是这样证明的。"],
+ ["如果一定要把桥都走完，就得有一座桥走两遍。","重复走一座桥，它两头的点，都会从单数变成双数。","所以要选两头都是奇点、又最短的桥：十米的这一座。","走两遍以后，A 变成六，C 变成四，都成了双数。","只剩 B 和 D 是奇点，就能从 D 岛出发，走到 B 结束。"],
+ ["最后算路程。","七座桥加起来，是一百一十二米。","再加上重复的十米，一共一百二十二米。","注意看清题目：问的是一共要走多少米，不是重复了多少米。"],
+ ["记住口诀。","化点线，数奇点。","零个能回来，两个能走通，四个走不通。","走不通，就补最短的桥，两头必须是奇点。","交卷前再问一句：要的是重复的，还是一共的？"],
+ ["今天的一笔画技巧就讲到这里。下次遇到走桥、画图的题，先数奇点，再动笔。"]
+];
+var V={A:[45,125],B:[185,215],C:[185,35],D:[320,125]};
+var E=[["M45,125 Q55,30 185,35",100,70,"10"],["M45,125 Q140,100 185,35",142,86,"14"],["M45,125 L320,125",232,117,"22"],["M45,125 Q140,150 185,215",142,168,"16"],["M45,125 Q55,220 185,215",70,212,"12"],["M185,35 L320,125",264,72,"18"],["M185,215 L320,125",264,186,"20"]];
+var BP={A:[22,98],B:[212,236],C:[212,18],D:[341,100]};
+var DEG={A:5,B:3,C:3,D:3};
+function badge(v,n,color,cls){var p=BP[v];return '<g class="'+cls+'"><circle cx="'+p[0]+'" cy="'+p[1]+'" r="11" fill="'+color+'"/><text x="'+p[0]+'" y="'+(p[1]+5)+'" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">'+n+'</text></g>'}
+function graph(mode){
+ var s='<svg viewBox="0 0 360 250" role="img" aria-label="七桥问题示意图：A、B、C、D 四块陆地与七座桥">';
+ if(mode==='fix'){s+='<path d="M45,125 Q55,30 185,35" fill="none" stroke="#f39c12" stroke-width="9" stroke-linecap="round" class="k3"/>';}
+ E.forEach(function(e,i){var c=(mode==='draw')?' class="draw3" style="--d:'+(i*0.18)+'s"':'';s+='<path d="'+e[0]+'" pathLength="100" fill="none" stroke="#8a6a4a" stroke-width="3"'+c+'/>';});
+ if(mode==='fix'){s+='<path d="M45,125 Q30,10 185,35" pathLength="100" fill="none" stroke="#e67e22" stroke-width="3" stroke-dasharray="6 5" class="k3" style="--d:.5s"/><text x="100" y="22" font-size="13" font-weight="800" fill="#e67e22" class="k3" style="--d:.8s">走两遍</text>';
+  E.forEach(function(e){s+='<text x="'+e[1]+'" y="'+e[2]+'" text-anchor="middle" font-size="13" font-weight="700" fill="#7a4410" paint-order="stroke" stroke="#fdf6ec" stroke-width="4">'+e[3]+'</text>';});}
+ Object.keys(V).forEach(function(k){var p=V[k],cls=(mode==='draw')?' class="k2"':'';
+  s+='<g'+cls+'><circle cx="'+p[0]+'" cy="'+p[1]+'" r="14" fill="#fff" stroke="#5a4636" stroke-width="3"/>';
+  if(mode==='odd')s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="14" fill="#f39c12" stroke="#c0392b" stroke-width="3" class="pulse2"/>';
+  if(mode==='fix'&&(k==='B'||k==='D'))s+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="14" fill="#f39c12" stroke="#c0392b" stroke-width="3" class="pulse5"/>';
+  s+='<text x="'+p[0]+'" y="'+(p[1]+6)+'" text-anchor="middle" font-size="16" font-weight="800" fill="#2d2620">'+k+'</text></g>';});
+ if(mode==='deg'){s+=badge('A',5,'#f39c12','k2');['B','C','D'].forEach(function(k,i){s+=badge(k,3,'#f39c12','k3').replace('class="k3"','class="k3" style="--d:'+(i*0.35)+'s"')});}
+ if(mode==='odd'){Object.keys(DEG).forEach(function(k){s+=badge(k,DEG[k],'#f39c12','k2')});}
+ if(mode==='fix'){s+=badge('B',3,'#f39c12','')+badge('D',3,'#f39c12','')+badge('A',5,'#f39c12','out4')+badge('C',3,'#f39c12','out4')+badge('A',6,'#27ae60','k4')+badge('C',4,'#27ae60','k4');}
+ return s+'</svg>';
+}
+[].forEach.call(document.querySelectorAll('.graph'),function(g){g.innerHTML=graph(g.dataset.mode)});
+
+var pages=[].slice.call(document.querySelectorAll('.page')),cur=0,serial=0;
+var statusEl=document.getElementById('status'),voiceSel=document.getElementById('voice'),rateSel=document.getElementById('rate');
+var hasTTS=!!(window.speechSynthesis&&window.SpeechSynthesisUtterance);
+function setSteps(n,k){var p=pages[n];for(var i=1;i<=9;i++)p.classList.toggle('s'+i,i<=k)}
+function cap(n,t){var c=pages[n].querySelector('.cap');if(c)c.textContent=t}
+function go(n,full){n=Math.max(0,Math.min(pages.length-1,n));pages.forEach(function(p,i){p.classList.toggle('active',i===n);if(i!==n)setSteps(i,0)});cur=n;setSteps(n,0);void pages[n].offsetWidth;if(full){setSteps(n,9);cap(n,NARR[n].join(''))}else cap(n,'');document.getElementById('counter').textContent=(n+1)+' / '+pages.length}
+function zhVoices(){return hasTTS?speechSynthesis.getVoices().filter(function(v){return /^zh/i.test(v.lang)}):[]}
+function pickVoice(){var vs=zhVoices();if(voiceSel.value){var c=vs.filter(function(v){return v.voiceURI===voiceSel.value})[0];if(c)return c}
+ return vs.filter(function(v){return /Microsoft Xiaoxiao Online \(Natural\)/i.test(v.name)})[0]||vs.filter(function(v){return /Xiaoxiao/i.test(v.name)})[0]||vs.filter(function(v){return /Online \(Natural\)/i.test(v.name)&&/zh-CN/i.test(v.lang)})[0]||vs.filter(function(v){return /zh-CN/i.test(v.lang)})[0]||vs[0]||null}
+function fillVoices(){var keep=voiceSel.value;voiceSel.replaceChildren(new Option('自动：优先晓晓 Edge 自然语音',''));zhVoices().forEach(function(v){voiceSel.add(new Option(v.name,v.voiceURI))});voiceSel.value=keep}
+function say(text,cb,id){
+ if(!hasTTS){statusEl.textContent='此浏览器不支持朗读，已改为按字幕自动翻页';setTimeout(function(){if(id===serial)cb()},Math.max(1800,text.length*230));return}
+ var u=new SpeechSynthesisUtterance(text);u.lang='zh-CN';var v=pickVoice();if(v)u.voice=v;u.rate=Number(rateSel.value)||1;
+ statusEl.textContent='语音：'+(v?v.name:'系统默认');
+ u.onend=function(){if(id===serial)setTimeout(cb,350)};
+ u.onerror=function(e){if(id===serial){statusEl.textContent='语音中断：'+e.error+'，已按字幕继续';setTimeout(cb,Math.max(1500,text.length*200))}};
+ speechSynthesis.speak(u)}
+function playPage(n,done,id){go(n,false);var segs=NARR[n],i=0;(function next(){if(id!==serial)return;if(i>=segs.length){done&&done();return}i++;setSteps(n,i);cap(n,segs[i-1]);say(segs[i-1],next,id)})()}
+function halt(){serial++;if(hasTTS)speechSynthesis.cancel()}
+function stop(){halt();setSteps(cur,9);cap(cur,NARR[cur].join(''));statusEl.textContent='已停止'}
+function playFrom(n){halt();var id=serial;(function run(k){playPage(k,function(){if(k+1<pages.length)setTimeout(function(){if(id===serial)run(k+1)},500);else statusEl.textContent='讲解完成'},id)})(n)}
+document.getElementById('startBtn').addEventListener('click',function(){playFrom(1)});
+document.getElementById('playAll').addEventListener('click',function(){playFrom(0)});
+document.getElementById('thisPage').addEventListener('click',function(){halt();var id=serial;playPage(cur,function(){statusEl.textContent='本页讲完'},id)});
+document.getElementById('stop').addEventListener('click',stop);
+document.getElementById('prev').addEventListener('click',function(){halt();go(cur-1,true)});
+document.getElementById('next').addEventListener('click',function(){halt();go(cur+1,true)});
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){halt();go(cur+1,true)}if(e.key==='ArrowLeft'){halt();go(cur-1,true)}});
+if(hasTTS){speechSynthesis.addEventListener('voiceschanged',fillVoices);fillVoices()}else statusEl.textContent='此浏览器不支持朗读，请用 Edge 打开';
+window.addEventListener('pagehide',halt);
+go(0,true);
+</script></body></html>
