@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>算式谜 · 丸子 · 画图法动画讲解</title>
-<style>
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>算式谜第1期 · 丸子 | 画图法解题</title><style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{background:#fdf6ec;color:#2d2620;font-family:system-ui,'PingFang SC','Microsoft YaHei',sans-serif;line-height:1.55;overflow:hidden}
@@ -9,172 +8,140 @@ body{background:#fdf6ec;color:#2d2620;font-family:system-ui,'PingFang SC','Micro
 .top .rate{flex:0 0 auto;max-width:86px}
 #counter{margin-left:auto;font-size:13px;color:#8a7560;font-weight:700;white-space:nowrap}
 .stage{position:fixed;top:48px;bottom:62px;left:0;right:0;overflow:hidden}
-.page{position:absolute;inset:0;display:none;flex-direction:column;gap:9px;padding:12px 16px 10px;overflow-y:auto;max-width:640px;margin:0 auto}
+.page{position:absolute;inset:0;display:none;flex-direction:column;gap:10px;padding:14px 16px 10px;overflow-y:auto;max-width:640px;margin:0 auto}
 .page.active{display:flex}
 .chip{align-self:flex-start;font-size:13px;font-weight:800;color:#fff;background:#e67e22;border-radius:14px;padding:3px 12px}
-h2{font-size:22px;color:#7a4410;line-height:1.3}
+h2{font-size:24px;color:#7a4410;line-height:1.3}
 .note{font-size:15px;color:#6a5a4b}
-.graph svg{width:100%;max-width:380px;max-height:220px;display:block;margin:0 auto}
-.graph.sm svg{max-height:120px}
-.cap{margin-top:auto;background:#fff;border:1px solid #ead6be;border-left:5px solid #e67e22;border-radius:12px;padding:9px 12px;font-size:15px;color:#4a3d31;min-height:50px}
+.graph svg{width:100%;max-width:380px;display:block;margin:0 auto}
+.cap{margin-top:auto;background:#fff;border:1px solid #ead6be;border-left:5px solid #e67e22;border-radius:12px;padding:10px 12px;font-size:16px;color:#4a3d31;min-height:52px}
 .bar{position:fixed;bottom:0;left:0;right:0;height:62px;background:#fff;border-top:1px solid #eadcc8;display:flex;gap:6px;align-items:center;justify-content:center;padding:0 6px;z-index:5}
 .bar button{flex:1;max-width:120px;border:0;border-radius:12px;padding:11px 4px;font-size:14px;font-weight:700;cursor:pointer;background:#f3e6d4;color:#7a4410}
 .bar button.main{background:#e67e22;color:#fff}
 button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid #804317;outline-offset:3px}
 #status{position:fixed;bottom:62px;left:0;right:0;text-align:center;font-size:12px;color:#8a7560;pointer-events:none;padding:2px}
+/* 封面 */
 .cover{justify-content:center;align-items:center;text-align:center;gap:18px}
 .cover h1{font-size:34px;color:#7a4410;line-height:1.25}
 .cover .sub{font-size:18px;color:#6a5a4b}
 .start{border:0;border-radius:40px;background:#e67e22;color:#fff;font-size:24px;font-weight:800;padding:18px 44px;cursor:pointer;animation:glow 1.6s ease-in-out infinite}
-@keyframes glow{0%,100%{box-shadow:0 0 0 0 #e67e2266;background:#e67e22}50%{box-shadow:0 0 0 16px #e67e2200;background:#f08c2e}}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 #e67e2266}50%{box-shadow:0 0 0 16px #e67e2200}}
 .cover .tip{font-size:13px;color:#9a8672}
-.box{background:#fff;border:1px solid #ead6be;border-radius:14px;padding:9px 14px;font-size:16px}
-.big{font-size:28px;font-weight:800;color:#c0392b;text-align:center}
-.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:5px 0;border-bottom:1px dashed #ecdcc6}
+/* 规则卡 */
+.rule{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid #ead6be;border-radius:14px;padding:10px 12px}
+.rule svg{flex:0 0 74px;width:74px;height:74px}
+.rule b{font-size:18px;display:block}
+.rule span{font-size:14px;color:#6a5a4b}
+.ok b{color:#1f8a4c}.no b{color:#c0392b}
+.box{background:#fff;border:1px solid #ead6be;border-radius:14px;padding:12px 14px;font-size:17px}
+.big{font-size:30px;font-weight:800;color:#c0392b;text-align:center}
+.stamp{align-self:center;border:3px solid #c0392b;color:#c0392b;font-size:20px;font-weight:800;border-radius:10px;padding:6px 16px;background:#fff5f3}
+.row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dashed #ecdcc6}
 .row:last-child{border-bottom:0}
-.row em{font-style:normal;font-weight:800;color:#c0392b;white-space:nowrap}
-.row em.g{color:#1f8a4c}
-.ic{width:1.05em;height:1.05em;vertical-align:-.18em}
-.verse{font-size:19px;font-weight:800;color:#7a4410;background:#fff;border-radius:12px;padding:9px 14px;border:1px solid #ead6be}
+.row em{font-style:normal;font-weight:800;color:#c0392b}
+.verse{font-size:21px;font-weight:800;color:#7a4410;background:#fff;border-radius:12px;padding:10px 14px;border:1px solid #ead6be}
 .fine{font-size:12px;color:#8a7a68;line-height:1.6}
-.src{font-size:12px;color:#9a8672}
-.k1,.k2,.k3,.k4,.k5,.k6,.k7,.k8{opacity:0}
-.page.s1 .k1,.page.s2 .k2,.page.s3 .k3,.page.s4 .k4,.page.s5 .k5,.page.s6 .k6,.page.s7 .k7,.page.s8 .k8{animation:fade .6s ease forwards;animation-delay:var(--d,0s)}
-.page.s1 .out1,.page.s2 .out2,.page.s3 .out3,.page.s4 .out4,.page.s5 .out5,.page.s6 .out6,.page.s7 .out7,.page.s8 .out8{animation:fadeout .5s ease forwards;animation-delay:var(--d,0s)}
-.draw1,.draw2,.draw3,.draw4,.draw5,.draw6,.draw7,.draw8{stroke-dasharray:100;stroke-dashoffset:100}
-.page.s1 .draw1,.page.s2 .draw2,.page.s3 .draw3,.page.s4 .draw4,.page.s5 .draw5,.page.s6 .draw6,.page.s7 .draw7,.page.s8 .draw8{animation:draw .8s ease forwards;animation-delay:var(--d,0s)}
+/* 分步显隐：页面挂 s1…s9，元素挂 k1…k5 */
+.k1,.k2,.k3,.k4,.k5,.k6,.k7{opacity:0}
+.page.s1 .k1,.page.s2 .k2,.page.s3 .k3,.page.s4 .k4,.page.s5 .k5,.page.s6 .k6,.page.s7 .k7{animation:fade .6s ease forwards;animation-delay:var(--d,0s)}
+.page.s1 .out1,.page.s2 .out2,.page.s3 .out3,.page.s4 .out4,.page.s5 .out5,.page.s6 .out6{animation:fadeout .5s ease forwards}
+.draw1,.draw2,.draw3,.draw4,.draw5{stroke-dasharray:100;stroke-dashoffset:100}
+.page.s1 .draw1,.page.s2 .draw2,.page.s3 .draw3,.page.s4 .draw4,.page.s5 .draw5{animation:draw .9s ease forwards;animation-delay:var(--d,0s)}
+.page.s2 .pulse2,.page.s5 .pulse5{animation:fade .5s ease forwards,ring 1.3s ease-in-out .5s infinite}
 @keyframes fade{from{opacity:0}to{opacity:1}}
-@keyframes fadeout{from{opacity:1}to{opacity:.18}}
+@keyframes fadeout{from{opacity:1}to{opacity:0}}
 @keyframes draw{to{stroke-dashoffset:0}}
+@keyframes ring{0%,100%{stroke-width:3}50%{stroke-width:8}}
+
+.eq{font-size:26px;font-weight:800;text-align:center;letter-spacing:2px;color:#4a3420;background:#fff;border:1px solid #ead6be;border-radius:14px;padding:12px 6px}
+.eq small{display:block;font-size:14px;font-weight:600;color:#8a7560;letter-spacing:0;margin-top:4px}
+.scale{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end}
+.pan{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:flex-end;min-height:70px;padding:8px 4px;border-bottom:5px solid #8a6a4a;background:#fffaf2;border-radius:12px 12px 0 0}
+.pan-l{font-size:12px;color:#8a7560;text-align:center;margin-top:3px}
+.fulcrum{display:block;margin:-2px auto 0;width:90px;height:34px}
+.blk{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:42px;padding:0 6px;border-radius:9px;font-weight:800;font-size:19px;color:#fff;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.c1{background:#e67e22}.c2{background:#3f7a4c}.c3{background:#6a5acd}.c4{background:#c0392b}.c5{background:#2e86c1}
+.bundle{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:62px;height:62px;border-radius:10px;background:#fbe9c6;border:2px dashed #b8550d;color:#7a4410;font-weight:800;font-size:15px;line-height:1.2}
+.bundle i{font-style:normal;font-size:11px;font-weight:600}
+.try{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #ead6be;border-radius:12px;padding:10px 12px;font-size:16px}
+.try svg{flex:0 0 26px;width:26px;height:26px}
+.try b{color:#7a4410}
+.tip{background:#fff3e0;border:2px solid #e67e22;border-radius:14px;padding:12px 14px;font-size:18px;font-weight:700;color:#7a4410;line-height:1.6}
+.cross{text-decoration:line-through;text-decoration-thickness:3px;text-decoration-color:#c0392b}
 </style></head><body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-<symbol id="ok" viewBox="0 0 20 20"><path d="M3 10.5 L8 15.5 L17 4.5" fill="none" stroke="#1f8a4c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-<symbol id="no" viewBox="0 0 20 20"><path d="M4 4 L16 16 M16 4 L4 16" fill="none" stroke="#c0392b" stroke-width="3" stroke-linecap="round"/></symbol>
-<symbol id="ar" viewBox="0 0 24 20"><path d="M2 10 L21 10 M14 3 L21 10 L14 17" fill="none" stroke="#b8550d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-</defs></svg>
 <header class="top"><a href="index.html">返回</a><select id="voice" aria-label="普通话语音"><option value="">自动：优先晓晓 Edge 自然语音</option></select><select id="rate" class="rate" aria-label="语速"><option value="0.85">慢速</option><option value="1" selected>标准</option><option value="1.15">稍快</option></select><span id="counter">1 / 9</span></header>
 <main class="stage">
 <section class="page cover" data-p="0">
-  <h1>算式谜 · 丸子</h1>
-  <div class="sub">画图法：一架天平，几捆小棒</div>
+  <h1>算式谜 · 丸子<br>画图法解题</h1>
+  <div class="sub">用"天平"和"小棒"，一步一步看懂</div>
   <button class="start" id="startBtn" type="button">开始讲解</button>
   <div class="tip">默认使用 Edge 普通话自然语音（晓晓）<br>请用 Edge 浏览器打开，并打开声音</div>
   <div class="cap"></div>
 </section>
-
 <section class="page" data-p="1">
   <span class="chip k1">题目</span>
-  <h2 class="k1">小 + 小 + 丸 + 丸 + 丸 + 子 = 丸子</h2>
-  <div class="graph sm k2" data-g="q"></div>
-  <div class="box k3">小、丸、子 分别是 <b>2、7、9</b> 中的一个，谁也不重复。</div>
-  <div class="box k4">「丸子」是<b>两位数</b>：十位是丸，个位是子。</div>
-  <p class="src k1">题目取自练习题，图示为自绘，讲解文字自行编写。</p>
+  <div class="eq k2">小＋小＋丸＋丸＋丸＋子 ＝ 丸子</div>
+  <p class="note k3">小、丸、子分别是 <b>2、7、9</b> 中的一个，相同的字是相同的数。</p>
+  <div class="tip k4">"丸子"是一个<b>两位数</b>：十位是丸，个位是子。</div>
   <div class="cap"></div>
 </section>
-
 <section class="page" data-p="2">
   <span class="chip k1">第一步</span>
-  <h2 class="k1">等号就像一架天平</h2>
-  <div class="graph" data-g="bal"></div>
-  <p class="note k3">1 捆 = 10 根。丸子 = 丸捆小棒 + 子根小棒。</p>
-  <p class="note k4">天平是平的：两边一样重。</p>
+  <h2 class="k1">等号就是一架天平</h2>
+  <div class="scale"><div><div class="pan k2"><span class="blk c1">小</span><span class="blk c1">小</span><span class="blk c2">丸</span><span class="blk c2">丸</span><span class="blk c2">丸</span><span class="blk c3">子</span></div><div class="pan-l">左边</div></div>
+  <div><div class="pan k3"><span class="bundle">丸捆<i>十位</i></span><span class="blk c3">子</span></div><div class="pan-l">右边：丸子</div></div></div><svg class="fulcrum" viewBox="0 0 90 34" aria-hidden="true"><path d="M45 2 L70 32 L20 32 Z" fill="#8a6a4a"/></svg>
   <div class="cap"></div>
 </section>
-
 <section class="page" data-p="3">
   <span class="chip k1">第二步</span>
-  <h2 class="k1">两边各拿走一个「子」</h2>
-  <div class="graph" data-g="take"></div>
-  <div class="box k4"><div class="row"><span>左边剩</span><em>小 小 丸 丸 丸</em></div><div class="row"><span>右边剩</span><em>丸捆小棒（整十，没零头）</em></div></div>
+  <h2 class="k1">两边都有"子"，一起拿走</h2>
+  <div class="scale"><div><div class="pan"><span class="blk c1">小</span><span class="blk c1">小</span><span class="blk c2">丸</span><span class="blk c2">丸</span><span class="blk c2">丸</span><span class="blk c3 out2">子</span></div><div class="pan-l">左边</div></div>
+  <div><div class="pan"><span class="bundle">丸捆<i>十位</i></span><span class="blk c3 out2">子</span></div><div class="pan-l">右边</div></div></div><svg class="fulcrum" viewBox="0 0 90 34" aria-hidden="true"><path d="M45 2 L70 32 L20 32 Z" fill="#8a6a4a"/></svg>
+  <div class="tip k3">拿走以后：左边剩 小、小、丸、丸、丸；右边只剩<b>丸捆小棒，没有零头</b>。</div>
   <div class="cap"></div>
 </section>
-
 <section class="page" data-p="4">
   <span class="chip k1">第三步</span>
-  <h2 class="k1">试一试：丸 = 2</h2>
-  <div class="graph" data-g="try2"></div>
-  <div class="box"><div class="row k2"><span>右边 2 捆</span><em>20 根</em></div><div class="row k3"><span>三个丸 2+2+2</span><em>6 根</em></div><div class="row k4"><span>还差 20 - 6</span><em>14 根</em></div><div class="row k5"><span>14 根分两份，每份</span><em class="g">7 <svg class="ic"><use href="#ok"/></svg></em></div></div>
+  <h2 class="k1">右边是"几捆小棒"</h2>
+  <div class="try k2"><span class="bundle">1 捆<i>10 根</i></span><span>十根小棒捆成一捆</span></div>
+  <div class="try k3"><b>丸 = 2</b><span>右边就是 2 捆，一共 20 根</span></div>
+  <div class="tip k4">问题变成：左边五块积木，加起来能不能<b>正好凑成整捆</b>？</div>
   <div class="cap"></div>
 </section>
-
 <section class="page" data-p="5">
-  <span class="chip k1">再试</span>
-  <h2 class="k1">丸 = 7 行吗？丸 = 9 呢？</h2>
-  <div class="box"><div class="row k1"><span>丸 = 7：70 - 21</span><em>还差 49</em></div><div class="row k2"><span>49 分成一样多的两份</span><em>不行 <svg class="ic"><use href="#no"/></svg></em></div></div>
-  <div class="box k3"><div class="row"><span>丸 = 9：90 - 27</span><em>还差 63</em></div><div class="row"><span>63 分成一样多的两份</span><em>不行 <svg class="ic"><use href="#no"/></svg></em></div></div>
-  <div class="verse k4">两个一样的数相加，一定是双数！</div>
+  <span class="chip k1">第四步</span>
+  <h2 class="k1">先试 丸 = 2</h2>
+  <div class="try k2"><b>右边</b><span>2 捆 = 20 根</span></div>
+  <div class="try k3"><b>三个丸</b><span>2 + 2 + 2 = 6 根</span></div>
+  <div class="try k4"><b>还差</b><span>20 − 6 = 14 根，要由两个一样多的"小"来补</span></div>
+  <div class="try k5"><svg viewBox="0 0 26 26" aria-label="对"><circle cx="13" cy="13" r="12" fill="#1f8a4c"/><path d="M7 13.5 L11.5 18 L19.5 9" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>14 平均分成两份，每份 <b>7</b>；7 正好在 2、7、9 里！</span></div>
   <div class="cap"></div>
 </section>
 <section class="page" data-p="6">
-  <span class="chip k1">答案</span>
-  <h2 class="k1">小 = 7，丸 = 2，子 = 9</h2>
-  <div class="graph sm k1" data-g="ans"></div>
-  <div class="box"><div class="row k2"><span>验算：7+7+2+2+2+9</span><em>= 29</em></div><div class="row k3"><span>正好是「丸子」</span><em class="g">29 <svg class="ic"><use href="#ok"/></svg></em></div></div>
+  <span class="chip k1">第五步</span>
+  <h2 class="k1">再试 丸 = 7 和 丸 = 9</h2>
+  <div class="try k2"><svg viewBox="0 0 26 26" aria-label="不对"><circle cx="13" cy="13" r="12" fill="#c0392b"/><path d="M8.5 8.5 L17.5 17.5 M17.5 8.5 L8.5 17.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg><span><b>丸 = 7</b>：右边 70，三个丸 21，还差 49，<b>分不成两份一样多</b></span></div>
+  <div class="try k3"><svg viewBox="0 0 26 26" aria-label="不对"><circle cx="13" cy="13" r="12" fill="#c0392b"/><path d="M8.5 8.5 L17.5 17.5 M17.5 8.5 L8.5 17.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg><span><b>丸 = 9</b>：右边 90，三个丸 27，还差 63，<b>也分不成</b></span></div>
+  <div class="tip k4">窍门：两个一样的数相加，一定是<b>双数</b>。49、63 是单数，直接排除。</div>
   <div class="cap"></div>
 </section>
-
 <section class="page" data-p="7">
-  <span class="chip k1">本期窍门</span>
-  <h2 class="k1">记住这三句</h2>
-  <div class="verse k2">等号是天平：两边拿走一样的，还是平的</div>
-  <div class="verse k3">两位数 = 几捆小棒 + 几根</div>
-  <div class="verse k4">两个一样的数相加，一定是双数</div>
+  <span class="chip k1">答案</span>
+  <div class="eq k2">小 = 7　丸 = 2　子 = 9</div>
+  <div class="try k3"><svg viewBox="0 0 26 26" aria-label="对"><circle cx="13" cy="13" r="12" fill="#1f8a4c"/><path d="M7 13.5 L11.5 18 L19.5 9" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>验算：7 + 7 + 2 + 2 + 2 + 9 = <b>29</b>，丸子就是 29</span></div>
   <div class="cap"></div>
 </section>
-
 <section class="page cover" data-p="8">
-  <h1 class="k1">先画天平<br>再动手算</h1>
-  <div class="sub k1">算式谜 · 丸子 · 画图法</div>
-  <p class="fine k1">Coco Learning · 数学思维<br>题目取自练习题，图示为自绘，讲解文字自行编写。</p>
+  <h1 class="k1">划掉两边一样的<br>再凑整十</h1>
+  <div class="sub k1">算式谜 · 第 1 期 · 丸子</div>
+  <p class="fine k1">Coco Learning · 数学思维<br>题目取自练习题；图示为自绘，讲解文字自行编写。</p>
   <div class="cap"></div>
 </section>
 </main>
 <div id="status" role="status" aria-live="polite"></div>
 <nav class="bar"><button type="button" id="prev">上一页</button><button type="button" id="thisPage">讲这页</button><button type="button" class="main" id="playAll">从头连播</button><button type="button" id="stop">停止</button><button type="button" id="next">下一页</button></nav>
 <script>
-/* 画图小工具：方块 T、文字 W、划掉 X、勾 OK、叉 NO、箭头 AR/AD、天平 BAL、一捆小棒 BD、一根小棒 ST */
-function A(c,d){return (c?' class="'+c+'"':'')+(d!=null?' style="--d:'+d+'s"':'')}
-function SV(w,h,label,inner){return '<svg viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+label+'">'+inner+'</svg>'}
-function T(x,y,ch,o){o=o||{};var s=o.s||32,w=o.w||s;return '<g'+A(o.c,o.d)+'><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+s+'" rx="7" fill="'+(o.f||'#fff3e0')+'" stroke="'+(o.k||'#c77b30')+'" stroke-width="2"/><text x="'+(x+w/2)+'" y="'+(y+s*0.72)+'" text-anchor="middle" font-size="'+(o.fs||Math.round(s*0.56))+'" font-weight="800" fill="'+(o.t||'#5a3410')+'">'+ch+'</text></g>'}
-function W(x,y,str,o){o=o||{};return '<text x="'+x+'" y="'+y+'" text-anchor="'+(o.a||'middle')+'" font-size="'+(o.fs||16)+'" font-weight="'+(o.fw||800)+'" fill="'+(o.f||'#7a4410')+'"'+A(o.c,o.d)+'>'+str+'</text>'}
-function X(x,y,s,c,d){return '<path d="M'+(x-3)+' '+(y-3)+' L'+(x+s+3)+' '+(y+s+3)+' M'+(x+s+3)+' '+(y-3)+' L'+(x-3)+' '+(y+s+3)+'" pathLength="100" fill="none" stroke="#d63031" stroke-width="4" stroke-linecap="round"'+A(c,d)+'/>'}
-function OK(x,y,s,c,d){return '<path d="M'+x+' '+(y+s*0.5)+' L'+(x+s*0.38)+' '+(y+s*0.88)+' L'+(x+s)+' '+(y+s*0.12)+'" pathLength="100" fill="none" stroke="#1f8a4c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"'+A(c,d)+'/>'}
-function NO(x,y,s,c,d){return '<path d="M'+x+' '+y+' L'+(x+s)+' '+(y+s)+' M'+(x+s)+' '+y+' L'+x+' '+(y+s)+'" pathLength="100" fill="none" stroke="#c0392b" stroke-width="5" stroke-linecap="round"'+A(c,d)+'/>'}
-function AR(x1,y,x2,c,d){return '<path d="M'+x1+' '+y+' L'+x2+' '+y+' M'+(x2-9)+' '+(y-7)+' L'+x2+' '+y+' L'+(x2-9)+' '+(y+7)+'" pathLength="100" fill="none" stroke="#b8550d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"'+A(c,d)+'/>'}
-function AD(x,y1,y2,c,d){return '<path d="M'+x+' '+y1+' L'+x+' '+y2+' M'+(x-7)+' '+(y2-9)+' L'+x+' '+y2+' L'+(x+7)+' '+(y2-9)+'" pathLength="100" fill="none" stroke="#b8550d" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"'+A(c,d)+'/>'}
-function BAL(c,y){y=y||128;return '<g'+A(c)+'><path d="M180 '+(y+4)+' L150 '+(y+62)+' L210 '+(y+62)+' Z" fill="#e8c9a0" stroke="#8a6a4a" stroke-width="3" stroke-linejoin="round"/><rect x="10" y="'+y+'" width="340" height="8" rx="4" fill="#8a6a4a"/><rect x="120" y="'+(y+62)+'" width="120" height="6" rx="3" fill="#8a6a4a"/><circle cx="180" cy="'+(y+4)+'" r="6" fill="#5a4636"/></g>'}
-function BD(x,y,c,d){var s='<g'+A(c,d)+'>';for(var i=0;i<10;i++)s+='<rect x="'+(x+i*4)+'" y="'+y+'" width="3" height="44" rx="1" fill="#d9a35b"/>';return s+'<rect x="'+(x-2)+'" y="'+(y+18)+'" width="43" height="7" rx="2" fill="#c0392b"/></g>'}
-function ST(x,y,c,d){return '<rect x="'+x+'" y="'+y+'" width="4" height="44" rx="1.5" fill="#d9a35b"'+A(c,d)+'/>'}
-function EQ(x,y,items,o){o=o||{};var s=o.s||32,g=o.g||6,out='';items.forEach(function(it){if(it==='+'||it==='='){out+=W(x+7,y+s*0.72,it,{fs:22,f:'#8a6a4a'});x+=14+g}else if(typeof it==='object'){var w=it.w||s;out+=T(x,y,it.t,{s:s,w:w,f:it.f,c:it.c,d:it.d,fs:it.fs});x+=w+g}else{out+=T(x,y,it,{s:s,f:o.f});x+=s+g}});return out}
-var NARR=[
- ["今天我们用画图法，来解一道算式谜：丸子。","不用乱猜，画一架天平，再画几捆小棒，答案自己就出来了。"],
- ["先看题目。","小加小，加丸加丸加丸，再加子，等于丸子。","小、丸、子，分别是二、七、九中的一个，谁也不重复。","注意，右边的丸子是一个两位数：十位是丸，个位是子。"],
- ["第一步，把等号想成一架天平。","左边放上：两个小，三个丸，还有一个子。","右边放上丸子。丸子是两位数，就是丸捆小棒，再加子根小棒。一捆是十根。","天平是平的，说明两边一样重。"],
- ["第二步，天平两边拿走一样的东西，天平还是平的。","左边拿走一个子。","右边也拿走子根小棒。","现在，左边剩下两个小、三个丸；右边只剩丸捆小棒，是整十，没有零头。"],
- ["第三步，丸只能是二、七、九。先试丸等于二。","右边是两捆小棒，二十根。","左边三个丸，二加二加二，是六根。","二十减六，还差十四根，要由两个小来补。","十四根平均分成两份，每份七根。小等于七，正好是剩下的数。成功！"],
- ["再试丸等于七。七十减去三个七，也就是二十一，还差四十九。","四十九是单数，分不成一样多的两份。不行。","丸等于九呢？九十减二十七，还差六十三，也是单数，不行。","记住：两个一样的数加起来，一定是双数。所以只有丸等于二能成功。"],
- ["所以答案是：小等于七，丸等于二，子等于九。","验算一下：七加七，加二加二加二，再加九，等于二十九。","正好是丸子，二十九。完全正确！"],
- ["记住本期窍门。","等号就是天平，两边拿走一样的东西，天平还是平的。","两位数，就是几捆小棒，再加几根。","两个一样的数相加，一定是双数。"],
- ["今天的丸子就解完了。下次遇到算式谜，先画天平，再画小棒。"]
-];
-var G={
- q:function(){return SV(372,64,'题目算式：小加小加丸加丸加丸加子等于丸子',EQ(2,4,['小','+','小','+','丸','+','丸','+','丸','+','子','=',{t:'丸子',w:56}],{s:30,g:4})+W(342,58,'两位数',{fs:12,f:'#c0392b',c:'k4'}))},
- bal:function(){return SV(360,200,'天平：左边两个小三个丸一个子，右边丸子',BAL('k1')+W(95,22,'左边',{fs:14,f:'#8a7560',c:'k1'})+W(265,22,'右边',{fs:14,f:'#8a7560',c:'k1'})
-  +T(30,58,'小',{c:'k2'})+T(68,58,'小',{c:'k2',d:.15})+T(106,58,'丸',{c:'k2',d:.3})+T(30,94,'丸',{c:'k2',d:.45})+T(68,94,'丸',{c:'k2',d:.6})+T(106,94,'子',{c:'k2',d:.75})
-  +T(232,26,'丸子',{s:30,w:64,c:'k3'})+AD(264,58,78,'draw3',.4)+BD(214,82,'k3',.8)+ST(300,82,'k3',1)+W(234,158,'丸捆',{fs:14,c:'k3',d:.8})+W(302,158,'子根',{fs:14,c:'k3',d:1}))},
- take:function(){return SV(360,200,'天平两边各拿走一个子',BAL('')
-  +T(30,58,'小')+T(68,58,'小')+T(106,58,'丸')+T(30,94,'丸')+T(68,94,'丸')+T(106,94,'子',{c:'out2',d:.6})+X(106,94,32,'draw2')
-  +BD(214,82,'')+ST(300,82,'out3',.6)+X(290,88,24,'draw3')+W(234,158,'丸捆',{fs:14})+W(302,158,'子根',{fs:14,c:'out3',d:.6})
-  +W(234,72,'整十',{fs:15,f:'#1f8a4c',c:'k4'}))},
- try2:function(){var g={f:'#ffe7c2'};return SV(360,200,'试丸等于二：左边三个二，右边两捆小棒',BAL('k1')
-  +T(49,58,'小',{c:'k1'})+T(87,58,'小',{c:'k1'})+T(30,94,'2',{f:'#ffe7c2',c:'k1'})+T(68,94,'2',{f:'#ffe7c2',c:'k1'})+T(106,94,'2',{f:'#ffe7c2',c:'k1'})
-  +BD(222,82,'k2')+BD(276,82,'k2',.3)+W(262,160,'20 根',{fs:15,c:'k2'})
-  +W(87,160,'6 根',{fs:15,c:'k3'})
-  +W(85,46,'还差 14 根',{fs:15,f:'#c0392b',c:'k4'})
-  +T(49,58,'7',{f:'#d8f3e0',k:'#1f8a4c',t:'#1f8a4c',c:'k5'})+T(87,58,'7',{f:'#d8f3e0',k:'#1f8a4c',t:'#1f8a4c',c:'k5',d:.2})+OK(312,18,32,'draw5',.4))},
- ans:function(){var s='',L=[['小','7'],['丸','2'],['子','9']];L.forEach(function(p,i){var x=20+i*120;s+=T(x,8,p[0])+W(x+47,32,'=',{fs:22,f:'#8a6a4a'})+T(x+62,8,p[1],{f:'#d8f3e0',k:'#1f8a4c',t:'#1f8a4c'})});return SV(360,50,'答案：小等于7，丸等于2，子等于9',s)}
-};
-[].forEach.call(document.querySelectorAll('.graph[data-g]'),function(g){g.innerHTML=G[g.dataset.g]()});
+var NARR=[["今天我们用画图的方法，解一道汉字算式谜。", "不用死算，用天平和小棒，一看就懂。"], ["先看题目。", "小加小，加丸加丸加丸，再加子，等于丸子。", "小、丸、子，分别是二、七、九里的一个。", "注意，丸子是一个两位数：十位是丸，个位是子。"], ["等号就像一架天平，两边一样重。", "左边放上六块积木：两个小，三个丸，一个子。", "右边是两位数丸子：十位的丸，就是丸捆小棒；个位的子，就是子根小棒。"], ["两边都有一个子。", "天平两边拿走一样的东西，天平还是平的。", "拿走以后，左边剩下两个小、三个丸；右边只剩丸捆小棒，没有零头。"], ["二年级学过，十根小棒捆成一捆。", "如果丸是二，右边就是两捆，一共二十根。", "所以问题变成：左边这五块积木，加起来能不能正好凑成整捆。"], ["先试丸等于二。", "右边是两捆，二十根。", "左边三个丸，二加二加二，是六根。", "还差二十减六，十四根，要由两个一样多的小来补。", "十四平均分成两份，每份七。七正好在二、七、九里，成功！"], ["为了放心，再试一试别的。", "丸等于七：右边七十，三个丸是二十一，还差四十九，分不成两份一样多，不行。", "丸等于九：右边九十，三个丸是二十七，还差六十三，也分不成，不行。", "记住窍门：两个一样的数相加，一定是双数。"], ["所以，小等于七，丸等于二，剩下的子等于九。", "放回去验算：七加七加二加二加二加九，等于二十九，正好是丸子。"], ["今天的窍门：先把等号两边一样的划掉，再想右边是几捆小棒。下次遇到算式谜，试试这个办法。"]];
 var pages=[].slice.call(document.querySelectorAll('.page')),cur=0,serial=0;
 var statusEl=document.getElementById('status'),voiceSel=document.getElementById('voice'),rateSel=document.getElementById('rate');
 var hasTTS=!!(window.speechSynthesis&&window.SpeechSynthesisUtterance);
