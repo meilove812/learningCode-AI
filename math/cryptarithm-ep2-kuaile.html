@@ -1,0 +1,165 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>算式谜第2期 · 快乐学习 | 画图法解题</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:#fdf6ec;color:#2d2620;font-family:system-ui,'PingFang SC','Microsoft YaHei',sans-serif;line-height:1.55;overflow:hidden}
+.top{position:fixed;top:0;left:0;right:0;height:48px;background:#fff;border-bottom:1px solid #eadcc8;display:flex;align-items:center;gap:8px;padding:0 10px;z-index:5}
+.top a{color:#b8550d;font-weight:700;text-decoration:none;white-space:nowrap;font-size:14px}
+.top select{min-width:0;flex:1;max-width:190px;padding:5px;border:1px solid #cfb08a;border-radius:8px;background:#fff;font-size:12px}
+.top .rate{flex:0 0 auto;max-width:86px}
+#counter{margin-left:auto;font-size:13px;color:#8a7560;font-weight:700;white-space:nowrap}
+.stage{position:fixed;top:48px;bottom:62px;left:0;right:0;overflow:hidden}
+.page{position:absolute;inset:0;display:none;flex-direction:column;gap:10px;padding:14px 16px 10px;overflow-y:auto;max-width:640px;margin:0 auto}
+.page.active{display:flex}
+.chip{align-self:flex-start;font-size:13px;font-weight:800;color:#fff;background:#e67e22;border-radius:14px;padding:3px 12px}
+h2{font-size:24px;color:#7a4410;line-height:1.3}
+.note{font-size:15px;color:#6a5a4b}
+.graph svg{width:100%;max-width:380px;display:block;margin:0 auto}
+.cap{margin-top:auto;background:#fff;border:1px solid #ead6be;border-left:5px solid #e67e22;border-radius:12px;padding:10px 12px;font-size:16px;color:#4a3d31;min-height:52px}
+.bar{position:fixed;bottom:0;left:0;right:0;height:62px;background:#fff;border-top:1px solid #eadcc8;display:flex;gap:6px;align-items:center;justify-content:center;padding:0 6px;z-index:5}
+.bar button{flex:1;max-width:120px;border:0;border-radius:12px;padding:11px 4px;font-size:14px;font-weight:700;cursor:pointer;background:#f3e6d4;color:#7a4410}
+.bar button.main{background:#e67e22;color:#fff}
+button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid #804317;outline-offset:3px}
+#status{position:fixed;bottom:62px;left:0;right:0;text-align:center;font-size:12px;color:#8a7560;pointer-events:none;padding:2px}
+/* 封面 */
+.cover{justify-content:center;align-items:center;text-align:center;gap:18px}
+.cover h1{font-size:34px;color:#7a4410;line-height:1.25}
+.cover .sub{font-size:18px;color:#6a5a4b}
+.start{border:0;border-radius:40px;background:#e67e22;color:#fff;font-size:24px;font-weight:800;padding:18px 44px;cursor:pointer;animation:glow 1.6s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 #e67e2266}50%{box-shadow:0 0 0 16px #e67e2200}}
+.cover .tip{font-size:13px;color:#9a8672}
+/* 规则卡 */
+.rule{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid #ead6be;border-radius:14px;padding:10px 12px}
+.rule svg{flex:0 0 74px;width:74px;height:74px}
+.rule b{font-size:18px;display:block}
+.rule span{font-size:14px;color:#6a5a4b}
+.ok b{color:#1f8a4c}.no b{color:#c0392b}
+.box{background:#fff;border:1px solid #ead6be;border-radius:14px;padding:12px 14px;font-size:17px}
+.big{font-size:30px;font-weight:800;color:#c0392b;text-align:center}
+.stamp{align-self:center;border:3px solid #c0392b;color:#c0392b;font-size:20px;font-weight:800;border-radius:10px;padding:6px 16px;background:#fff5f3}
+.row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dashed #ecdcc6}
+.row:last-child{border-bottom:0}
+.row em{font-style:normal;font-weight:800;color:#c0392b}
+.verse{font-size:21px;font-weight:800;color:#7a4410;background:#fff;border-radius:12px;padding:10px 14px;border:1px solid #ead6be}
+.fine{font-size:12px;color:#8a7a68;line-height:1.6}
+/* 分步显隐：页面挂 s1…s9，元素挂 k1…k5 */
+.k1,.k2,.k3,.k4,.k5,.k6,.k7{opacity:0}
+.page.s1 .k1,.page.s2 .k2,.page.s3 .k3,.page.s4 .k4,.page.s5 .k5,.page.s6 .k6,.page.s7 .k7{animation:fade .6s ease forwards;animation-delay:var(--d,0s)}
+.page.s1 .out1,.page.s2 .out2,.page.s3 .out3,.page.s4 .out4,.page.s5 .out5,.page.s6 .out6{animation:fadeout .5s ease forwards}
+.draw1,.draw2,.draw3,.draw4,.draw5{stroke-dasharray:100;stroke-dashoffset:100}
+.page.s1 .draw1,.page.s2 .draw2,.page.s3 .draw3,.page.s4 .draw4,.page.s5 .draw5{animation:draw .9s ease forwards;animation-delay:var(--d,0s)}
+.page.s2 .pulse2,.page.s5 .pulse5{animation:fade .5s ease forwards,ring 1.3s ease-in-out .5s infinite}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes fadeout{from{opacity:1}to{opacity:0}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes ring{0%,100%{stroke-width:3}50%{stroke-width:8}}
+
+.eq{font-size:26px;font-weight:800;text-align:center;letter-spacing:2px;color:#4a3420;background:#fff;border:1px solid #ead6be;border-radius:14px;padding:12px 6px}
+.eq small{display:block;font-size:14px;font-weight:600;color:#8a7560;letter-spacing:0;margin-top:4px}
+.scale{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:end}
+.pan{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:flex-end;min-height:70px;padding:8px 4px;border-bottom:5px solid #8a6a4a;background:#fffaf2;border-radius:12px 12px 0 0}
+.pan-l{font-size:12px;color:#8a7560;text-align:center;margin-top:3px}
+.fulcrum{display:block;margin:-2px auto 0;width:90px;height:34px}
+.blk{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:42px;padding:0 6px;border-radius:9px;font-weight:800;font-size:19px;color:#fff;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.c1{background:#e67e22}.c2{background:#3f7a4c}.c3{background:#6a5acd}.c4{background:#c0392b}.c5{background:#2e86c1}
+.bundle{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:62px;height:62px;border-radius:10px;background:#fbe9c6;border:2px dashed #b8550d;color:#7a4410;font-weight:800;font-size:15px;line-height:1.2}
+.bundle i{font-style:normal;font-size:11px;font-weight:600}
+.try{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #ead6be;border-radius:12px;padding:10px 12px;font-size:16px}
+.try svg{flex:0 0 26px;width:26px;height:26px}
+.try b{color:#7a4410}
+.tip{background:#fff3e0;border:2px solid #e67e22;border-radius:14px;padding:12px 14px;font-size:18px;font-weight:700;color:#7a4410;line-height:1.6}
+.cross{text-decoration:line-through;text-decoration-thickness:3px;text-decoration-color:#c0392b}
+</style></head><body>
+<header class="top"><a href="index.html">返回</a><select id="voice" aria-label="普通话语音"><option value="">自动：优先晓晓 Edge 自然语音</option></select><select id="rate" class="rate" aria-label="语速"><option value="0.85">慢速</option><option value="1" selected>标准</option><option value="1.15">稍快</option></select><span id="counter">1 / 8</span></header>
+<main class="stage">
+<section class="page cover" data-p="0">
+  <h1>算式谜 · 快乐学习<br>画图法解题</h1>
+  <div class="sub">天平两边拿走一样的，答案自己跳出来</div>
+  <button class="start" id="startBtn" type="button">开始讲解</button>
+  <div class="tip">默认使用 Edge 普通话自然语音（晓晓）<br>请用 Edge 浏览器打开，并打开声音</div>
+  <div class="cap"></div>
+</section>
+<section class="page" data-p="1">
+  <span class="chip k1">题目</span>
+  <div class="eq k2">快＋乐＋学＋学 ＝ 学＋习</div>
+  <p class="note k3">快、乐、学、习分别代表 <b>0、1、2、3</b> 中的一个，不同的字是不同的数。</p>
+  <div class="tip k4">问题：<b>习</b>代表几？</div>
+  <div class="cap"></div>
+</section>
+<section class="page" data-p="2">
+  <span class="chip k1">第一步</span>
+  <h2 class="k1">等号就是一架天平</h2>
+  <div class="scale"><div><div class="pan k2"><span class="blk c1">快</span><span class="blk c5">乐</span><span class="blk c2">学</span><span class="blk c2">学</span></div><div class="pan-l">左边</div></div>
+  <div><div class="pan k3"><span class="blk c2">学</span><span class="blk c4">习</span></div><div class="pan-l">右边</div></div></div><svg class="fulcrum" viewBox="0 0 90 34" aria-hidden="true"><path d="M45 2 L70 32 L20 32 Z" fill="#8a6a4a"/></svg>
+  <div class="cap"></div>
+</section>
+<section class="page" data-p="3">
+  <span class="chip k1">第二步</span>
+  <h2 class="k1">两边都有"学"，各拿走一个</h2>
+  <div class="scale"><div><div class="pan"><span class="blk c1">快</span><span class="blk c5">乐</span><span class="blk c2">学</span><span class="blk c2 out2">学</span></div><div class="pan-l">左边</div></div>
+  <div><div class="pan"><span class="blk c2 out2">学</span><span class="blk c4">习</span></div><div class="pan-l">右边</div></div></div><svg class="fulcrum" viewBox="0 0 90 34" aria-hidden="true"><path d="M45 2 L70 32 L20 32 Z" fill="#8a6a4a"/></svg>
+  <div class="eq k3">快 ＋ 乐 ＋ 学 ＝ 习</div>
+  <div class="cap"></div>
+</section>
+<section class="page" data-p="4">
+  <span class="chip k1">第三步</span>
+  <h2 class="k1">三个数加起来，等于第四个数</h2>
+  <div class="tip k2">三个数加起来才等于"习"，所以"习"一定是<b>四个数里最大的</b>。</div>
+  <p class="note k3">四个数里最大的是 3，先试 习 = 3。</p>
+  <div class="cap"></div>
+</section>
+<section class="page" data-p="5">
+  <span class="chip k1">第四步</span>
+  <h2 class="k1">试一试</h2>
+  <div class="try k2"><svg viewBox="0 0 26 26" aria-label="对"><circle cx="13" cy="13" r="12" fill="#1f8a4c"/><path d="M7 13.5 L11.5 18 L19.5 9" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span><b>习 = 3</b>：剩下 0、1、2，0 + 1 + 2 = <b>3</b>，正好！</span></div>
+  <div class="try k3"><svg viewBox="0 0 26 26" aria-label="不对"><circle cx="13" cy="13" r="12" fill="#c0392b"/><path d="M8.5 8.5 L17.5 17.5 M17.5 8.5 L8.5 17.5" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg><span><b>习 = 2</b>：剩下 0、1、3，0 + 1 + 3 = 4，不等于 2</span></div>
+  <div class="cap"></div>
+</section>
+<section class="page" data-p="6">
+  <span class="chip k1">答案</span>
+  <div class="eq k2">习 ＝ 3</div>
+  <div class="tip k3">小陷阱：快、乐、学谁是 0、谁是 1、谁是 2，<b>定不下来，也不需要</b>。题目只问"习"。</div>
+  <div class="cap"></div>
+</section>
+<section class="page cover" data-p="7">
+  <h1 class="k1">先划掉相同的<br>再找最大的</h1>
+  <div class="sub k1">算式谜 · 第 2 期 · 快乐学习</div>
+  <p class="fine k1">Coco Learning · 数学思维<br>题目取自练习题；图示为自绘，讲解文字自行编写。</p>
+  <div class="cap"></div>
+</section>
+</main>
+<div id="status" role="status" aria-live="polite"></div>
+<nav class="bar"><button type="button" id="prev">上一页</button><button type="button" id="thisPage">讲这页</button><button type="button" class="main" id="playAll">从头连播</button><button type="button" id="stop">停止</button><button type="button" id="next">下一页</button></nav>
+<script>
+var NARR=[["今天这道算式谜，四个字代表四个数。", "我们还是用天平来想。"], ["先看题目。", "快加乐加学加学，等于学加习。", "这四个字，分别是零、一、二、三里的一个。", "问：习代表几？"], ["把算式摆到天平上，两边一样重。", "左边是快、乐、学、学，四块积木。", "右边是学和习，两块积木。"], ["天平两边都有学。", "各拿走一个，天平还是平的。", "剩下：快加乐加学，等于习。"], ["现在变成：三个数加起来，等于第四个数。", "三个数加起来才等于习，所以习一定是四个数里最大的那个。", "最大的是三，我们先试习等于三。"], ["习等于三，剩下零、一、二，零加一加二，等于三，正好！", "再试习等于二，剩下零、一、三，加起来是四，不等于二，不行。"], ["所以，习等于三。", "小心一个陷阱：快、乐、学到底谁是零、谁是一、谁是二，题目定不下来，也不需要，它只问习。"], ["今天的窍门：先把两边一样的划掉；三个数加起来等于第四个数，第四个数一定最大。"]];
+var pages=[].slice.call(document.querySelectorAll('.page')),cur=0,serial=0;
+var statusEl=document.getElementById('status'),voiceSel=document.getElementById('voice'),rateSel=document.getElementById('rate');
+var hasTTS=!!(window.speechSynthesis&&window.SpeechSynthesisUtterance);
+function setSteps(n,k){var p=pages[n];for(var i=1;i<=9;i++)p.classList.toggle('s'+i,i<=k)}
+function cap(n,t){var c=pages[n].querySelector('.cap');if(c)c.textContent=t}
+function go(n,full){n=Math.max(0,Math.min(pages.length-1,n));pages.forEach(function(p,i){p.classList.toggle('active',i===n);if(i!==n)setSteps(i,0)});cur=n;setSteps(n,0);void pages[n].offsetWidth;if(full){setSteps(n,9);cap(n,NARR[n].join(''))}else cap(n,'');document.getElementById('counter').textContent=(n+1)+' / '+pages.length}
+function zhVoices(){return hasTTS?speechSynthesis.getVoices().filter(function(v){return /^zh/i.test(v.lang)}):[]}
+function pickVoice(){var vs=zhVoices();if(voiceSel.value){var c=vs.filter(function(v){return v.voiceURI===voiceSel.value})[0];if(c)return c}
+ return vs.filter(function(v){return /Microsoft Xiaoxiao Online \(Natural\)/i.test(v.name)})[0]||vs.filter(function(v){return /Xiaoxiao/i.test(v.name)})[0]||vs.filter(function(v){return /Online \(Natural\)/i.test(v.name)&&/zh-CN/i.test(v.lang)})[0]||vs.filter(function(v){return /zh-CN/i.test(v.lang)})[0]||vs[0]||null}
+function fillVoices(){var keep=voiceSel.value;voiceSel.replaceChildren(new Option('自动：优先晓晓 Edge 自然语音',''));zhVoices().forEach(function(v){voiceSel.add(new Option(v.name,v.voiceURI))});voiceSel.value=keep}
+function say(text,cb,id){
+ if(!hasTTS){statusEl.textContent='此浏览器不支持朗读，已改为按字幕自动翻页';setTimeout(function(){if(id===serial)cb()},Math.max(1800,text.length*230));return}
+ var u=new SpeechSynthesisUtterance(text);u.lang='zh-CN';var v=pickVoice();if(v)u.voice=v;u.rate=Number(rateSel.value)||1;
+ statusEl.textContent='语音：'+(v?v.name:'系统默认');
+ u.onend=function(){if(id===serial)setTimeout(cb,350)};
+ u.onerror=function(e){if(id===serial){statusEl.textContent='语音中断：'+e.error+'，已按字幕继续';setTimeout(cb,Math.max(1500,text.length*200))}};
+ speechSynthesis.speak(u)}
+function playPage(n,done,id){go(n,false);var segs=NARR[n],i=0;(function next(){if(id!==serial)return;if(i>=segs.length){done&&done();return}i++;setSteps(n,i);cap(n,segs[i-1]);say(segs[i-1],next,id)})()}
+function halt(){serial++;if(hasTTS)speechSynthesis.cancel()}
+function stop(){halt();setSteps(cur,9);cap(cur,NARR[cur].join(''));statusEl.textContent='已停止'}
+function playFrom(n){halt();var id=serial;(function run(k){playPage(k,function(){if(k+1<pages.length)setTimeout(function(){if(id===serial)run(k+1)},500);else statusEl.textContent='讲解完成'},id)})(n)}
+document.getElementById('startBtn').addEventListener('click',function(){playFrom(1)});
+document.getElementById('playAll').addEventListener('click',function(){playFrom(0)});
+document.getElementById('thisPage').addEventListener('click',function(){halt();var id=serial;playPage(cur,function(){statusEl.textContent='本页讲完'},id)});
+document.getElementById('stop').addEventListener('click',stop);
+document.getElementById('prev').addEventListener('click',function(){halt();go(cur-1,true)});
+document.getElementById('next').addEventListener('click',function(){halt();go(cur+1,true)});
+document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){halt();go(cur+1,true)}if(e.key==='ArrowLeft'){halt();go(cur-1,true)}});
+if(hasTTS){speechSynthesis.addEventListener('voiceschanged',fillVoices);fillVoices()}else statusEl.textContent='此浏览器不支持朗读，请用 Edge 打开';
+window.addEventListener('pagehide',halt);
+go(0,true);
+</script></body></html>
