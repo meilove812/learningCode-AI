@@ -302,39 +302,39 @@ const MODULES = [
       { action: 'eliminate', text: '把 1、2、3、4、6 全划掉，1到6里只剩下 5 了！' },
       { action: 'fill', text: '答案就是 5！填进去！🎉' }
     ],
-    // Practice puzzle: target (0,3) -> answer 6
+    // Practice puzzle: target (4,1) -> answer 2（2026-10-18 更换：原题无解）
     practiceGrid: [
-      [2,5,0,0,1,4],
-      [1,4,6,3,2,5],
-      [4,2,1,5,6,3],
-      [6,3,5,4,0,0],
-      [5,1,4,2,3,6],
-      [3,6,2,1,0,0]
+      [3,6,4,1,5,2],
+      [0,5,2,3,4,6],
+      [2,1,5,4,6,3],
+      [4,3,6,5,2,0],
+      [5,0,0,6,0,4],
+      [6,4,3,2,1,5]
     ],
-    practiceTarget: {row: 0, col: 3, answer: 6},
-    practiceHint: '看第1横排第4个格子，横排有2、5、1、4，竖列有3、5、4、2、1，小方块有……剩下哪个数字？'
+    practiceTarget: {row: 4, col: 1, answer: 2},
+    practiceHint: '看第5横排第2个格子，横排有5、6、4，竖列有6、5、1、3、4，小方块有5、6、4、3……剩下哪个数字？'
   },
   {
     title: '🔍 第二招：宫排除法',
     badge: '中等', badgeClass: 'badge-mid',
     desc: '有时候排除法找不出来。换个思路：找一个数字在某个小方块里能放哪儿，如果只有一个位置——就是那里！',
-    // Demo: in box(0,0), number 4 can only go at (1,2)
+    // Demo: in box(0,0), number 4 can only go at (0,2)（2026-10-18 更换：原例题答案与理由有误）
     demoGrid: [
       [0,6,0,1,5,2],
-      [1,5,0,3,0,6],
+      [1,0,0,3,4,6],
       [2,1,5,4,6,3],
-      [0,3,6,5,2,1],
-      [5,2,1,6,3,4],
-      [6,4,3,2,1,5]
+      [4,3,6,0,2,1],
+      [5,2,1,6,3,0],
+      [6,4,0,2,1,5]
     ],
-    demoTarget: {row: 1, col: 2, answer: 4},
+    demoTarget: {row: 0, col: 2, answer: 4},
     demoSteps: [
       { action: 'intro', text: '这次我们换个方法！找找数字 4 应该放在左上角小方块的哪里？🔍' },
-      { action: 'show-box', text: '左上角小方块有6个格子，已经填了 6、1、5，空着3个格子' },
-      { action: 'check-r0', text: '第1横排——已经有数字 1、5、2，而且别的小方块里第1横排有4了，所以第1横排不能放4' },
-      { action: 'check-r1c0', text: '第2横排第1个格子？这里同一竖列已经有4了（看下面第4横排位置），不能放！' },
-      { action: 'only-one', text: '只剩第2横排第3个格子能放 4！就是这里！✨' },
-      { action: 'fill', text: '答案确定：第2横排第3个格子填4！🎉' }
+      { action: 'show-box', text: '左上角小方块有6个格子，已经填了 6、1，空着4个格子' },
+      { action: 'check-r0', text: '第2横排——右边已经有一个4了，所以第2横排的两个空格都不能放4' },
+      { action: 'check-r1c0', text: '第1横排第1个格子？同一竖列下面的第4横排已经有4了，不能放！' },
+      { action: 'only-one', text: '只剩第1横排第3个格子能放 4！就是这里！✨' },
+      { action: 'fill', text: '答案确定：第1横排第3个格子填4！🎉' }
     ],
     // Practice: in box(1,1) top-right, number 2 can only go at (2,5) -- let me design a better one
     practiceGrid: [
